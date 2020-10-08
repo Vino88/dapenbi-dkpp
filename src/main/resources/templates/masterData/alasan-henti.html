@@ -1,0 +1,173 @@
+{{#layout}}
+
+{{#styles}}
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/googleapis/css/component.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/googleapis/css/googleapis.css">
+{{/styles}}
+
+{{#title}}
+Master Alasan Henti - DKPP
+{{/title}}
+
+
+<div class="card">
+    <div class="card-header">
+        <div class="col-md-12">
+            <div class="row pull-right">
+                <a class="btn btn-primary btn-icon btn-sm" id="btn-add"><i class="material-icons">add</i> Add</a>
+            </div>
+        </div>
+    </div>
+    <div class="card-block">
+        <div class="table-responsive">
+            <table class="table table-bordered datatable dataTable no-footer" id="user_table"
+                   role="grid">
+                <thead>
+                <tr role="row">
+                    <th>
+                        Keterangan
+                    </th>
+                    <th>
+                        Is Active
+                    </th>
+                    <th>
+                        Action
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{{#modal}}
+<div class="modal fade alasan-henti-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title small bold" id="myModalLabel">Form Alasan Henti</h4>
+            </div>
+            <div class="modal-body">
+                <form id="alasanHentiForm">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="form-group row">
+                                <label for="alasan-keterangan" class="col-sm-3 bold">Keterangan</label>
+                                <div class="col-xs-9">
+                                    <input type="hidden" name="id" id="alasan-id">
+                                    <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
+                                    <input class="form-control form-control-sm" type="text" name="keterangan" id="alasan-keterangan">
+                                </div>
+                            </div>
+
+                            <div class="form-group row checkbox-show-hide">
+                                <label for="alasan-active" class="col-sm-3 bold">Active</label>
+                                <div class="col-xs-9">
+                                    <label class="custom-control custom-checkbox m-b-1">
+                                        <input type="checkbox" class="custom-control-input" name="active" id="alasan-active">
+                                        <span class="custom-control-indicator"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="saveForm()">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+{{/modal}}
+
+{{#scripts}}
+<script src="{{contextPath}}/assets/vendor/datatables/media/js/jquery.dataTables.js"></script>
+<script src="{{contextPath}}/assets/vendor/datatables/media/js/dataTables.bootstrap4.js"></script>
+
+<script type="text/javascript">
+    window.RESTFulMode = "";
+    function showPrintOptions(){
+        $('#printOptionsModal').modal('show');
+    }
+
+    $('#btn_ok_print').unbind().on('click', function(){
+        $('#printOptionsModal').modal('hide');
+        $('#pdfReportModal').modal('show');
+    });
+
+    $('#filter_form').hide();
+
+    var alasanHentiTable = dkppDataTable($('.datatable'), '{{contextPath}}/api/alasan-henti', {
+        'columns': [
+            { "data": "keterangan" },
+            { "data": "active", "ordering": false },
+            { "data": "id"}
+        ],
+        'columnDefs': [
+            {
+                "targets": -1,
+                "data": "id",
+                "render": function(data, type, row, meta){
+                    return "<a class='btn btn-info btn-sm btn-icon btn-edit' onclick='displayEditModal(" + row.id + ")'><i class='material-icons'>edit</i> Edit</a>";
+                }
+            },
+            {
+                "targets": 1,
+                "data": "active",
+                "render": function(data, type, row, meta){
+                    if(data == true)
+                        return '<span class="tag tag-pill tag-success">active</span>';
+                    else
+                        return '<span class="tag tag-pill tag-danger">not active</span>';
+                }
+            }
+        ]
+    });
+
+    function displayEditModal(id) {
+        $('.checkbox-show-hide').show();
+        const alasanHenti = alasanHentiTable.rows().data().filter((data) => {return data.id === id})[0];
+        const alasanHentiForm = $("form#alasanHentiForm");
+
+        $("#alasan-id", alasanHentiForm).val(alasanHenti.id);
+        $("#alasan-keterangan", alasanHentiForm).val(alasanHenti.keterangan);
+        $("#alasan-active", alasanHentiForm)[0].checked = alasanHenti.active;
+        $('.alasan-henti-modal').modal('show');
+        RESTFulMode = "PUT";
+    }
+
+    function saveForm() {
+        $.ajax({
+            url: "{{contextPath}}/api/alasan-henti",
+            method: window.RESTFulMode,
+            data: formToJSON($("form#alasanHentiForm")[0].elements)
+        }).success(function(data) {
+            $('.alasan-henti-modal').modal('hide');
+            alasanHentiTable.ajax.reload();
+        });
+    }
+
+    $(document).ready(function(){
+        $('#btn-add').unbind().on('click', function(){
+            $('.checkbox-show-hide').hide();
+            $("#alasan-id").val("");
+            $("#alasan-keterangan").val("");
+            $("#alasan-active")[0].checked = false;
+            var modal = $('.alasan-henti-modal');
+            modal.modal('show');
+            RESTFulMode = 'POST';
+        });
+
+    });
+</script>
+{{/scripts}}
+
+{{/layout}}

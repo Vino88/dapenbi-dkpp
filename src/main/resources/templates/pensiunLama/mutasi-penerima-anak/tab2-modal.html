@@ -1,0 +1,374 @@
+<style type="text/css">
+    .modal-dialog{
+        overflow-y: initial !important
+    }
+    .modal-body{
+        height: 75vh;
+        overflow-y: auto;
+    }
+</style>
+<div class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="tab2ModalEdit">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </a>
+                <h4 class="modal-title small bold" id="myModalLabel">Mutasi MP Anak 25 Tahun</h4>
+            </div>
+            <div class="modal-body">
+                <form id="tab2FormEdit">
+                <div class="row">
+                    <div class="col-lg-12" id="tab2LabelValidasi">
+
+                    </div><br>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <label for="tab2TglMutasi" class="col-sm-6 bold"  >Tanggal Mutasi</label>
+
+                        <div class="col-sm-6">
+                            <input class="form-control form-control-sm" disabled type="text" value="" id="tab2TglMutasi">
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <label for="tab2PeriodeMutasi" class="col-sm-6 bold" >Periode Mutasi</label>
+
+                        <div class="col-sm-6">
+                            <input class="form-control form-control-sm" disabled type="text" value="" id="tab2PeriodeMutasi">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12"><hr/></div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <small class="bold">Data Peserta</small>
+                    </div>
+                    <div class="col-lg-6">
+                        <small class="bold">Data Penerima MP</small>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <label for="tab2NipNama" class="col-sm-6"  >NIP-Nama Peserta</label>
+
+                        <div class="col-sm-6">
+                            <input class="form-control form-control-sm" disabled type="text" value="" id="tab2NipNama">
+                            <input type="hidden" id="tab2Nip" />
+                            <input type="hidden" id="tab2NamaPeserta"/>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <label for="tab2NamaPenerimaMp" class="col-sm-6" >Nama Penerima MP</label>
+
+                        <div class="col-sm-6">
+                            <input class="form-control form-control-sm"  type="text" value="" id="tab2NamaPenerimaMp" disabled>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <label for="tab2NamaAgama" class="col-sm-6"  >Agama</label>
+
+                        <div class="col-sm-6">
+                            <input class="form-control form-control-sm" disabled type="text" value="" id="tab2NamaAgama">
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <label for="tab2NamaKategoriPenerimaMp" class="col-sm-6" >Jenis Penerima MP</label>
+
+                        <div class="col-sm-6">
+                            <input class="form-control form-control-sm" disabled type="text" value="" id="tab2NamaKategoriPenerimaMp">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <label for="tab2JenisKelaminPeserta" class="col-sm-6"  >Jenis Kelamin</label>
+
+                        <div class="col-sm-6">
+                            <input class="form-control form-control-sm" disabled type="text" value="" id="tab2JenisKelaminPeserta">
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <label for="tab2NamaPenerimaMpBaru" class="col-sm-6"  >Nama Penerima MP Baru (*Jika Ada)</label>
+
+                        <div class="col-sm-6">
+                            <input class="form-control form-control-sm"  type="text" value="" id="tab2NamaPenerimaMpBaru" disabled>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <label for="tab2GolonganPangkat" class="col-sm-6"  >Golongan</label>
+
+                        <div class="col-sm-6">
+                            <input class="form-control form-control-sm" disabled type="text" value="" id="tab2GolonganPangkat">
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <label for="tab2NamaKategoriPenerimaMpBaru" class="col-sm-6"  >Jenis Penerima MP Baru (*Jika Ada)</label>
+
+                        <div class="col-sm-6">
+                            <input class="form-control form-control-sm" disabled type="text" value="" id="tab2NamaKategoriPenerimaMpBaru">
+                        </div>
+                    </div>
+                </DIV>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <label for="tab2TglMeninggalPeserta" class="col-sm-6"  >Tanggal Meninggal</label>
+
+                        <div class="col-sm-6">
+                            <input class="form-control form-control-sm" disabled type="text" value="" id="tab2TglMeninggalPeserta">
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <label for="tab2IdSuskel" class="col-sm-6"  >ID SusKel</label>
+
+                        <div class="col-sm-6">
+
+                            <input class="form-control form-control-sm"  type="text" value="" id="tab2IdSuskel" disabled>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <label for="tab2NamaKantorBayar" class="col-sm-6"  >Kantor Cabang</label>
+
+                        <div class="col-sm-6">
+                            <input class="form-control form-control-sm" disabled type="text" value="" id="tab2NamaKantorBayar">
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <label for="tab2NamaSuskelBaru" class="col-sm-6"  >ID SusKel Baru (*Jika Ada)</label>
+
+                        <div class="col-sm-6">
+                            <input class="form-control form-control-sm"  type="text" value="" id="tab2NamaSuskelBaru" disabled>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <label for="tab2NamaKategoriMutasi" class="col-sm-6"  >Tipe Mutasi</label>
+
+                        <div class="col-sm-6">
+                            <textarea readonly class="form-control form-control-sm" id="tab2NamaKategoriMutasi" rows="2"></textarea>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <label for="tab2MpydLama" class="col-sm-6"  >MP</label>
+                        <div class="col-sm-6">
+                            <input class="form-control form-control-sm" disabled type="text" value="" id="tab2MpydLamaCaption">
+                            <input class="form-control form-control-sm" disabled type="hidden" value="" id="tab2MpydLama">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                    </div>
+                    <div class="col-lg-6">
+                        <label for="tab2TglHentiBayar" class="col-sm-6"  >Tanggal Henti Bayar (*Jika Mutasi Hapus)</label>
+
+                        <div class="col-sm-6">
+                            <input class="form-control form-control-sm"  type="text" value="" id="tab2TglHentiBayar" disabled>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12"><br></div>
+                    <div class="col-lg-12"><h6 class="card-title small bold">Data Keluarga<hr/></h6></div>
+                    <div class="col-lg-12" >
+
+
+                        <div class="scroll-y scroll" style="height: 200px;overflow:auto; ">
+                            <div class="table-responsive">
+                                <table id="tblKeluargaPensiun" class="table table-sm small">
+                                    <thead>
+                                    <tr>
+                                        <th>No.</th>
+                                        <th>Nama Lengkap</th>
+                                        <th>Jenis Kelamin</th>
+                                        <th>Hubungan Keluarga</th>
+                                        <th>Tgl Lahir</th>
+                                        <th>Tgl Menikah</th>
+                                        <th>Tgl Cerai</th>
+                                        <th>Tgl Meninggal</th>
+                                        <th>Tgl Usia 25 Tahun</th>
+                                    </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row"></div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card card-block">
+
+                                <div class="col-lg-12">
+                                   <!--
+                                   <label class="radio-inline">
+                                        <input type="radio" name="tab2IdValidasi" id="tab2BatalValidasi" value="7" data-name="Batal Validasi" />
+                                        Batal Validasi
+                                    </label>
+                                    -->
+                                    <label class="radio-inline">
+                                        <input type="radio" name="tab2IdValidasi" id="tab2BelumValidasi" value="1" data-name="Belum Validasi" disabled />
+                                        Belum Validasi
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="tab2IdValidasi" id="tab2SudahValidasi" value="2" data-name="Sudah Validasi" disabled/>
+                                        Sudah Validasi
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="tab2IdValidasi" id="tab2BatalKoreksi" value="3" data-name="Batal Koreksi" disabled/>
+                                        Batal Koreksi
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="tab2IdValidasi" id="tab2BatalData" value="4" data-name="Batal Data" disabled/>
+                                        Batal Data
+                                    </label>
+                                    <!--
+                                    <label class="radio-inline">
+                                        <input type="radio" name="tab2IdValidasi" id="tab2BelumProses" value="5" data-name="Belum Proses"/>
+                                        Belum Proses
+                                    </label>
+                                    -->
+                                    <!--
+                                    <label class="radio-inline">
+                                        <input type="radio" name="tab2IdValidasi" id="tab2OtomatisValidasi" value="6" data-name="Otomatis Validasi"/>
+                                        Otomatis Validasi
+                                    </label>
+                                    -->
+                                    <input type="hidden" name="tab2NamaValidasi" id="tab2NamaValidasi"/>
+                                </div>
+
+
+                                <div class="col-lg-6">
+                                    Kategori Catatan
+                                    <select class="form-control form-control-sm" id="tab2IdKategoriCatatan" name="tab2IdKategoriCatatan">
+                                        <option></option>
+                                    </select>
+                                    <input type="hidden" id="tab2NamaKategoriCatatan" name="tab2NamaKategoriCatatan" />
+                                </div>
+                                <div class="col-lg-6">
+                                    Catatan
+                                    <textarea class="form-control  form-control-sm" id="tab2Keterangan" rows="3"></textarea>
+                                </div>
+                                <div class="col-lg-12"><br></div>
+                                <div class="col-lg-12">
+                                    <label for="tab2UserStamp" class="col-xs-5">User Stamp</label>
+
+                                    <div class="col-xs-7">
+                                        <input class="form-control form-control-sm" type="text" value="" id="tab2UserStamp" disabled>
+
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <label for="tab2UserValidasi" class="col-xs-5">User Validasi</label>
+
+                                    <div class="col-xs-7">
+                                        <input class="form-control form-control-sm" type="text" value="" id="tab2UserValidasi" disabled>
+                                    </div>
+                                    <input type="hidden" name="tab2CompName" id="tab2CompName" />
+                                    <input type="hidden" name="tab2IdMutasiPensiun" id="tab2IdMutasiPensiun" />
+                                    <input type="hidden" name="_csrf" id="_csrf" value="{{_csrf.token}}" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <a type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</a>
+                <a type="button" class="btn btn-primary btn-sm" id="save-edit-tab2" onclick="callSPMutasiOtomatis25TUpd()">Save</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade report-modal" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </a>
+                <h4 class="modal-title small bold" id="myModalLabel">Form Cetak Laporan Mutasi Pensiun Anak Dewasa 25 Tahun</h4>
+            </div>
+            <div class="modal-body">
+                <form id="pesertaForm">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <div class="radio" id="radio_formulir">
+                                    <label>
+                                        <input checked="" name="optradio" type="radio" value="formulir_entry_mutasi"> Formulir Entry Mutasi
+                                    </label>
+                                </div>
+                                <div class="radio" id="radio_catatan">
+                                    <label>
+                                        <input name="optradio" type="radio"  value="catatan_perhitungan_manfaat_pensiun"> Catatan Perhitungan Manfaat Pensiun
+                                        </input>
+                                    </label>
+                                </div>
+                                <div class="radio_kartu">
+                                    <label>
+                                        <input name="optradio" type="radio"  value="kartu"> Kartu Peserta Manfaat Pensiun
+                                        </input>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                <button class="btn btn-primary btn-sm" onclick="cetakReport()">Cetak</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade invisible-modal" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </a>
+                <h4 class="modal-title small bold" id="myModalLabel">Form Cetak Laporan Mutasi Pensiun Anak Dewasa 25 Tahun</h4>
+            </div>
+            <div class="modal-body">
+                <form id="infoForm">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <div class="radio">
+                                    <label>
+                                        <input checked="" name="optradio" type="radio" value="formulir_entry_mutasi"> Formulir Entry Mutasi
+                                    </label>
+                                </div>
+                                <div class="radio">
+                                    <label>
+                                        <input name="optradio" type="radio"  value="catatan_perhitungan_manfaat_pensiun"> Catatan Perhitungan Manfaat Pensiun
+                                        </input>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <a type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</a>
+                <a type="button" class="btn btn-primary btn-sm" id="cetakInfo" onclick="cetakInfo()">Cetak</a>
+            </div>
+        </div>
+    </div>
+</div>

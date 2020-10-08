@@ -1,0 +1,2041 @@
+{{#layout}}
+{{#styles}}
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/datatables/media/css/dataTables.bootstrap4.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/googleapis/css/component.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/googleapis/css/googleapis.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/select2/css/select2.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css">
+<style>
+    #mutasi_table {
+        min-width: 2100px;
+    }
+    .modal-dialog{
+        overflow-y: initial !important
+    }
+    .modal-body{
+        height: 75vh;
+        overflow-y: auto;
+    }
+</style>
+{{/styles}}
+
+{{#title}}
+Pensiun Lama - Mutasi Susunan Keluarga
+{{/title}}
+<div class="card">
+    <div class="card-block">
+        {{#role}}
+        <button class="btn btn-primary btn-sm" data-toggle="modal" id="btn-add" onclick="ShowModal()"><i class="fa fa-plus"></i> <span>Tambah Data Mutasi</span></button>
+        {{/role}}
+        <hr/>
+        <div class="col-lg-12">
+            <div class="row">
+                <label for="example-text-input" class="col-sm-1">Periode Mutasi</label>
+                <div class="col-xs-2">
+                    <input class="form-control form-control-sm" disabled type="text" value="{{periodeMutasi}}" id="example-text-input">
+                </div></div>
+        </div>
+        <table class="table table-bordered table-striped m-b-0 dataTable no-footer display" id="mutasi_table"
+               role="grid">
+            <thead>
+            <tr role="row">
+                <th>
+                    Tanggal Mutasi
+                </th>
+                <th>
+                    Periode Mutasi
+                </th>
+                <th>
+                    NIP Peserta
+                </th>
+                <th>
+                    Nama Peserta
+                </th>
+                <th>
+                    Nama Penerima MP
+                </th>
+                <th>
+                    Jenis Penerima MP
+                </th>
+                <th>
+                    SukSel Lama
+                </th>
+                <th>
+                    SukSel Baru
+                </th>
+                <th>
+                    Keterangan
+                </th>
+                <th>
+                    Status Validasi
+                </th>
+                <th>
+                    Action
+                </th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+    <iframe style="display: none" id="report" name="report" src=""></iframe>
+</div>
+{{#modal}}
+
+<!--create modal-->
+
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <form id="createForm">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title small bold" id="modal-create">Mutasi Susunan Keluarga</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="row">
+                                <label for="tgl-mutasi-insert" class="col-sm-6 bold">Tanggal Mutasi</label>
+                                <div class="col-xs-6">
+                                    <input class="form-control form-control-sm" disabled type="text" value="" name="tglMutasi" id="tgl-mutasi-insert" disabled>
+                                </div>
+                                <input type="hidden" name="_csrf" id="_csrf" value="{{_csrf.token}}" />
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="row">
+                                <label for="periode-mutasi-insert" class="col-sm-6 bold">Periode Mutasi</label>
+
+                                <div class="col-xs-6">
+                                    <input class="form-control form-control-sm" disabled type="text" value="" name="periodeMutasi" id="periode-mutasi-insert" >
+
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-lg-12"><hr/></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <small class="bold">Data Peserta</small>
+                        </div>
+                        <div class="col-lg-4">
+                            <small class="bold">Data Penerima MP</small>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="row">
+                                <label for="example-text-input" class="col-sm-6">NIP</label>
+                                <input id="nip" type="hidden" name="nip">
+                                <div class="col-xs-6">
+                                    <select name="nip" id="id-peserta-mp" class="form-control form-control-sm">
+                                        <option></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label for="nama-peserta-insert" class="col-sm-6">Nama Peserta</label>
+
+                                <div class="col-xs-6">
+                                    <input class="form-control form-control-sm" disabled type="text"  value="" name="namaPeserta" id="nama-peserta-insert">
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="row">
+                                <label for="id-nama-penerima-mp-insert" class="col-sm-6">ID-Nama Penerima MP</label>
+                                <input type="hidden" id="id-penerima" name="idPenerimaMp" value="">
+                                <div class="col-xs-6">
+                                    <input class="form-control form-control-sm" disabled type="text"  value="" id="id-nama-penerima-mp-insert">
+                                    <input type="hidden" name="namaPenerimaMp" id="nama-penerimamp">
+                                    <input type="hidden" name="tglLahirPenerimaMp" id="tgl-lahir-penerima">
+                                    <input type="hidden" name="jenis_kelaminPenerimaMp" id="jk-penerima">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label for="nama-kategori-penerima-mp-insert" class="col-sm-6">Jenis Penerima MP</label>
+
+                                <div class="col-xs-6">
+                                    <input type="hidden" name="idKategoriPenerimaMp" id="id-kategori-penerima">
+                                    <input class="form-control form-control-sm" disabled type="text"  value="" name="namaKategoriPenerimaMp" id="nama-kategori-penerima-mp-insert">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="row">
+                                <label for="id-nama-penerima-mp-insert" class="col-sm-4">SusKel Lama</label>
+                                <input type="hidden" id="id-penerima" name="idPenerimaMp" value="">
+                                <div class="col-xs-8">
+                                    <input class="form-control form-control-sm" disabled type="text"  value="" id="nama-suksel-lama">
+                                    <input type="hidden" name="" id="id-suksel-lama">
+                                    <input type="hidden" name="namaPenerimaMp" id="nama-penerimamp">
+                                    <input type="hidden" name="tglLahirPenerimaMp" id="tgl-lahir-penerima">
+                                    <input type="hidden" name="jenis_kelaminPenerimaMp" id="jk-penerima">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label for="nama-suskel-baru" class="col-sm-4">SusKel Baru</label>
+
+                                <div class="col-xs-8">
+                                    <input class="form-control form-control-sm"  type="text" readonly value="" name="namaPenerimaMpBaru" id="nama-suskel-baru" required>
+                                    <input type="hidden" name="idSuskelBaru" id="id-suskel-baru">
+                                    <input type="hidden" id="id-penerima-baru" name="idPenerimaMpBaru" value="">
+                                    <input type="hidden" name="idKtgoriPenerimaMpBaru" id="id-kategori-penerima-mp-baru">
+                                    <input type="hidden" name="nmKtgoripenerimaMpBaru" id="nama-kategori-penerima-mp-baru">
+                                    <input type="hidden" name="tglLahirPenerimaMpBaru" id="tgl-lahir-penerima-baru">
+                                    <input type="hidden" name="jkPenerimaMpBaru" id="jk-penerima-baru">
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <br>
+                    <div class="row margin-clear">
+                        <div class="col-lg-12">
+                            <div class="scroll-y scroll" style="min-height: 200px;overflow:auto; ">
+                                <div class="table-responsive">
+                                    <div class="form-group row">
+                                        <div class="pull-right">
+                                            <div id="hideButton">
+                                                <!--<button type="button" class="btn btn-sm btn-primary btn-icon loading-demo m-r-xs m-b-xs btn-add" id="addPeserta">-->
+                                                    <!--<i class="material-icons">add_box</i><span>Tambah</span>-->
+                                                <!--</button>-->
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <table id="tblKeluargaPensiun" class="table table-sm small">
+                                        <thead>
+                                        <tr>
+                                            <th>No.</th>
+                                            <th>Nama Lengkap</th>
+                                            <th>Jenis Kelamin</th>
+                                            <th>Hubungan Keluarga</th>
+                                            <th>Tgl Lahir</th>
+                                            <th>Tgl Menikah</th>
+                                            <th>Tgl Cerai</th>
+                                            <th>Tgl Meninggal</th>
+                                            <th>Tgl Usia 25 Tahun</th>
+                                            <th>Action</th>
+                                        </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card card-block">
+                                <div class="col-lg-6">
+                                    Kategori Catatan
+                                    <select class="form-control form-control-sm" name="idKategoriCatatan" id="id-kategori-catatan" required>
+                                        <option></option>
+                                    </select>
+                                    <input type="hidden" name="namaKategoriCatatan" id="nama-kategori-catatan-input">
+                                </div>
+                                <div class="col-lg-6">
+                                    Catatan
+                                    <textarea class="form-control  form-control-sm" id="keterangan" name="keterangan" rows="3"></textarea>
+                                </div>
+                                <div class="col-lg-12"><br></div>
+                                <div class="col-lg-12">
+                                    <label for="user-stamp-insert" class="col-xs-5">User Stamp</label>
+
+                                    <div class="col-xs-7">
+                                        <input class="form-control form-control-sm" type="text" value="" name="userStamp" id="user-stamp-insert" disabled>
+                                        <input type="hidden" name="compName" id="comp-name-insert">
+                                        <input type="hidden" name="userName" id="user-name-insert">
+                                    </div>
+                                </div>
+
+
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary btn-sm" id="btn-save">Save</button>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>
+
+
+<!--create modal-->
+
+
+<!--editmodal-->
+
+<div class="modal fade edit-modal" tabindex="-1" id="id-edit-modal" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form id="updateForm">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title small bold" id="myModalLabel">Mutasi Perubahan Susunan Keluarga</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-6">
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                </div>
+                                <div class="col-xs-6" id="label-status-validasi">
+                                    ...
+                                </div>
+
+                            </div>
+                        </div>
+                        <br>
+                        <div class="col-lg-4">
+                            <div class="row">
+                                <label for="tgl-mutasi-update" class="col-sm-6 bold">Tanggal Mutasi</label>
+                                <input type="hidden" name="id" id="id-update">
+                                <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
+                                <div class="col-xs-6">
+                                    <input class="form-control form-control-sm" disabled type="text" name="tglMutasiUpdate" value="" id="tgl-mutasi-update" disabled>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="row">
+                                <label for="periode-mutasi-update" class="col-sm-6 bold">Periode Mutasi</label>
+
+                                <div class="col-xs-6">
+                                    <input class="form-control form-control-sm" disabled type="text" name="periodeMutasiUpdate" value="" id="periode-mutasi-update" >
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-lg-12"><hr/></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <small class="bold">Data Peserta</small>
+                        </div>
+                        <div class="col-lg-4">
+                            <small class="bold">Data Penerima MP</small>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="row">
+                                <label for="example-text-input" class="col-sm-6">NIP</label>
+
+                                <div class="col-xs-6">
+                                    <input class="form-control form-control-sm" disabled type="text"   value="" id="nip-update">
+                                    <input class="form-control form-control-sm" disabled type="hidden" name="nipUpdate"  value="" id="nip-update-value">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label for="nama-peserta-update" class="col-sm-6">Nama Peserta</label>
+
+                                <div class="col-xs-6">
+                                    <input class="form-control form-control-sm" disabled type="text"  value="" name="namaPesertaUpdate" id="nama-peserta-update">
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="row">
+                                <label for="example-text-input" class="col-sm-6">ID-Nama Penerima MP Lama</label>
+                                <div class="col-xs-6">
+                                    <input class="form-control form-control-sm" disabled type="text"  value=""  id="show-penerimamp-update">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label for="example-text-input" class="col-sm-6">Jenis Penerima MP</label>
+
+                                <div class="col-xs-6">
+                                    <input type="hidden" name="idKategoriPenerimaMp" id="id-kategori-penerima-update">
+                                    <input class="form-control form-control-sm" disabled type="text"  value="" name="namaKategoriPenerimaMp" id="nama-kategori-penerima-mp-update">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="row">
+                                <label for="id-nama-suskel-baru" class="col-sm-4">SusKel Lama</label>
+                                <input type="hidden" id="id-penerima-update" name="idPenerimaMpUpdate" value="">
+                                <div class="col-xs-8">
+                                    <input class="form-control form-control-sm" disabled type="text"  value="" id="nama-suskel-lama-update">
+                                    <input type="hidden" name="" id="id-suskel-lama-update">
+                                    <input type="hidden" name="namaPenerimaMp" id="nama-penerimamp-update">
+                                    <input type="hidden" name="tglLahirPenerimaMp" id="tgl-lahir-penerima-update">
+                                    <input type="hidden" name="jenis_kelaminPenerimaMp" id="jk-penerima-update">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label for="nama-suskel-baru" class="col-sm-4">SusKel Baru</label>
+
+                                <div class="col-xs-8">
+                                    <input class="form-control form-control-sm"  type="text" readonly value="" name="namaSuskelBaruUpdate" id="nama-suskel-baru-update" required>
+                                    <input type="hidden" name="idSuskelBaruUpdate" id="id-suskel-baru-update">
+                                    <input type="hidden" id="id-penerima-baru-update" name="idPenerimaMpBaruUpdate" value="">
+                                    <input type="hidden" name="idKtgoriPenerimaMpBaruUpdate" id="id-kategori-penerima-mp-baru-update">
+                                    <input type="hidden" name="nmKtgoripenerimaMpBaruUpdate" id="nama-kategori-penerima-mp-baru-update">
+                                    <input type="hidden" name="tglLahirPenerimaMpBaruUpdate" id="tgl-lahir-penerima-baru-update">
+                                    <input type="hidden" name="jkPenerimaMpBaruUpdate" id="jk-penerima-baru-update">
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <br>
+
+                    <div class="row margin-clear">
+                        <div class="col-lg-12">
+                            <div class="scroll-y scroll" style="min-height: 200px;overflow:auto; ">
+                                <div class="table-responsive">
+                                    <div class="form-group row">
+                                        <div class="pull-right">
+                                            <div id="hideButton-update">
+                                                <!--<button type="button" class="btn btn-sm btn-primary btn-icon loading-demo m-r-xs m-b-xs btn-add" id="addPeserta">-->
+                                                <!--<i class="material-icons">add_box</i><span>Tambah</span>-->
+                                                <!--</button>-->
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <table id="tblKeluargaPensiun-update" class="table table-sm small">
+                                        <thead>
+                                        <tr>
+                                            <th>No.</th>
+                                            <th>Nama Lengkap</th>
+                                            <th>Jenis Kelamin</th>
+                                            <th>Hubungan Keluarga</th>
+                                            <th>Tgl Lahir</th>
+                                            <th>Tgl Menikah</th>
+                                            <th>Tgl Cerai</th>
+                                            <th>Tgl Meninggal</th>
+                                            <th>Tgl Usia 25 Tahun</th>
+                                            <th>Action</th>
+                                        </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card card-block">
+
+                                <div class="col-lg-12">
+                                    <label class="radio-inline">
+                                        <input type="radio" name="idValidasi" id="idValidasi1" value="1" data-name="Belum Validasi" />
+                                        Belum Validasi
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="idValidasi" id="idValidasi2" value="2" data-name="Sudah Validasi"/>
+                                        Sudah Validasi
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="idValidasi" id="idValidasi3" value="3" data-name="Batal Koreksi"/>
+                                        Batal Koreksi
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="idValidasi" id="idValidasi7" value="4" data-name="Batal Validasi"/>
+                                        Batal Data
+                                    </label>
+                                    <input type="hidden" name="namaValidasi" id="nama-validasi"/>
+                                </div>
+
+                                <div class="col-lg-6">
+                                    Kategori Catatan
+                                    <select class="form-control form-control-sm" id="id-kategori-catatan-edit" name="idKategoriCatatan" required>
+                                        <option></option>
+                                    </select>
+                                    <input type="hidden" id="nama-kategori-catatan-edit" name="namaKategoriCatatan" />
+                                </div>
+                                <div class="col-lg-6">
+                                    Catatan
+                                    <textarea class="form-control  form-control-sm" rows="3" id="keterangan-update" name="keterangan"></textarea>
+                                </div>
+                                <div class="col-lg-12"><br></div>
+                                <div class="col-lg-12">
+                                    <label for="user-stamp-update" class="col-xs-5">User Stamp</label>
+
+                                    <div class="col-xs-7">
+                                        <input class="form-control form-control-sm" type="text" value="" name="userStamp"  id="user-stamp-update" disabled>
+                                        <input type="hidden" name="compName" id="comp-name-update">
+
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <label for="user-name-update" class="col-xs-5">User Validasi</label>
+
+                                    <div class="col-xs-7">
+                                        <input class="form-control form-control-sm" type="text" value="" id="user-name-update" name="userName" readonly="readonly">
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary btn-sm" id="btn-save-update">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+
+
+<div class="modal fade keluargaPeserta-modal" role="dialog" id="myModal2" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form id="keluargaPesertaForm">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title small bold" id="mutasiPensiunLabel">Form Data Keluarga</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-8">
+                            <div class="form-group row">
+                                <label for="namaLengkapKeluarga" class="col-sm-3 bold">Nama Lengkap</label>
+                                <div class="col-xs-9">
+                                    <input type="hidden" name="id" id="id-form-dt-kl">
+                                    <input type="hidden" name="tglUsia25" id="tglUsia25Keluarga">
+                                    <input type="hidden" name="idKategoriPenerima" id="idKategoriPenerimaKeluarga">
+                                    <input class="form-control form-control-sm" type="text" name="namaLengkapKeluarga" id="namaLengkapKeluarga" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="jenisKelaminKeluarga" class="col-sm-3 bold">Jenis Kelamin</label>
+                                <div class="col-xs-9">
+                                    <select class="form-control form-control-sm" name="jenisKelaminKeluarga" id="jenisKelaminKeluarga" required>
+                                        {{#gender}}
+                                        <option value="{{id}}">{{text}}</option>
+                                        {{/gender}}
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="hubunganKeluarga" class="col-sm-3 bold">Hubungan Keluarga</label>
+                                <div class="col-xs-9">
+                                    <select class="form-control form-control-sm" name="hubunganKeluarga" id="hubunganKeluarga" required></select>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="statusKawinKeluarga" class="col-sm-3 bold">Status Kawin</label>
+                                <div class="col-xs-9">
+                                    <select class="form-control form-control-sm" name="statusKawinKeluarga" id="statusKawinKeluarga"></select>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="tglLahirKeluarga" class="col-sm-3 bold">Tanggal Lahir</label>
+                                <div class="col-xs-9">
+                                    <input autocomplete="off" placeholder="dd/mm/yyyy" class="form-control form-control-sm text-sm" type="text" name="tglLahirKeluarga" id="tglLahirKeluarga" data-provide="datepicker" data-date-format="dd/mm/yyyy" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="tglMenikahKeluarga" class="col-sm-3 bold">Tanggal Menikah</label>
+                                <div class="col-xs-9">
+                                    <input autocomplete="off" placeholder="dd/mm/yyyy" class="form-control form-control-sm text-sm" type="text" name="tglMenikahKeluarga" id="tglMenikahKeluarga" data-provide="datepicker" data-date-format="dd/mm/yyyy">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="tglCeraiKeluarga" class="col-sm-3 bold">Tanggal Cerai</label>
+                                <div class="col-xs-9">
+                                    <input autocomplete="off" placeholder="dd/mm/yyyy" class="form-control form-control-sm text-sm" type="text" name="tglCeraiKeluarga" id="tglCeraiKeluarga" data-provide="datepicker" data-date-format="dd/mm/yyyy">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="tglMeninggalKeluarga" class="col-sm-3 bold">Tanggal Meniggal</label>
+                                <div class="col-xs-9">
+                                    <input autocomplete="off" placeholder="dd/mm/yyyy" class="form-control form-control-sm text-sm" type="text" name="tglMeninggalKeluarga" id="tglMeninggalKeluarga" data-provide="datepicker" data-date-format="dd/mm/yyyy">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary btn-sm" onclick="saveKeluarga()" data-dismiss="modal">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade report-modal" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title small bold" id="myModalLabel">Form Cetak Laporan Mutasi Susunan Keluarga</h4>
+            </div>
+            <div class="modal-body" style="height: 20vh;">
+                <form id="pesertaForm">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <div class="radio" id="radio_formulir">
+                                    <label>
+                                        <input checked="" name="optradio" type="radio" value="formulir_entry_mutasi"> Formulir Entry Mutasi
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="cetakReport()">Cetak</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{/modal}}
+
+{{#scripts}}
+<script src="{{contextPath}}/assets/vendor/datatables/media/js/jquery.dataTables.js"></script>
+<script src="{{contextPath}}/assets/vendor/datatables/media/js/dataTables.bootstrap4.js"></script>
+<script src="{{contextPath}}/assets/vendor/select2/js/select2.js"></script>
+<script src="{{contextPath}}/assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+<script src="{{contextPath}}/assets/vendor/jquery-validation/dist/jquery.validate.js"></script>
+<script src="{{contextPath}}/assets/vendor/numeral/numeral.min.js"></script>
+<script src="{{contextPath}}/assets/vendor/sweetalert/sweetalert.min.js"></script>
+
+<script type="text/javascript">
+    window.DkppReportParam = {};
+    window.DkppGlobal = {};
+    window.DkppGlobal.tableMode = "";
+    window.DkppGlobal.isPejabat = {{isPejabat}};
+    window.DkppGlobal.isAdmin = {{isAdmin}};
+    window.DkppGlobal.isStaff = {{isStaff}};
+    window.DkppGlobal.mutasiIsValidate = false;
+    const dateFormat = "DD/MM/YYYY";
+    const kategoriPenerimaSelectTemplate = "${namaKategoriPenerima}";
+    const statusKawinSelectTemplate = "${statusKawin}";
+    var dataKeluargaTemp = null;
+
+    toDb = function (strDate) {
+        var myArray = strDate.split("-");
+        myDateString = myArray[2]+"-"+myArray[1]+"-"+myArray[0];
+        console.log(myDateString);
+        return myDateString;
+    };
+
+    var mutasiTable = dkppDataTable($('#mutasi_table'),
+        '{{contextPath}}{{mutasi_path_api}}', {
+            'columns': [
+                {
+                    "data": "tglMutasi",
+                    "width": "50px"
+                },
+                {
+                    "data": "periodeMutasi",
+                    "width": "50px"
+                },
+                {
+                    "data": "nip",
+                    "width": "50px",
+                    "searchable" : true
+                },
+                {
+                    "data": "namaPeserta",
+                    "width": "70px"
+                },
+                {
+                    "data": "namaPenerimaMP",
+                    "width": "70px"
+                },
+                {
+                    "data": "kategoriPenerima.namaKategoriPenerima",
+                    "width": "70px"
+                },
+                {
+                    "data": "namaSuskel",
+                    "width": "100px"
+                },
+                {
+                    "data": "namaSuskelBaru",
+                    "width": "70px"
+                },
+                {
+                    "data": "keterangan",
+                    "width": "100px"
+                },
+                {
+                    "data": "statusValidasi.namaValidasi",
+                    "width": "100px"
+                },
+                {
+                    "data": "nip",
+                    "width": "50px"
+                }
+            ],
+            'columnDefs': [
+                // {
+                //     "targets": 4,
+                //     "render": function(data, type, row, meta) {
+                //         return data && genderText(data);
+                //     }
+                // },
+                {
+                     "targets": [0],
+                     "render": function(data, type, row, meta) {
+                         return data && moment(data).format("DD/MM/YYYY");
+                     }
+                },
+                {
+                    "targets": 9,
+                    "render": function(data, type, row, meta) {
+                        if("Belum Diproses" == data){
+                            return `<span class="tag tag-pill tag-danger">Belum Diproses</span>`;
+                        }else if("Belum Validasi" == data){
+                            return `<span class="tag tag-pill tag-info">Belum Validasi</span>`;
+                        }else if("Batal Data" == data){
+                            return `<span class="tag tag-pill tag-danger">Batal Data</span>`;
+                        }else if("Sudah Validasi" == data){
+                            return `<span class="tag tag-pill tag-success">Sudah Validasi</span>`;
+                        } else {
+                            return `<span class="tag tag-pill tag-warning">`+data+`</span>`;
+                        }
+                    }
+                },
+                {
+                    "targets": 10,
+                    "className": "action-box",
+                    "render": function(data, type, row, meta){
+                        // return `<a class='btn btn-info btn-sm btn-icon btn-edit' href='{{contextPath}}${objectToText(row, "{{entry_mutasi_path}}")}?id=${row.idMutasiPensiun}' ><i class='material-icons'>edit</i> Process</a>`;
+                        let htmlTag = "<a class='btn btn-info btn-sm btn-icon btn-edit' onclick='displayEditModal(" + row.id + ")'><i class='material-icons'>edit</i> Edit</a>";
+                        if (row.namaValidasi === "Sudah Validasi"){
+                            param = JSON.stringify(
+                                {
+                                    nip: row.nip,
+                                    periodeMutasi: row.periodeMutasi,
+                                    idKategoriMutasi: row.idKategoriMutasi
+                                }
+                            );
+                            htmlTag = "<a class='btn btn-info btn-sm btn-icon btn-edit' onclick='displayEditModal(" + row.id + ")'><i class='material-icons'>search</i> Show</a>"+ `<br><a class=\'btn btn-info btn-sm btn-icon btn-printer\' onclick=\'displayCetak(` + param + `);\'><i class=\'material-icons\'>printer</i> Cetak</a>`;
+                        }else if(row.namaValidasi === "Batal Data"){
+                            htmlTag = "<a class='btn btn-info btn-sm btn-icon btn-edit' onclick='displayEditModal(" + row.id + ")'><i class='material-icons'>edit</i> Edit</a>";
+                        }
+                        return htmlTag;
+                    }
+                }
+            ]
+        });
+
+    $(document).ready(function(){
+        $.ajax({
+            url: '{{contextPath}}/api/setupparameter/get_periode',
+            dataType:'json',
+            method:'GET',
+            success:function (data) {
+                console.log(data)
+                $('#periode-mutasi').val(data.periodeMutasi);
+            }
+        });
+
+        $('#btn-save').unbind().on('click',function () {
+            $('#createForm').validate();
+            $('#id-kategori-catatan').rules("add", {
+                required: true,
+                messages: {
+                    required: 'Kategori Catatan tidak boleh kosong'
+                }
+            });
+            let validForm = $('#createForm').valid();
+            if(validForm)
+                saveForm();
+        });
+
+        $('#btn-add').unbind().on('click', function(){
+            $('#createForm').trigger("reset");
+            $('#id-peserta-mp').val('').trigger('change');
+            $('#id-kategori-catatan').val('').trigger('change');
+
+            var modal = $('.mutasi-nama-penerima');
+            modal.modal('show');
+            window.RESTFulMode = 'POST';
+
+            $.ajax({
+                url: '{{contextPath}}/api/setupparameter/get_periode',
+                dataType:'json',
+                method:'GET',
+                success:function (data) {
+                    console.log(data)
+                    $('#user-stamp-insert').val(data.postModeUserStamp);
+                    $('#periode-mutasi-insert').val(data.periodeMutasi);
+                    $('#tgl-mutasi-insert').val(data.tglMutasi);
+                    $('#comp-name-insert').val(data.compName);
+                    $('#user-name-insert').val(data.userName);
+
+                }
+            });
+        });
+
+        var pesertaMPInsert = $('#id-peserta-mp').select2({
+            ajax: {
+                url: '{{contextPath}}/api/mpensiun/data/status-bayar-1',
+                dataType: 'json',
+                method: 'GET',
+                delay: 250,
+                data: function(params){
+                    return {
+                        searchParam: params.term,
+                        valueColumn: 'nip',
+                        textColumn: "${nip}-${namaPeserta}",
+                        searchColumn: [
+                            'nip',
+                            'namaPeserta'
+                        ],
+                        referenceValue:[
+                            {
+                                column: "idStatusBayar",
+                                value: 1
+                            }
+                        ],
+                        includeObject: true
+                    }
+                },
+                // dropdownParent: $(".mutasi-nama-penerima"),
+                delay: 250,
+                processResults: function(data){
+                    return {
+                        results: data
+                    };
+                }
+            },
+            width: "100%",
+            placeholder: 'Pilih Peserta MP'
+        });
+
+        var dafamilyDataTable = $('#tblKeluargaPensiun').DataTable();
+
+        pesertaMPInsert.on('change', (e) => {
+            if ($(e.target).select2('data')){
+            // $('#myModal').clear();
+                checkExistMutasi("{{contextPath}}", pesertaMPInsert.val(), function(isExist){
+                    if(isExist == 1){
+                        $('#btn-save').hide();
+                    } else {
+                        $('#btn-save').show();
+                    }
+                });
+                const data = $(e.target).select2('data')[0];
+                console.log(data.dataProperties);
+                if (pesertaMPInsert.val() != '' && pesertaMPInsert.val() != null){
+                $('#nama-peserta-insert').val(data.dataProperties.namaPeserta);
+                $('#id-nama-penerima-mp-insert').val(data.dataProperties.idPenerimaMP + " - " + data.dataProperties.namaPenerimaMp);
+                $('#nama-kategori-penerima-mp-insert').val(data.dataProperties.namaKategoriPenerimaMp);
+                $('#nama-penerimamp').val(data.dataProperties.namaPenerimaMp);
+                $('#id-kategori-penerima').val(data.dataProperties.kategoriPenerima.id);
+                $('#id-penerima-baru').val(data.dataProperties.idPenerimaMP);
+                $('#nip').val(data.dataProperties.nip);
+                $('#id-penerima').val(data.dataProperties.idPenerimaMP);
+                $('#id-suksel-lama').val(data.dataProperties.suskel.id);
+                $('#nama-suksel-lama').val(data.dataProperties.suskel.namaSuskel);
+                $('#nama-kategori-penerima-mp-baru').val(data.dataProperties.namaSuskel);
+                $('#tgl-lahir-penerima').val(data.dataProperties.tglLahirPenerimaMp);
+                $('#jk-penerima').val(data.dataProperties.jenisKelaminPenerimaMp);
+                $('#tgl-lahir-penerima-baru').val(data.dataProperties.tglLahirPenerimaMp);
+                $('#jk-penerima-baru').val(data.dataProperties.jenisKelaminPenerimaMp);
+                dataKeluargaTemp = [];
+
+                 dafamilyDataTable = $('#tblKeluargaPensiun').DataTable( {
+                    destroy: true,
+                    'ajax': {
+                        url: '{{contextPath}}/api/keluarga-pensiun/' + $('#nip').val() + '/by-nip',
+                        data: function(data){
+
+                            return {data: data}
+                        }
+                        // ,success: function (data) {
+                        //     console.log("data grid dalam modal: ",data)
+                        // }
+                    },
+                    'columns': [
+                        {data: 'id'},
+                        {data: 'namaKeluarga'},
+                        {data: 'jenisKelamin'},
+                        {data: 'kategoriPenerima.namaKategoriPenerima'},
+                        {data: 'tglLahir'},
+                        {data: 'tglMenikah'},
+                        {data: 'tglCerai'},
+                        {data: 'tglWafat'},
+                        {data: 'tglUsia25'},
+                        {data: 'id'}
+                    ],
+                    'columnDefs': [
+                        {
+                            "targets": 0,
+                            "render": function(data, type, row, meta) {
+                                return meta.row + 1;
+                            }
+                        },
+                        {
+                            "targets": 2,
+                            "render": function(data, type, row, meta){
+                                let out = {'W': 'Wanita', 'P': 'Pria'};
+
+                                return (row.jenisKelamin != null)?out[row.jenisKelamin]:'-';
+                            }
+                        },
+                        {
+                            "targets": 4,
+                            render: function(data, type, row, meta){
+                                return row.tglLahir != null ? fillDateField(row.tglLahir) : '-';
+                            }
+                        },
+                        {
+                            "targets": 5,
+                            render: function(data, type, row, meta){
+                                return row.tglMenikah != null ? fillDateField(row.tglMenikah) : '-';
+                            }
+                        },
+                        {
+                            "targets": 6,
+                            render: function(data, type, row, meta){
+                                return row.tglCerai != null ? fillDateField(row.tglCerai) : '-';
+                            }
+                        },
+                        {
+                            "targets": 7,
+                            render: function(data, type, row, meta){
+                                return row.tglWafat != null ? fillDateField(row.tglWafat) : '-';
+                            }
+                        },
+                        {
+                            "targets": 8,
+                            render: function(data, type, row, meta){
+                                return row.tglUsia25 != null ? fillDateField(row.tglUsia25) : '-';
+                            }
+                        },
+                        {
+                            "targets": -1,
+                            "data": "id",
+                            "className": "action-box",
+                            "render": function(data, type, row, meta){
+                                // dataKeluargaTemp.push({
+                                //     id: row.id,
+                                //     namaKeluarga: row.namaKeluarga,
+                                //     jenisKelamin: row.jenisKelamin,
+                                //     idKategoriPenerima: row.idKategoriPenerima,
+                                //     tglLahir: row.tglLahir,
+                                //     tglMenikah: row.tglMenikah,
+                                //     tglCerai: row.tglCerai,
+                                //     tglWafat: row.tglWafat,
+                                //     tglUsia25: row.tglUsia25,
+                                //     statusKawin: row.idStatusKawin,
+                                //     action:""
+                                // });
+                                return `<a class='btn btn-info btn-sm btn-icon btn-edit' onclick='displayEditKeluarga(${meta.row})'><i class='material-icons'>edit</i> Edit</a><a class='btn btn-danger btn-sm btn-icon btn-edit' onclick='deleteKeluarga(${meta.row})'><i class='material-icons'>delete</i> Hapus</a>`;
+                            }
+                        }
+                    ]
+                });
+            }
+
+
+        }
+    });
+
+
+
+        $('#btn-save-update').on('click', ()=>{
+            $('#updateForm').validate();
+
+        $('#nama-penerima-mp-baru-update').rules("add", {
+            required: true,
+            messages: {
+                required: 'Nama penerima baru tidak boleh kosong'
+            }
+        });
+        $('#id-kategori-catatan-edit').rules("add", {
+            required: true,
+            messages: {
+                required: 'Kategori Catatan tidak boleh kosong'
+            }
+        });
+        let validForm = $('#updateForm').valid();
+        if(validForm)
+            saveUpdateForm();
+    });
+
+
+        $('#btn-update').on('click', ()=>{
+            saveForm();
+    });
+
+
+
+    });
+
+
+
+    const deleteKeluarga = (row) => {
+        const dataKeluarga = Array.from($('#tblKeluargaPensiun').DataTable().data());
+        console.log('ini data keluarga', dataKeluarga);
+        // console.log('data selected : ', dataKeluarga.row(this).data);
+        console.log('ini tabel data keluarga', $('#tblKeluargaPensiun').DataTable());
+        dataKeluarga.splice(row, 1);
+        // dataKeluargaTemp[row].action="D";
+        console.log("dataKeluargaTemp",dataKeluargaTemp);
+        $('#tblKeluargaPensiun').DataTable().clear();
+        $('#tblKeluargaPensiun').DataTable().draw();
+        $('#tblKeluargaPensiun').DataTable().rows.add(dataKeluarga);
+        $('#tblKeluargaPensiun').DataTable().draw();
+
+        DkppGetKeluargaPeserta = function () {
+            let rows = $('#tblKeluargaPensiun').DataTable().rows().data();
+            let jsonData = {dataKeluarga:[]};
+            rows.each((d) => {
+                let tglLahir = d.tglLahir && moment(d.tglLahir).format(dateFormat);
+                let tglMenikah = d.tglMenikah && moment(d.tglMenikah).format(dateFormat);
+                let tglCerai = d.tglCerai && moment(d.tglCerai).format(dateFormat);
+                let tglWafat = d.tglWafat && moment(d.tglWafat).format(dateFormat);
+                let tglUsia25 = d.tglUsia25 && moment(d.tglUsia25).format(dateFormat);
+
+                jsonData.dataKeluarga.push({
+                    id: d.id,
+                    namaKeluarga: d.namaKeluarga,
+                    jenisKelamin: d.jenisKelamin,
+                    idKategoriPenerima: d.idKategoriPenerima,
+                    tglLahir: tglLahir,
+                    tglMenikah: tglMenikah,
+                    tglCerai: tglCerai,
+                    tglWafat: tglWafat,
+                    tglUsia25: tglUsia25,
+                    statusKawin: d.idStatusKawin
+                });
+            });
+            return jsonData.dataKeluarga;
+        };
+        let arrDataKeluarga = DkppGetKeluargaPeserta();
+        let params = {
+            _csrf: "{{_csrf.token}}",
+            nip: $('#nip').val(),
+            dataKeluarga: arrDataKeluarga,
+        };
+        console.log("params suskel",params);
+
+        $.ajax({
+            url: '{{contextPath}}{{mutasi_path_api}}/checksuskel',
+            type:'json',
+            method: 'POST',
+            data: params,
+            success: function (data) {
+                $('#nama-suskel-baru').val(data.namaSuskel);
+                $('#id-suskel-baru').val(data.id);
+                console.log("data hasil checksuskel:",data);
+            }
+        });
+    };
+    const fakeId = () => {
+        var text = "";
+        var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+        for (var i = 0; i < 5; i++) {
+            text += possible.charAt(Math.floor(Math.random() * possible.length));
+        }
+
+        return text;
+    };
+    function saveKeluarga(){
+        let tableMode = DkppGlobal.tableMode;
+        let additionalTableId = "";
+
+        if(tableMode == "update")
+            additionalTableId = "-update";
+
+        const dataForm = formToJSON($("form#keluargaPesertaForm")[0].elements);
+        const mode = dataForm.id === "" ? "add" : "edit";
+
+        const hubunganKeluarga = $("#hubunganKeluarga").select2('data')[0];
+        const statusKawin = $("#statusKawinKeluarga").select2('data')[0];
+        console.log("id",dataForm.id);
+        console.log("statusKawin",statusKawin);
+        console.log("dataForm",dataForm);
+        let editableRow = mode === "add" ? null : $('#tblKeluargaPensiun' + additionalTableId).DataTable().row((idx, data) => data.id + "" === dataForm.id);
+
+
+        const dataKeluargaForm = {
+            "id":dataForm.id,
+            "idKategoriPenerima":$('#hubunganKeluarga').val(),
+            "namaKeluarga": dataForm.namaLengkapKeluarga,
+            "jenisKelamin": dataForm.jenisKelaminKeluarga,
+            "tglCerai": dataForm.tglCeraiKeluarga ? moment(dataForm.tglCeraiKeluarga, dateFormat) : null,
+            "tglLahir": dataForm.tglLahirKeluarga ? moment(dataForm.tglLahirKeluarga, dateFormat) : null,
+            "tglMenikah": dataForm.tglMenikahKeluarga ? moment(dataForm.tglMenikahKeluarga, dateFormat) : null,
+            "tglWafat": dataForm.tglMeninggalKeluarga ? moment(dataForm.tglMeninggalKeluarga, dateFormat) : null,
+            "tglUsia25": dataForm.tglLahirKeluarga && hubunganKeluarga && hubunganKeluarga.dataProperties.statusKategoriPenerima === "ANAK" ? moment(dataForm.tglLahirKeluarga, dateFormat).add(25, 'years') : null,
+            "namaKategoriPenerima": hubunganKeluarga && hubunganKeluarga.dataProperties ? hubunganKeluarga.dataProperties.namaKategoriPenerima : null,
+            "statusKawin": statusKawin && statusKawin.dataProperties ? statusKawin.dataProperties.id: statusKawin.id,
+            "active":true,
+            "kategoriPenerima": {
+                    "id": $('#hubunganKeluarga').val(),
+                    "namaKategoriPenerima": hubunganKeluarga && hubunganKeluarga.dataProperties ? hubunganKeluarga.dataProperties.namaKategoriPenerima : null,
+                },
+            "statusKawin": {
+                    "id": $('#statusKawinKeluarga').val(),
+                    "statusKawin": statusKawin.text
+                },
+            "nip": $("#nip").val()
+        };
+
+        console.log("Data Keluarga Form", dataKeluargaForm);
+
+        if (!dataForm.id) {
+            dataKeluargaForm.id = "tmp_" + fakeId();
+            $('#tblKeluargaPensiun' + additionalTableId).DataTable().row.add(dataKeluargaForm);
+        } else {
+            dataKeluargaForm.id = dataForm.id;
+            editableRow.data(dataKeluargaForm);
+        }
+
+        $('#tblKeluargaPensiun' + additionalTableId).DataTable().draw();
+
+        /*keluargaPesertaTable.rows().data().each((d) => {
+            let tglLahir = d.tglLahir && moment(d.tglLahir).format(dateFormat);
+            let tglMenikah = d.tglMenikah && moment(d.tglMenikah).format(dateFormat);
+            let tglCerai = d.tglCerai && moment(d.tglCerai).format(dateFormat);
+            let tglWafat = d.tglWafat && moment(d.tglWafat).format(dateFormat);
+            let tglUsia25 = d.tglUsia25 && moment(d.tglUsia25).format(dateFormat);
+
+            jsonData.dataKeluarga.push({
+                id: d.id,
+                namaKeluarga: d.namaKeluarga,
+                jenisKelamin: d.jenisKelamin,
+                kategoriPenerima: d.kategoriPenerima.id,
+                tglLahir: tglLahir,
+                tglMenikah: tglMenikah,
+                tglCerai: tglCerai,
+                tglWafat: tglWafat,
+                tglUsia25: tglUsia25,
+                statusKawin: d.statusKawin.id
+            });
+        });*/
+        DkppGetKeluargaPeserta = function () {
+            let rows = $('#tblKeluargaPensiun' + additionalTableId).DataTable().rows().data();
+            let jsonData = {dataKeluarga:[]};
+            rows.each((d) => {
+                let tglLahir = d.tglLahir && moment(d.tglLahir).format(dateFormat);
+                let tglMenikah = d.tglMenikah && moment(d.tglMenikah).format(dateFormat);
+                let tglCerai = d.tglCerai && moment(d.tglCerai).format(dateFormat);
+                let tglWafat = d.tglWafat && moment(d.tglWafat).format(dateFormat);
+                let tglUsia25 = d.tglUsia25 && moment(d.tglUsia25).format(dateFormat);
+
+                jsonData.dataKeluarga.push({
+                    id: d.id,
+                    namaKeluarga: d.namaKeluarga,
+                    jenisKelamin: d.jenisKelamin,
+                    idKategoriPenerima: d.kategoriPenerima.id,
+                    tglLahir: tglLahir,
+                    tglMenikah: tglMenikah,
+                    tglCerai: tglCerai,
+                    tglWafat: tglWafat,
+                    tglUsia25: tglUsia25,
+                    statusKawin: d.statusKawin.id
+                });
+            });
+            return jsonData.dataKeluarga;
+        };
+        let arrDataKeluarga = DkppGetKeluargaPeserta();
+        let params = {
+            _csrf: "{{_csrf.token}}",
+            nip: $('#nip').val(),
+            dataKeluarga: arrDataKeluarga,
+        };
+        //console.log("params suskel",params.dataKeluarga);
+
+        $.ajax({
+            url: '{{contextPath}}{{mutasi_path_api}}/checksuskel',
+            type:'json',
+            method: 'POST',
+            data: params,
+            success: function (data) {
+                $('#nama-suskel-baru' + additionalTableId).val(data.namaSuskel);
+                $('#id-suskel-baru' + additionalTableId).val(data.id);
+                console.log("data hasil checksuskel:",data);
+            }
+        });
+        //$("#myModal2").modal("hide");
+    };
+
+    const displayEditKeluarga = (row, mode="create") => {
+
+        let tableSource = "tblKeluargaPensiun";
+        if(mode == "update") {
+            tableSource += "-update";
+            DkppGlobal.tableMode = "update";
+        } else {
+            DkppGlobal.tableMode = "create";
+        }
+        const keluargaPeserta = $('#' + tableSource).DataTable().row(row).data();
+        console.log("isi grid keluarga peserta",keluargaPeserta)
+        $("#id-form-dt-kl").val(keluargaPeserta.id);
+        $("#namaLengkapKeluarga").val(keluargaPeserta.namaKeluarga);
+        $("#jenisKelaminKeluarga").select2('val', keluargaPeserta.jenisKelamin);
+        $("#tglCeraiKeluarga").val(keluargaPeserta.tglCerai && moment(keluargaPeserta.tglCerai).format(dateFormat));
+        $("#tglLahirKeluarga").val(keluargaPeserta.tglLahir && moment(keluargaPeserta.tglLahir).format(dateFormat));
+        $("#tglMenikahKeluarga").val(keluargaPeserta.tglMenikah && moment(keluargaPeserta.tglMenikah).format(dateFormat));
+        $("#tglMeninggalKeluarga").val(keluargaPeserta.tglWafat && moment(keluargaPeserta.tglWafat).format(dateFormat));
+        setSelectValue($("#hubunganKeluarga"), keluargaPeserta.kategoriPenerima, 'id', kategoriPenerimaSelectTemplate);
+        setSelectValue($("#statusKawinKeluarga"), keluargaPeserta.statusKawin, 'id', statusKawinSelectTemplate);
+        $("#tglUsia25Keluarga").val(keluargaPeserta.tglUsia25 && moment(keluargaPeserta.tglUsia25).format(dateFormat));
+        $("#idKategoriPenerimaKeluarga").val(keluargaPeserta.idKategoriPenerima);
+        $(".keluargaPeserta-modal").modal("show");
+    };
+
+
+    function ShowModal(){
+        $('#tblKeluargaPensiun').DataTable().clear().draw();
+        $('#hideButton').hide();
+        $('#myModal').modal('show');
+    }
+
+    $('#id-kategori-catatan').select2({
+        ajax: {
+            url: '{{contextPath}}{{listKategoriCatatan}}',
+            dataType: 'json',
+            method: 'GET',
+            data: function(params){
+                return {
+                    searchParam: params.term,
+                    valueColumn: 'id',
+                    textColumn: "${id}-${namaKategoriCatatan}",
+                    searchColumn: [
+                        'namaKategoriCatatan'
+                    ],
+                    referenceValue:[
+                        {
+                            column: "id",
+                            table: "kategoriMutasi",
+                            value: 26
+                        }
+                    ],
+                    includeObject: true
+                }
+            },
+            // dropdownParent: $(".mutasi-nama-penerima"),
+            delay: 250,
+            processResults: function(data){
+                return {
+                    results: data
+                };
+            }
+        },
+        width: "100%",
+        placeholder: 'Pilih Kategori Catatan'
+    });
+    $('#id-kategori-catatan').on('change',(e)=>{
+        if ($(e.target).select2('data')){
+            const data = $(e.target).select2('data')[0];
+            if ($('#id-kategori-catatan').val() != '' && $('#id-kategori-catatan').val() != null) {
+                $('#nama-kategori-catatan-input').val(data.dataProperties.namaKategoriCatatan)
+            }
+        }
+    });
+
+
+    $('#addPeserta').click(() => {
+        $(".keluargaPeserta-modal").modal("show");
+        //keluargaPesertaForm.resetForm();
+        $("#id").val("");
+        $("#namaLengkapKeluarga").val("");
+        $("#jenisKelaminKeluarga").val(null).trigger('change');
+        $("#tglCeraiKeluarga").val("");
+        $("#tglLahirKeluarga").val("");
+        $("#tglMenikahKeluarga").val("");
+        $("#tglMeninggalKeluarga").val("");
+        $("#hubunganKeluarga").val(null).trigger('change');
+        $("#statusKawinKeluarga").val(null).trigger('change');
+
+
+    });
+
+    function displayEditModal(id) {
+        const mutasiSusKel = mutasiTable.rows().data().filter((data) => {return data.id == id})[0];
+        const editModalForm = $("form#updateForm");
+        const editModal = $('.edit-modal');
+
+        if(mutasiSusKel.statusValidasi.id === 2 || mutasiSusKel.statusValidasi.id === 4){
+            window.DkppGlobal.mutasiIsValidate = true;
+            $('#btn-save-update').hide();
+            $('#id-kategori-catatan-edit').attr('disabled','disabled');
+            $('#keterangan-update').attr('disabled','disabled');
+        } else {
+            window.DkppGlobal.mutasiIsValidate = false;
+            $('#btn-save-update').show();
+            console.log('mutasisuskel : ',mutasiSusKel);
+            $('#id-kategori-catatan-edit').removeAttr('disabled','disabled');
+            $('#keterangan-update').removeAttr('disabled','disabled');
+        }
+
+        editModal.modal('show');
+        $('#id-update').val(mutasiSusKel.id);
+        $('#periode-mutasi-update').val(mutasiSusKel.periodeMutasi);
+        $('#tgl-mutasi-update').val(mutasiSusKel.tglMutasi && moment(mutasiSusKel.tglMutasi).format(dateFormat));
+        $('#nip').val(mutasiSusKel.nip);
+        $("#nip-update").val(mutasiSusKel.nip+'-'+mutasiSusKel.namaPeserta);
+        $("#nip-update-value").val(mutasiSusKel.nip);
+        $("#nama-peserta-update").val(mutasiSusKel.namaPeserta);
+        $("#id-penerima-update").val(mutasiSusKel.penerimaMP);
+        $("#show-penerimamp-update").val(mutasiSusKel.penerimaMP+'-'+mutasiSusKel.namaPenerimaMP);
+        $("#nama-penerima-mp-update").val(mutasiSusKel.namaPenerimaMP);
+        $('#id-kategori-penerima-update').val(mutasiSusKel.kategoriPenerima.id);
+        $('#nama-kategori-penerima-mp-update').val(mutasiSusKel.kategoriPenerima.namaKategoriPenerima);
+        $("#id-kategori-catatan-update").val(mutasiSusKel.kategoryCatatan != undefined ? mutasiSusKel.kategoryCatatan.id : null);
+        $('#nama-validasi').val(mutasiSusKel.statusValidasi.namaValidasi);
+        $('#idValidasi' + mutasiSusKel.statusValidasi.id).attr('checked', 'checked');
+        $('#keterangan-update').val(mutasiSusKel.keterangan);
+        $('#id-suskel-lama-update').val(mutasiSusKel.suskel.id);
+        $('#nama-suskel-lama-update').val(mutasiSusKel.namaSuskel);
+        $('#id-suskel-baru-update').val((mutasiSusKel.suskelBaru != undefined) ? mutasiSusKel.suskelBaru.id : '');
+        $('#nama-suskel-baru-update').val(mutasiSusKel.namaSuskelBaru);
+        $('#nama-penerimamp-update').val(mutasiSusKel.namaPenerimaMP);
+        switch(mutasiSusKel.statusValidasi.id){
+            case 1:
+                $('#idValidasi1').prop('checked', true);
+                $('#label-status-validasi').html(`<span class="tag tag-pill tag-info pull-right">Belum Validasi</span>`);
+                break;
+            case 2:
+                $('#idValidasi2').prop('checked', true);
+                $('#label-status-validasi').html(`<span class="tag tag-pill tag-success pull-right">Sudah Validasi</span>`);
+                $('#btn-save-update').hide();
+                break;
+            case 3:
+                $('#id-validasi-2').prop('checked', true);
+                $('#label-status-validasi').html(`<span class="tag tag-pill tag-warning pull-right">Batal Koreksi</span>`);
+                break;
+            case 7:
+                $('#id-validasi-7').prop('checked', true);
+                $('#label-status-validasi').html(`<span class="tag tag-pill tag-warning pull-right">Batal Data</span>`);
+                break;
+        }
+
+        $('#id-validasi-1').unbind().on('change', function(){
+            $('#nama-validasi').val('Belum Validasi');
+        });
+
+        $('#id-validasi-2').unbind().on('change', function(){
+            $('#nama-validasi').val('Sudah Validasi');
+        });
+
+        $('#id-validasi-3').unbind().on('change', function(){
+            $('#nama-validasi').val('Batal Koreksi');
+        });
+
+        $('#id-validasi-7').unbind().on('change', function(){
+            $('#nama-validasi').val('Batal Validasi');
+        });
+
+        $('[name="idValidasi"]').attr('disabled', 'disabled');
+        if(window.DkppGlobal.isPejabat == true && mutasiSusKel.statusValidasi.id !=2) {
+            $('#idValidasi1').removeAttr('disabled');
+            $('#idValidasi2').removeAttr('disabled');
+            $('#idValidasi3').removeAttr('disabled');
+            $('#idValidasi7').removeAttr('disabled');
+        } else if (window.DkppGlobal.isStaff == true && mutasiSusKel.statusValidasi.id !=2) {
+            $('#idValidasi1').removeAttr('disabled');
+            $('#idValidasi3').removeAttr('disabled');
+        }
+
+        $.ajax({
+            url:  '{{contextPath}}{{listKategoriCatatan}}',
+            method: 'GET',
+            data: {
+                valueColumn: 'id',
+                textColumn: "${id} - ${namaKategoriCatatan}",
+                searchColumn: [
+                    'namaKategoriCatatan'
+                ],
+                referenceValue: [
+                    {
+                        column: "id",
+                        table: "kategoriMutasi",
+                        value: 26
+                    }
+                ],
+                includeObject: true
+            },
+            success: function(data){
+
+                let select2KatCatatanEdit = $('#id-kategori-catatan-edit').select2(
+                    {
+                        data: data,
+                        width: "100%",
+                        placeholder: 'Pilih Kategori Catatan'
+                    }
+                );
+
+                if(mutasiSusKel.kategoryCatatan != undefined)
+                    select2KatCatatanEdit.val(mutasiSusKel.kategoryCatatan.id).trigger('change');
+
+            }
+        });
+
+        $('#id-kategori-catatan-edit').on('change', (e) => {
+            if ($(e.target).select2('data')){
+                const data = $(e.target).select2('data')[0];
+                $("#nama-kategori-catatan-edit").val(data.dataProperties.namaKategoriCatatan);
+            }
+        });
+
+        $.ajax({
+            url: '{{contextPath}}/api/setupparameter/get_periode',
+            dataType: 'json',
+            method: 'GET',
+            success: (data)=>{
+                $('#user-stamp-update').val(data.putModeUserStamp);
+                $('#comp-name-update').val(data.compName);
+                $('#user-name-update').val(data.userName);
+            }
+        });
+
+        dafamilyDataTableUpdate = $('#tblKeluargaPensiun-update').DataTable( {
+            destroy: true,
+            'ajax': {
+                url: '{{contextPath}}/api/mutasi-keluarga-pensiun/' + $('#id-update').val()+'/get',
+                data: function(data){
+
+                    return {data: data}
+                }
+                // ,success: function (data) {
+                //     console.log("data grid dalam modal: ",data)
+                // }
+            },
+            'columns': [
+                {data: 'id'},
+                {data: 'namaKeluarga'},
+                {data: 'jenisKelamin'},
+                {data: 'kategoriPenerima.namaKategoriPenerima'},
+                {data: 'tglLahir'},
+                {data: 'tglMenikah'},
+                {data: 'tglCerai'},
+                {data: 'tglWafat'},
+                {data: 'tglUsia25'},
+                {data: 'id'}
+            ],
+            'columnDefs': [
+                {
+                    "targets": 0,
+                    "render": function(data, type, row, meta) {
+                        return meta.row + 1;
+                    }
+                },
+                {
+                    "targets": 2,
+                    "render": function(data, type, row, meta){
+                        let out = {'W': 'Wanita', 'P': 'Pria'};
+
+                        return (row.jenisKelamin != null)?out[row.jenisKelamin]:'-';
+                    }
+                },
+                {
+                    "targets": 4,
+                    render: function(data, type, row, meta){
+                        return row.tglLahir != null ? fillDateField(row.tglLahir) : '-';
+                    }
+                },
+                {
+                    "targets": 5,
+                    render: function(data, type, row, meta){
+                        return row.tglMenikah != null ? fillDateField(row.tglMenikah) : '-';
+                    }
+                },
+                {
+                    "targets": 6,
+                    render: function(data, type, row, meta){
+                        return row.tglCerai != null ? fillDateField(row.tglCerai) : '-';
+                    }
+                },
+                {
+                    "targets": 7,
+                    render: function(data, type, row, meta){
+                        return row.tglWafat != null ? fillDateField(row.tglWafat) : '-';
+                    }
+                },
+                {
+                    "targets": 8,
+                    render: function(data, type, row, meta){
+                        return row.tglUsia25 != null ? fillDateField(row.tglUsia25) : '-';
+                    }
+                },
+                {
+                    "targets": -1,
+                    "data": "id",
+                    "className": "action-box",
+                    "render": function(data, type, row, meta){
+                        console.log(row);
+                        let attrDisabled = window.DkppGlobal.mutasiIsValidate == true ? "disabled" : "";
+                        console.log({"Nilai window.DkppGlobal.mutasiIsValidate": window.DkppGlobal.mutasiIsValidate});
+                        let htmlTag = ``;// `<a class='btn btn-info btn-sm btn-icon btn-edit' onclick='displayEditKeluarga(${meta.row}, "update")'><i class='material-icons'>edit</i> Edit</a><a class='btn btn-danger btn-sm btn-icon btn-edit' onclick='deleteKeluargaUpdate(${meta.row})'><i class='material-icons'>delete</i> Hapus</a>`;
+                        if(window.DkppGlobal.mutasiIsValidate == true){
+                            htmlTag = `<a class='btn btn-info btn-sm btn-icon btn-edit' onclick='javascript:void(0)'><i class='material-icons'>edit</i> Edit</a><a class='btn btn-danger btn-sm btn-icon btn-edit' disabled="disabled" onclick='onclick='javascript:void(0)'><i class='material-icons'>delete</i> Hapus</a>`;
+                        }else {
+                            htmlTag = `<a class='btn btn-info btn-sm btn-icon btn-edit' onclick='displayEditKeluarga(${meta.row}, "update")'><i class='material-icons'>edit</i> Edit</a><a class='btn btn-danger btn-sm btn-icon btn-edit' onclick='deleteKeluargaUpdate(${meta.row})'><i class='material-icons'>delete</i> Hapus</a>`;
+                        }
+                        return htmlTag;
+                    }
+                }
+            ]
+        });
+
+    }
+    const statusKeluargaCheck = (value, element, params, isMessage) => {
+        let isValid = true
+        let message = "";
+        if ([2, 20].includes(parseInt(value))) {
+            /*if ($('#jenisKelamin').val() === "W") {
+                message = "Suami tidak boleh lebih dari 1";
+                isValid = keluargaPesertaTable.rows().data().filter((d) => {
+                    return [2, 20].includes(d.kategoriPenerima.id) && $("#id").val() !== d.id + ""
+                }).length === 0;
+            }*/
+
+            if ($('#jenisKelamin').val() === $("#jenisKelaminKeluarga").val()) {
+                message = `Jenis kelamin peserta dan ${$('#jenisKelamin').val() === "W" ? "Suami" : "Istri"} tidak boleh sama`;
+                isValid = false
+            }
+        }
+        if (isMessage) {
+            return message;
+        }
+        return isValid;
+    };
+    jQuery.validator.addMethod("statusKawin", function(value, element, params) {
+        return this.optional(element) || statusKeluargaCheck(value, element, params, false);
+    }, function(error, element) {
+        return error && statusKeluargaCheck($(element).val(), element, true, true);
+    });
+
+    const statusKeluargaCheckUpdate = (value, element, params, isMessage) => {
+        let isValid = true
+        let message = "";
+        if ([2, 20].includes(parseInt(value))) {
+            /*if ($('#jenisKelaminUpdate').val() === "W") {
+                message = "Suami tidak boleh lebih dari 1";
+                isValid = keluargaPesertaTable.rows().data().filter((d) => {
+                    return [2, 20].includes(d.kategoriPenerima.id) && $("#id").val() !== d.id + ""
+                }).length === 0;
+            }*/
+
+            if ($('#jenisKelaminUpdate').val() === $("#jenisKelaminKeluargaUpdate").val()) {
+                message = `Jenis kelamin peserta dan ${$('#jenisKelamin').val() === "W" ? "Suami" : "Istri"} tidak boleh sama`;
+                isValid = false
+            }
+        }
+        if (isMessage) {
+            return message;
+        }
+        return isValid;
+    };
+    jQuery.validator.addMethod("statusKawinUpdate", function(value, element, params) {
+        return this.optional(element) || statusKeluargaCheck(value, element, params, false);
+    }, function(error, element) {
+        return error && statusKeluargaCheck($(element).val(), element, true, true);
+    });
+
+    const selectGenderKeluarga = $('#jenisKelaminKeluarga');
+    selectGenderKeluarga.select2({placeholder: "Pilih Jenis Kelamin", width: "100%"});
+    selectGenderKeluarga.on('change', (e) => {
+        statusKawinKeluargaSelect.val(null).trigger("change");
+    });
+
+    const selectGenderKeluargaUpdate = $('#jenisKelaminKeluargaUpdate');
+    selectGenderKeluargaUpdate.select2({placeholder: "Pilih Jenis Kelamin", width: "100%"});
+    selectGenderKeluargaUpdate.on('change', (e) => {
+        statusKawinKeluargaSelectUpdate.val(null).trigger("change");
+    });
+
+    const statusKawinKeluargaSelect = $('#statusKawinKeluarga').select2({
+        ajax: {
+            url: '{{contextPath}}{{statusKawinPathApi}}/dropdown',
+            dataType: 'json',
+            delay: 250,
+            cache: true,
+            data: function (params) {
+                return {
+                    searchParam: params.term, // search term
+                    valueColumn: "id",
+                    textColumn: statusKawinSelectTemplate,
+                    searchColumn: [
+                        "statusKawin"
+                    ],
+                    referenceValue: [
+                        {
+                            column: "statusKawin",
+                            value: `%${$("#jenisKelaminKeluarga").select2('data')[0].text}%`
+                        }
+                    ],
+                    includeObject: true
+                };
+            },
+            processResults: function(data){
+                return {
+                    results: data
+                };
+            }
+        },
+        width: "100%",
+        placeholder: 'Pilih Status Kawin'
+    });
+
+    const statusKawinKeluargaSelectUpdate = $('#statusKawinKeluargaUpdate').select2({
+        ajax: {
+            url: '{{contextPath}}{{statusKawinPathApi}}/dropdown',
+            dataType: 'json',
+            delay: 250,
+            cache: true,
+            data: function (params) {
+                return {
+                    searchParam: params.term, // search term
+                    valueColumn: "id",
+                    textColumn: statusKawinSelectTemplate,
+                    searchColumn: [
+                        "statusKawin"
+                    ],
+                    referenceValue: [
+                        {
+                            column: "statusKawin",
+                            value: `%${$("#jenisKelaminKeluargaUpdate").select2('data')[0].text}%`
+                        }
+                    ],
+                    includeObject: true
+                };
+            },
+            processResults: function(data){
+                return {
+                    results: data
+                };
+            }
+        },
+        width: "100%",
+        placeholder: 'Pilih Status Kawin'
+    });
+
+    //setSelectValue(statusKawinSelect, {{{statusKawinDefaultSelect}}}, 'id', statusKawinSelectTemplate);
+    const kategoriPenerimaSelect = $('#hubunganKeluarga').select2({
+        ajax: {
+            url: '{{contextPath}}{{kategoriPenerimaPathApi}}/dropdown',
+            dataType: 'json',
+            delay: 250,
+            cache: true,
+            data: function (params) {
+                return {
+                    searchParam: params.term, // search term
+                    valueColumn: "id",
+                    textColumn: kategoriPenerimaSelectTemplate,
+                    searchColumn: [
+                        "namaKategoriPenerima"
+                    ],
+                    includeObject: true
+
+                };
+            },
+            processResults: function(data){
+                console.log(data);
+                return {
+
+                    results: data
+                };
+            }
+        },
+        width: "100%",
+        placeholder: 'Pilih Kategori Penerima'
+    });
+    kategoriPenerimaSelect.on('change', (e) => {
+        //keluargaPesertaForm.valid();
+    });
+    kategoriPenerimaSelect.on('select2:select', (e, e2) => {
+        $(e.currentTarget).select2('data')[0].dataProperties = e.params.data.dataProperties || e.params.data
+    });
+
+    //setSelectValue(statusKawinSelect, {{{statusKawinDefaultSelect}}}, 'id', statusKawinSelectTemplate);
+    const kategoriPenerimaSelectUpdate = $('#hubunganKeluargaUpdate').select2({
+        ajax: {
+            url: '{{contextPath}}{{kategoriPenerimaPathApi}}/dropdown',
+            dataType: 'json',
+            delay: 250,
+            cache: true,
+            data: function (params) {
+                return {
+                    searchParam: params.term, // search term
+                    valueColumn: "id",
+                    textColumn: kategoriPenerimaSelectTemplate,
+                    searchColumn: [
+                        "namaKategoriPenerima"
+                    ],
+                    includeObject: true
+
+                };
+            },
+            processResults: function(data){
+                console.log(data);
+                return {
+
+                    results: data
+                };
+            }
+        },
+        width: "100%",
+        placeholder: 'Pilih Kategori Penerima'
+    });
+    kategoriPenerimaSelectUpdate.on('change', (e) => {
+        //keluargaPesertaForm.valid();
+    });
+    kategoriPenerimaSelectUpdate.on('select2:select', (e, e2) => {
+        $(e.currentTarget).select2('data')[0].dataProperties = e.params.data.dataProperties || e.params.data
+    });
+
+    function saveForm() {
+        let params = {
+            _csrf: "{{_csrf.token}}",
+            compName:$('#comp-name-insert').val(),
+            userName:$('#user-name-insert').val(),
+            idMutasiPensiun:'',
+            periodeMutasi:$('#periode-mutasi-insert').val(),
+            tglMutasi:toDb($('#tgl-mutasi-insert').val()),
+            nip:$('#nip').val(),
+            namaPeserta:$('#nama-peserta-insert').val(),
+            idPenerimaMp:$('#id-penerima').val(),
+            namaPenerimaMp:$('#nama-penerimamp').val(),
+            idKategoriPenerimaMp:$('#id-kategori-penerima').val(),
+            namaKategoriPenerimaMp:$('#nama-kategori-penerima-mp-insert').val(),
+            idSuskel:$('#id-suksel-lama').val(),
+            namaSuskel:$('#nama-suksel-lama').val(),
+            idSuskelBaru:$('#id-suskel-baru').val(),
+            namaSuskelBaru:$('#nama-suskel-baru').val(),
+            idKategoriCatatan:$('#id-kategori-catatan').val(),
+            namaKategoriCatatan:$('#nama-kategori-catatan-input').val(),
+            keterangan:$('#keterangan').val(),
+            idValidasi:1,
+            namaValidasi:'Belum Validasi'
+        };
+        console.log('suskel param : ',params);
+        $.ajax({
+            url:'{{contextPath}}/api/mutasi-susunan-keluarga/spmutasisuskel',
+            method:'POST',
+            data:params,
+            success: function (data) {
+                let idMutasi = data.data.idMutasiPensiun;
+                console.log(idMutasi);
+                $.ajax({
+                    url:'{{contextPath}}/api/mutasi-keluarga-pensiun/delete/'+idMutasi,
+                    method:'POST',
+                    data:{
+                        _csrf: "{{_csrf.token}}",
+                        idMutasi:idMutasi,
+                    },
+                    success:function (data) {
+                        console.log('berhasil');
+                        let dataKeluarga = $('#tblKeluargaPensiun').DataTable().data();
+                        console.log('ini data keluarga : ',dataKeluarga);
+                        console.log('id mutasi pensiun : ',idMutasi);
+                        dataKeluarga.each((e)=>{
+                            let idMutasiPensiun = idMutasi;
+                            let tglLahir = e.tglLahir && moment(e.tglLahir).format(dateFormat);
+                            let tglMenikah = e.tglMenikah && moment(e.tglMenikah).format(dateFormat);
+                            let tglCerai = e.tglCerai && moment(e.tglCerai).format(dateFormat);
+                            let tglWafat = e.tglWafat && moment(e.tglWafat).format(dateFormat);
+                            let tglUsia25 = e.tglUsia25 && moment(e.tglUsia25).format(dateFormat);
+                            console.log('tglLahir: ',tglLahir);
+                            console.log('tglMenikah: ',tglMenikah);
+                            console.log('tglCerai: ',tglCerai);
+                            console.log('tglWafat: ',tglWafat);
+                            console.log('tglUsia25: ',tglUsia25);
+                            let param = {
+                                _csrf: "{{_csrf.token}}",
+                                compName:$('#comp-name-insert').val(),
+                                userName:$('#user-name-insert').val(),
+                                idMutasiPensiun:idMutasiPensiun,
+                                idKeluarga:e.id,
+                                nip:e.nip,
+                                namaKeluarga:e.namaKeluarga,
+                                idKategoriPenerima:e.kategoriPenerima == undefined? null:e.kategoriPenerima.id,
+                                namaKategoriPenerima:e.namaKategoriPenerima,
+                                jenisKelamin:e.jenisKelamin,
+                                tempatLahir:e.tempatLahir,
+                                tglLahir:tglLahir,
+                                tglMenikah:tglMenikah,
+                                tglCerai:tglCerai,
+                                tglUsia25:tglUsia25,
+                                tglWafat:tglWafat,
+                                tempatMenikah:e.tempatMenikah,
+                                tempatWafat:e.tempatWafat,
+                                isPenerimaMp:e.isPenerimaMp,
+                                idStKawinPenerimaMp:e.statusKawin == undefined? null:e.statusKawin.id,
+                                namaStKawinPenerimaMp:e.namaStatusKawin,
+                                action:"u",
+                            };
+                            console.log('data keluarga param : ',param);
+                            $.ajax({
+                                url:'{{contextPath}}/api/mutasi-susunan-keluarga/spmutasisuskeldatakeluarga',
+                                method:"POST",
+                                data:param,
+                                success: function (data) {
+                                    $('#myModal').modal('hide');
+                                    if (data.status = "success"){
+                                        swal({title:"Berhasil",text:data.message, icon:"success", button:"OK"});
+                                    }
+                                    mutasiTable.ajax.reload();
+                                },
+                                error:function (data) {
+                                    if (data.message = undefined)
+                                        swal({title: "Gagal", text: data.message, icon: "error", button: "OK"});
+                                    else
+                                        swal({title: "Gagal", text: "Terjadi kegagalan.", icon: "error", button: "OK"});
+                                }
+                            })
+                        });
+                    }
+
+                });
+
+
+            },
+            error:function (data) {
+
+            }
+        })
+
+    }
+
+    function saveUpdateForm() {
+        let params = {
+            _csrf: "{{_csrf.token}}",
+            compName:$('#comp-name-update').val(),
+            userName:$('#user-name-update').val(),
+            idMutasiPensiun:$('#id-update').val(),
+            periodeMutasi:$('#periode-mutasi-update').val(),
+            tglMutasi:$('#tgl-mutasi-update').val(),
+            nip:$('#nip').val(),
+            namaPeserta:$('#nama-peserta-update').val(),
+            idPenerimaMp:$('#id-penerima-update').val(),
+            namaPenerimaMp:$('#nama-penerimamp-update').val(),
+            idKategoriPenerimaMp:$('#id-kategori-penerima-update').val(),
+            namaKategoriPenerimaMp:$('#nama-kategori-penerima-mp-update').val(),
+            idSuskel:$('#id-suskel-lama-update').val(),
+            namaSuskel:$('#nama-suskel-lama-update').val(),
+            idSuskelBaru:$('#id-suskel-baru-update').val(),
+            namaSuskelBaru:$('#nama-suskel-baru-update').val(),
+            idKategoriCatatan:$('#id-kategori-catatan-edit').val(),
+            namaKategoriCatatan:$('#nama-kategori-catatan-edit').val(),
+            keterangan:$('#keterangan-update').val(),
+            idValidasi:$( "[name='idValidasi']:checked" ).val() == undefined ? "1" : $( "[name='idValidasi']:checked" ).val(),
+            namaValidasi:$( "[name='idValidasi']:checked" ).data('name') == undefined ? "Belum Validasi" : $( "[name='idValidasi']:checked" ).data('name')
+
+        };
+        console.log('suskel param : ',params);
+        $.ajax({
+            url:'{{contextPath}}/api/mutasi-susunan-keluarga/spmutasisuskel',
+            method:'POST',
+            data:params,
+            success: function (data) {
+                let idMutasi = data.data.idMutasiPensiun;
+                console.log(idMutasi);
+                $.ajax({
+                    url:'{{contextPath}}/api/mutasi-keluarga-pensiun/delete/'+idMutasi,
+                    method:'POST',
+                    data:{
+                        _csrf: "{{_csrf.token}}",
+                        idMutasi:idMutasi,
+                    },
+                    success:function (data) {
+                        console.log('berhasil');
+                        let dataKeluarga = $('#tblKeluargaPensiun-update').DataTable().data();
+                        console.log('ini data keluarga : ',dataKeluarga);
+                        console.log('id mutasi pensiun : ',idMutasi);
+                        dataKeluarga.each((e)=>{
+                            let idMutasiPensiun = idMutasi;
+                            let tglLahir = e.tglLahir && moment(e.tglLahir).format(dateFormat);
+                            let tglMenikah = e.tglMenikah && moment(e.tglMenikah).format(dateFormat);
+                            let tglCerai = e.tglCerai && moment(e.tglCerai).format(dateFormat);
+                            let tglWafat = e.tglWafat && moment(e.tglWafat).format(dateFormat);
+                            let tglUsia25 = e.tglUsia25 && moment(e.tglUsia25).format(dateFormat);
+                            console.log('tglLahir: ',tglLahir);
+                            console.log('tglMenikah: ',tglMenikah);
+                            console.log('tglCerai: ',tglCerai);
+                            console.log('tglWafat: ',tglWafat);
+                            console.log('tglUsia25: ',tglUsia25);
+                            let param = {
+                                _csrf: "{{_csrf.token}}",
+                                compName:$('#comp-name-insert').val(),
+                                userName:$('#user-name-insert').val(),
+                                idMutasiPensiun:idMutasiPensiun,
+                                idKeluarga:e.id,
+                                nip:e.nip,
+                                namaKeluarga:e.namaKeluarga,
+                                idKategoriPenerima:e.kategoriPenerima == undefined? null:e.kategoriPenerima.id,
+                                namaKategoriPenerima:e.namaKategoriPenerima,
+                                jenisKelamin:e.jenisKelamin,
+                                tempatLahir:e.tempatLahir,
+                                tglLahir:tglLahir,
+                                tglMenikah:tglMenikah,
+                                tglCerai:tglCerai,
+                                tglUsia25:tglUsia25,
+                                tglWafat:tglWafat,
+                                tempatMenikah:e.tempatMenikah,
+                                tempatWafat:e.tempatWafat,
+                                isPenerimaMp:e.isPenerimaMp,
+                                idStKawinPenerimaMp:e.statusKawin == undefined? null:e.statusKawin.id,
+                                namaStKawinPenerimaMp:e.namaStatusKawin,
+                                action:"u",
+                            };
+                            console.log('data keluarga param : ',param);
+                            $.ajax({
+                                url:'{{contextPath}}/api/mutasi-susunan-keluarga/spmutasisuskeldatakeluarga',
+                                method:"POST",
+                                data:param,
+                                success: function (data) {
+                                    $('#id-edit-modal').modal('hide');
+                                    if (data.status = "success"){
+                                        swal({title:"Berhasil",text:data.message, icon:"success", button:"OK"});
+                                    }
+                                    mutasiTable.ajax.reload();
+                                },
+                                error:function (data) {
+                                    if (data.message = undefined)
+                                        swal({title: "Gagal", text: data.message, icon: "error", button: "OK"});
+                                    else
+                                        swal({title: "Gagal", text: "Terjadi kegagalan.", icon: "error", button: "OK"});
+                                }
+                            })
+                        });
+                    }
+
+                });
+
+
+            },
+            error:function (data) {
+
+            }
+        })
+
+    }
+
+    const deleteKeluargaUpdate = (row) => {
+        const dataKeluargaupdate = Array.from($('#tblKeluargaPensiun-update').DataTable().data());
+        console.log('ini data keluarga',dataKeluargaupdate);
+        // console.log('data selected : ', dataKeluarga.row(this).data);
+        console.log('ini tabel data keluarga', $('#tblKeluargaPensiun-update').DataTable());
+        dataKeluargaupdate.splice(row, 1);
+        // dataKeluargaTemp[row].action="D";
+        console.log("dataKeluargaTemp",dataKeluargaTemp);
+        $('#tblKeluargaPensiun-update').DataTable().clear();
+        $('#tblKeluargaPensiun-update').DataTable().draw();
+        $('#tblKeluargaPensiun-update').DataTable().rows.add(dataKeluargaupdate);
+        $('#tblKeluargaPensiun-update').DataTable().draw();
+
+        DkppGetKeluargaPeserta = function () {
+            let rows = $('#tblKeluargaPensiun-update').DataTable().rows().data();
+            let jsonData = {dataKeluarga:[]};
+            rows.each((d) => {
+                let tglLahir = d.tglLahir && moment(d.tglLahir).format(dateFormat);
+                let tglMenikah = d.tglMenikah && moment(d.tglMenikah).format(dateFormat);
+                let tglCerai = d.tglCerai && moment(d.tglCerai).format(dateFormat);
+                let tglWafat = d.tglWafat && moment(d.tglWafat).format(dateFormat);
+                let tglUsia25 = d.tglUsia25 && moment(d.tglUsia25).format(dateFormat);
+                console.log('tglLahir: ',tglLahir);
+                console.log('tglMenikah: ',tglMenikah);
+                console.log('tglCerai: ',tglCerai);
+                console.log('tglWafat: ',tglWafat);
+                console.log('tglUsia25: ',tglUsia25);
+                jsonData.dataKeluarga.push({
+                    id: d.id,
+                    namaKeluarga: d.namaKeluarga,
+                    jenisKelamin: d.jenisKelamin,
+                    idKategoriPenerima: d.kategoriPenerima.id,
+                    tglLahir: tglLahir,
+                    tglMenikah: tglMenikah,
+                    tglCerai: tglCerai,
+                    tglWafat: tglWafat,
+                    tglUsia25: tglUsia25,
+                    statusKawin: d.statusKawin.id
+                });
+            });
+            return jsonData.dataKeluarga;
+        };
+        let arrDataKeluarga = DkppGetKeluargaPeserta();
+        let paramsUpdate = {
+            _csrf: "{{_csrf.token}}",
+            nip: $('#nip-update-value').val(),
+            dataKeluarga: arrDataKeluarga,
+        };
+        console.log("params suskel",paramsUpdate    );
+
+        $.ajax({
+            url: '{{contextPath}}{{mutasi_path_api}}/checksuskel',
+            type:'json',
+            method: 'POST',
+            data: paramsUpdate,
+            success: function (data) {
+                $('#nama-suskel-baru-update').val(data.namaSuskel);
+                $('#id-suskel-baru-update').val(data.id);
+                console.log("data hasil checksuskel:",data);
+            }
+        });
+    };
+
+    function displayCetak(param) {
+        window.DkppReportParam = param;
+        $('.report-modal').modal('show');
+        console.log(param);
+    }
+
+    function cetakReport() {
+        let radioReport = $("input[name='optradio']:checked").val();
+        data = {
+            tipeReport: radioReport,
+            nip: window.DkppReportParam.nip,
+            idKategoriMutasi: window.DkppReportParam.idKategoriMutasi,
+            periodeMutasi: window.DkppReportParam.periodeMutasi
+        };
+        const param = $.param(data);
+        const reportFrame = $("#report");
+        const res = encodeURI(('src', `{{contextPath}}{{report_path_api}}?${param}`));
+        window.open(res, '_blank');
+    }
+
+</script>
+{{/scripts}}
+{{/layout}}

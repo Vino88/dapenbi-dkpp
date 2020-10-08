@@ -1,0 +1,509 @@
+{{#layout}}
+
+{{#styles}}
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/datatables/media/css/dataTables.bootstrap4.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/googleapis/css/component.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/googleapis/css/googleapis.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/select2/css/select2.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css">
+<style>
+    .required{
+        color:red;
+    }
+</style>
+{{/styles}}
+
+{{#title}}
+Pensiun Lama - Laporan
+{{/title}}
+        <div class="card">
+            <div class="card-block">
+                <table class="table table-bordered table-striped m-b-0 dataTable no-footer display" id="datatable1"
+                       role="grid">
+                    <thead>
+                    <tr role="row">
+                        <th>
+                            No.
+                        </th>
+                        <th>
+                            Laporan
+                        </th>
+                        <th>
+                            Action
+                        </th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        <iframe style="display: none" id="report" name="report" src=""></iframe>
+    </div>
+{{#modal}}
+<div class="modal fade report-modal" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title small bold" id="myModalLabel">Form Cetak Laporan Pensiun Lama</h4>
+            </div>
+            <div class="modal-body">
+                <form id="pesertaForm">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="form-group row" id="periode">
+                                <label for="periodeMutasi" class="col-sm-3 bold">Periode Mutasi <span class="required">*</span></label>
+                                <div class="col-xs-3">
+                                    <input class="form-control form-control-sm" type="hidden" placeholder="" value="{{periodeMutasi}}">
+                                    <input class="form-control form-control-sm" type="text" placeholder="" name="periodeMutasi" id="periodeMutasi">
+                                </div>
+                            </div>
+                            <div class="form-group row" id="nip">
+                                <label for="mutasiPensiun" class="col-sm-3 bold">NIP - Peserta <span class="required">*</span></label>
+                                <div class="col-xs-3">
+                                    <select class="form-control form-control-sm" name="mutasiPensiun" id="mutasiPensiun">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row" id="kantor">
+                                <label for="kantorBayar" class="col-sm-3 bold">Kantor Bayar <span class="required">*</span></label>
+                                <div class="col-xs-3">
+                                    <select class="form-control form-control-sm" name="kantorBayar" id="kantorBayar">
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group row" id="kategori_pensiun">
+                                <label for="idKategoriPensiun" class="col-sm-3 bold">Kategori Pensiun <span class="required">*</span></label>
+                                <div class="col-xs-3">
+                                    <select class="form-control form-control-sm" name="idKategoriPensiun" id="idKategoriPensiun">
+                                        <option value="">- Pilih Kategori Pensiun -</option>
+                                        <option value="PN">Pensiun Normal</option>
+                                        <option value="PD">Pensiun Dipercepat</option>
+                                        <option value="PC">Pensiun Cacat</option>
+                                        <option value="PM">Pensiun Meninggal Dunia</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row" id="kategori_penerima">
+                                <label for="idKategoriPenerimaMP" class="col-sm-3 bold">Penerima MP <span class="required">*</span></label>
+                                <div class="col-xs-3">
+                                    <select class="form-control form-control-sm" name="idKategoriPenerimaMP" id="idKategoriPenerimaMP">
+                                        <option value="">- Pilih Penerima MP -</option>
+                                        <option value="1">PESERTA</option>
+                                        <option value="2">Janda/Duda/Anak</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row" id="jenis_mps">
+                                <label for="idJenisMps" class="col-sm-3 bold">Jenis MPS <span class="required">*</span></label>
+                                <div class="col-xs-3">
+                                    <select class="form-control form-control-sm" name="idJenisMps" id="idJenisMps">
+                                        <option value="">- Pilih Jenis MPS -</option>
+                                        <option value="1">MPS 20%</option>
+                                        <option value="2">MPS > 10 Juta</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row" id="periode_x_y">
+                                <label for="periode_x_y" class="col-sm-3 bold">Periode Mutasi <span class="required">*</span></label>
+                                <div class="col-xs-2">
+                                    <input class="form-control form-control-sm" type="text" placeholder="" value="{{periodeMutasi}}" name="periode_x" id="periode_x">
+                                </div>
+                                <div class="col-xs-1">
+                                    s/d
+                                </div>
+                                <div class="col-xs-2">
+                                    <input class="form-control form-control-sm" type="text" placeholder="" value="{{periodeMutasi}}" name="periode_y" id="periode_y">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="cetakReport()">Cetak</button>
+            </div>
+        </div>
+    </div>
+</div>
+{{/modal}}
+{{#scripts}}
+<script src="{{contextPath}}/assets/vendor/datatables/media/js/jquery.dataTables.js"></script>
+<script src="{{contextPath}}/assets/vendor/datatables/media/js/dataTables.bootstrap4.js"></script>
+<script src="{{contextPath}}/assets/vendor/select2/js/select2.js"></script>
+<script src="{{contextPath}}/assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+<script src="{{contextPath}}/assets/vendor/jquery-validation/dist/jquery.validate.js"></script>
+<script src="{{contextPath}}/assets/vendor/numeral/numeral.min.js"></script>
+
+<script type="text/javascript">
+    const kantorBayarSelectTemplate = "${namaKantorBayar}";
+    window.DkppReportParam = {};
+    let RESTFulMode = "";
+    $(function () {
+        $("#pesertaForm").validate({
+            rules: {
+                periodeMutasi:{
+                    required:true,
+                    minlength:6,
+                    maxlength:6
+                },
+                idKantorBayar:{
+                    required:true,
+                    minlength:3,
+                    maxlength:3
+                },
+                idKategoriPensiun:{
+                    required:true,
+                    minlength:2,
+                    maxlength:2
+                },
+                idJenisMps:{
+                    required:true,
+                    minlength:1,
+                    maxlength:1
+                },
+                action: "required"
+            },
+            messages:{
+                periodeMutasi: {
+                    required: "Periode Mutasi Tidak Boleh Kosong",
+                    minlength: "Periode Mutasi Harus 6 karakter",
+                    maxlength: "Periode Mutasi Harus 6 karakter"
+                },
+                idKantorBayar: {
+                    required: "ID Kantor Bayar Tidak Boleh Kosong",
+                    minlength: "ID Kantor Bayar Harus 3 karakter",
+                    maxlength: "ID Kantor Bayar Harus 3 karakter"
+                },
+                idKategoriPensiun: {
+                    required: "ID Kategori Pensiun Tidak Boleh Kosong",
+                    minlength: "ID Kategori Pensiun Harus 2 karakter",
+                    maxlength: "ID Kategori Pensiun Harus 2 karakter"
+                },
+                idJenisMps: {
+                    required: "ID Jenis MPS Tidak Boleh Kosong",
+                    minlength: "ID Jenis MPS Harus 1 karakter",
+                    maxlength: "ID Jenis MPS Harus 1 karakter"
+                },
+                action: "masukan data"
+            },
+            submitHandler : function (pesertaForm) {
+                $('#pesertaForm').click(function () {
+                    cetakReport();
+                })
+            }
+
+        });
+    });
+    $('#datatable1').dataTable({
+        data: [
+            {
+              id: '1',
+              text: 'Daftar Mutasi Pensiun Hapus Karena Meninggal Dunia',
+                no: '01'
+
+            },
+            {
+              id: '2',
+              text: 'Daftar Mutasi Karena MPS <= 1,5 Juta',
+                no: '02'
+            },
+            {
+              id: '3',
+              text: 'Daftar Mutasi janda / Duda / Anak MP 80% (MP Bulan ke-13)',
+                no: '03'
+            },
+
+            {
+                id: '4',
+                text: 'Daftar Penerima MP Yang Dimutasikan Hapus',
+                no: '04'
+            },
+            {
+                id: '5',
+                text: 'Daftar Rincian Penerima MP Yang Dimutasikan Hapus',
+                no: '05'
+            },
+            {
+                id: '6',
+                text: 'Rekapitulasi Penerima MP Yang Dimutasikan Hapus',
+                no: '06'
+            },
+            {
+                id: '7',
+                text: 'Daftar Mutasi Penerima Janda / Duda',
+                no: '07'
+            },
+            {
+                id: '8',
+                text: 'Rekapitulasi Penerima MP Janda / Duda / Anak',
+                no: '08'
+            },
+            {
+                id: '9',
+                text: 'Daftar Rincian Penerima MP Janda / Duda / Anak',
+                no: '09'
+            },
+            {
+                id: '10',
+                text: 'Daftar Kelengkapan Dokumen untuk Peserta Janda / Duda / Anak',
+                no: '010'
+            },
+            {
+                id: '11',
+                text: 'Daftar Mutasi Penerima Anak Karena Janda / Duda Menikah Lagi',
+                no: '011'
+            },
+            {
+                id: '12',
+                text: 'Daftar Mutasi Penerima MP Anak Karena Penerima Janda / Duda Meninggal Dunia',
+                no: '012'
+            },
+            {
+                id: '13',
+                text: 'Daftar Mutasi Penerima MP Anak Karena Peserta Meninggal Dunia',
+                no: '013'
+            },
+            {
+                id: '14',
+                text: 'Daftar Mutasi Manfaat Pensiun Sekaligus',
+                no: '014'
+            },
+            {
+                id: '15',
+                text: 'Daftar Rincian Pembayaran Manfaat Pensiun Sekaligus 100% Jumlah Tertentu',
+                no: '015'
+            },
+            {
+                id: '16',
+                text: 'Rekapitulasi Manfaat Pensiun Sekaligus 100% Jumlah Tertentu',
+                no: '016'
+            },
+            {
+                id: '17',
+                text: 'Daftar Mutasi MP 80% (Bulan ke-13)',
+                no: '017'
+            },
+            {
+                id: '18',
+                text: 'Daftar Mutasi Susunan Keluarga Pensiun',
+                no: '018'
+            },
+            {
+                id: '19',
+                text: 'Daftar Laporan Mutasi Susunan Keluarga Anak Usia 25 Tahun',
+                no: '019'
+            },
+            {
+                id: '20',
+                text: 'Daftar Mutasi Perubahan Nama Penerima MP',
+                no: '020'
+            },
+            {
+                id: '21',
+                text: 'Daftar Mutasi Kantor Bayar',
+                no: '021'
+            },
+            {
+                id: '22',
+                text: 'Daftar Pensiunan Peserta Olahraga',
+                no: '022'
+            },
+            {
+                id: '23',
+                text: 'Daftar Potongan PGA',
+                no: '023'
+            },
+            {
+                id: '24',
+                text: 'Daftar Potongan KOVETRI',
+                no: '024'
+            },
+            {
+                id: '25',
+                text: 'Data Hasil Upload Iuran Olahraga',
+                no: '025'
+            },
+            {
+                id: '26',
+                text: 'Data Hasil Upload Iuran PGA',
+                no: '026'
+            },
+            {
+                id: '27',
+                text: 'Data Hasil Upload Iuran KOVETRI',
+                no: '027'
+            }
+        ],
+        'columnDefs': [
+            {
+                "targets": 2,
+                "data": null,
+                "render": function (data, type, row, meta) {
+                    let param = JSON.stringify(row);
+                    return `<a class=\'btn btn-info btn-sm btn-icon btn-printer\' onclick=\'displayCetak(`+ param +`);\'><i class=\'material-icons\'>printer</i> Cetak</a>`;
+                }
+            }
+        ],
+        columns: [
+            {
+                data: 'id'
+            },
+            {
+                data: 'text'
+            },
+            {
+                data: 'no'
+            }
+        ]
+    });
+
+    $(document).ready(function() {
+
+    });
+
+    function displayCetak(param) {
+        window.DkppReportParam = param;
+        let text = param.no;
+        console.log(DkppReportParam);
+        let allRadioId = ['periode', 'kantor', 'kategori_penerima', 'jenis_mps', 'kategori_pensiun', 'periode_x_y', 'nip'];
+
+        let radioGroup = {
+                            '01':['periode'],
+                            '02':['periode'],
+                            '03':['periode'],
+                            '04':['periode', 'kantor'],
+                            '05':['periode_x_y'],
+                            '06':['periode_x_y'],
+                            '07':['periode', 'kantor'],
+                            '08':['periode_x_y', 'kantor'],
+                            '09':['periode_x_y'],
+                            '010':['periode', 'nip'],
+                            '011':['periode', 'kantor'],
+                            '012':['periode', 'kantor'],
+                            '013':['periode', 'kantor'],
+                            '014':['periode', 'kantor'],
+                            '015':['periode', 'kantor'],
+                            '016':['periode', 'kantor'],
+                            '017':['periode', 'kantor'],
+                            '018':['periode'],
+                            '019':['periode'],
+                            '020':['periode'],
+                            '021':['periode'],
+                            '022':['periode'],
+                            '023':['periode'],
+                            '024':['periode'],
+                            '025':['periode'],
+                            '026':['periode'],
+                            '027':['periode'],
+        };
+
+        for (i = 0; i < allRadioId.length; i++) {
+            $('#' + allRadioId[i]).hide();
+        }
+
+        for (j = 0; j < radioGroup[text].length; j++) {
+            $('#' + radioGroup[text][j]).show();
+        }
+
+        $('.report-modal').modal('show');
+        $("#periodeMutasi").mask("999999");
+        console.log(param);
+    }
+    $.ajax({
+        url: '{{contextPath}}/api/setupparameter/get_periode',
+        dataType: 'json',
+        method: 'GET',
+        success: function (data) {
+            param :{
+                $('#user-stamp').val(data.postModeUserStamp);
+                $('#periodeMutasi').val(data.periodeMutasi);
+                $('#compName').val(data.compName);
+                $('#userName').val(data.userName);
+            }
+        }
+    });
+
+    function cetakReport() {
+        let periode_x = $("input[name='periode_x']").val();
+        let periode_y = $("input[name='periode_y']").val();
+        let periodeMutasi = $("input[name='periodeMutasi']").val();
+        let idKantorBayar = $('#kantorBayar option:selected').val();
+        let idKategoriPensiun = $('#idKategoriPensiun option:selected').val();
+        let idJenisMps = $('#idJenisMps option:selected').val();
+        let mutasiPensiun = $('#mutasiPensiun option:selected').val();
+        data = {
+            tipeReport: window.DkppReportParam.no,
+            periode_x: periode_x,
+            periode_y: periode_y,
+            periodeMutasi: periodeMutasi,
+            idKantorBayar: idKantorBayar,
+            idKategoriPensiun: idKategoriPensiun,
+            idJenisMps: idJenisMps,
+            nip: mutasiPensiun
+        };
+        const param = $.param(data);
+        console.log(param);
+        const reportFrame = $("#report");
+        const res = encodeURI(('src', `{{contextPath}}{{laporan_path_api}}?${param}`));
+        window.open(res, 'blank');
+    }
+
+
+    $('#kantorBayar').select2({
+        ajax: {
+            url: '{{contextPath}}/data/kantor-bayar',
+            dataType: 'json',
+            delay: 250,
+            data: function (params) {
+                return {
+                    searchParam: params.term, // search term
+                    valueColumn: "id",
+                    textColumn: kantorBayarSelectTemplate,
+                    searchColumn: [
+                        "namaKantorBayar",
+                    ]
+                };
+            },
+            processResults: function(data){
+                return {
+                    results: data
+                };
+            }
+        },
+        cache: true,
+        width: "100%",
+        placeholder: 'Pilih Kantor Bayar'
+    });
+
+    var pesertaMPInsert = $('#mutasiPensiun').select2({
+        ajax: {
+            url: '{{contextPath}}{{listPesertaCombo}}',
+            dataType: 'json',
+            delay: 250,
+            data: function(params){
+                return {
+                    searchParam: params.term,
+                    valueColumn: 'nip',
+                    textColumn: "${nip}-${namaPenerimaMp}",
+                    searchColumn: [
+                        'nip',
+                        'namaPenerimaMp'
+                    ],
+                }
+            },
+            processResults: function(data){
+                return {
+                    results: data
+                };
+            }
+        },
+        width: "100%",
+        placeholder: 'Pilih Peserta MP'
+    });
+</script>
+{{/scripts}}
+
+{{/layout}}

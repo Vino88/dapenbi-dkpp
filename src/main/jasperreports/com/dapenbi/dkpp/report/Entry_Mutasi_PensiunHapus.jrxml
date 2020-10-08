@@ -1,0 +1,389 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Entry_Mutasi_PensiunNormal" pageWidth="612" pageHeight="792" whenNoDataType="AllSectionsNoDetail" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="10" bottomMargin="10" uuid="9617caa1-d098-4b8a-acef-ce7011dacb9d">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DKPPUAT"/>
+	<subDataset name="Dataset1" uuid="1a4e8e2f-c23a-4b40-8b87-afb1579cd380">
+		<queryString>
+			<![CDATA[]]>
+		</queryString>
+	</subDataset>
+	<parameter name="id_kategori_mutasi" class="java.lang.String"/>
+	<parameter name="nip" class="java.lang.String"/>
+	<parameter name="periode_mutasi" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT 'No. ' || ( TO_NUMBER( TO_CHAR(SYSDATE, 'YYYY') ) - 1992 ) || ' / 01' AS NO_REPORT
+        , TO_CHAR(a.tgl_mutasi, 'MONTH','nls_date_language = INDONESIAN') AS BULAN_REPORT
+        , TO_CHAR(a.tgl_mutasi, 'YYYY') AS TAHUN_REPORT
+        ,to_char(to_date(a.periode_mutasi,'MM YYYY','nls_date_language = INDONESIAN'),'Month YYYY','nls_date_language = INDONESIAN') as periode_mutasi
+        , a.nip AS NIP
+        , a.nama_peserta AS NAMA_PESERTA
+        , a.nama_penerima_mp as nama_penerima
+        , to_char(a.tgl_meninggal_peserta, 'dd Month yyyy','nls_date_language  = INDONESIAN') as tgl_meninggal
+        , to_char(a.tgl_menikahlagi_penerima_mp, 'dd Month yyyy','nls_date_language = INDONESIAN') as tgl_nikah_lagi
+        , to_char(a.tgl_usia_25t_penerima_mp, 'dd Month yyyy','nls_date_language = INDONESIAN') as tgl_usia25
+        , to_char(a.tgl_permohonan_mps100, 'dd Month yyyy','nls_date_language = INDONESIAN') as tgl_mps100
+        , to_char(a.tgl_henti_kerja_peserta,'dd-mm-yyyy') AS TANGGAL_BERHENTI
+        , a.nama_kategori_pensiun AS JENIS_PENSIUN
+        , a.nama_suskel AS SUSUNAN_KELUARGA
+        , a.mps_20persen_baru AS MPS_20_PERSEN
+        , '' AS MPS_GT_10_JT
+        , to_char(a.phdp_lama,'999,999,999,999.00') AS PHDP
+        , a.nama_kantor_bayar AS KANTOR_BAYAR
+        , 'PENSIUN BARU, DATA DAN INFORMASI TERLAMPIR' AS MUTASI
+        ,(CASE
+        WHEN id_kategori_mutasi = '02' THEN to_char(a.tgl_meninggal_peserta, 'dd Month yyyy','nls_date_language  = INDONESIAN')
+        WHEN id_kategori_mutasi IN('03','07','06') THEN to_char(a.tgl_menikahlagi_penerima_mp, 'dd Month yyyy','nls_date_language = INDONESIAN') 
+        WHEN id_kategori_mutasi = '15' THEN to_char(a.tgl_usia_25t_penerima_mp, 'dd Month yyyy','nls_date_language = INDONESIAN')
+        WHEN id_kategori_mutasi = '12' THEN to_char(a.tgl_permohonan_mps100, 'dd Month yyyy','nls_date_language = INDONESIAN') END ) AS tgl
+        ,(CASE
+        WHEN id_kategori_mutasi = '02' THEN 'MENINGGAL DUNIA'
+        WHEN id_kategori_mutasi IN('03','07','06') THEN 'MENIKAH LAGI'
+        WHEN id_kategori_mutasi = '15' THEN 'PENERIMA DEAWASA'
+        ELSE 'Manfaat Pensiun Sekaligus ( 100% < Rp. 1.500.000,- )'
+        END) AS alasan_henti
+,CASE 
+WHEN id_jenis_mps = 2 THEN 'YA'
+WHEN id_jenis_mps = 4 THEN 'YA'
+else 'TIDAK'
+END as mps_10jt
+		,(CASE
+        WHEN id_kategori_mutasi = '02' THEN 'MENINGGAL DUNIA'
+        WHEN id_kategori_mutasi IN('03','07','06') THEN 'MENIKAH LAGI'
+        WHEN id_kategori_mutasi = '15' THEN 'PENERIMA DEAWASA'
+        ELSE 'MPS 1,5 JUTA'
+        END) AS alasan_mutasi
+        , a.kurang_bayar_mpyd AS KURANG_BAYAR
+        , 'Jakarta' AS TEMPAT_LAPORAN
+        ,to_char(a.tgl_mutasi,'dd Month yyyy','nls_date_language = INDONESIAN') as tgl_mutasi
+        , TO_CHAR(SYSDATE, 'DD-MONTH-YYYY') AS TANGGAL_LAPORAN
+        , 'Idris Sakti Daulay'  AS NAMA_PEJABAT /* BAGIAN TANDA TANGAN */
+        , 'Staf' AS JABATAN /* BAGIAN TANDA TANGAN */
+        , to_char(SYSDATE, 'DD Month YYYY') as SIGN_DATE
+from TBL_T_MUTASI_PENSIUN a WHERE periode_mutasi = $P{periode_mutasi} AND id_kategori_mutasi = $P{id_kategori_mutasi} AND nip = $P{nip}]]>
+	</queryString>
+	<field name="NO_REPORT" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NO_REPORT"/>
+	</field>
+	<field name="BULAN_REPORT" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="BULAN_REPORT"/>
+	</field>
+	<field name="TAHUN_REPORT" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="TAHUN_REPORT"/>
+	</field>
+	<field name="PERIODE_MUTASI" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="PERIODE_MUTASI"/>
+	</field>
+	<field name="NIP" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NIP"/>
+	</field>
+	<field name="NAMA_PESERTA" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NAMA_PESERTA"/>
+	</field>
+	<field name="NAMA_PENERIMA" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NAMA_PENERIMA"/>
+	</field>
+	<field name="TGL_MENINGGAL" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="TGL_MENINGGAL"/>
+	</field>
+	<field name="TGL_NIKAH_LAGI" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="TGL_NIKAH_LAGI"/>
+	</field>
+	<field name="TGL_USIA25" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="TGL_USIA25"/>
+	</field>
+	<field name="TGL_MPS100" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="TGL_MPS100"/>
+	</field>
+	<field name="TANGGAL_BERHENTI" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="TANGGAL_BERHENTI"/>
+	</field>
+	<field name="JENIS_PENSIUN" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="JENIS_PENSIUN"/>
+	</field>
+	<field name="SUSUNAN_KELUARGA" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="SUSUNAN_KELUARGA"/>
+	</field>
+	<field name="MPS_20_PERSEN" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="MPS_20_PERSEN"/>
+	</field>
+	<field name="MPS_GT_10_JT" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="MPS_GT_10_JT"/>
+	</field>
+	<field name="PHDP" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="PHDP"/>
+	</field>
+	<field name="KANTOR_BAYAR" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="KANTOR_BAYAR"/>
+	</field>
+	<field name="MUTASI" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="MUTASI"/>
+	</field>
+	<field name="TGL" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="TGL"/>
+	</field>
+	<field name="ALASAN_HENTI" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="ALASAN_HENTI"/>
+	</field>
+	<field name="MPS_10JT" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="MPS_10JT"/>
+	</field>
+	<field name="ALASAN_MUTASI" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="ALASAN_MUTASI"/>
+	</field>
+	<field name="KURANG_BAYAR" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="KURANG_BAYAR"/>
+	</field>
+	<field name="TEMPAT_LAPORAN" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="TEMPAT_LAPORAN"/>
+	</field>
+	<field name="TGL_MUTASI" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="TGL_MUTASI"/>
+	</field>
+	<field name="TANGGAL_LAPORAN" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="TANGGAL_LAPORAN"/>
+	</field>
+	<field name="NAMA_PEJABAT" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NAMA_PEJABAT"/>
+	</field>
+	<field name="JABATAN" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="JABATAN"/>
+	</field>
+	<field name="SIGN_DATE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="SIGN_DATE"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="66" splitType="Stretch">
+			<textField>
+				<reportElement x="410" y="23" width="159" height="37" uuid="bef1aabe-8671-40e8-97e7-138aaead0d96"/>
+				<textElement markup="html">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["MUTASI HAPUS <br>"+$F{ALASAN_MUTASI}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="100" splitType="Stretch">
+			<staticText>
+				<reportElement x="-20" y="1" width="595" height="99" uuid="4c585ee6-c5ff-461b-83ad-e51e31fc58b2"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DIVISI KEPESERTAAN DAN PELAYANAN PENSIUN
+FORMULIR ENTRY MUTASI]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="-20" y="38" width="595" height="20" uuid="4048f001-39c9-4c61-a73d-86b533c522ff"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NO_REPORT}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="-20" y="60" width="595" height="25" uuid="7b428462-9bfc-4ead-8fbf-34ebd3c5f36d"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Mutasi Bulan : "+$F{PERIODE_MUTASI}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="60" splitType="Stretch">
+			<staticText>
+				<reportElement x="80" y="3" width="495" height="20" uuid="b9ad05e9-ab91-406a-9384-599157de0446"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[A. DATA]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="210" splitType="Stretch">
+			<textField>
+				<reportElement x="80" y="-31" width="200" height="30" uuid="36d94cdc-2ae0-4cf4-8a94-e7f64afc2fbf"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["1. "+"NIP"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="80" y="-2" width="200" height="30" uuid="4d4b3176-210e-48b8-84c8-73a343e2b0ee"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["2. "+"Nama Peserta"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="80" y="28" width="200" height="30" uuid="dd527588-c032-441b-9572-1f57a6acd763"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["3. "+"Nama Penerima"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="80" y="58" width="225" height="30" uuid="2a311578-56a0-425a-bcc4-7e2207145597"/>
+				<textElement>
+					<font size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["4. "+"Tgl Wafat / Nikah / Dewasa / MPS"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="80" y="88" width="200" height="30" uuid="102bc38e-0aa9-4d82-8edf-6517190dad72"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["5. "+"Kantor Bayar"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="305" y="-31" width="252" height="30" uuid="99a7d923-cd88-4d7c-8873-e54e87fc21da"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[": "+$F{NIP}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="305" y="-2" width="252" height="30" uuid="e364858f-ed94-427d-a957-d4bcf284ab95"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[": "+$F{NAMA_PESERTA}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="305" y="28" width="252" height="30" uuid="3685f8ed-2645-4e8a-bbb3-bcb7e7d1a5b4"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[": "+$F{NAMA_PENERIMA}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="305" y="88" width="252" height="30" uuid="42bd5043-0bda-4cc2-a8ab-78561fc1cf3f"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[": "+$F{KANTOR_BAYAR}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="81" y="120" width="100" height="22" uuid="de899e8f-51e7-43b4-a7f8-ee8721361d52"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[B. MUTASI]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="83" y="146" width="492" height="18" uuid="090cc320-b65e-474d-93a3-07f6ea70d4fa"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Mutasi Hapus"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="100" y="165" width="80" height="18" uuid="39c59eaf-650f-44e3-afec-110c16b65c58"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Karena :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="160" y="166" width="409" height="34" uuid="a99e675d-ae21-4cef-86ab-581b85338f6a"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ALASAN_HENTI}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="305" y="58" width="252" height="30" uuid="07a70cdc-5d5c-434e-b184-a135da026ad7"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{TGL} == null ? "-" : ": "+$F{TGL}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<lastPageFooter>
+		<band height="135">
+			<textField pattern="MMMMM dd, yyyy">
+				<reportElement x="335" y="1" width="210" height="20" uuid="2526a725-94e0-4f8e-bafa-e223f75ec5c9"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Jakarta, "+($F{TGL_MUTASI} == null ? "-" : $F{TGL_MUTASI})]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="309" y="24" width="254" height="30" uuid="4b241535-7036-4037-aec7-da9491e9ec5c"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Seksi Kepesertaan dan Pelayanan Pensiun]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="335" y="85" width="210" height="20" uuid="cc0ade3b-4cad-42b5-b9eb-a01f570c8568"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NAMA_PEJABAT}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="348" y="105" width="184" height="30" uuid="cfa69f94-e9a5-4e04-baa0-90f7d023b789"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{JABATAN}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="80" y="24" width="167" height="110" uuid="09231358-1acd-4754-a80e-c0c1d13a75e3"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="80" y="54" width="87" height="80" uuid="77f2ab47-a7d5-42c5-9e87-8425856ae528"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="167" y="54" width="80" height="80" uuid="f315297a-3e08-4bdc-9590-b0139422792a"/>
+			</rectangle>
+			<textField>
+				<reportElement x="80" y="25" width="167" height="27" uuid="9918e72b-fd5d-464c-b31e-07a7e7d3f4be"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Paraf"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="81" y="56" width="85" height="22" uuid="ed92d86a-5b2e-40e7-af5a-c76e1c9fd919"/>
+				<box>
+					<pen lineWidth="1.0" lineColor="#000000"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Validasi"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="166" y="55" width="81" height="22" uuid="de410546-bdf2-4ea5-a420-d968ca1a23c2"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Persetujuan"]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="80" y="77" width="167" height="1" uuid="07a4fab5-13ed-4044-923e-857dfc17792c"/>
+			</line>
+		</band>
+	</lastPageFooter>
+</jasperReport>

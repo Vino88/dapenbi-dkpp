@@ -1,0 +1,333 @@
+{{#layout}}
+
+{{#styles}}
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/googleapis/css/component.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/googleapis/css/googleapis.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/select2/css/select2.css">
+{{/styles}}
+
+{{#title}}
+Master Setting User Role - DKPP
+{{/title}}
+
+
+<div class="card">
+    <div class="card-header">
+        <div class="col-md-12">
+            <div class="row pull-right">
+                <a class="btn btn-primary btn-icon btn-sm" id="btn-add"><i class="material-icons">add</i> Add</a>
+            </div>
+        </div>
+    </div>
+    <div class="card-block">
+        <div class="table-responsive">
+            <table class="table table-bordered datatable dataTable no-footer" id="golongan_table"
+                   role="grid">
+                <thead>
+                <tr role="row">
+                    <th>
+                        User
+                    </th>
+                    <th>
+                        User Name
+                    </th>
+                    <th>
+                        Role
+                    </th>
+                    <th>
+                        Action
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{{#modal}}
+<div class="modal fade kantor-bayar-modal" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title small bold" id="myModalLabel">Form Seeting User Role</h4>
+            </div>
+            <div class="modal-body">
+                <form id="golonganForm">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="form-group row">
+                                <label for="id-user" class="col-sm-3 bold">User</label>
+                                <div class="col-xs-9">
+                                    <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
+                                    <input type="hidden" name="idUserUpdate" id="id-user-update" />
+                                    <input type="hidden" name="idRoleUpdate" id="id-role-update" />
+                                    <select class="form-control form-control-sm" name="idUser" id="id-user">
+                                        <option></option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="id-role" class="col-sm-3 bold">Role</label>
+                                <div class="col-xs-9">
+                                    <select class="form-control form-control-sm" name="idRole" id="id-role">
+                                        <option></option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="saveForm()">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+{{/modal}}
+
+{{#scripts}}
+<script src="{{contextPath}}/assets/vendor/datatables/media/js/jquery.dataTables.js"></script>
+<script src="{{contextPath}}/assets/vendor/datatables/media/js/dataTables.bootstrap4.js"></script>
+<script src="{{contextPath}}/assets/vendor/sweetalert/sweetalert.min.js"></script>
+<script src="{{contextPath}}/assets/vendor/select2/js/select2.js"></script>
+<script type="text/javascript">
+    window.RESTFulMode = "";
+    function showPrintOptions(){
+        $('#printOptionsModal').modal('show');
+    }
+
+    $('#btn_ok_print').unbind().on('click', function(){
+        $('#printOptionsModal').modal('hide');
+        $('#pdfReportModal').modal('show');
+    });
+
+    $('#filter_form').hide();
+
+    var golonganTable = dkppDataTable($('.datatable'),
+        '{{contextPath}}/api/user-role',{
+            'columns': [
+                { "data": "idUser.email" },
+                { "data": "idUser.username" },
+                { "data": "idRole.name" },
+                { "data": "idUser" },
+            ],
+            'columnDefs': [
+                {
+                    "targets": -1,
+                    "data": "idUser",
+                    "render": function(data, type, row, meta){
+                        let param = JSON.stringify(row);
+                        return "<a class='btn btn-info btn-sm btn-icon btn-edit' onclick='displayEditModal(" + param + ")'><i class='material-icons'>edit</i> Edit</a>";
+                    }
+                },
+            ]
+        });
+
+    function displayEditModal(id) {
+        // let golongan = golonganTable.rows().data().filter((data) => {return data.id === id})[0];
+        let golongan = id;
+        const golonganForm = $("form#golonganForm");
+        console.log("data",golongan);
+        $("#id-user-update").val(golongan.idUser.id);
+        $("#id-role-update").val(golongan.idRole.id);
+        $('.kantor-bayar-modal').modal('show');
+
+        $.ajax({
+
+            url:  '{{contextPath}}/api/user/dropdown',
+            method: 'GET',
+            data: {
+                valueColumn: 'id',
+                textColumn: " ${email} - ${username}",
+                searchColumn: [
+                    'email'
+                ],
+                referenceValue: [
+                    {
+
+                    }
+                ],
+                includeObject: true
+            },
+            success: function(data){
+                console.log("data user select");
+                console.log(golongan.idUser.id);
+                $('#id-user').select2(
+                    {
+                        data: data,
+                        width: "100%",
+                        placeholder: 'Pilih Provinsi'
+                    }
+                ).val(golongan.idUser.id).trigger('change');
+            }
+        });
+
+
+        // $.ajax({
+        //     url:  '{{contextPath}}/api/user/dropdown',
+        //     method: 'GET',
+        //     data: {
+        //         valueColumn: 'id',
+        //         textColumn: "${email} - ${username}",
+        //         searchColumn: [
+        //             'email'
+        //         ],
+        //         referenceValue: [
+        //             {
+        //             }
+        //         ],
+        //         includeObject: true
+        //     },
+        //     success: function(data){
+        //         console.log("data catatan");
+        //         console.log(data);
+        //         $('#id-user').select2(
+        //             {
+        //                 data: data,
+        //                 width: "100%",
+        //                 placeholder: 'Pilih Kategori Catatan'
+        //             }
+        //         ).val(golongan.idUser.id).trigger('change');
+        //     }
+        // });
+
+        $.ajax({
+            url:  '{{contextPath}}/api/role/dropdown',
+            method: 'GET',
+            data: {
+                valueColumn: 'id',
+                textColumn: "${name}",
+                searchColumn: [
+                    'name'
+                ],
+                referenceValue: [
+                    {
+                    }
+                ],
+                includeObject: true
+            },
+            success: function(data){
+                console.log("data catatan");
+                console.log(data);
+                $('#id-role').select2(
+                    {
+                        data: data,
+                        width: "100%",
+                        placeholder: 'Pilih Kategori Catatan'
+                    }
+                ).val(golongan.idRole.id).trigger('change');
+
+            }
+        });
+
+        window.RESTFulMode = "PUT";
+    }
+
+    function saveForm() {
+        $.ajax({
+            url: "{{contextPath}}/api/user-role",
+            method: window.RESTFulMode,
+            data: formToJSON($("form#golonganForm")[0].elements)
+        }).success(function(data) {
+            $('.kantor-bayar-modal').modal('hide');
+            swal({title:"Berhasil",text:data.message, icon:"success", button:"OK"});
+            golonganTable.ajax.reload();
+        });
+    }
+
+    $(document).ready(function(){
+        $('#btn-add').unbind().on('click', function(){
+            var modal = $('.kantor-bayar-modal');
+            modal.modal('show');
+            window.RESTFulMode = 'POST';
+
+            $("#id-user").val("");
+            $("#id-role").val("");
+
+            $('#id-user').select2({
+                ajax: {
+                    url: '{{contextPath}}/api/user/dropdown',
+                    dataType: 'json',
+                    method: 'GET',
+                    data: function(params){
+                        return {
+                            searchParam: params.term,
+                            valueColumn: 'id',
+                            textColumn: "${email}-${username}",
+                            searchColumn: [
+                                'email'
+                            ],
+                            referenceValue:[
+                                {
+                                }
+                            ],
+                            includeObject :true
+                        }
+                    },
+                    // dropdownParent: $(".mutasi-nama-penerima"),
+                    delay: 250,
+                    processResults: function(data){
+                        return {
+                            results: data
+                        };
+                    }
+                },
+                width: "100%",
+                placeholder: 'Pilih Email User'
+
+            });
+
+            $('#id-role').select2({
+                ajax: {
+                    url: '{{contextPath}}/api/role/dropdown',
+                    dataType: 'json',
+                    method: 'GET',
+                    data: function(params){
+                        return {
+                            searchParam: params.term,
+                            valueColumn: 'id',
+                            textColumn: "${name}",
+                            searchColumn: [
+                                'name'
+                            ],
+                            referenceValue:[
+                                {
+                                }
+                            ],
+                            includeObject :true
+                        }
+                    },
+                    // dropdownParent: $(".mutasi-nama-penerima"),
+                    delay: 250,
+                    processResults: function(data){
+                        return {
+                            results: data
+                        };
+                    }
+                },
+                width: "100%",
+                placeholder: 'Pilih Role'
+
+            });
+
+        });
+        $('.btn-edit').on('click', function(){
+            var modal = $('.user-modal');
+
+            modal.modal('show');
+            RESTFulMode = 'PUT';
+        });
+    });
+</script>
+{{/scripts}}
+
+{{/layout}}

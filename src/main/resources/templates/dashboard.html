@@ -1,0 +1,375 @@
+{{#layout}}
+
+{{#title}}
+Dashboard - DKPP
+{{/title}}
+
+{{#styles}}
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/bower-jvectormap/jquery-jvectormap-1.2.2.css"/>
+<style>
+    #chartdiv {
+        width: 100%;
+        height: 500px;
+    }
+
+</style>
+{{/styles}}
+
+<div class="row">
+    <div class="col-md-6">
+        <h6 class="m-b-1">
+            Task List
+        </h6>
+            <ul class="sortable-list connectedSortable">
+                <li>
+            <span class="tag bg-danger pull-right">
+              {{jumlahYgBelumDilepaskan}}
+            </span>
+                    Data Peserta Pensiun yang Belum Dilepaskan
+                </li>
+                <li>
+            <span class="tag bg-danger pull-right">
+              {{jumlahYgSudahDilepaskan}}
+            </span>
+                    Data Peserta Pensiun Yang Sudah Dilepaskan
+                </li>
+                <li>
+            <span class="tag bg-danger pull-right">
+              {{jumlahPensiunTundaDibayar}}
+            </span>
+                    Data Pensiun Tunda Jatuh Tempo Dibayar
+                </li>
+                <li>
+            <span class="tag bg-danger pull-right">
+              {{JumlahPtOjk}}
+            </span>
+                    Data Pensiun Tunda Jatuh Tempo Dibayar (OJK)
+                </li>
+                <li>
+            <span class="tag bg-danger pull-right">
+              {{jumlahMpAnakBln13}}
+            </span>
+                    Mutasi Penerima MP Anak 25 Tahun dan MP Bulan ke-13
+                </li>
+                <li>
+            <span class="tag bg-danger pull-right">
+              {{jumlahMutasiLbhBayar}}
+            </span>
+                    Mutasi Lebih Bayar (Angsuran)
+                </li>
+                <li>
+            <span class="tag bg-danger pull-right">
+              {{jumlahBelumPunyaNorek}}
+            </span>
+                    Data Penerima MP Belum Punya Rekening/Rekening Tidak Valid
+                </li>
+            </ul>
+        </div>
+    <div class="col-md-6">
+        <h6 class="m-b-1">
+            Informasi
+        </h6>
+        <ul class="list-group m-b-1">
+            <li class="list-group-item notification-bar-success">
+                <div href="#" class="notification-bar-icon">
+                    <div><i></i></div>
+                </div>
+                <div class="notification-bar-details">
+                    <a href="#" class="notification-bar-title">
+                        Periode Mutasi Terakhir : <span class="tag bg-info ">
+                        {{periodeMutasi}}
+                        </span>
+                    </a>
+                    <span class="notification-bar-content">
+                        Status : <span class="tag bg-success ">
+                            BUKA
+                        </span>
+                    </span>
+                </div>
+            </li>
+
+            <li class="list-group-item notification-bar-info">
+                <div href="#" class="notification-bar-icon">
+                    <div><i></i></div>
+                </div>
+                <div class="notification-bar-details">
+                    <a href="#" class="notification-bar-title">
+                        Pembayaran Pensiun NF : <span class="tag bg-info ">
+                      {{periodeMutasi}}
+                    </span>
+                    </a>
+                    <span>
+                    Status :   <span class="tag bg-success ">
+                        BUKA
+                    </span>
+                  </span>
+                </div>
+            </li>
+
+            <li class="list-group-item notification-bar-fail">
+                <div href="#" class="notification-bar-icon">
+                    <div><i></i></div>
+                </div>
+                <div class="notification-bar-details">
+                    <a href="#" class="notification-bar-title">
+                        Pembayaran MP Bulanan Terakhir : <span class="tag bg-info ">
+                      {{periodeMutasi}}
+                    </span>
+                    </a>
+                    <span>
+                    Status :   <span class="tag bg-success ">
+                      BUKA
+                    </span>
+                  </span>
+                </div>
+            </li>
+
+            <li class="list-group-item notification-bar-fail">
+                <div href="#" class="notification-bar-icon">
+                    <div><i></i></div>
+                </div>
+                <div class="notification-bar-details">
+                    <a href="#" class="notification-bar-title">
+                        Her Registrasi Terakhir : <span class="tag bg-info ">1 Agustus - 30 Agustus 2018</span>
+                    </a>
+                    <span class="notification-bar-content">
+                        Jenis Her Registrasi : <span class="tag bg-info ">Seluruh Penerima MP</span>
+                    </span>
+                    <span class="notification-bar-content">
+                        Status : <span class="tag bg-success ">BUKA</span>
+                    </span>
+                </div>
+            </li>
+            <li class="list-group-item notification-bar-success ">
+                <div href="#" class="notification-bar-icon">
+                    <div><i></i></div>
+                </div>
+                <div class="notification-bar-details">
+                    <a href="#" class="notification-bar-title">
+                        Data Penerima MP Belum Registrasi Ulang : <span class="tag bg-danger ">
+                        {{jumlahPenerimaYgBlmHer}}
+                    </span>
+                    </a>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <h6 class="m-b-1">
+            Dashboard
+        </h6>
+    </div>
+    <div class="col-sm-4 col-md-3 col-lg-0">
+        <div class="card card-block bg-success-lighter">
+            <h5 class="m-b-0 v-align-middle text-overflow">
+                <i class="material-icons text-white">person</i><span>{{jmlPN}}</span>
+            </h5>
+            <div class="small text-overflow text-white bold">
+                Penerima Pensiun Normal
+            </div>
+            <div class="small text-overflow text-white">
+                Updated: <span>{{update}}</span>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-4 col-md-3 col-lg-0">
+        <div class="card card-block bg-info-lighter">
+            <h5 class="m-b-0 v-align-middle text-overflow">
+                <i class="material-icons text-white">person</i><span>{{jmlPD}}</span>
+            </h5>
+            <div class="small text-overflow text-white bold">
+                Penerima Pensiun Dipercepat
+            </div>
+            <div class="small text-overflow text-white">
+                Updated: {{update}}
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-4 col-md-3 col-lg-0">
+        <div class="card card-block bg-orange-lighter">
+            <h5 class="m-b-0 v-align-middle text-overflow">
+                <i class="material-icons text-white">person</i><span>{{jmlPC}}</span>
+            </h5>
+            <div class="small text-overflow text-white bold">
+                Penerima Pensiun Cacat
+            </div>
+            <div class="small text-overflow text-white">
+                Updated: {{update}}
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-4 col-md-3 col-lg-0">
+        <div class="card card-block bg-danger-lighter">
+            <h5 class="m-b-0 v-align-middle text-overflow">
+                <i class="material-icons text-white">person</i><span>{{jmlPT}}</span>
+            </h5>
+            <div class="small text-overflow text-white bold">
+                Penerima Pensiun Tunda
+            </div>
+            <div class="small text-overflow text-white">
+                Updated: {{update}}
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-4 col-md-3 col-lg-0">
+        <div class="card card-block bg-teal-lighter">
+            <h5 class="m-b-0 v-align-middle text-overflow">
+                <i class="material-icons text-white">person</i><span>{{jmlPenerima}}</span>
+            </h5>
+            <div class="small text-overflow text-white bold">
+                Penerima Manfaat Pensiun
+            </div>
+            <div class="small text-overflow text-white">
+                Updated: {{update}}
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-4 col-md-3 col-lg-0">
+        <div class="card card-block bg-pink-lighter">
+            <h5 class="m-b-0 v-align-middle text-overflow">
+                <i class="material-icons text-white">person</i><span>{{jmlJanda}}</span>
+            </h5>
+            <div class="small text-overflow text-white bold">
+                Penerima MP Janda
+            </div>
+            <div class="small text-overflow text-white">
+                Updated: {{update}}
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-4 col-md-3 col-lg-0">
+        <div class="card card-block bg-purple-lighter">
+            <h5 class="m-b-0 v-align-middle text-overflow">
+                <i class="material-icons text-white">person</i><span>{{jmlDuda}}</span>
+            </h5>
+            <div class="small text-overflow text-white bold">
+                Penerima MP Duda
+            </div>
+            <div class="small text-overflow text-white">
+                Updated: {{update}}
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-4 col-md-3 col-lg-0">
+        <div class="card card-block bg-primary-lighter">
+            <h5 class="m-b-0 v-align-middle text-overflow">
+                <i class="material-icons text-white">person</i><span>{{jmlAnak}}</span>
+            </h5>
+            <div class="small text-overflow text-white bold">
+                Penerima MP Anak
+            </div>
+            <div class="small text-overflow text-white">
+                Updated: {{update}}
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-block">
+                <div class="m-b-1">
+                    <div class="dropdown pull-right">
+                        <h6>Periode {{periodeMutasi}}</h6>
+                      <!--  <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
+                          <span>
+
+                          </span>
+                        </a> -->
+                        <!-- <div class="dropdown-menu dropdown-menu-right" role="menu">
+                              <a class="dropdown-item" href="{{contextPath}}/api/bulan">
+                                  This month
+                              </a>
+                              <a class="dropdown-item" href="#">
+                                  This year
+                              </a>
+                          </div> -->
+                    </div>
+                    <h6>
+                        Jumlah Penerima MP Per Cabang
+                    </h6>
+                        <div class="chartdiv" style="height:300px"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{#scripts}}
+<!-- page scripts -->
+<script src="{{contextPath}}/assets/vendor/flot/jquery.flot.js"></script>
+<script src="{{contextPath}}/assets/vendor/flot/jquery.flot.resize.js"></script>
+<script src="{{contextPath}}/assets/vendor/flot/jquery.flot.stack.js"></script>
+<script src="{{contextPath}}/assets/vendor/flot-spline/js/jquery.flot.spline.js"></script>
+<script src="{{contextPath}}/assets/vendor/bower-jvectormap/jquery-jvectormap-1.2.2.min.js"></script>
+<script src="{{contextPath}}/assets/data/maps/jquery-jvectormap-us-aea.js"></script>
+<script src="{{contextPath}}/assets/vendor/jquery.easy-pie-chart/dist/jquery.easypiechart.js"></script>
+<!-- Resources -->
+<script src="https://www.amcharts.com/lib/4/core.js"></script>
+<script src="https://www.amcharts.com/lib/4/charts.js"></script>
+<script src="https://www.amcharts.com/lib/4/themes/animated.js"></script>
+<!-- Chart code -->
+
+<!-- end page scripts -->
+
+<!-- initialize page scripts -->
+<script src="{{contextPath}}/assets/scripts/dashboard/dashboard.js"></script>
+<!-- end initialize page scripts -->
+
+<script type="text/javascript">
+    window.paceOptions = {
+        document: true,
+        eventLag: true,
+        restartOnPushState: true,
+        restartOnRequestAfter: true,
+        ajax: {
+            trackMethods: [ 'POST','GET']
+        }
+    };
+
+    $(".logout-link").click(() => {
+        $("#logout").submit();
+    });
+
+    am4core.ready(function() {
+        $(document).ready(function() {
+            $.ajax({
+                'url': 'api/chart',
+                'type': 'GET',
+                'dataType': 'json',
+                data: {pageSize: 100},
+                // 'data': { 'number': $('.form-group input').val() },
+                'success': function(data) {
+// Themes begin
+                    am4core.useTheme(am4themes_animated);
+// Themes end
+                    var chartData = data;
+                    console.log(data);
+                    var chart = am4core.create("chartdiv", am4charts.PieChart3D, data);
+                    chart.hiddenState.properties.opacity = 0; // this creates initial fade-in
+                    chart.legend = new am4charts.Legend();
+                    chart.dataProvider = chartData;
+
+                    // let localData=[];
+                    // for(i=0; i<data.content.length; i++){
+                    //     localData[i] = {
+                    //         jumlahPenerima: data.content[i].jumlahPenerima,
+                    //         namaKantorBayar: data.content[i].namaKantorBayar
+                    //     };
+                    // }
+                    chart.data = data.content;
+                    console.log(chart.data);
+                    var series = chart.series.push(new am4charts.PieSeries3D());
+                    series.dataFields.value = "jumlahPenerima";
+                    series.dataFields.category = "namaKantorBayar";
+                }
+            })
+        })
+    }); // end am4core.ready()
+
+</script>
+{{/scripts}}
+
+{{/layout}}

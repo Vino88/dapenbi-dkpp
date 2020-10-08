@@ -1,0 +1,2235 @@
+{{#layout}}
+
+{{#styles}}
+<link rel="stylesheet" href="{{contextPath}}/assets/styles/gsi-step-indicator.css"/>
+<link rel="stylesheet" href="{{contextPath}}/assets/styles/tsf-step-form-wizard.css"/>
+
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/datatables/media/css/dataTables.bootstrap4.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/googleapis/css/component.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/googleapis/css/googleapis.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/select2/css/select2.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css">
+<style>
+    #data_keluarga_table {
+        min-width: 1250px;
+        text-transform: uppercase;
+    }
+
+    .dataKeluargaTableWrapper > #data_keluarga_table_wrapper > div:nth-child(2) > div {
+        text-transform: uppercase;
+        min-height: 297px;
+        max-height: 297px;
+    }
+
+    .segment-title {
+        margin-top: 35px;
+        margin-bottom: 15px;
+    }
+
+    .segment-title > h4 {
+        border-bottom: inset #eeebeb 1px;
+    }
+
+    .periode > :not(:nth-child(1)), .periode input {
+        text-align: center;
+    }
+
+    select.form-control-sm + span > span > span.select2-selection {
+        height: 26px;
+    }
+
+    .form-group {
+        margin-bottom: 8px !important;
+    }
+</style>
+{{/styles}}
+
+{{#title}}
+Pensiun Baru - Mutasi Pensiun Baru
+{{/title}}
+
+{{#mutasiForm}}
+<div class="layout-md b-b">
+    <div class="layout-column-md">
+        <div class="p-a-1 wizards">
+            <!-- BEGIN STEP FORM WIZARD -->
+            <div class="tsf-wizard mutasi-wizard">
+                <!-- BEGIN NAV STEP-->
+                <div class="tsf-nav-step">
+                    <!-- BEGIN STEP INDICATOR-->
+                    <ul class="gsi-step-indicator triangle gsi-style-1 gsi-transition ">
+                        <li class="current" data-target="step-1">
+                            <a href="javascript:;">
+                                <div class="number">1</div>
+                                <div class="desc">
+                                    <label>
+                                        Peserta Pensiun Baru
+                                    </label>
+                                    <span>
+                                        Entry Data Peserta Pensiun Baru
+                                    </span>
+                                </div>
+                            </a>
+                        </li>
+                        <li data-target="step-2">
+                            <a href="javascript:;">
+                                <div class="number">2</div>
+                                <div class="desc">
+                                    <label>
+                                        Penerima MP dan Perhitungan MP
+                                    </label>
+                                    <span>
+                                        Proses Penentuan Penerima MP dan Perhitungan MP
+                                    </span>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                    <!-- END STEP INDICATOR -->
+                </div>
+                <!-- END NAV STEP-->
+                <!-- BEGIN STEP CONTAINER -->
+                <div class="tsf-container">
+                    <!-- BEGIN CONTENT-->
+                    <form class="tsf-content" style="height:100%;" id="mutasiPensiunBaruForm"  >
+                        <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
+                        <!-- BEGIN STEP 1-->
+                        {{>pensiunBaru/entry-mutasi-pensiun-step-1}}
+                        <!-- END STEP 1-->
+                        <!-- BEGIN STEP 2-->
+                        {{>pensiunBaru/entry-mutasi-pensiun-step-2}}
+                        <!-- END STEP 2-->
+                    </form>
+                    <!-- END CONTENT-->
+                    <!-- BEGIN CONTROLS-->
+                    <div class="tsf-controls ">
+                        <!-- BEGIN PREV BUTTTON-->
+                        <button class="btn btn-primary btn-icon btn-left tsf-wizard-btn" data-type="prev" type="button">
+                            <i class="material-icons">arrow_back</i>
+                            <span>Prev</span>
+                        </button>
+                        <!-- END PREV BUTTTON-->
+                        <!-- BEGIN NEXT BUTTTON-->
+                        <button class="btn btn-primary btn-icon btn-right tsf-wizard-btn" data-type="next" type="button">
+                            <i class="material-icons">arrow_forward</i>
+                            <span>Next</span>
+                        </button>
+                        <!-- END NEXT BUTTTON-->
+                        {{#allowSave}}
+                        <button class="btn btn-info btn-icon btn-right tsf-wizard-btn" data-type="finish" type="button">
+                            <i class="material-icons">save</i>
+                            <span>Finish</span>
+                        </button>
+                        {{/allowSave}}
+                    </div>
+                    <!-- END CONTROLS-->
+                </div>
+                <!-- END STEP CONTAINER -->
+            </div>
+            <!-- END STEP FORM WIZARD -->
+        </div>
+    </div>
+</div>
+{{/mutasiForm}}
+
+{{#modal}}
+<div class="modal fade keluargaPeserta-modal" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form id="keluargaPesertaForm">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title small bold" id="mutasiPensiunLabel">Form Data Keluarga</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-8">
+                            <div class="form-group row">
+                                <label for="namaLengkapKeluarga" class="col-sm-3 bold">Nama Lengkap</label>
+                                <div class="col-xs-9">
+                                    <input type="hidden" name="id" id="id">
+                                    <input class="form-control form-control-sm" type="text" name="namaLengkapKeluarga" id="namaLengkapKeluarga" style="text-transform:uppercase" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="jenisKelaminKeluarga" class="col-sm-3 bold">Jenis Kelamin</label>
+                                <div class="col-xs-9">
+                                    <select class="form-control form-control-sm" name="jenisKelaminKeluarga" id="jenisKelaminKeluarga" required>
+                                        {{#gender}}
+                                        <option value="{{id}}">{{text}}</option>
+                                        {{/gender}}
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="hubunganKeluarga" class="col-sm-3 bold">Hubungan Keluarga</label>
+                                <div class="col-xs-9">
+                                    <select class="form-control form-control-sm" name="hubunganKeluarga" id="hubunganKeluarga" required></select>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="statusKawinKeluarga" class="col-sm-3 bold">Status Kawin</label>
+                                <div class="col-xs-9">
+                                    <select class="form-control form-control-sm" name="statusKawinKeluarga" id="statusKawinKeluarga"></select>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="tglLahirKeluarga" class="col-sm-3 bold">Tanggal Lahir</label>
+                                <div class="col-xs-9">
+                                    <input autocomplete="off" placeholder="dd/mm/yyyy" class="form-control form-control-sm text-sm" type="text" name="tglLahirKeluarga" id="tglLahirKeluarga" data-provide="datepicker" data-date-format="dd/mm/yyyy" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="tglMenikahKeluarga" class="col-sm-3 bold">Tanggal Menikah</label>
+                                <div class="col-xs-9">
+                                    <input autocomplete="off" placeholder="dd/mm/yyyy" class="form-control form-control-sm text-sm" type="text" name="tglMenikahKeluarga" id="tglMenikahKeluarga" data-provide="datepicker" data-date-format="dd/mm/yyyy">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="tglCeraiKeluarga" class="col-sm-3 bold">Tanggal Cerai</label>
+                                <div class="col-xs-9">
+                                    <input autocomplete="off" placeholder="dd/mm/yyyy" class="form-control form-control-sm text-sm" type="text" name="tglCeraiKeluarga" id="tglCeraiKeluarga" data-provide="datepicker" data-date-format="dd/mm/yyyy">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="tglMeninggalKeluarga" class="col-sm-3 bold">Tanggal Meniggal</label>
+                                <div class="col-xs-9">
+                                    <input autocomplete="off" placeholder="dd/mm/yyyy" class="form-control form-control-sm text-sm" type="text" name="tglMeninggalKeluarga" id="tglMeninggalKeluarga" data-provide="datepicker" data-date-format="dd/mm/yyyy">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary btn-sm">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade ahliWarisAnak-modal" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="ahliWarisForm">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title small bold" id="ahliWarisLabel">Pilih Ahli Waris</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group row">
+                                <label for="ahliWarisAnak" class="col-sm-3 bold">Ahli Waris</label>
+                                <div class="col-xs-9">
+                                    <select class="form-control form-control-sm" name="ahliWarisAnak" id="ahliWarisAnak" required>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a class="btn btn-secondary btn-sm" id="btnCloseAhliWaris">Close</a>
+                    <button type="button" class="btn btn-primary btn-sm" id="btnSaveAhliWaris">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{{/modal}}
+
+{{#scripts}}
+<script src="{{contextPath}}/assets/vendor/datatables/media/js/jquery.dataTables.js"></script>
+<script src="{{contextPath}}/assets/vendor/datatables/media/js/dataTables.bootstrap4.js"></script>
+<script src="{{contextPath}}/assets/vendor/select2/js/select2.js"></script>
+<script src="{{contextPath}}/assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+<script src="{{contextPath}}/assets/vendor/jquery-validation/dist/jquery.validate.js"></script>
+<script src="{{contextPath}}/assets/scripts/helpers/tsf/js/tsf-wizard-plugin.js"></script>
+<script src="{{contextPath}}/assets/vendor/parsley/parsley.min.js"></script>
+<script src="{{contextPath}}/assets/vendor/sweetalert/sweetalert.min.js"></script>
+
+<script type="text/javascript">
+    const dataKeluargaPeserta = {{{dataKeluargaPeserta}}};
+
+    const golonganSelectTemplate = "${namaGolongan}/${jabatan}";
+    const agamaSelectTemplate = "${namaAgama}";
+    const alasanHentiSelectTemplate = "${keterangan}";
+    const predikatPemberhentianSelectTemplate = "${namaPemberhentian}";
+    const cabangKpwBISelectTemplate = "${namaKantorBayar}";
+    const jenisMPSelectTemplate = "${namaKategoriPensiun}";
+    const pilihanUsiaBayarMPSelectTemplate = "${namaUsiaBayar}";
+    const negaraSelectTemplate = "${namaNegara}";
+    const provinsiSelectTemplate = "${namaProvinsi}";
+    const kotaSelectTemplate = "${namaKota}";
+    const kecamatanSelectTemplate = "${namaKecamatan}";
+    const kelurahanSelectTemplate = "${namaKelurahan}";
+    const kategoriCatatanSelectTemplate = "${namaKategoriCatatan}";
+    const kategoriPenerimaSelectTemplate = "${namaKategoriPenerima}";
+    const statusKawinSelectTemplate = "${statusKawin}";
+    const dateFormat = "DD/MM/YYYY";
+
+    $('#rtPenerimaMP').keyup(function(){
+        $(this).val($(this).val().replace(/[^\d]/,''));
+    });
+    $('#rwPenerimaMP').keyup(function(){
+        $(this).val($(this).val().replace(/[^\d]/,''));
+    });
+    $('#periodeMutasi').keyup(function(){
+        $(this).val($(this).val().replace(/[^\d]/,''));
+    });
+
+    let keluargaPesertaTable = $('.dataTable').DataTable({
+        searching: false,
+        paging: false,
+        lengthChange: false,
+        info: false,
+        data: dataKeluargaPeserta,
+        drawCallback: (settings) => {
+            if ($("#tglMeninggal").val() && settings.aoData.length === 1 && settings.aoData[0]._aData.kategoriPenerima.id === 11) {
+                $("[name=statusPengembalianMPS]:not(#statusPengembalianMPS3)").prop("disabled", "disabled");
+                $("[name=statusPengembalianMPS]").removeAttr("checked");
+                $("#statusPengembalianMPS3").prop("checked", true);
+                $("#statusPengembalianMPS3").change();
+            } else {
+                $("[name=statusPengembalianMPS]").removeAttr("disabled");
+            }
+        },
+        'columns': [
+            {
+                "data": "id",
+                "width": "50px"
+            },
+            {
+                "data": "namaKeluarga",
+                "width": "250px"
+            },
+            {
+                "data": "jenisKelamin",
+                "width": "70px"
+            },
+            {
+                "data": "kategoriPenerima",
+                "width": "70px"
+            },
+            {
+                "data": "tglLahir",
+                "width": "100px"
+            },
+            {
+                "data": "tglMenikah",
+                "width": "100px"
+            },
+            {
+                "data": "tglCerai",
+                "width": "100px"
+            },
+            {
+                "data": "tglWafat",
+                "width": "100px"
+            },
+            {
+                "data": "tglUsia25",
+                "width": "100px"
+            },
+            {
+                "data": "statusKawin",
+                "width": "100px"
+            },
+            {
+                "data": "id",
+                "width": "50px"
+            },
+        ],
+        'columnDefs': [
+            {
+                "targets": 0,
+                "render": function(data, type, row, meta) {
+                    return meta.row + 1;
+                }
+            },
+            {
+                "targets": 2,
+                "render": function(data, type, row, meta) {
+                    return data && genderText(data);
+                }
+            },
+            {
+                "targets": 3,
+                "render": function(data, type, row, meta) {
+                    return data && data.namaKategoriPenerima;
+                }
+            },
+            {
+                "targets": [4, 5, 6, 7, 8],
+                "render": function(data, type, row, meta) {
+                    return data && moment(data).format("DD/MM/YYYY");
+                }
+            },
+            {
+                "targets": 9,
+                "render": function(data, type, row, meta) {
+                    return data && data.statusKawin;
+                }
+            },
+            {
+                "targets": 10,
+                "data": "id",
+                "className": "action-box",
+                "render": function(data, type, row, meta){
+                    return `<a class='btn btn-info btn-sm btn-icon btn-edit' onclick='displayEditKeluarga(${meta.row})'><i class='material-icons'>edit</i> Edit</a><a class='btn btn-danger btn-sm btn-icon btn-edit' onclick='deleteKeluarga(${meta.row})'><i class='material-icons'>delete</i> Hapus</a>`;
+                }
+            }
+        ]
+    });
+
+    let mutasiPensiunBaruForm = $("#mutasiPensiunBaruForm").validate({
+        submitHandler: function(e) {
+
+        },
+        errorPlacement: function (error, element) {
+            let elem = $(element);
+            if (element.is("[aria-hidden]")) {
+                elem = element.siblings().last();
+            } else if (element.is("[type=radio]")) {
+                elem = $(`[name=${elem.attr("name")}`).last().parent();
+            }
+            error.insertAfter(elem);
+        },
+    });
+
+    let keluargaPesertaForm = $("#keluargaPesertaForm").validate({
+        submitHandler: function(e) {
+            saveKeluarga();
+        },
+        errorPlacement: function (error, element) {
+            let elem = $(element);
+            if (element.is("[aria-hidden]")) {
+                elem = element.siblings()
+            }
+            error.insertAfter(elem);
+        },
+        rules: {
+            hubunganKeluarga: {
+                statusKawin: true
+            }
+        }
+    });
+
+    let ahliWarisForm = $("#ahliWarisForm").validate({
+        submitHandler: function(e) {
+            perhitunganMP();
+        },
+        errorPlacement: function (error, element) {
+            let elem = $(element);
+            if (element.is("[aria-hidden]")) {
+                elem = element.siblings()
+            }
+            error.insertAfter(elem);
+        }
+    });
+
+    const statusKeluargaCheck = (value, element, params, isMessage) => {
+        let isValid = true
+        let message = "";
+        if ([2, 20].includes(parseInt(value))) {
+            /*if ($('#jenisKelamin').val() === "W") {
+                message = "Suami tidak boleh lebih dari 1";
+                isValid = keluargaPesertaTable.rows().data().filter((d) => {
+                    return [2, 20].includes(d.kategoriPenerima.id) && $("#id").val() !== d.id + ""
+                }).length === 0;
+            }*/
+
+            if ($('#jenisKelamin').val() === $("#jenisKelaminKeluarga").val()) {
+                message = `Jenis kelamin peserta dan ${$('#jenisKelamin').val() === "W" ? "Suami" : "Istri"} tidak boleh sama`;
+                isValid = false
+            }
+        }
+        if (isMessage) {
+            return message;
+        }
+        return isValid;
+    };
+
+    jQuery.validator.addMethod("statusKawin", function(value, element, params) {
+        return this.optional(element) || statusKeluargaCheck(value, element, params, false);
+    }, function(error, element) {
+        return error && statusKeluargaCheck($(element).val(), element, true, true);
+    });
+
+    const wizard = $('.mutasi-wizard').tsfWizard({
+        stepEffect: 'slideLeftRight',
+        stepStyle: 'style12',
+        navPosition: 'top',
+        stepTransition: true,
+        showButtons: true,
+        showStepNum: true,
+        prevBtn: '<i class="material-icons">arrow_back</i> Sebelumnya',
+        nextBtn: 'Selanjutnya <i class="material-icons">arrow_forward</i>',
+        finishBtn: '<i class="material-icons">save</i> {{^mutasiForm.mutasiId}}Simpan{{/mutasiForm.mutasiId}}{{#mutasiForm.mutasiId}}Rubah{{/mutasiForm.mutasiId}}',
+        disableSteps: 'all', //all | after_current | before_current | none
+        onNextClick: function (e, from, to) {
+            $("#mutasiPensiunBaruForm").valid();
+            if (mutasiPensiunBaruForm.checkForm()) {
+                {{#statusForm}}
+                    const penerima = {
+                        id: $('#nip').val(),
+                        kategoriPenerima: 1,
+                        statusKawin: $('#statusKawin').val(),
+                        jenisKelamin: $('#jenisKelamin').val(),
+                        namaKeluarga: $('#nama').val(),
+                        nip: $('#nip').val(),
+                        tglLahir: $("#tglLahir").val(),
+                        tglMeninggal: $("#tgMeninggal").val()
+                    };
+
+                    perhitunganMP(penerima);
+                {{/statusForm}}
+                {{^statusForm}}
+                    const penerima = searchPenerima();
+
+                    if (penerima) {
+                        perhitunganMP(penerima);
+                    } else {
+                        const listAnak = keluargaPesertaTable.rows().data().filter((data) => ![2, 20, 11].includes(data.kategoriPenerima.id));
+                        if (listAnak.length == 0){
+                            swal({title: "Informasi", text: "Mohon Input Data Ahli Waris Terlebih Dahulu", icon: "warning", button: "OK"}).then(function(){ wizard.goto(0) });
+
+                        }else{
+                            const selectAhliWarisAnak = $('#ahliWarisAnak');
+                            selectAhliWarisAnak.select2({
+                                placeholder: "Pilih Ahli Waris",
+                                width: "100%",
+                                data: listAnak.map(a => ({
+                                    id: a.id,
+                                    text: a.namaKeluarga
+                                }))
+                            });
+
+                            $(".ahliWarisAnak-modal").modal("show");
+                        }
+                    }
+                {{/statusForm}}
+
+            } else {
+                setTimeout(() => {
+                    wizard.goto(from);
+                }, 100);
+            }
+        },
+        onPrevClick: function (e) {
+            console.log('onPrevClick');
+        },
+        onFinishClick: function (e) {
+            $("#mutasiPensiunBaruForm").valid();
+            if (mutasiPensiunBaruForm.checkForm()) {
+                const penerima = searchPenerima();
+                const jsonData = formToJSON($("form#mutasiPensiunBaruForm")[0].elements);
+                jsonData.penerimaMP = penerima;
+                jsonData.dataKeluarga = [];
+                keluargaPesertaTable.rows().data().each((d) => {
+                    let tglLahir = d.tglLahir && moment(d.tglLahir).format(dateFormat);
+                    let tglMenikah = d.tglMenikah && moment(d.tglMenikah).format(dateFormat);
+                    let tglCerai = d.tglCerai && moment(d.tglCerai).format(dateFormat);
+                    let tglWafat = d.tglWafat && moment(d.tglWafat).format(dateFormat);
+                    let tglUsia25 = d.tglUsia25 && moment(d.tglUsia25).format(dateFormat);
+
+                    jsonData.dataKeluarga.push({
+                        id: d.id,
+                        namaKeluarga: d.namaKeluarga,
+                        jenisKelamin: d.jenisKelamin,
+                        kategoriPenerima: d.kategoriPenerima.id,
+                        tglLahir: tglLahir,
+                        tglMenikah: tglMenikah,
+                        tglCerai: tglCerai,
+                        tglWafat: tglWafat,
+                        tglUsia25: tglUsia25,
+                        statusKawin: d.statusKawin.id
+                    });
+                });
+
+                $.ajax({
+                    url: "{{contextPath}}{{mutasiPensiunPathApi}}/process",
+                    method: "POST",
+                    data: jsonData
+                }).done((response) => {
+                    swal({
+                        title: "Berhasil",
+                        text: response.message,
+                        icon: response.status,
+                        button: "OK"
+                    }).then(() => {
+                        /* Change by Irwan Nugraha */
+                        //location.reload();
+                        window.location = "{{contextPath}}{{mutasiPensiunPathIndex}}"
+                    });
+                }).error((response) => {
+                    swal({title: "Gagal", text: response.responseJSON ? response.responseJSON.message : response.message, icon: "error", button: "OK"});
+                });
+            }
+        }
+    });
+
+    const fakeId = () => {
+        var text = "";
+        var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+        for (var i = 0; i < 5; i++) {
+            text += possible.charAt(Math.floor(Math.random() * possible.length));
+        }
+
+        return text;
+    };
+
+    const displayEditKeluarga = (row) => {
+        const keluargaPeserta = keluargaPesertaTable.row(row).data();
+        $("#id").val(keluargaPeserta.id);
+        $("#namaLengkapKeluarga").val(keluargaPeserta.namaKeluarga);
+        $("#jenisKelaminKeluarga").select2('val', keluargaPeserta.jenisKelamin);
+        $("#tglCeraiKeluarga").val(keluargaPeserta.tglCerai && moment(keluargaPeserta.tglCerai).format(dateFormat));
+        $("#tglLahirKeluarga").val(keluargaPeserta.tglLahir && moment(keluargaPeserta.tglLahir).format(dateFormat));
+        $("#tglMenikahKeluarga").val(keluargaPeserta.tglMenikah && moment(keluargaPeserta.tglMenikah).format(dateFormat));
+        $("#tglMeninggalKeluarga").val(keluargaPeserta.tglWafat && moment(keluargaPeserta.tglWafat).format(dateFormat));
+        setSelectValue($("#hubunganKeluarga"), keluargaPeserta.kategoriPenerima, 'id', kategoriPenerimaSelectTemplate);
+        setSelectValue($("#statusKawinKeluarga"), keluargaPeserta.statusKawin, 'id', statusKawinSelectTemplate);
+
+        $(".keluargaPeserta-modal").modal("show");
+    };
+
+
+    const deleteKeluarga = (row) => {
+        const dataKeluarga = Array.from(keluargaPesertaTable.data());
+        dataKeluarga.splice(row, 1);
+        keluargaPesertaTable.clear();
+        keluargaPesertaTable.draw();
+        keluargaPesertaTable.rows.add(dataKeluarga);
+        keluargaPesertaTable.draw();
+    };
+
+    const saveKeluarga = () => {
+        const dataForm = formToJSON($("form#keluargaPesertaForm")[0].elements);
+        const mode = dataForm.id === "" ? "add" : "edit";
+
+        const hubunganKeluarga = $("#hubunganKeluarga").select2('data')[0];
+        const statusKawin = $("#statusKawinKeluarga").select2('data')[0];
+
+        let editableRow = mode === "add" ? null : keluargaPesertaTable.row((idx, data) => data.id + "" === dataForm.id);
+
+        const dataKeluargaForm = {
+            "namaKeluarga": dataForm.namaLengkapKeluarga,
+            "jenisKelamin": dataForm.jenisKelaminKeluarga,
+            "tglCerai": dataForm.tglCeraiKeluarga ? moment(dataForm.tglCeraiKeluarga, dateFormat) : "",
+            "tglLahir": dataForm.tglLahirKeluarga ? moment(dataForm.tglLahirKeluarga, dateFormat) : "",
+            "tglMenikah": dataForm.tglMenikahKeluarga ? moment(dataForm.tglMenikahKeluarga, dateFormat) : "",
+            "tglWafat": dataForm.tglMeninggalKeluarga ? moment(dataForm.tglMeninggalKeluarga, dateFormat) : "",
+            "tglUsia25": dataForm.tglLahirKeluarga && hubunganKeluarga && hubunganKeluarga.dataProperties.statusKategoriPenerima === "ANAK" ? moment(dataForm.tglLahirKeluarga, dateFormat).add(25, 'years') : "",
+            "kategoriPenerima": hubunganKeluarga && hubunganKeluarga.dataProperties || editableRow.data().kategoriPenerima,
+            "statusKawin": statusKawin && statusKawin.dataProperties || editableRow.data().statusKawin,
+            "active":true,
+            "nip": $("#nip").val()
+        };
+
+        if (!dataForm.id) {
+            dataKeluargaForm.id = "tmp_" + fakeId();
+            keluargaPesertaTable.row.add(dataKeluargaForm);
+        } else {
+            dataKeluargaForm.id = dataForm.id;
+            editableRow.data(dataKeluargaForm);
+        }
+
+        keluargaPesertaTable.draw();
+        $(".keluargaPeserta-modal").modal("hide");
+    };
+
+    const setUppercase = () => {
+        $('input').css("text-transform","uppercase");
+        $('select').css("text-transform","uppercase");
+        $('textarea').css("text-transform","uppercase");
+        $('option').css("text-transform","uppercase");
+    }
+
+    const disabledForm = () => {
+        $('input').attr('disabled','disabled');
+        $('select').attr('disabled','disabled');
+        $('#addPeserta').hide();
+    }
+
+    const enableForm = () => {
+        $('input').removeAttr('disabled');
+        $('select').removeAttr('disabled');
+        $("#tglLahir").prop("disabled","disabled");
+        $("#tglDicatatSebagaiPesertaDPHT").prop("disabled","disabled");
+        $("#tglBekerjaDiBI").prop("disabled","disabled");
+        $("#periodeMutasi").prop("disabled", "disabled");
+        $("#nip").prop("disabled", "disabled");
+        $("#nama").prop("disabled", "disabled");
+        $('#addPeserta').show();
+    }
+    let katMutasi = JSON.parse($('#idKategoriMutasi').val());
+    idKategoriMutasi = katMutasi.id;
+    if(idKategoriMutasi == null) {
+        $.ajax({
+            url: '{{contextPath}}{{listPeriodeSetupParameter}}',
+            dataType: 'json',
+            method: 'GET',
+            success: function (data) {
+                $('#userStamp').val(data.postModeUserStamp);
+                $('#userStamp2').val(data.postModeUserStamp);
+                $('#compName').val(data.compName);
+                $('#userValidasi').val(data.userName);
+                $('#userValidasi2').val(data.userName);
+            }
+        });
+    }else {
+
+    $.ajax({
+        url: '{{contextPath}}{{listPeriodeSetupParameter}}',
+        dataType: 'json',
+        method: 'GET',
+        success: function(data){
+            $('#userStamp').val(data.putModeUserStamp);
+            $('#userStamp2').val(data.putModeUserStamp);
+            $('#compName').val(data.compName);
+            $('#userValidasi').val(data.userName);
+            $('#userValidasi2').val(data.userName);
+        }
+    });
+    }
+    const searchPenerima = () => {
+        const tableData = keluargaPesertaTable.rows().data();
+
+        if ($("#tglMeninggal").val()) {
+            if (tableData.length === 1 && tableData[0].kategoriPenerima.id === 11) {
+                const penerima = tableData[0];
+                return {
+                    id: penerima.id,
+                    kategoriPenerima: penerima.kategoriPenerima.id,
+                    statusKawin: penerima.statusKawin.id,
+                    jenisKelamin: penerima.jenisKelamin,
+                    namaKeluarga: penerima.namaKeluarga,
+                    nip: penerima.nip,
+                    tglLahir: penerima.tglLahir && moment(penerima.tglLahir).format(dateFormat),
+                    tglMeninggal: penerima.tglWafat && moment(penerima.tglWafat).format(dateFormat)
+                }
+            } else {
+                let penerimaMP = tableData.filter((data) => [2, 20].includes(data.kategoriPenerima.id) && !(data.tglCerai) && !(data.tglWafat));
+                if (penerimaMP.length > 0) {
+                    penerimaMP.sort((a, b) => a.tglMenikah > b.tglMenikah);
+                } else {
+                    penerimaMP = tableData.filter((data) => ![2, 20, 11].includes(data.kategoriPenerima.id) && !(data.tglCerai) && moment(data.tglUsia25).isAfter(moment()));
+                }
+
+                if (penerimaMP.length > 0) {
+                    const penerima = penerimaMP[0];
+                    return {
+                        id: penerima.id,
+                        kategoriPenerima: penerima.kategoriPenerima.id,
+                        statusKawin: penerima.statusKawin.id,
+                        jenisKelamin: penerima.jenisKelamin,
+                        namaKeluarga: penerima.namaKeluarga,
+                        nip: penerima.nip,
+                        tglLahir: moment(penerima.tglLahir).format(dateFormat),
+                        tglMeninggal: moment(penerima.tglWafat).format(dateFormat)
+                    }
+                }
+            }
+        } else {
+            return {
+                id: $('#nip').val(),
+                kategoriPenerima: 1,
+                statusKawin: $('#statusKawin').val(),
+                jenisKelamin: $('#jenisKelamin').val(),
+                namaKeluarga: $('#nama').val(),
+                nip: $('#nip').val(),
+                tglLahir: $("#tglLahir").val(),
+                tglMeninggal: $("#tgMeninggal").val()
+            }
+        }
+    };
+
+    const perhitunganMP = (penerima) => {
+        loader($("body"), true);
+        const jsonData = formToJSON($("form#mutasiPensiunBaruForm")[0].elements);
+        jsonData.tglLahirPenerimaMP = jsonData.tglLahir;
+        jsonData.penerimaMP = penerima;
+        jsonData.dataKeluarga = [];
+        keluargaPesertaTable.rows().data().each((d) => {
+            let tglLahir = d.tglLahir && moment(d.tglLahir).format(dateFormat);
+            let tglMenikah = d.tglMenikah && moment(d.tglMenikah).format(dateFormat);
+            let tglCerai = d.tglCerai && moment(d.tglCerai).format(dateFormat);
+            let tglWafat = d.tglWafat && moment(d.tglWafat).format(dateFormat);
+            let tglUsia25 = d.tglUsia25 && moment(d.tglUsia25).format(dateFormat);
+
+            jsonData.dataKeluarga.push({
+                id: d.id,
+                namaKeluarga: d.namaKeluarga,
+                jenisKelamin: d.jenisKelamin,
+                kategoriPenerima: d.kategoriPenerima.id,
+                tglLahir: tglLahir,
+                tglMenikah: tglMenikah,
+                tglCerai: tglCerai,
+                tglWafat: tglWafat,
+                tglUsia25: tglUsia25,
+                statusKawin: d.statusKawin.id
+            });
+        });
+
+        $.ajax({
+            url: "{{contextPath}}{{mutasiPensiunPathApi}}/validate",
+            method: "POST",
+            data: jsonData
+        }).done((response) => {
+            loader($("body"), false);
+            if (response.status !== "success") {
+                wizard.goto(0);
+                swal({title:"Gagal",text: response.message, icon:"error", button:"OK"});
+            } else {
+                const dataForm = response.data;
+                $("#namaPenerimaMP").val(dataForm.namaPenerimaMP);
+                $("#tglLahirPenerimaMP").val(dataForm.tglLahirPenerimaMP);
+                $("#jenisKelaminPenerimaMP").val(dataForm.jenisKelaminPenerimaMP);
+                $("#namaJenisKelaminPenerimaMP").val(dataForm.namaJenisKelaminPenerimaMP);
+                $("#statusKelPenerimaPenerimaMP").val(dataForm.statusKelPenerimaPenerimaMP);
+                $("#namaStatusKelPenerimaPenerimaMP").val(dataForm.namaStatusKelPenerimaPenerimaMP);
+                $("#suskel").val(dataForm.suskel);
+                $("#namaSuskel").val(dataForm.namaSuskel);
+                $("#usiaPesertaSaatBerhenti").val(dataForm.usiaPesertaSaatBerhenti).trigger('input');
+                $("#usiaPesertaSaatBerhentiPembulatan").val(dataForm.usiaPesertaSaatBerhentiPembulatan).trigger('input');
+                $("#usiaPenerimaSaatDiBayar").val(dataForm.usiaPenerimaSaatDiBayar).trigger('input');
+                $("#usiaPenerimaSaatDiBayarPembulatan").val(dataForm.usiaPenerimaSaatDiBayarPembulatan).trigger('input');
+                $("#masaKerjaSaatHenti").val(dataForm.masaKerjaSaatHenti).trigger('input');
+                $("#masaKerjaSaatHentiPembulatan").val(dataForm.masaKerjaSaatHentiPembulatan).trigger('input');
+                $("#masaKerjaVeteran").val(dataForm.masaKerjaVeteran).trigger('input');
+                $("#masaKerjaVeteranPembulatan").val(dataForm.masaKerjaVeteranPembulatan).trigger('input');
+                if ("{{mutasiForm.isPensiunTunda}}" === "true" && $("#jenisMP").val() === "PM") {
+                    $("#masaKerjaTambahan").val("000000").trigger('input');
+                    $("#masaKerjaTambahanPembulatan").val("0000").trigger('input');
+                    $("#totalMasaKerja").val(dataForm.masaKerjaSaatHenti).trigger('input');
+                    $("#totalMasaKerjaPembulatan").val(dataForm.masaKerjaSaatHentiPembulatan).trigger('input');
+                }else{
+                    $("#masaKerjaTambahan").val(dataForm.masaKerjaTambahan).trigger('input');
+                    $("#masaKerjaTambahanPembulatan").val(dataForm.masaKerjaTambahanPembulatan).trigger('input');
+                    $("#totalMasaKerja").val(dataForm.totalMasaKerja).trigger('input');
+                    $("#totalMasaKerjaPembulatan").val(dataForm.totalMasaKerjaPembulatan).trigger('input');
+                }
+                $("#masaKerjaMP").val(dataForm.masaKerjaMP).trigger('input');
+                $("#faktorPengurang1").val(dataForm.faktorPengurang1);
+                $("#faktorPengurang2").val(dataForm.faktorPengurang2);
+                $("#faktorNS1").val(dataForm.faktorNS1);
+                $("#faktorNS2").val(dataForm.faktorNS2);
+                $("#phDP1").val(dataForm.phDP1).trigger('input');
+                $("#mpPerbulan").val(dataForm.mpPerbulan).trigger('input');
+                $("#mpsPerbulanSetelah20Persen").val(dataForm.mpsPerbulanSetelah20Persen).trigger('input');
+                $("#mps20persen").val(dataForm.mps20persen).trigger('input');
+                $("#mpsPerbulanSetelah10Juta").val(dataForm.mpsPerbulanSetelah10Juta).trigger('input');
+                $("#mps10Juta").val(dataForm.mps10Juta).trigger('input');
+                $("#mpyd").val(dataForm.mpyd).trigger('input');
+                $("#mpBulanKe13").val(dataForm.mpBulanKe13).trigger('input');
+                $("#mps100Persen").val(dataForm.mps100Persen).trigger('input');
+                $("#mps100PersenPembulatan").val(dataForm.mps100PersenPembulatan).trigger('input');
+                $("#mpKurangBayar").val(dataForm.mpKurangBayar).trigger('input');
+
+                $("#alamatIsDalamNegeri").on('change', (e) => {
+                    if ($(e.target).is(":checked")) {
+                        $("#provinsiPenerimaMP").prop("required", "required");
+                        $("#kotaPenerimaMP").prop("required", "required");
+                        $("#kodePosPenerimaMP").prop("required", "required");
+                        $("#kecamatanPenerimaMP").prop("required", "required");
+                        $("#kelurahanPenerimaMP").prop("required", "required");
+                        $("#rtPenerimaMP").prop("required", "required");
+                        $("#rwPenerimaMP").prop("required", "required");
+                        $("#alamatLengkap").prop("required", "required");
+                        $("#alamatLuarNegeriPenerimaMP").removeAttr("required");
+                        $("#negaraPenerimaMP").removeAttr("required");
+                    } else {
+                        $("#provinsiPenerimaMP").removeAttr("required");
+                        $("#kotaPenerimaMP").removeAttr("required");
+                        $("#kodePosPenerimaMP").removeAttr("required");
+                        $("#kecamatanPenerimaMP").removeAttr("required");
+                        $("#kelurahanPenerimaMP").removeAttr("required");
+                        $("#rtPenerimaMP").removeAttr("required");
+                        $("#rwPenerimaMP").removeAttr("required");
+                        $("#alamatLengkap").removeAttr("required");
+                        $("#alamatLuarNegeriPenerimaMP").prop("required", "required");
+                        $("#negaraPenerimaMP").removeAttr("required");
+                    }
+                });
+
+                $("#alamatIsDalamNegeri").change();
+
+                $("#emailPenerimaMP").prop("required", "required");
+                $("#noHPPenerimaMP").prop("required", "required");
+                $("#noTlpPenerimaMP").prop("required", "required");
+                $("#kategoriCatatan").prop("required", "required");
+                $("#catatan").prop("required", "required");
+                $("[name=statusCatatan]").prop("disabled", "disabled");
+                if ("{{mutasiForm.isPensiunTunda}}" === "true"){
+                    $('#btnCatat').hide();
+                    $('#btnForm').hide();
+                }else {
+                    $('#btnCatat').show();
+                    $('#btnForm').show();
+                }
+                if ("{{isStaff}}" === "true") {
+                    $("#statusCatatan1").removeAttr("disabled");
+                    $("#statusCatatan4").removeAttr("disabled");
+                    {{#mutasiForm.statusCatatan}}
+                    $("#statusCatatan{{.}}").prop("checked", "checked");
+                    {{/mutasiForm.statusCatatan}}
+                    {{^mutasiForm.statusCatatan}}
+                      if ($("#statusCatatan1").prop("checked", "checked")){
+                          $('#btnCatat').hide();
+                          $('#btnForm').hide();
+                        }else {
+                          $('#btnCatat').show();
+                          $('#btnForm').show();
+                        }
+
+                    {{/mutasiForm.statusCatatan}}
+                } else if ("{{isPejabat}}" === "true") {
+                    $("#statusCatatan2").removeAttr("disabled");
+                    $("#statusCatatan3").removeAttr("disabled");
+                    $("#statusCatatan4").removeAttr("disabled");
+                    {{#mutasiForm.statusCatatan}}
+                      var radioValue = $("#statusCatatan{{.}}").prop("checked", "checked");
+                        if(radioValue === "1"){
+                            $('#btnCatat').hide();
+                            $('#btnForm').hide();
+                        }else{
+                            $('#btnCatat').show();
+                            $('#btnForm').show();
+                        }
+                    {{/mutasiForm.statusCatatan}}
+                }
+                if ($("[name='statusPengembalianMPS']:checked").val() === '4' || $("[name='statusPengembalianMPS']:checked").val() === '2'){
+                    if (dataForm.mps10Juta < 0){
+                        swal({title:"Perhatian",text: "Nilai MPS minus", icon:"warning", button:"OK"});
+                        wizard.goto(0);
+                    }
+                }
+
+            }
+        }).error(() => {
+            loader($("body"), false);
+            swal({title:"Gagal",text: "Terjadi kesalahan", icon:"error", button:"OK"});
+            wizard.goto(0);
+        })
+    };
+
+    $(document).ready(function() {
+        const pengembalianMPS2Section = $(".pengambilan-mps-2");
+        const informasiPemberhentianSection = $(".informasi-pemberhentian");
+        const tglLahirElmnt = $("#tglLahir");
+        const tglBerhentiBerkerjaElmnt = $("#tglBerhentiBekerjaDiBI");
+        const alasanHentiElmt = $("#alasanHenti");
+        const statusBayarMPElmnt = $("[name=statusBayarMP]");
+        const statusBayarMPDibayarElmnt = $("#statusBayarMP1");
+        const statusBayarMPBerhentiElmnt = $("#statusBayarMP6");
+        const statusBayarMPTundaElmnt = $("#statusBayarMP4");
+        const jenisMPElmnt = $('#jenisMP');
+        const pilihanUsiaBayarElmnt = $("#pilihanUsiaBayarMP");
+        const tglTundaJatuhTempoElmnt = $("#tglTundaJatuhTempo");
+        const tglMeninggalElmnt = $("#tglMeninggal");
+        const tglAwalBayarElmnt = $("#tglAwalBayarMP");
+        const tgllInputElmnt = $("#tanggalInput");
+        const tglMPBulan13Elmnt = $("#tglMPBulan13");
+        const tglHentiBayarElmnt = $("#tglHentiBayar");
+        const statusPengembalianMPSElmt = $("[name=statusPengembalianMPS]");
+        const alamatIsDalamNegeriElmnt = $("#alamatIsDalamNegeri");
+        const alamatDalamNegeriElmnt = $(".alamatDalamNegeri");
+        const alamatLuarNegeriElmnt = $(".alamatLuarNegeri");
+        const gajiPokokTerakhirElmnt = $("#gajiPokokTerakhir");
+        const upahVeteranElmnt = $("#upahVeteran");
+        const phDP1Elmnt = $("#phDP1");
+        const mpPerbulanElmnt = $("#mpPerbulan");
+        const mpsPerbulanSetelah20PersenElmnt = $("#mpsPerbulanSetelah20Persen");
+        const mps20persenElmnt = $("#mps20persen");
+        const mpsPerbulanSetelah10JutaElmnt = $("#mpsPerbulanSetelah10Juta");
+        const mps10JutaElmnt = $("#mps10Juta");
+        const mpydElmnt = $("#mpyd");
+        const mpBulanKe13Elmnt = $("#mpBulanKe13");
+        const mpKurangBayarElmnt = $("#mpKurangBayar");
+        const mps100PersenElmnt = $("#mps100Persen");
+        const periodeMutasiMpElmnt = $("#periodeMutasiMp");
+        const mps100PersenPembulatanElmnt = $("#mps100PersenPembulatan");
+        const isSKBIElmnt = $("#isSKBI");
+        const isSPBIElmnt = $("#isSPBI");
+        const tglSKBIElmnt = $("#tanggalSKBI");
+        const nomorSKBIElmnt = $("#nomorSKBI");
+        const selectGenderElmnt = $('#jenisKelamin');
+
+
+        {{#mutasiForm.statusBayarMP}}
+            $("#statusBayarMP{{.}}").prop("checked", "checked");
+        {{/mutasiForm.statusBayarMP}}
+
+        {{#mutasiForm.statusPengembalianMPS}}
+            $("#statusPengembalianMPS{{.}}").prop("checked", "checked");
+        {{/mutasiForm.statusPengembalianMPS}}
+
+        {{#mutasiForm.statusCatatan}}
+            $("#statusCatatan{{.}}").prop("checked", "checked");
+            {{/mutasiForm.statusCatatan}}
+
+        isSKBIElmnt.on('change', (e) => {
+            if ($(e.target).is(":checked")) {
+                tglSKBIElmnt.removeAttr("disabled");
+                nomorSKBIElmnt.removeAttr("readonly");
+                tglSKBIElmnt.prop("required", "required");
+                nomorSKBIElmnt.prop("required", "required");
+            } else {
+                tglSKBIElmnt.val(null);
+                nomorSKBIElmnt.val(null);
+                tglSKBIElmnt.prop("disabled", "disabled");
+                nomorSKBIElmnt.prop("readonly", "readonly");
+                tglSKBIElmnt.removeAttr("required");
+                nomorSKBIElmnt.removeAttr("required");
+            }
+            tglSKBIElmnt.valid();
+            nomorSKBIElmnt.valid();
+        });
+
+        isSKBIElmnt.change();
+
+        isSPBIElmnt.on('change', (e) => {
+            const tanggalSuratPengantarBI = $("#tanggalSuratPengantarBI");
+            const nomorSuratPengantarBI = $("#nomorSuratPengantarBI");
+            if ($(e.target).is(":checked")) {
+                tanggalSuratPengantarBI.removeAttr("disabled");
+                nomorSuratPengantarBI.removeAttr("readonly");
+                tanggalSuratPengantarBI.prop("required", "required");
+                nomorSuratPengantarBI.prop("required", "required");
+            } else {
+                tanggalSuratPengantarBI.val(null);
+                nomorSuratPengantarBI.val(null);
+                tanggalSuratPengantarBI.prop("disabled", "disabled");
+                nomorSuratPengantarBI.prop("readonly", "readonly");
+                tanggalSuratPengantarBI.removeAttr("required");
+                nomorSuratPengantarBI.removeAttr("required");
+            }
+            tanggalSuratPengantarBI.valid();
+            nomorSuratPengantarBI.valid();
+        });
+
+        isSPBIElmnt.change();
+
+        gajiPokokTerakhirElmnt.number(true, 2);
+        upahVeteranElmnt.number(true, 2);
+        phDP1Elmnt.number(true, 2);
+        mpPerbulanElmnt.number(true, 2);
+        mpsPerbulanSetelah20PersenElmnt.number(true, 2);
+        mps20persenElmnt.number(true, 2);
+        mpsPerbulanSetelah10JutaElmnt.number(true, 2);
+        mps10JutaElmnt.number(true, 2);
+        mpydElmnt.number(true, 2);
+        mpBulanKe13Elmnt.number(true, 2);
+        mpKurangBayarElmnt.number(true, 2);
+        mps100PersenElmnt.number(true, 2);
+        mps100PersenPembulatanElmnt.number(true, 2);
+        $("#noHPPenerimaMP").mask("999999999999");
+        $("#noTlpPenerimaMP").mask("999999999999");
+        $(".periode input").mask("## ## ##");
+
+        alamatDalamNegeriElmnt.hide();
+        alamatLuarNegeriElmnt.hide();
+
+        alamatIsDalamNegeriElmnt.on('change', (e) => {
+            if ($(e.target).is(":checked")) {
+                alamatDalamNegeriElmnt.show();
+                alamatLuarNegeriElmnt.hide();
+            } else {
+                alamatDalamNegeriElmnt.hide();
+                alamatLuarNegeriElmnt.show();
+            }
+        });
+
+        if ("{{alamatIsDalamNegeri}}" === "false"){
+            alamatIsDalamNegeriElmnt.removeAttr("checked");
+        } else {
+            alamatIsDalamNegeriElmnt.prop("checked", "checked");
+        }
+                alamatIsDalamNegeriElmnt.change();
+
+        const statusPengembalianMPS = (statusPengembalianMPS) => {
+            if (statusPengembalianMPS === "3"){
+                $(".mp-sekaligus").show();
+                $(".mp-bulanan").show();
+            }
+        };
+
+        statusPengembalianMPS("{{statusPengembalianMPS}}");
+
+        $(".keluargaPeserta-modal").on("hide.bs.modal", () => {
+            keluargaPesertaForm.resetForm();
+        });
+
+        $(".ahliWarisAnak-modal").on("hide.bs.modal", () => {
+
+        });
+
+        $('#btnCloseAhliWaris').click(function(){
+            /*if ($("#ahliWarisAnak").val() == "" || $("#ahliWarisAnak").val() == null){
+
+            }else{
+                const ahliWaris = $("#ahliWarisAnak").val();
+                const listAnak = keluargaPesertaTable.rows().data().filter((data) => {return data.id === ahliWaris})[0];
+                const penerima = {
+                    id: listAnak.id,
+                    kategoriPenerima: listAnak.kategoriPenerima.id,
+                    statusKawin: listAnak.statusKawin.id,
+                    jenisKelamin: listAnak.jenisKelamin,
+                    namaKeluarga: listAnak.namaKeluarga,
+                    nip: listAnak.nip,
+                    tglLahir: listAnak.tglLahir && moment(listAnak.tglLahir).format(dateFormat),
+                    tglMeninggal: listAnak.tglWafat && moment(listAnak.tglWafat).format(dateFormat)
+                };
+                perhitunganMP(penerima);
+            }*/
+            wizard.goto(0);
+            $(".ahliWarisAnak-modal").modal("hide");
+        });
+
+        $('#btnSaveAhliWaris').click(() =>{
+            if ($("#ahliWarisAnak").val() == "" || $("#ahliWarisAnak").val() == null){
+                wizard.goto(0);
+            }else{
+                const ahliWaris = $("#ahliWarisAnak").val();
+                const listAnak = keluargaPesertaTable.rows().data().filter((data) => {return data.id === ahliWaris})[0];
+                const penerima = {
+                    id: listAnak.id,
+                    kategoriPenerima: listAnak.kategoriPenerima.id,
+                    statusKawin: listAnak.statusKawin.id,
+                    jenisKelamin: listAnak.jenisKelamin,
+                    namaKeluarga: listAnak.namaKeluarga,
+                    nip: listAnak.nip,
+                    tglLahir: listAnak.tglLahir && moment(listAnak.tglLahir).format(dateFormat),
+                    tglMeninggal: listAnak.tglWafat && moment(listAnak.tglWafat).format(dateFormat)
+                };
+                perhitunganMP(penerima);
+            }
+            $(".ahliWarisAnak-modal").modal("hide");
+
+        });
+
+        $('#addPeserta').click(() => {
+            $(".keluargaPeserta-modal").modal("show");
+            keluargaPesertaForm.resetForm();
+            $("#id").val("");
+            $("#namaLengkapKeluarga").val("");
+            $("#jenisKelaminKeluarga").val(null).trigger('change');
+            $("#tglCeraiKeluarga").val("");
+            $("#tglLahirKeluarga").val("");
+            $("#tglMenikahKeluarga").val("");
+            $("#tglMeninggalKeluarga").val("");
+            $("#hubunganKeluarga").val(null).trigger('change');
+            $("#statusKawinKeluarga").val(null).trigger('change');
+        });
+
+        //select2 init
+        const agamaSelect = $('#agama').select2({
+            ajax: {
+                url: '{{contextPath}}{{masterAgamaPathApi}}/dropdown',
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    return {
+                        searchParam: params.term, // search term
+                        valueColumn: "id",
+                        textColumn: agamaSelectTemplate,
+                        searchColumn: [
+                            "namaAgama"
+                        ]
+                    };
+                },
+                processResults: function(data){
+                    return {
+                        results: data
+                    };
+                }
+            },
+            width: "100%",
+            placeholder: 'Pilih Agama'
+        });
+        setSelectValue(agamaSelect, {{{agamaDefaultSelect}}}, 'id', agamaSelectTemplate);
+
+        const golonganSelect = $('#golongan').select2({
+            ajax: {
+                url: '{{contextPath}}{{golonganPathApi}}/dropdown',
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    return {
+                        searchParam: params.term, // search term
+                        valueColumn: "id",
+                        textColumn: golonganSelectTemplate,
+                        searchColumn: [
+                            "namaGolongan",
+                            "namaGolonganLama",
+                            "jabatan",
+                            "eselon",
+                            "pangkat"
+                        ]
+                    };
+                },
+                processResults: function(data){
+                    return {
+                        results: data
+                    };
+                }
+            },
+            cache: true,
+            width: "80%",
+            placeholder: 'Pilih Golongan'
+        });
+        setSelectValue(golonganSelect, {{{golonganDefaultSelect}}}, 'id', golonganSelectTemplate);
+
+        const alasanHentiSelect = $('#alasanHenti').select2({
+            ajax: {
+                url: '{{contextPath}}{{alasanHentiPathApi}}/dropdown',
+                dataType: 'json',
+                delay: 250,
+                cache: true,
+                data: function (params) {
+                    return {
+                        searchParam: params.term, // search term
+                        valueColumn: "id",
+                        textColumn: alasanHentiSelectTemplate,
+                        searchColumn: [
+                            "keterangan"
+                        ]
+                    };
+                },
+                processResults: function(data){
+                    return {
+                        results: data
+                    };
+                }
+            },
+            width: "100%",
+            placeholder: 'Pilih Alasan Henti'
+        });
+        setSelectValue(alasanHentiSelect, {{{alasanHentiDefaultSelect}}}, 'id', alasanHentiSelectTemplate);
+
+        const predikatPemberhentianSelect = $('#predikatPemberhentian').select2({
+            ajax: {
+                url: '{{contextPath}}{{predikatPemberhentianPathApi}}/dropdown',
+                dataType: 'json',
+                delay: 250,
+                cache: true,
+                data: function (params) {
+                    return {
+                        searchParam: params.term, // search term
+                        valueColumn: "id",
+                        textColumn: predikatPemberhentianSelectTemplate,
+                        searchColumn: [
+                            "namaPemberhentian"
+                        ]
+                    };
+                },
+                processResults: function(data){
+                    return {
+                        results: data
+                    };
+                }
+            },
+            width: "100%",
+            placeholder: 'Pilih Predikat Pemberhentian'
+        });
+        setSelectValue(predikatPemberhentianSelect, {{{predikatPemberhentianDefaultSelect}}}, 'id', predikatPemberhentianSelectTemplate);
+
+        const cabangKpwBISelect = $('#cabangKpwBI').select2({
+            ajax: {
+                url: '{{contextPath}}{{cabangKpwBIPathApi}}/dropdown',
+                dataType: 'json',
+                delay: 250,
+                cache: true,
+                data: function (params) {
+                    return {
+                        searchParam: params.term, // search term
+                        valueColumn: "id",
+                        textColumn: cabangKpwBISelectTemplate,
+                        searchColumn: [
+                            "namaKantorBayar",
+                            "alamatSurat1",
+                            "alamatSurat2",
+                            "alamatSurat3",
+                            "alamatSurat4",
+                        ]
+                    };
+                },
+                processResults: function(data){
+                    return {
+                        results: data
+                    };
+                }
+            },
+            width: "100%",
+            placeholder: 'Pilih Kantor Cabang'
+        });
+        setSelectValue(cabangKpwBISelect, {{{cabangKpwBIDefaultSelect}}}, 'id', cabangKpwBISelectTemplate);
+
+        const jenisMPSelect = jenisMPElmnt.select2({
+            ajax: {
+                url: '{{contextPath}}{{jenisMPPathApi}}/dropdown',
+                dataType: 'json',
+                delay: 250,
+                cache: true,
+                data: function (params) {
+                    return {
+                        searchParam: params.term, // search term
+                        valueColumn: "id",
+                        textColumn: jenisMPSelectTemplate,
+                        searchColumn: [
+                            "namaKategoriPensiun"
+                        ]
+                    };
+                },
+                processResults: function(data) {
+
+                    //Jika Alasan Henti nya Meninggal Dunia , id = 3
+                    if (['3'].includes(alasanHentiElmt.val().trim()) && !tglMeninggalElmnt.val()) {
+                        data = data.map((d) => {
+                            return {
+                                "dataProperties": d.dataProperties,
+                                "id": d.id,
+                                "text": d.text,
+                                "disabled": !['PM'].includes(d.id)
+                            }
+                        });
+                    }else if (['2'].includes(alasanHentiElmt.val().trim())) {
+                        data = data.map((d) => {
+                            return {
+                                "dataProperties": d.dataProperties,
+                                "id": d.id,
+                                "text": d.text,
+                                "disabled": !['PC'].includes(d.id)
+                            }
+                        });
+                    }
+                    return {
+                        results: data
+                    };
+                }
+            },
+            width: "100%",
+            placeholder: 'Pilih Jenis Pensiun'
+        });
+        setSelectValue(jenisMPSelect, {{{jenisMPDefaultSelect}}}, 'id', jenisMPSelectTemplate);
+
+        const pilihanUsiaBayarMPSelect = $('#pilihanUsiaBayarMP').select2({
+            ajax: {
+                url: '{{contextPath}}{{pilihanUsiaBayarMPPathApi}}/dropdown',
+                dataType: 'json',
+                delay: 250,
+                cache: true,
+                data: function (params) {
+                    return {
+                        searchParam: params.term, // search term
+                        valueColumn: "id",
+                        textColumn: pilihanUsiaBayarMPSelectTemplate,
+                        searchColumn: [
+                            "namaUsiaBayar"
+                        ]
+                    };
+                },
+                processResults: function(data) {
+                    return {
+                        results: data.map((d) => {
+                            return {
+                                "dataProperties": d.dataProperties,
+                                "id": d.id,
+                                "text": d.text,
+                                "disabled": jenisMPElmnt.val() === "PM" ? (d.text.indexOf('Meninggal') === -1) : d.text.indexOf('Meninggal') > -1
+                            }
+                        })
+                    };
+                }
+            },
+            width: "100%",
+            placeholder: 'Pilih Usia Bayar'
+        });
+        setSelectValue(pilihanUsiaBayarMPSelect, {{{pilihanUsiaBayarMPDefaultSelect}}}, 'id', pilihanUsiaBayarMPSelectTemplate);
+
+        const provinsiSelect = $('#provinsiPenerimaMP').select2({
+            ajax: {
+                url: '{{contextPath}}{{provinsiPathApi}}/dropdown',
+                dataType: 'json',
+                delay: 250,
+                cache: true,
+                data: function (params) {
+                    return {
+                        searchParam: params.term, // search term
+                        valueColumn: "id",
+                        textColumn: provinsiSelectTemplate,
+                        searchColumn: [
+                            "namaProvinsi"
+                        ]
+                    };
+                },
+                processResults: function(data){
+                    return {
+                        results: data
+                    };
+                }
+            },
+            width: "100%",
+            placeholder: 'Pilih Provinsi'
+        });
+        setSelectValue(provinsiSelect, {{{provinsiDefaultSelect}}}, 'id', provinsiSelectTemplate);
+        provinsiSelect.on('change', (e) => {
+            kotaSelect.val(null).trigger('change');
+            kecamatanSelect.val(null).trigger('change');
+            kelurahanSelect.val(null).trigger('change');
+            kodePosPenerimaMP.val(null);
+        });
+
+        const negaraSelect = $('#negaraPenerimaMP').select2({
+            ajax: {
+                url: '{{contextPath}}{{negaraPathApi}}/dropdown',
+                dataType: 'json',
+                delay: 250,
+                cache: true,
+                data: function (params) {
+                    return {
+                        searchParam: params.term, // search term
+                        valueColumn: "id",
+                        textColumn: negaraSelectTemplate,
+                        searchColumn: [
+                            "namaNegara"
+                        ]
+                    };
+                },
+                processResults: function(data){
+                    return {
+                        results: data
+                    };
+                }
+            },
+            width: "100%",
+            placeholder: 'Pilih Negara'
+        });
+        setSelectValue(negaraSelect, {{{negaraDefaultSelect}}}, 'id', negaraSelectTemplate);
+
+        const kotaSelect = $('#kotaPenerimaMP').select2({
+            ajax: {
+                url: '{{contextPath}}{{kotaPathApi}}/dropdown',
+                dataType: 'json',
+                delay: 250,
+                cache: true,
+                data: function (params) {
+                    return {
+                        searchParam: params.term, // search term
+                        valueColumn: "id",
+                        textColumn: kotaSelectTemplate,
+                        searchColumn: [
+                            "namaKota"
+                        ],
+                        referenceValue: [
+                            {
+                                table: "provinsi",
+                                value: provinsiSelect.val()
+                            }
+                        ]
+                    };
+                },
+                processResults: function(data){
+                    return {
+                        results: data
+                    };
+                }
+            },
+            width: "100%",
+            placeholder: 'Pilih Kota'
+        });
+        setSelectValue(kotaSelect, {{{kotaDefaultSelect}}}, 'id', kotaSelectTemplate);
+        kotaSelect.on('change', (e) => {
+            kecamatanSelect.val(null).trigger('change');
+            kelurahanSelect.val(null).trigger('change');
+            kodePosPenerimaMP.val(null);
+        });
+
+        const kecamatanSelect = $('#kecamatanPenerimaMP').select2({
+            ajax: {
+                url: '{{contextPath}}{{kecamatanPathApi}}/dropdown',
+                dataType: 'json',
+                delay: 250,
+                cache: true,
+                data: function (params) {
+                    return {
+                        searchParam: params.term, // search term
+                        valueColumn: "id",
+                        textColumn: kecamatanSelectTemplate,
+                        searchColumn: [
+                            "namaKecamatan"
+                        ],
+                        referenceValue: [
+                            {
+                                table: "kota",
+                                value: kotaSelect.val()
+                            }
+                        ]
+                    };
+                },
+                processResults: function(data){
+                    return {
+                        results: data
+                    };
+                }
+            },
+            width: "100%",
+            placeholder: 'Pilih Kecamatan'
+        });
+        setSelectValue(kecamatanSelect, {{{kecamatanDefaultSelect}}}, 'id', kecamatanSelectTemplate);
+        kotaSelect.on('change', (e) => {
+            kelurahanSelect.val(null).trigger('change');
+            kodePosPenerimaMP.val(null);
+        });
+
+        const kelurahanSelect = $('#kelurahanPenerimaMP').select2({
+            ajax: {
+                url: '{{contextPath}}{{kelurahanPathApi}}/dropdown',
+                dataType: 'json',
+                delay: 250,
+                cache: true,
+                data: function (params) {
+                    return {
+                        searchParam: params.term, // search term
+                        valueColumn: "id",
+                        textColumn: kelurahanSelectTemplate,
+                        searchColumn: [
+                            "namaKelurahan"
+                        ],
+                        referenceValue: [
+                            {
+                                table: "kecamatan",
+                                value: kecamatanSelect.val()
+                            }
+                        ],
+                        includeObject: true
+                    };
+                },
+                processResults: function(data){
+                    return {
+                        results: data
+                    };
+                }
+            },
+            width: "100%",
+            placeholder: 'Pilih Kelurahan'
+        });
+        setSelectValue(kelurahanSelect, {{{kelurahanDefaultSelect}}}, 'id', kelurahanSelectTemplate);
+        const kodePosPenerimaMP = $("#kodePosPenerimaMP");
+        kelurahanSelect.on('change', (e) => {
+            if ($(e.target).select2('data')){
+                const data = $(e.target).select2('data')[0];
+                data.dataProperties && kodePosPenerimaMP.val(data.dataProperties.kodePos);
+            }
+        });
+
+        $("#changeKodePos").click((e) => {
+            if (e.target.checked) {
+                kodePosPenerimaMP.removeAttr("readonly");
+            } else {
+                kodePosPenerimaMP.attr("readonly", "readonly");
+                const dataKelurahan = kelurahanSelect.select2('data')[0];
+                dataKelurahan && kodePosPenerimaMP.val(dataKelurahan.dataProperties.kodePos)
+            }
+        });
+
+        const kategoriCatatanSelect = $('#kategoriCatatan').select2({
+            ajax: {
+                url: '{{contextPath}}{{kategoriCatatanPathApi}}/dropdown',
+                dataType: 'json',
+                delay: 250,
+                cache: true,
+                data: function (params) {
+                    return {
+                        searchParam: params.term, // search term
+                        valueColumn: "id",
+                        textColumn: kategoriCatatanSelectTemplate,
+                        searchColumn: [
+                            "namaKategoriCatatan"
+                        ],
+                        referenceValue: [
+                            {
+                                column: "id",
+                                table: "kategoriMutasi",
+                                value: "01"
+                            }
+                        ],
+                        includeObject: true
+                    };
+                },
+                processResults: function(data){
+                    return {
+                        results: data
+                    };
+                }
+            },
+            width: "100%",
+            placeholder: 'Pilih Kategori Catatan'
+        });
+        setSelectValue(kategoriCatatanSelect, {{{kategoriCatatanDefaultSelect}}}, 'id', kategoriCatatanSelectTemplate);
+
+        const kategoriPenerimaSelect = $('#hubunganKeluarga').select2({
+            ajax: {
+                url: '{{contextPath}}{{kategoriPenerimaPathApi}}/list',
+                dataType: 'json',
+                delay: 250,
+                cache: true,
+                data: function (params) {
+                    return {
+                        searchParam: params.term, // search term
+                        valueColumn: "id",
+                        textColumn: kategoriPenerimaSelectTemplate,
+                        searchColumn: [
+                            "namaKategoriPenerima"
+                        ],
+                        includeObject: true
+                    };
+                },
+                processResults: function(data){
+                    return {
+                        results: data
+                    };
+                }
+            },
+            width: "100%",
+            placeholder: 'Pilih Kategori Penerima'
+        });
+        kategoriPenerimaSelect.on('change', (e) => {
+            keluargaPesertaForm.valid();
+        });
+        kategoriPenerimaSelect.on('select2:select', (e, e2) => {
+            $(e.currentTarget).select2('data')[0].dataProperties = e.params.data.dataProperties || e.params.data
+        });
+
+        const statusKawinSelect = $('#statusKawin').select2({
+            ajax: {
+                url: '{{contextPath}}{{statusKawinPathApi}}/dropdown',
+                dataType: 'json',
+                delay: 250,
+                cache: true,
+                data: function (params) {
+                    return {
+                        searchParam: params.term, // search term
+                        valueColumn: "id",
+                        textColumn: statusKawinSelectTemplate,
+                        searchColumn: [
+                            "statusKawin"
+                        ],
+                        referenceValue: [
+                            {
+                                column: "statusKawin",
+                                value: `%${selectGenderElmnt.select2('data')[0].text}%`
+                            },
+                            {
+                                column: "statusKawin",
+                                value: `%${selectGenderElmnt.select2('data')[0].text}%`
+                            }
+                        ]
+                    };
+                },
+                processResults: function(data){
+                    return {
+                        results: data
+                    };
+                }
+            },
+            width: "100%",
+            placeholder: 'Pilih Status Kawin'
+        });
+        setSelectValue(statusKawinSelect, {{{statusKawinDefaultSelect}}}, 'id', statusKawinSelectTemplate);
+
+        const statusKawinKeluargaSelect = $('#statusKawinKeluarga').select2({
+            ajax: {
+                url: '{{contextPath}}{{statusKawinPathApi}}/dropdown',
+                dataType: 'json',
+                delay: 250,
+                cache: true,
+                data: function (params) {
+                    return {
+                        searchParam: params.term, // search term
+                        valueColumn: "id",
+                        textColumn: statusKawinSelectTemplate,
+                        searchColumn: [
+                            "statusKawin"
+                        ],
+                        referenceValue: [
+                            {
+                                column: "statusKawin",
+                                value: `%${$("#jenisKelaminKeluarga").select2('data')[0].text}%`
+                            }
+                        ],
+                        includeObject: true
+                    };
+                },
+                processResults: function(data){
+                    return {
+                        results: data
+                    };
+                }
+            },
+            width: "100%",
+            placeholder: 'Pilih Status Kawin'
+        });
+        statusKawinKeluargaSelect.on('change', (e) => {
+            keluargaPesertaForm.valid();
+            kategoriPenerimaSelect.change();
+        });
+
+        selectGenderElmnt.select2({placeholder: "Pilih Jenis Kelamin", width: "100%"});
+        selectGenderElmnt.select2('val', '{{mutasiForm.jenisKelamin}}');
+        selectGenderElmnt.on('change', (e) => {
+            statusKawinSelect.val(null).trigger("change");
+        });
+
+        const selectGenderKeluarga = $('#jenisKelaminKeluarga');
+        selectGenderKeluarga.select2({placeholder: "Pilih Jenis Kelamin", width: "100%"});
+        selectGenderKeluarga.on('change', (e) => {
+            statusKawinKeluargaSelect.val(null).trigger("change");
+        });
+
+        $("select[class*=select2]").on('change', function() {
+            $(this).valid();
+        });
+
+        const setJenisMP = (e) => {
+            const jenisMPResolver = new Promise((resolve, reject) => {
+
+                jenisMPElmnt.removeAttr("disabled");
+                statusBayarMPElmnt.removeAttr("disabled");
+                const statusPengembalianMPSCheckedElmt = statusPengembalianMPSElmt.not(":not(:checked)");
+
+                if (statusPengembalianMPSCheckedElmt.val() === "3" && !tglMeninggalElmnt.val()) {
+                    statusBayarMPElmnt.not(statusBayarMPBerhentiElmnt).prop("disabled", "disabled");
+                    statusBayarMPBerhentiElmnt.prop("checked", "checked");
+
+                    if (['3'].includes(alasanHentiElmt.val().trim()) && !tglMeninggalElmnt.val()) {
+                        loader(pengembalianMPS2Section, true);
+                        $.ajax({
+                            type: 'GET',
+                            url: '{{contextPath}}{{jenisMPPathApi}}/PM'
+                        }).then(function (data) {
+                            setSelectValue(jenisMPElmnt, data, "id", jenisMPSelectTemplate);
+                            loader(pengembalianMPS2Section, false);
+                            resolve();
+                        })
+                    }else if (['2'].includes(alasanHentiElmt.val().trim())) {
+                        loader(pengembalianMPS2Section, true);
+                        $.ajax({
+                            type: 'GET',
+                            url: '{{contextPath}}{{jenisMPPathApi}}/PC'
+                        }).then(function (data) {
+                            setSelectValue(jenisMPElmnt, data, "id", jenisMPSelectTemplate);
+                            loader(pengembalianMPS2Section, false);
+                            resolve();
+                        })
+                    }
+                    else {
+                        loader(pengembalianMPS2Section, true);
+                        $.ajax({
+                            type: 'GET',
+                            url: '{{contextPath}}{{jenisMPPathApi}}/PS'
+                        }).then(function (data) {
+                            jenisMPElmnt.prop("disabled", "disabled");
+                            setSelectValue(jenisMPElmnt, data, "id", jenisMPSelectTemplate);
+                            loader(pengembalianMPS2Section, false);
+                            resolve();
+                        })
+                    }
+                } else if (tglMeninggalElmnt.val()) {
+                    statusBayarMPElmnt.not(statusBayarMPBerhentiElmnt).prop("disabled", "disabled");
+                    statusBayarMPBerhentiElmnt.prop("checked", "checked");
+
+                    loader(pengembalianMPS2Section, true);
+                    $.ajax({
+                        type: 'GET',
+                        url: '{{contextPath}}{{jenisMPPathApi}}/PM'
+                    }).then(function (data) {
+                        jenisMPElmnt.prop("disabled", "disabled");
+                        setSelectValue(jenisMPElmnt, data, "id", jenisMPSelectTemplate);
+                        loader(pengembalianMPS2Section, false);
+                        resolve();
+                    })
+                } else if (statusPengembalianMPSCheckedElmt.val() && tglBerhentiBerkerjaElmnt.val() && tglLahirElmnt.val()) {
+                    const usiaKerja = moment(tglBerhentiBerkerjaElmnt.val(), dateFormat).diff(moment(tglLahirElmnt.val(), dateFormat), 'years', true);
+
+                    if (!['2', '3'].includes(alasanHentiElmt.val().trim())) {
+                        if (usiaKerja >= 56) {
+                            loader(pengembalianMPS2Section, true);
+                            $.ajax({
+                                type: 'GET',
+                                url: '{{contextPath}}{{jenisMPPathApi}}/PN'
+                            }).then(function (data) {
+                                jenisMPElmnt.prop("disabled", "disabled");
+                                setSelectValue(jenisMPElmnt, data, "id", jenisMPSelectTemplate);
+                                loader(pengembalianMPS2Section, false);
+                                resolve();
+                            })
+                        } else if (usiaKerja >= 46 && usiaKerja < 56) {
+                            /* loader(pengembalianMPS2Section, true);
+                            $.ajax({
+                                type: 'GET',
+                                url: '{{contextPath}}{{jenisMPPathApi}}/PD'
+                            }).then(function (data) {
+                                jenisMPElmnt.prop("disabled", "disabled");
+                                setSelectValue(jenisMPElmnt, data, "id", jenisMPSelectTemplate);
+                                loader(pengembalianMPS2Section, false);
+                                resolve();
+                            })*/
+                        } else {
+                            resolve();
+                        }
+                    } else if (['2'].includes(alasanHentiElmt.val().trim())) {
+                        statusBayarMPElmnt.not(statusBayarMPBerhentiElmnt).prop("disabled", "disabled");
+                        statusBayarMPBerhentiElmnt.prop("checked", "checked");
+                        loader(pengembalianMPS2Section, true);
+                        $.ajax({
+                            type: 'GET',
+                            url: '{{contextPath}}{{jenisMPPathApi}}/PC'
+                        }).then(function (data) {
+                            setSelectValue(jenisMPElmnt, data, "id", jenisMPSelectTemplate);
+                            loader(pengembalianMPS2Section, false);
+                            resolve();
+                        })
+                    }
+                    else {
+                        loader(pengembalianMPS2Section, true);
+                        $.ajax({
+                            type: 'GET',
+                            url: '{{contextPath}}{{jenisMPPathApi}}/PM'
+                        }).then(function (data) {
+                            setSelectValue(jenisMPElmnt, data, "id", jenisMPSelectTemplate);
+                            loader(pengembalianMPS2Section, false);
+                            resolve();
+                        })
+                    }
+                } else {
+                    resolve()
+                }
+            });
+
+            return jenisMPResolver;
+        };
+
+        const setTglAwalBayar = (e) => {
+            const statusBayarMPCheckedElmnt = statusBayarMPElmnt.not(":not(:checked)");
+            if (tglBerhentiBerkerjaElmnt.val() && jenisMPElmnt.val() && statusBayarMPCheckedElmnt) {
+                let tglAwalBayar = null;
+                let setFirstDateNexMonth = true;
+                if (["PM", "PC", "PN"].includes(jenisMPElmnt.val())) {
+                    if (!tglMeninggalElmnt.val()) {
+                        if ("{{isPensiunTunda}}" === "true"){
+                            tglAwalBayar = moment(tglLahirElmnt.val(), dateFormat);
+                            tglAwalBayar.add(56, 'years');
+                        }
+                        else {
+                            tglAwalBayar = moment(tglBerhentiBerkerjaElmnt.val(), dateFormat);
+                            setFirstDateNexMonth = false;
+                            console.log()
+                        }
+                    } else {
+                        tglAwalBayar = moment(tglMeninggalElmnt.val(), dateFormat);
+                    }
+                } else if (jenisMPElmnt.val() === "PD") {
+                    if (statusBayarMPCheckedElmnt.val() === "1") {
+                        if ("{{isPensiunTunda}}" === "true"){
+                            tglAwalBayar = moment(tglLahirElmnt.val(), dateFormat);
+                            tglAwalBayar.add(46, 'years');
+                        }else{
+                            tglAwalBayar = moment(tglBerhentiBerkerjaElmnt.val(), dateFormat);
+                        }
+                    } else if (statusBayarMPCheckedElmnt.val() === "4") {
+                        tglAwalBayar = moment(tglLahirElmnt.val(), dateFormat);
+                        tglAwalBayar.add(56, 'years');
+                    }
+                } else if (jenisMPElmnt.val() === "PT") {
+                    tglAwalBayar = moment(tglLahirElmnt.val(), dateFormat);
+                    if (pilihanUsiaBayarElmnt.val() === "" || pilihanUsiaBayarElmnt.val() === "2") {
+                        tglAwalBayar.add(46, 'years');
+                    } else if (pilihanUsiaBayarElmnt.val() === "1") {
+                        tglAwalBayar.add(56, 'years');
+                    } else {
+                        tglAwalBayar = null;
+                    }
+                } else if (jenisMPElmnt.val() === "PS") {
+                    tglAwalBayar = moment(tgllInputElmnt.val(), dateFormat);
+                }
+
+                if (tglAwalBayar) {
+                    if (setFirstDateNexMonth) {
+                        tglAwalBayar.add(1, 'months');
+                        tglAwalBayar.set('date', 1);
+                    }
+                    tglAwalBayarElmnt.val(tglAwalBayar.format(dateFormat));
+                    setTglHentiBayar(e);
+
+                    if (jenisMPElmnt.val() === "PM" && tglMeninggalElmnt.val()) {
+
+                        const penerima = searchPenerima();
+
+                        if (penerima) {
+                            if (penerima.kategoriPenerima == "11"){
+                                tglMPBulan13Elmnt.val(null);
+                            }else {
+                                const tglMPBulan13 = moment(tglMeninggalElmnt.val(), dateFormat);
+                                tglMPBulan13.add(13, 'month');
+                                tglMPBulan13.set('date', 1);
+                                tglMPBulan13Elmnt.val(tglMPBulan13.format(dateFormat));
+                            }
+                        }else { tglMPBulan13Elmnt.val(null); }
+
+                    }
+                } else {
+                    tglAwalBayarElmnt.val(null);
+                }
+            }
+        };
+
+        const setUsiaBayar = (e) => {
+            const statusBayarMPCheckedElmnt = statusBayarMPElmnt.not(":not(:checked)");
+            if (statusBayarMPCheckedElmnt.val() === "4") {
+                if (jenisMPElmnt.val() === "PN") {
+                    loader(pengembalianMPS2Section, true);
+                    $.ajax({
+                        type: 'GET',
+                        url: '{{contextPath}}{{pilihanUsiaBayarMPPathApi}}/1'
+                    }).then(function (data) {
+                        setSelectValue(pilihanUsiaBayarElmnt, data, "id", pilihanUsiaBayarMPSelectTemplate);
+                        loader(pengembalianMPS2Section, false);
+                    })
+                } else if (jenisMPElmnt.val() === "PD") {
+                    loader(pengembalianMPS2Section, true);
+                    $.ajax({
+                        type: 'GET',
+                        url: '{{contextPath}}{{pilihanUsiaBayarMPPathApi}}/1'
+                    }).then(function (data) {
+                        setSelectValue(pilihanUsiaBayarElmnt, data, "id", pilihanUsiaBayarMPSelectTemplate);
+                        pilihanUsiaBayarElmnt.prop("disabled", "disabled");
+                        loader(pengembalianMPS2Section, false);
+                    })
+                }
+            } else if (statusBayarMPCheckedElmnt.val() === "1") {
+                if (jenisMPElmnt.val() === "PD") {
+                    loader(pengembalianMPS2Section, true);
+                    $.ajax({
+                        type: 'GET',
+                        url: '{{contextPath}}{{pilihanUsiaBayarMPPathApi}}/2'
+                    }).then(function (data) {
+                        setSelectValue(pilihanUsiaBayarElmnt, data, "id", pilihanUsiaBayarMPSelectTemplate);
+                        pilihanUsiaBayarElmnt.prop("disabled", "disabled");
+                        loader(pengembalianMPS2Section, false);
+                    })
+                }
+            } else if (statusBayarMPCheckedElmnt.val() === "6") {
+                if (jenisMPElmnt.val() === "PS") {
+                    loader(pengembalianMPS2Section, true);
+                    $.ajax({
+                        type: 'GET',
+                        url: '{{contextPath}}{{pilihanUsiaBayarMPPathApi}}/2'
+                    }).then(function (data) {
+                        setSelectValue(pilihanUsiaBayarElmnt, data, "id", pilihanUsiaBayarMPSelectTemplate);
+                        pilihanUsiaBayarElmnt.prop("disabled", "disabled");
+                        loader(pengembalianMPS2Section, false);
+                    })
+                }else if (jenisMPElmnt.val() === "PC") {
+                    loader(pengembalianMPS2Section, true);
+                    $.ajax({
+                        type: 'GET',
+                        url: '{{contextPath}}{{pilihanUsiaBayarMPPathApi}}/1'
+                    }).then(function (data) {
+                        setSelectValue(pilihanUsiaBayarElmnt, data, "id", pilihanUsiaBayarMPSelectTemplate);
+                        pilihanUsiaBayarElmnt.prop("disabled", "disabled");
+                        loader(pengembalianMPS2Section, false);
+                    })
+                }
+            }
+        };
+
+        const setTglTundaJatuhTempo = (e) => {
+            if (statusBayarMPTundaElmnt.is(":checked") && tglLahirElmnt.val() && pilihanUsiaBayarElmnt.val() && ["PT", "PD"].includes(jenisMPElmnt.val())) {
+                const tglTundaJatuhTempo = moment(tglLahirElmnt.val(), dateFormat);
+                let yearsAdd = 0;
+                if (jenisMPElmnt.val() === "PT") {
+                    if (pilihanUsiaBayarElmnt.val() === "1") {
+                        yearsAdd = 56;
+                    } else {
+                        yearsAdd = 46;
+                    }
+                } else if (jenisMPElmnt.val() === "PD") {
+                    yearsAdd = 56;
+                }
+                tglTundaJatuhTempo.add(yearsAdd, 'years');
+
+                tglTundaJatuhTempoElmnt.val(tglTundaJatuhTempo.format(dateFormat));
+            } else {
+                tglTundaJatuhTempoElmnt.val(null);
+            }
+        };
+
+        const setStatusBayar = (e) => {
+            pilihanUsiaBayarElmnt.removeAttr("disabled");
+            statusBayarMPElmnt.removeAttr("disabled");
+            if (jenisMPElmnt.val() === "PT") {
+                statusBayarMPElmnt.not(statusBayarMPTundaElmnt).prop("disabled", "disabled");
+                statusBayarMPTundaElmnt.prop("checked", "checked");
+            } else if (["PN", "PM"].includes(jenisMPElmnt.val())) {
+                if (jenisMPElmnt.val() === "PN") {
+                    loader(pengembalianMPS2Section, true);
+                    $.ajax({
+                        type: 'GET',
+                        url: '{{contextPath}}{{pilihanUsiaBayarMPPathApi}}/1'
+                    }).then(function (data) {
+                        setSelectValue(pilihanUsiaBayarElmnt, data, "id", pilihanUsiaBayarMPSelectTemplate);
+                        pilihanUsiaBayarElmnt.prop("disabled", "disabled");
+                        loader(pengembalianMPS2Section, false);
+                    })
+                } else if (jenisMPElmnt.val() === "PM") {
+                    loader(pengembalianMPS2Section, true);
+                    $.ajax({
+                        type: 'GET',
+                        url: '{{contextPath}}{{pilihanUsiaBayarMPPathApi}}/3'
+                    }).then(function (data) {
+                        setSelectValue(pilihanUsiaBayarElmnt, data, "id", pilihanUsiaBayarMPSelectTemplate);
+                        pilihanUsiaBayarElmnt.prop("disabled", "disabled");
+                        loader(pengembalianMPS2Section, false);
+                    });
+                }
+
+                if (statusPengembalianMPSElmt.not(":not(:checked)").val() !== '3') {
+                    statusBayarMPElmnt.not(statusBayarMPDibayarElmnt).prop("disabled", "disabled");
+                    statusBayarMPDibayarElmnt.prop("checked", "checked");
+                } else {
+                    statusBayarMPElmnt.not(statusBayarMPBerhentiElmnt).prop("disabled", "disabled");
+                    statusBayarMPBerhentiElmnt.prop("checked", "checked");
+                }
+            } else if (jenisMPElmnt.val() === "PD") {
+                loader(pengembalianMPS2Section, true);
+                $.ajax({
+                    type: 'GET',
+                    url: '{{contextPath}}{{pilihanUsiaBayarMPPathApi}}/2'
+                }).then(function (data) {
+                    setSelectValue(pilihanUsiaBayarElmnt, data, "id", pilihanUsiaBayarMPSelectTemplate);
+                    pilihanUsiaBayarElmnt.prop("disabled", "disabled");
+                    loader(pengembalianMPS2Section, false);
+                });
+
+                if (statusPengembalianMPSElmt.not(":not(:checked)").val() !== '3') {
+                    statusBayarMPElmnt.not(`:not(${statusBayarMPBerhentiElmnt.selector})`).prop("disabled", "disabled");
+                    statusBayarMPDibayarElmnt.prop("checked", "checked");
+                } else {
+                    statusBayarMPElmnt.not(statusBayarMPBerhentiElmnt).prop("disabled", "disabled");
+                    statusBayarMPBerhentiElmnt.prop("checked", "checked");
+                }
+            } else if (jenisMPElmnt.val() === "PS") {
+                if (tglMeninggalElmnt.val()) {
+                    $.ajax({
+                        type: 'GET',
+                        url: '{{contextPath}}{{pilihanUsiaBayarMPPathApi}}/3'
+                    }).then(function (data) {
+                        setSelectValue(pilihanUsiaBayarElmnt, data, "id", pilihanUsiaBayarMPSelectTemplate);
+                        loader(pengembalianMPS2Section, false);
+                    });
+                }
+                if (statusPengembalianMPSElmt.not(":not(:checked)").val() !== '3') {
+                    statusBayarMPElmnt.not(statusBayarMPDibayarElmnt).prop("disabled", "disabled");
+                    statusBayarMPDibayarElmnt.prop("checked", "checked");
+                } else {
+                    statusBayarMPElmnt.not(statusBayarMPBerhentiElmnt).prop("disabled", "disabled");
+                    statusBayarMPBerhentiElmnt.prop("checked", "checked");
+                }
+            }
+        };
+
+        const setTglHentiBayar = (e) => {
+            const statusPengembalianMPSCheckedElmt = statusPengembalianMPSElmt.not(":not(:checked)");
+            if (statusPengembalianMPSCheckedElmt.val() === "3" && tglAwalBayarElmnt.val()) {
+                const tglHentiBayar = moment(tglAwalBayarElmnt.val(), dateFormat);
+                tglHentiBayar.add(0, 'days');
+                tglHentiBayarElmnt.val(tglHentiBayar.format(dateFormat));
+            } else {
+                tglHentiBayarElmnt.val(null);
+            }
+        };
+
+        tglBerhentiBerkerjaElmnt.on('change', (e) => {
+            setJenisMP(e).then(() => {
+                setTglAwalBayar(e);
+            });
+        });
+
+        if (tglBerhentiBerkerjaElmnt.val()) {
+            tglBerhentiBerkerjaElmnt.change();
+        }
+
+        tglLahirElmnt.on('change', (e) => {
+            setJenisMP(e).then(() => {
+                setTglTundaJatuhTempo(e);
+            });
+        });
+
+        if (tglLahirElmnt.val()) {
+            tglLahirElmnt.change();
+        }
+
+        statusPengembalianMPSElmt.on('change', (e) => {
+            if ("{{mutasiForm.isMutasiTunda}}" === "true" && "{{mutasiForm.isJatuhTempoBayar}}" !== "true") {
+                if ($(e.target).val() !== "3") {
+                   tglMeninggalElmnt.prop("required", "required");
+                } else {
+                    tglMeninggalElmnt.removeAttr("required");
+                }
+            }
+            setJenisMP(e).then(() => {
+                setTglHentiBayar(e);
+                statusPengembalianMPS($(e.target).val());
+            });
+        });
+
+        if (statusPengembalianMPSElmt.not(":not(:checked)").length > 0) {
+            statusPengembalianMPSElmt.change();
+        }
+
+        jenisMPElmnt.on('change', (e) => {
+            setTglAwalBayar(e);
+            setTglTundaJatuhTempo(e);
+            setStatusBayar(e);
+            setUsiaBayar(e);
+
+            if (jenisMPElmnt.val() !== "PM") {
+                tglMPBulan13Elmnt.val(null);
+            }
+        });
+
+        if (jenisMPElmnt.val()) {
+            jenisMPElmnt.change();
+        }
+
+        pilihanUsiaBayarElmnt.on('change', (e) => {
+            setTglAwalBayar(e);
+            setTglTundaJatuhTempo(e);
+        });
+
+        if (pilihanUsiaBayarElmnt.val()) {
+            pilihanUsiaBayarElmnt.change();
+        }
+
+        tglMeninggalElmnt.on('change', (e) => {
+            if ($(e.target).val()) {
+                loader(informasiPemberhentianSection, true);
+                $.ajax({
+                    type: 'GET',
+                    url: '{{contextPath}}{{alasanHentiPathApi}}/3'
+                }).then(function (data) {
+                    alasanHentiElmt.prop("disabled", "disabled");
+                    setSelectValue(alasanHentiElmt, data, "id", alasanHentiSelectTemplate);
+                    loader(informasiPemberhentianSection, false);
+                })
+            } else {
+                alasanHentiElmt.removeAttr("disabled");
+            }
+            setJenisMP(e).then(() => {
+                setTglAwalBayar(e);
+                if ($(e.target).val() && keluargaPesertaTable.rows().length === 1 && keluargaPesertaTable.data()[0].kategoriPenerima.id === 11) {
+                    $("[name=statusPengembalianMPS]:not(#statusPengembalianMPS3)").prop("disabled", "disabled");
+                    $("[name=statusPengembalianMPS]").removeAttr("checked");
+                    $("#statusPengembalianMPS3").prop("checked", true);
+                    $("#statusPengembalianMPS3").change();
+                } else {
+                    $("[name=statusPengembalianMPS]").removeAttr("disabled");
+                }
+            });
+        });
+
+        if (tglMeninggalElmnt.val()) {
+            tglMeninggalElmnt.change();
+        }
+
+        statusBayarMPElmnt.on('change', (e) => {
+            setUsiaBayar(e);
+            setTglAwalBayar(e);
+            setTglTundaJatuhTempo(e);
+        });
+
+        if (statusBayarMPElmnt.not(":not(:checked)").length > 0) {
+            statusBayarMPElmnt.change();
+        }
+
+        //set semua field Uppercase
+        setUppercase();
+
+        //jika statusForm = View Disabled semua element
+        {{#statusForm}}
+            disabledForm();
+        {{/statusForm}}
+        {{^statusForm}}
+            enableForm();
+        {{/statusForm}}
+    });
+
+
+    function cetakReport(){
+        let katMutasi = JSON.parse($('#idKategoriMutasi').val());
+        if(katMutasi == '' || katMutasi == undefined){
+            swal({title: 'ID Kategori Mutasi', text: 'ID Kategori Mutasi tidak ditemukan', icon: 'error', buttons: ['OK']});
+            return false;
+        }
+
+        idKategoriMutasi = katMutasi.id;
+        data = {
+            tipeReport: 'catatan_perhitungan_manfaat_pensiun',
+            nip: $('#nip').val(),
+            idKategoriPensiun: $('#jenisMP').val(),
+            idKategoriMutasi: idKategoriMutasi,
+            idJenisMps: $("input[name='statusPengembalianMPS']:checked").val(),
+            periodeMutasi: $('#periodeMutasi').val(),
+            namaKategoriPenerimaMP: $('#namaStatusKelPenerimaPenerimaMP').val(),
+            kategoriPenerima: $('#statusKelPenerimaPenerimaMP').val()
+        };
+        const param = $.param(data);
+        console.log(param);
+        const reportFrame = $("#cetakCatatan");
+        const res = encodeURI(('src', `{{contextPath}}/api/mutasi-pensiun-baru/report?${param}`));
+        window.open(res,'_blank');
+    }
+
+    function cetakFormulir(){
+        let katMutasi = JSON.parse($('#idKategoriMutasi').val());
+        if(katMutasi == '' || katMutasi == undefined){
+            swal({title: 'ID Kategori Mutasi', text: 'ID Kategori Mutasi tidak ditemukan', icon: 'error', buttons: ['OK']});
+            return false;
+        }
+        idKategoriMutasi = katMutasi.id;
+        data = {
+            tipeReport: 'formulir_entry_mutasi',
+            nip: $('#nip').val(),
+            idKategoriPensiun: $('#jenisMP').val(),
+            idKategoriMutasi: idKategoriMutasi,
+            idJenisMps: $("input[name='statusPengembalianMPS']:checked").val(),
+            periodeMutasi: $('#periodeMutasi').val(),
+            namaKategoriPenerimaMP: $('#namaStatusKelPenerimaPenerimaMP').val(),
+            kategoriPenerima: $('#statusKelPenerimaPenerimaMP').val()
+        };
+        const param = $.param(data);
+        console.log(param);
+        const reportFrame = $("#cetakCatatan");
+        const res = encodeURI(('src', `{{contextPath}}/api/mutasi-pensiun-baru/report?${param}`));
+        window.open(res, '_blank');
+    }
+</script>
+{{/scripts}}
+
+{{/layout}}

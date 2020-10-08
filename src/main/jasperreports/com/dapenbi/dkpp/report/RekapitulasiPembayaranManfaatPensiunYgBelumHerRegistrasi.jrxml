@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RekapitulasiPembayaranManfaatPensiunYgBelumHerRegistrasi" pageWidth="612" pageHeight="792" whenNoDataType="AllSectionsNoDetail" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="94edd2ab-811a-4160-9740-9373727afcd0">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DKPP_INTERNAL2"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<parameter name="periode_pembayaran" class="java.lang.String"/>
+	<parameter name="id_kantor_bayar" class="java.lang.String"/>
+	<parameter name="status_her_desc" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT 
+a.id_kantor_bayar as kode_cabang,
+(CASE WHEN id_kantor_bayar = '003' then 'Kantor Pusat' 
+else a.nama_kantor_bayar END) as kantor
+,a.nama_kantor_bayar
+,SUM(a.mpyd+a.pembulatan) as jml_mpyd
+,COUNT(nip) as jml_orang
+,to_char(to_date(b.periode_pembayaran,'MMyyyy'),'Month yyyy','nls_date_language = INDONESIAN') as periode_pembayaran
+,status_her_desc
+,to_char(SYSDATE, 'dd Month yyyy','nls_date_language = INDONESIAN') as sign_date
+FROM tbl_t_pembayaran_detail_mp a INNER JOIN tbl_t_pembayaran_header b ON a.id_pembayaran = b.id_pembayaran
+WHERE periode_pembayaran = $P{periode_pembayaran} AND is_status_her = $P{status_her_desc} AND (id_kantor_bayar = $P{id_kantor_bayar} OR $P{id_kantor_bayar} = '00') AND id_status_bayar = '1'
+GROUP BY
+a.id_kantor_bayar,
+b.periode_pembayaran,
+a.nama_kantor_bayar,
+status_her_desc
+ORDER BY id_kantor_bayar]]>
+	</queryString>
+	<field name="KODE_CABANG" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="KODE_CABANG"/>
+	</field>
+	<field name="KANTOR" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="KANTOR"/>
+	</field>
+	<field name="NAMA_KANTOR_BAYAR" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NAMA_KANTOR_BAYAR"/>
+	</field>
+	<field name="JML_MPYD" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="JML_MPYD"/>
+	</field>
+	<field name="JML_ORANG" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="JML_ORANG"/>
+	</field>
+	<field name="PERIODE_PEMBAYARAN" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="PERIODE_PEMBAYARAN"/>
+	</field>
+	<field name="STATUS_HER_DESC" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="STATUS_HER_DESC"/>
+	</field>
+	<field name="SIGN_DATE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="SIGN_DATE"/>
+	</field>
+	<variable name="Total_orang" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{JML_ORANG}]]></variableExpression>
+	</variable>
+	<variable name="Total_MPYD" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{JML_MPYD}]]></variableExpression>
+	</variable>
+	<group name="NAMA_KANTOR_BAYAR">
+		<groupExpression><![CDATA[$F{NAMA_KANTOR_BAYAR}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="84" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement x="-20" y="45" width="595" height="30" uuid="70609310-dc37-427e-84ec-60417a32fce8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="html">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PERIODE_PEMBAYARAN} == null ? "-" : $F{PERIODE_PEMBAYARAN}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="-20" y="0" width="595" height="45" uuid="60133dcd-b1bd-4342-a4b6-0945fdef2b7a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="html">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{STATUS_HER_DESC} == null ? "Rekapitulasi Pembayaran Manfaat Pensiun Bulanan ( - )" : "Rekapitulasi Pembayaran Manfaat Pensiun Bulanan <br> ( "+$F{STATUS_HER_DESC}+" )"]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="30" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="0" width="80" height="30" backcolor="#FFFFFF" uuid="ba9a6e71-7180-4746-9f96-0ad7c65a99a1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="styled">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[No.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="80" y="0" width="150" height="30" backcolor="#FFFFFF" uuid="f5cae754-8c64-430a-9806-2f4e5e4e05ca"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="styled">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Cabang]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="230" y="0" width="140" height="30" backcolor="#FFFFFF" uuid="27f5f7be-c216-4a6d-b448-0ed869903877"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="styled">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Jumlah Orang]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="370" y="0" width="200" height="30" backcolor="#FFFFFF" uuid="f0e22064-6e8d-4926-8c4f-726100fb7a17"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="styled">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Jumlah Manfaat Pensiun]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="32">
+			<textField>
+				<reportElement x="0" y="2" width="80" height="30" uuid="a75c2d84-6ce8-451e-a46a-76d5f638689b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT} == null ? "-" : $V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="80" y="2" width="150" height="30" uuid="7fa705eb-ef1b-4919-981b-a10fa8b6247f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{KANTOR} == null ? "-" : $F{KANTOR}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="230" y="2" width="140" height="30" uuid="6d2af66a-309f-47fa-acad-faa6579e7473"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{JML_ORANG} == null ? "-" : $F{JML_ORANG}]]></textFieldExpression>
+			</textField>
+			<textField pattern="&apos;Rp. &apos;#,000.00#;¤(#,000.00#-)">
+				<reportElement x="370" y="2" width="200" height="30" uuid="ad92a34b-bf16-4e41-997f-8fd1f2783042"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{JML_MPYD} == null ? "-" : $F{JML_MPYD}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="203" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="230" height="30" uuid="be2138a7-f8b5-44a2-975a-931261781984"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="230" y="0" width="140" height="30" uuid="4901e431-c396-4ec8-8699-5d7fb752bb5e"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{Total_orang} == null ? "0.00" : $V{Total_orang}]]></textFieldExpression>
+			</textField>
+			<textField pattern="&apos;Rp. &apos;#,000.00#;¤(#,000.00#-)">
+				<reportElement x="371" y="0" width="199" height="30" uuid="b619fda3-6a17-452f-8b04-8cd41d0ce28a"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{Total_MPYD} == null ? "0.00" : $V{Total_MPYD}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="305" y="69" width="250" height="22" uuid="91e509a2-397b-4f07-aa5b-43b10a5841fc"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="html">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Jakarta, "+($F{SIGN_DATE} == null ? "-" : $F{SIGN_DATE})]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="305" y="92" width="250" height="22" uuid="33fdb96e-b91a-4a86-80db-ed686f3a054d"/>
+				<textElement textAlignment="Center">
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[Divisi Kepeesertaan dan Pelayanan Pensiun]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="305" y="167" width="110" height="20" uuid="488b5196-f26e-4f2a-b66e-6074a8fc9f4f"/>
+				<textElement textAlignment="Center">
+					<font size="11" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Achmad Mufit"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="425" y="168" width="130" height="20" uuid="2da53bad-6828-4a31-ba08-095d5f7631a4"/>
+				<textElement textAlignment="Center">
+					<font size="11" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Rosalind Permatasari"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="305" y="183" width="110" height="20" uuid="ce27ffe1-3317-4969-9d4c-2874ccb745e6"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Kepala Divisi"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="425" y="182" width="130" height="20" uuid="68657071-ae09-4cf3-b2bb-4fcdf047cc10"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Kepala Seksi"]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

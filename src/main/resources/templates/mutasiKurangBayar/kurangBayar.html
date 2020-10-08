@@ -1,0 +1,286 @@
+{{#layout}} 
+{{#styles}}
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/datatables/media/css/dataTables.bootstrap4.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/googleapis/css/component.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/googleapis/css/googleapis.css">
+{{/styles}} {{#title}} Mutasi Kurang Bayar MP - DKPP {{/title}}
+
+<div class="card">
+	<div class="card-header" id="filter_form" style="display: none;"></div>
+	<div class="card-block">
+		<div class="col-md-12">
+			<div class="row">
+				<label for="example-text-input" class="col-sm-2">Periode Mutasi</label>
+				<div class="col-xs-2">
+					<input class="form-control " disabled="" value="{{periodeMutasi}}" id="example-text-input" type="text">
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-12"><hr></div>
+		<div class="table-responsive">
+			<table class="table table-bordered table-striped m-b-0 dataTable datatable no-footer display" style="font-size:10px" id="user_table" role="grid">
+				<thead>
+					<tr role="row">
+						<th class="text-center">Periode Mutasi</th>
+						<th class="text-center">NIP</th>
+						<th class="text-center">Nama Peserta</th>
+						<th class="text-center">Nama Penerima MP</th>
+						<th class="text-center">Jenis Penerima MP</th>
+						<th class="text-center">Cabang KPW-BI</th>
+						<th class="text-center">Jumlah Kurang Bayar</th>
+						<th class="text-center">Action</th>
+					</tr>
+				</thead>
+				<tbody>
+
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+{{#modal}}
+<div class="modal fade bd-example-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <h4 class="modal-title small bold" id="myModalLabel">Mutasi Kurang Bayar</h4>
+            </div>
+            <div class="modal-body">
+				<div class="row">
+					<div class="col-lg-12">
+						  <span class="tag tag-pill tag-info pull-right" id="statusValidasi"></span> 
+					</div><br>
+				</div>
+				<div class="row">
+					<div class="col-lg-6">
+						<div class="row">
+							<div class="form-group">
+						  		<label for="example-text-input" class="col-sm-6">NIP-Nama Peserta</label>
+						  		<div class="col-sm-6">
+									<input class="form-control form-control-sm"  disabled  type="text" id="namaPeserta" name="namaPeserta">
+						 		 </div>
+							 </div>
+						 </div>
+					</div>
+					<div class="col-lg-6">
+						<div class="row">
+							<div class="form-group">
+						  		<label for="example-text-input" class="col-sm-6">Periode Mutasi</label>
+						  		<div class="col-sm-6">
+									<input class="form-control form-control-sm" disabled type="text" id="periodeMutasi" name="periodeMutasi">
+						  		</div>
+						 	</div>
+						 </div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-lg-6">
+						<div class="row">
+							<div class="form-group">
+						 		<label for="example-text-input" class="col-sm-6"  >ID-Nama Penerima MP</label>
+						  		<div class="col-sm-6">
+									<input class="form-control form-control-sm" disabled type="text" id="namaPenerima" name="namaPenerima">
+						  		</div>
+						 	</div>
+						 </div>
+					</div>
+					<div class="col-lg-6">
+							<div class="row">
+								<div class="form-group">
+						  			<label for="example-text-input" class="col-sm-6" >Tanggal Proses</label>
+						  			<div class="col-sm-6">
+										<input class="form-control form-control-sm" disabled type="text" id="tglProses" name="tglProses">
+						  			</div>
+								</div>
+							</div>
+					</div>
+				</div>	
+				<div class="row">
+					<div class="col-lg-6">
+						<div class="row">
+							<div class="form-group">
+						  		<label for="example-text-input" class="col-sm-6"  >ID-Kantor Bayar</label>
+						  		<div class="col-sm-6">
+									<input class="form-control form-control-sm" disabled type="text" id="idOlahraga">
+						  		</div>
+						  	</div>
+						 </div>
+					</div>
+				</div>
+				<br>
+				<div class="row">
+					<div class="col-lg-6 small bold">Rincian Kurang Bayar</div>
+					<div class="col-lg-6"></div>
+				</div>	
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="table-responsive">
+							<table class="table table-sm" id="tbl-mutasi-kurang-bayar">
+								<thead>
+									<tr>
+										<th style="width:10%">#</th>
+										<th style="width:20%">Tgl. Mutasi</th>
+										<th style="width:30%">Kurang Bayar</th>
+										<th style="width:40%">Deskripsi Mutasi</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td colspan="4">Tidak Ada Data </td>
+									</tr>
+								</tbody>
+							</table>
+						</div>					
+					</div>
+					<div class="col-lg-6"></div>
+					<div class="col-lg-6">
+						<label for="example-text-input" class="col-sm-6 bold">Kurang Bayar MP</label>
+						  <div class="col-sm-6">
+							<input class="form-control form-control-sm bold" disabled type="text" id="kurangBayar" name="kurangBayar">
+						  </div>
+					</div>
+				</div>	
+				<br>
+				<div class="row">
+					<div class="col-lg-12">	
+						<div class="card card-block">									
+							<div class="col-lg-6">
+								Kategori Catatan 
+								<input class="form-control form-control-sm bold" disabled type="text" id="idCatatanKurangBayar" name="idCatatanKurangBayar">    
+							</div>
+							<div class="col-lg-6">
+								Catatan 
+								<textarea class="form-control form-control-sm" disabled id="catatan" name="catatan" rows="3"></textarea> 
+							</div>
+								<div class="col-lg-12"><br></div>
+								<div class="col-lg-12">
+									<div class="row">
+									<div class="form-group">
+										<label for="example-date-input" class="col-xs-5">User Stamp</label>
+										<div class="col-xs-7">
+											<input class="form-control form-control-sm" type="text" id="userStamp" name="userStamp" disabled>						
+										</div>
+									</div>
+									</div>
+								</div>
+								<div class="col-lg-12">
+									<div class="row">
+									<div class="form-group">
+										<label for="example-date-input" class="col-xs-5">User Validasi</label>
+										<div class="col-xs-7">
+											<input class="form-control form-control-sm" type="text" id="userValidasi" name="userValidasi" disabled>
+									 	</div>
+									 </div>
+									 </div>
+								</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+              <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+            </div>
+         </div>
+	</div>
+</div> 
+{{/modal}}
+{{#scripts}}
+<script src="{{contextPath}}/assets/vendor/datatables/media/js/jquery.dataTables.js"></script>
+<script src="{{contextPath}}/assets/vendor/datatables/media/js/dataTables.bootstrap4.js"></script>
+<script src="{{contextPath}}/assets/vendor/sweetalert/sweetalert.min.js"></script>
+
+<script type="text/javascript">
+    var userTable = dkppDataTable($('.datatable'), '{{contextPath}}/api/mutasi-kurang-bayar', {
+        'columns': [
+            {"data": "periodeMutasi"},
+            {"data": "nip"},
+            {"data": "namaPeserta"},
+            {"data": "namaPenerimaMP"},
+            {"data": "kategoriPenerima.namaKategoriPenerima"},
+            {"data": "namaKantorBayar"},
+            {"data": "saldoAkhirKurangBayar"},
+            {"data": "kurangBayarDetail.namaValidasi"}
+        ],
+        "columnDefs": [
+        	 {
+        	      "targets": 0, // your case first column
+        	      "className": "text-center",
+        	 },
+        	 {
+                 "render": function ( data, type, row ) {
+                     return toRp(data);
+                 },
+                 "targets": 6
+              },
+             {
+                "render": function ( data, type, row ) {
+                	var nip = (row["nip"]).trim();
+                	var periode = row["periodeMutasi"];
+                    return '<button type="button" class="btn btn-primary btn-sm" onclick="javascript:doDetail(`'+nip+'`,`'+periode+'`)"><i class="fa fa-edit"></i> <span>Lihat Detail</span></button>';
+                },
+                "targets": 7
+             }
+        ]
+    });
+    
+    function doDetail(nip, periode){
+    	$.ajax({
+            url: "{{contextPath}}/api/mutasi-kurang-bayar/search",
+            method: "GET",
+            data: { 
+            		nip : nip,
+            		periode:periode
+            	  }
+        }).done((response) => {
+        	var status = response.status;
+        	$("#tbl-mutasi-kurang-bayar tbody").empty();
+        	if(status){
+        		var data = response.data;
+        		if(data != null && data.length > 0){
+        			var account = response.data[0];
+        			for(var i=0;i<data.length; i++){
+        				$("#tbl-mutasi-kurang-bayar tbody").append("<tr>"+
+        						+"<td>"+(i + 1)+"</td>"
+        						+"<td>"+(i + 1)+"</td>"
+        						+"<td>"+data[i].tanggalMutasi+"</td>"
+        						+"<td>"+toRp(data[i].kurangBayar)+"</td>"
+        						+"<td>"+data[i].keterangan+"</td>"
+        						+"</tr>");
+        			}
+        			
+        			$("#namaPeserta").val(account.nip+" - "+account.namaPeserta);
+        			$("#periodeMutasi").val(account.periodeMutasi);
+        			$("#namaPenerima").val(account.mutasiPensiun.id+" - "+account.mutasiPensiun.namaPenerimaMP);
+        			$("#tglProses").val(account.tanggalMutasi);
+        			$("#kurangBayar").val(toRp(account.kurangBayar));
+        			$("#userStamp").val(account.userStamp);
+        			$("#userValidasi").val(account.userValidasi);
+        			$("#catatan").val(account.namaKategoriCatatan);
+        			$("#idCatatanKurangBayar").val(account.kategoriCatatan.namaKategoriCatatan);
+        			$("#idOlahraga").val(account.kantorBayar.id+" - "+account.kantorBayar.namaKantorBayar);
+    			}
+        	}
+        	$(".bd-example-modal").modal("show");
+    	}).error(() => {
+        	swal({title:"Gagal",text: "Terjadi kesalahan", icon:"error", button:"OK"});
+    	});
+    }
+    
+    function toRp(bilangan){
+    	var	number_string = bilangan.toString(),
+    		sisa 	= number_string.length % 3,
+    		rupiah 	= number_string.substr(0, sisa),
+    		ribuan 	= number_string.substr(sisa).match(/\d{3}/g);
+    			
+    	if (ribuan) {
+    		separator = sisa ? '.' : '';
+    		rupiah += separator + ribuan.join('.');
+    	}
+    	
+    	return "Rp. " + rupiah;
+    }
+</script>
+{{/scripts}} {{/layout}}

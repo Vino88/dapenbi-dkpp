@@ -1,0 +1,537 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RekapPembayaranMPS20persenAll" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="56618859-d519-4a62-bcd1-29eec0911567">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DKPP_INTERNAL2"/>
+	<parameter name="periode_mutasi" class="java.lang.String"/>
+	<parameter name="id_kategori_pensiun" class="java.lang.String"/>
+	<parameter name="id_kantor_bayar" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT 
+COUNT(a.nip) as jumlah_orang
+,SUM(a.phdp) as phdp
+,SUM(a.mpyd) as jml_mpyd
+,SUM(c.mps10juta) as mps_20persen
+,ROUND(SUM(c.mps10juta),'-2') as mps_20persen_bulat
+,SUM(a.mpyd + a.pembulatan) as mp_setelah_mps20persen
+,a.id_kantor_bayar as kode_cabang
+,a.nama_kantor_bayar as kantor_bayar
+,a.nama_kategori_pensiun
+,(CASE when a.id_kantor_bayar = '003' then 'DAPENBI' else 'Kantor Bank Indonesia' END) as kantor
+,to_char(to_date(b.periode_pembayaran,'MM YYYY','nls_date_language = INDONESIAN'),'Month YYYY','nls_date_language = INDONESIAN') as periode_mutasi
+,to_char(sysdate,'dd Month yyyy','nls_date_language = INDONESIAN') as sign_date
+FROM tbl_t_pembayaran_detail_mp a left join tbl_t_pembayaran_header b ON a.id_pembayaran = b.id_pembayaran
+left join tbl_t_pembayaran_detail_mps c ON a.nip = c.nip 
+WHERE b.periode_pembayaran = $P{periode_mutasi} AND a.id_kategori_pensiun = $P{id_kategori_pensiun} AND (a.id_kantor_bayar = $P{id_kantor_bayar} OR $P{id_kantor_bayar} = '00') AND c.id_jenis_mps IN('2') AND a.id_status_bayar = '1'
+GROUP BY a.nama_kantor_bayar, a.id_kantor_bayar, b.periode_pembayaran, a.id_kategori_pensiun, a.nama_kategori_pensiun, c.id_jenis_mps
+ORDER BY a.id_kantor_bayar]]>
+	</queryString>
+	<field name="JUMLAH_ORANG" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="JUMLAH_ORANG"/>
+	</field>
+	<field name="PHDP" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="PHDP"/>
+	</field>
+	<field name="JML_MPYD" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="JML_MPYD"/>
+	</field>
+	<field name="MPS_20PERSEN" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="MPS_20PERSEN"/>
+	</field>
+	<field name="MPS_20PERSEN_BULAT" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="MPS_20PERSEN_BULAT"/>
+	</field>
+	<field name="MP_SETELAH_MPS20PERSEN" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="MP_SETELAH_MPS20PERSEN"/>
+	</field>
+	<field name="KODE_CABANG" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="KODE_CABANG"/>
+	</field>
+	<field name="KANTOR_BAYAR" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="KANTOR_BAYAR"/>
+	</field>
+	<field name="NAMA_KATEGORI_PENSIUN" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NAMA_KATEGORI_PENSIUN"/>
+	</field>
+	<field name="KANTOR" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="KANTOR"/>
+	</field>
+	<field name="PERIODE_MUTASI" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="PERIODE_MUTASI"/>
+	</field>
+	<field name="SIGN_DATE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="SIGN_DATE"/>
+	</field>
+	<variable name="jml_orang" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{JUMLAH_ORANG}]]></variableExpression>
+	</variable>
+	<variable name="TOTAL_PHDP" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{PHDP}]]></variableExpression>
+	</variable>
+	<variable name="TOTAL_MPYD" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{JML_MPYD}]]></variableExpression>
+	</variable>
+	<variable name="TOTAL_MPS_20" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{MPS_20PERSEN}]]></variableExpression>
+	</variable>
+	<variable name="TOTAL_MPS_20_dibayar" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{MPS_20PERSEN_BULAT}]]></variableExpression>
+	</variable>
+	<variable name="TOTAL_SetelahMPS20" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{MP_SETELAH_MPS20PERSEN}]]></variableExpression>
+	</variable>
+	<variable name="Variable_1" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{JUMLAH_ORANG}]]></variableExpression>
+	</variable>
+	<group name="KANTOR">
+		<groupExpression><![CDATA[$F{KANTOR}]]></groupExpression>
+		<groupHeader>
+			<band height="20">
+				<textField isBlankWhenNull="true">
+					<reportElement x="5" y="0" width="206" height="20" isRemoveLineWhenBlank="true" uuid="1dbdd74a-43a6-42a3-9823-543efc5b4015">
+						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="dbade322-f5c7-40c0-8ea9-83c6ae8b99b5"/>
+						<printWhenExpression><![CDATA[new Boolean($P{id_kantor_bayar}.equals("00"))]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{KANTOR} == null ? "-" : $F{KANTOR}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
+	<group name="KANTOR_BAYAR">
+		<groupExpression><![CDATA[$F{KANTOR_BAYAR}]]></groupExpression>
+		<groupHeader>
+			<band height="31">
+				<textField evaluationTime="Group" evaluationGroup="KANTOR_BAYAR" isBlankWhenNull="true">
+					<reportElement x="35" y="1" width="39" height="30" uuid="bea74425-5ad7-4b6e-8a22-e226833570fa">
+						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="df8b74aa-f20a-40f7-b702-cf3f60683d4f"/>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle" markup="rtf"/>
+					<textFieldExpression><![CDATA[$F{KODE_CABANG}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Group" evaluationGroup="KANTOR_BAYAR" pattern="#,000.00#;#,000.00#-" isBlankWhenNull="true">
+					<reportElement x="459" y="0" width="108" height="30" uuid="879fa167-c1f8-424c-986d-c0eafd5514f5"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<paragraph rightIndent="5"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{MPS_20PERSEN}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Group" evaluationGroup="KANTOR_BAYAR" pattern="#,000.00#;#,000.00#-" isBlankWhenNull="true">
+					<reportElement x="349" y="0" width="109" height="30" uuid="8a3bc8a3-ab1e-4e39-9eb9-5c4dadef515c"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<paragraph rightIndent="5"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{JML_MPYD}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Group" evaluationGroup="KANTOR_BAYAR" pattern="#,000.00#;#,000.00#-" isBlankWhenNull="true">
+					<reportElement x="681" y="0" width="105" height="30" uuid="2bd05f4a-8ad7-41e4-823f-4641d84aeed5"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<paragraph rightIndent="5"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{MP_SETELAH_MPS20PERSEN}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Group" evaluationGroup="KANTOR_BAYAR" pattern="#,000.00#;#,000.00#-" isBlankWhenNull="true">
+					<reportElement x="568" y="0" width="111" height="30" uuid="3af43c40-e2ec-4aac-8544-0f015ffc3653"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<paragraph rightIndent="5"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{MPS_20PERSEN_BULAT}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="205" y="1" width="39" height="30" uuid="57386316-dc7b-42db-906d-092e64f323c8"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{JUMLAH_ORANG}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Group" evaluationGroup="KANTOR_BAYAR" isBlankWhenNull="true">
+					<reportElement x="174" y="1" width="30" height="30" uuid="8b9af584-01d3-428c-a21d-b9ff9953ba10"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA["100%"]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Group" evaluationGroup="KANTOR_BAYAR" isBlankWhenNull="true">
+					<reportElement x="5" y="1" width="30" height="30" uuid="4992193e-f9c2-4d05-bb55-98cb337f4f61"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Group" evaluationGroup="KANTOR_BAYAR" isBlankWhenNull="true">
+					<reportElement x="74" y="1" width="100" height="30" uuid="f591ecc6-8f74-4e36-9ecd-c0cda977c344">
+						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="dbade322-f5c7-40c0-8ea9-83c6ae8b99b5"/>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{KANTOR_BAYAR}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Group" evaluationGroup="KANTOR_BAYAR" pattern="#,000.00#;#,000.00#-" isBlankWhenNull="true">
+					<reportElement x="244" y="1" width="105" height="30" uuid="6fd542f0-a45a-4cda-b241-57f598fb4201"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<paragraph rightIndent="5"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{PHDP}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="31">
+				<textField pattern="#,000.00#;(#,000.00#-)" isBlankWhenNull="true">
+					<reportElement x="569" y="7" width="110" height="19" isPrintInFirstWholeBand="true" uuid="3640e376-efa3-4aa6-b453-d22418ad529e"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font isBold="true"/>
+						<paragraph rightIndent="5"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{MPS_20PERSEN_BULAT}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,000.00#;(#,000.00#-)" isBlankWhenNull="true">
+					<reportElement x="243" y="7" width="105" height="19" isPrintInFirstWholeBand="true" uuid="82e6acc0-d0c6-4c4b-b251-0f98b4c52d2b"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font isBold="true"/>
+						<paragraph rightIndent="5"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{PHDP}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,000.00#;(#,000.00#-)" isBlankWhenNull="true">
+					<reportElement x="681" y="7" width="105" height="19" isPrintInFirstWholeBand="true" uuid="a45885fe-b53f-491f-8827-99f2292b22b1"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font isBold="true"/>
+						<paragraph rightIndent="5"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{MP_SETELAH_MPS20PERSEN}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="204" y="7" width="39" height="19" isPrintInFirstWholeBand="true" uuid="69a18ef0-2875-4d15-914e-4ea09aa92816"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{JUMLAH_ORANG}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement x="4" y="30" width="779" height="1" uuid="afd5f0c7-0b25-47ec-9af2-b43f11817475"/>
+				</line>
+				<line>
+					<reportElement x="4" y="2" width="779" height="1" uuid="d59b9afa-22e7-47c0-a36c-524d958921f9"/>
+				</line>
+				<textField pattern="#,000.00#;(#,000.00#-)" isBlankWhenNull="true">
+					<reportElement x="349" y="7" width="109" height="19" isPrintInFirstWholeBand="true" uuid="b9f07238-d31d-4998-8249-645e834f3a71"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font isBold="true"/>
+						<paragraph rightIndent="5"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{JML_MPYD}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,000.00#;(#,000.00#-)" isBlankWhenNull="true">
+					<reportElement x="458" y="7" width="109" height="19" isPrintInFirstWholeBand="true" uuid="a4d0c71f-dea6-4801-a16b-a996bf8b5cf8"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font isBold="true"/>
+						<paragraph rightIndent="5"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{MPS_20PERSEN}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,###.###;(#,###.###-)">
+					<reportElement x="6" y="6" width="198" height="19" isPrintInFirstWholeBand="true" uuid="a8eabbcf-8eec-45ed-949c-2494a8a70324">
+						<printWhenExpression><![CDATA[new Boolean($P{id_kantor_bayar}.equals("00"))]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["SUBTOTAL CABANG : "+($F{KANTOR_BAYAR} == null ? " " : $F{KANTOR_BAYAR})]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,###.###;(#,###.###-)">
+					<reportElement x="10" y="7" width="175" height="19" isPrintInFirstWholeBand="true" uuid="d70f693e-dc58-4fe5-b3eb-983305d3d2c6">
+						<printWhenExpression><![CDATA[new Boolean 
+($P{id_kantor_bayar}.equals("003")||($P{id_kantor_bayar}.equals("010")||($P{id_kantor_bayar}.equals("020")||($P{id_kantor_bayar}.equals("030")||($P{id_kantor_bayar}.equals("040")||($P{id_kantor_bayar}.equals("050")||($P{id_kantor_bayar}.equals("060")||($P{id_kantor_bayar}.equals("070")||($P{id_kantor_bayar}.equals("090")||($P{id_kantor_bayar}.equals("100")||($P{id_kantor_bayar}.equals("120")||($P{id_kantor_bayar}.equals("130")||($P{id_kantor_bayar}.equals("140")||($P{id_kantor_bayar}.equals("150")||($P{id_kantor_bayar}.equals("190")||($P{id_kantor_bayar}.equals("220")||($P{id_kantor_bayar}.equals("230")||($P{id_kantor_bayar}.equals("240")||($P{id_kantor_bayar}.equals("310")||($P{id_kantor_bayar}.equals("320")||($P{id_kantor_bayar}.equals("330")||($P{id_kantor_bayar}.equals("340")||($P{id_kantor_bayar}.equals("350")||($P{id_kantor_bayar}.equals("003")||($P{id_kantor_bayar}.equals("360")||($P{id_kantor_bayar}.equals("370")||($P{id_kantor_bayar}.equals("380")||($P{id_kantor_bayar}.equals("390")||($P{id_kantor_bayar}.equals("410")||($P{id_kantor_bayar}.equals("470")||($P{id_kantor_bayar}.equals("510")||($P{id_kantor_bayar}.equals("530")||($P{id_kantor_bayar}.equals("540")||($P{id_kantor_bayar}.equals("560")||($P{id_kantor_bayar}.equals("570")||($P{id_kantor_bayar}.equals("580")||($P{id_kantor_bayar}.equals("600")||($P{id_kantor_bayar}.equals("610")||($P{id_kantor_bayar}.equals("620")||($P{id_kantor_bayar}.equals("630")||($P{id_kantor_bayar}.equals("690")||($P{id_kantor_bayar}.equals("710")||($P{id_kantor_bayar}.equals("720")||($P{id_kantor_bayar}.equals("740")||($P{id_kantor_bayar}.equals("770")||($P{id_kantor_bayar}.equals("810")||($P{id_kantor_bayar}.equals("820")||($P{id_kantor_bayar}.equals("880")))))))))))))))))))))))))))))))))))))))))))))))))]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["TOTAL CABANG : "+($F{KANTOR_BAYAR} == null ? " " : $F{KANTOR_BAYAR})]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="77" splitType="Stretch">
+			<textField>
+				<reportElement x="-20" y="0" width="842" height="30" uuid="0e2dc928-9065-42e7-94ac-026aa514c474"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="html">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NAMA_KATEGORI_PENSIUN} == null ? "REKAPITULASI MP PERTAMA SEKALIGUS 10 JUTA" : "REKAPITULASI MP PERTAMA SEKALIGUS 10 JUTA "+$F{NAMA_KATEGORI_PENSIUN}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="-20" y="31" width="842" height="20" uuid="7bb4d6ce-94b0-4c4a-80e0-996ec14518bd"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="html">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PERIODE_MUTASI} == null ? "Bulan" : "Bulan "+$F{PERIODE_MUTASI}.trim()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="6" y="60" width="239" height="17" uuid="cba98d18-00a0-45ee-bd75-fe40ff589cbe">
+					<printWhenExpression><![CDATA[new Boolean($P{id_kantor_bayar}.equals("00"))]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["REKAP SELURUH KANTOR BAYAR"]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="32" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Opaque" x="350" y="1" width="110" height="31" backcolor="#FFFFFF" uuid="77fe43df-9797-4f34-ab8d-f24cd9bd1358"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<text><![CDATA[Jml MPYD 100%]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="245" y="1" width="105" height="31" backcolor="#FFFFFF" uuid="289a9bd0-37da-403d-ae20-5315986e0398"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<text><![CDATA[Jml PhDP]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="5" y="1" width="30" height="31" backcolor="#FFFFFF" uuid="14c7ef69-27f4-45ce-a7cc-ed114fd5b59b"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[No.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="570" y="1" width="110" height="31" backcolor="#FFFFFF" uuid="6c684cf6-64f4-46e4-826f-8a69dcb64c0f"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<text><![CDATA[Jml MPS dibayar]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="680" y="1" width="104" height="31" backcolor="#FFFFFF" uuid="1ef59d51-df1e-4b76-a0d3-fc006861804b"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<text><![CDATA[Jml MPYD / bulan stlh MPS > 10 Juta]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="75" y="1" width="100" height="31" backcolor="#FFFFFF" uuid="9779cec0-0994-4108-a989-29d302329fc7"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nama Cabang]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="460" y="1" width="108" height="31" backcolor="#FFFFFF" uuid="1c1210a6-24e9-4453-ab85-c5bccb02b567"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<text><![CDATA[Jml MPS > 10 Juta]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="175" y="1" width="30" height="31" backcolor="#FFFFFF" uuid="e4cd73f3-6f19-4303-bf97-a6f09d6ca021"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Konj]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="35" y="1" width="40" height="31" backcolor="#FFFFFF" uuid="87d784ec-ad4b-4424-b905-9cc227f14d8b"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Kode Cabang]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="205" y="1" width="40" height="31" backcolor="#FFFFFF" uuid="4dac82f6-fbcf-4426-8683-04e4f4df46ae"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Jml Orang]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<pageFooter>
+		<band height="148" splitType="Stretch">
+			<textField>
+				<reportElement x="544" y="8" width="250" height="22" uuid="e3de0224-1561-4a0c-bf33-3d42a034b714"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="html">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Jakarta, "+($F{SIGN_DATE} == null ? "" : $F{SIGN_DATE})]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="544" y="31" width="250" height="22" uuid="1325d16e-fbf1-417f-9785-2228206ff391"/>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Divisi Kepeesertaan dan Pelayanan Pensiun]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="544" y="106" width="110" height="20" uuid="c981b513-df4b-4deb-9e0e-057c60457813"/>
+				<textElement textAlignment="Center">
+					<font size="12" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Achmad Mufit"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="664" y="106" width="130" height="20" uuid="7c21924a-45bf-4856-aa55-187ec000ce52"/>
+				<textElement textAlignment="Center">
+					<font size="12" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Rosalind Permatasari"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="544" y="122" width="110" height="20" uuid="065f8b6f-8b78-484f-b296-09984bb840e9"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Kepala Divisi"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="664" y="120" width="130" height="20" uuid="74e2e3e4-bdf4-4fa6-81b3-3d30aed69ecf"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Kepala Seksi"]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="31" splitType="Stretch">
+			<textField pattern="#,000.00#;(#,000.00#-)" isBlankWhenNull="true">
+				<reportElement x="678" y="1" width="102" height="30" uuid="93444c6c-6595-4def-8f7c-4938f42492a4">
+					<printWhenExpression><![CDATA[new Boolean($P{id_kantor_bayar}.equals("00"))]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{TOTAL_SetelahMPS20}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,000.00#;(#,000.00#-)" isBlankWhenNull="true">
+				<reportElement x="456" y="1" width="111" height="30" uuid="fca6b8b5-c029-4c9a-869c-a39a67d621ed">
+					<printWhenExpression><![CDATA[new Boolean($P{id_kantor_bayar}.equals("00"))]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{TOTAL_MPS_20}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="23" y="6" width="170" height="19" uuid="3e1950b5-f0f3-40ab-b2e1-c6cff94eec73">
+					<printWhenExpression><![CDATA[new Boolean($P{id_kantor_bayar}.equals("00"))]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total Seluruh Cabang]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="205" y="1" width="40" height="30" uuid="fd201cf2-3d50-4164-99ed-11b91e7e51da">
+					<printWhenExpression><![CDATA[new Boolean($P{id_kantor_bayar}.equals("00"))]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{jml_orang}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,000.00#;(#,000.00#-)" isBlankWhenNull="true">
+				<reportElement x="245" y="1" width="108" height="30" uuid="c55c338c-72cf-45b4-9f75-6a469f11267a">
+					<printWhenExpression><![CDATA[new Boolean($P{id_kantor_bayar}.equals("00"))]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{TOTAL_PHDP}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,000.00#;(#,000.00#-)" isBlankWhenNull="true">
+				<reportElement x="353" y="1" width="103" height="30" uuid="009f71d2-0f96-4450-99d8-d211a096c1d9">
+					<printWhenExpression><![CDATA[new Boolean($P{id_kantor_bayar}.equals("00"))]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{TOTAL_MPYD}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,000.00#;(#,000.00#-)" isBlankWhenNull="true">
+				<reportElement x="568" y="1" width="109" height="30" uuid="79ddbdb9-90ba-4045-adef-af3a0986dbb1">
+					<printWhenExpression><![CDATA[new Boolean($P{id_kantor_bayar}.equals("00"))]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{TOTAL_MPS_20_dibayar}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

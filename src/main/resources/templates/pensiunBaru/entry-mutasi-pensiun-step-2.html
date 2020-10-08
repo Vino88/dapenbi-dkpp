@@ -1,0 +1,475 @@
+<div class=" tsf-step step-2 ">
+    <div class="col-lg-7">
+        <div class="card card-block">
+            <label for="periodeMutasi" class="col-sm-3">Periode Mutasi</label>
+            <input type="hidden" id="idKategoriMutasi" value="{{kategoriMutasi}}">
+            <input type="hidden" id="idKategoriPenerima" value="{{kategoriPenerima}}">
+            <div class="col-xs-3">
+                <input class="form-control form-control-sm" disabled type="text" value="{{periodeMutasi}}" name="periodeMutasi" id="periodeMutasi">
+            </div>
+            <!--<label for="tanggalInput" class="col-sm-3">Tanggal Input</label>-->
+            <!--<div class="col-xs-3">-->
+                <!--<input class="form-control form-control-sm" disabled type="text" value="{{tanggalInput}}" name="tanggalInput" id="tanggalInput">-->
+            <!--</div>-->
+            <div class="col-lg-12 segment-title">
+                <h4 class="card-title bold">Penerima MP</h4>
+            </div>
+            <div class="col-lg-6">
+                <div class="row form-group">
+                    <label for="namaPenerimaMP" class="col-sm-6">Nama Penerima</label>
+                    <div class="col-xs-6">
+                        <input class="form-control form-control-sm" type="text" readonly value="{{namaPenerimaMP}}" name="namaPenerimaMP" id="namaPenerimaMP" style="text-transform:uppercase">
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <label for="tglLahirPenerimaMP" class="col-xs-6">Tgl. Lahir Penerima</label>
+                    <div class="col-xs-6">
+                        <input class="form-control form-control-sm" type="text" readonly value="{{tglLahirPenerimaMP}}" name="tglLahirPenerimaMP" id="tglLahirPenerimaMP">
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <label for="namaJenisKelaminPenerimaMP" class="col-xs-6">Jenis Kelamin</label>
+                    <div class="col-xs-6">
+                        <input type="hidden" value="{{jenisKelaminPenerimaMP}}" name="jenisKelaminPenerimaMP" id="jenisKelaminPenerimaMP">
+                        <input class="form-control form-control-sm" type="text" readonly value="{{namaJenisKelaminPenerimaMP}}" id="namaJenisKelaminPenerimaMP">
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <label for="namaSuskel" class="col-xs-6">Susunan Keluarga</label>
+                    <div class="col-xs-6">
+                        <input type="hidden" value="{{suskel}}" name="suskel" id="suskel">
+                        <input class="form-control form-control-sm" value="{{namaSuskel}}" name="namaSuskel" id="namaSuskel" readonly>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="row form-group">
+                    <label for="statusKelPenerimaPenerimaMP" class="col-xs-6">Status Kel. Penerima</label>
+                    <div class="col-xs-6">
+                        <input type="hidden" value="{{statusKelPenerimaPenerimaMP}}" name="statusKelPenerimaPenerimaMP" id="statusKelPenerimaPenerimaMP">
+                        <input class="form-control form-control-sm" type="text" readonly value="{{namaStatusKelPenerimaPenerimaMP}}" id="namaStatusKelPenerimaPenerimaMP">
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <label for="tanggalSKDAPENBI" class="col-xs-6">Tgl. SK DAPENBI</label>
+                    <div class="col-xs-6">
+                        <input autocomplete="off" placeholder="dd/mm/yyyy" class="form-control form-control-sm text-sm" type="text" value="{{tanggalSKDAPENBI}}" name="tanggalSKDAPENBI" id="tanggalSKDAPENBI" data-provide="datepicker" data-date-format="dd/mm/yyyy">
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <label for="nomorSKDAPENBI" class="col-xs-6">No. SK DAPENBI</label>
+                    <div class="col-xs-6">
+                        <input class="form-control form-control-sm" value="{{nomorSKDAPENBI}}" name="nomorSKDAPENBI" id="nomorSKDAPENBI">
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12 segment-title">
+                <h4 class="card-title bold">Alamat Penerima MP</h4>
+            </div>
+            <div class="col-lg-12">
+                <div class="row form-group">
+                    <div class="col-sm-6">
+                        <label for="alamatIsDalamNegeri" class="custom-control custom-checkbox">
+                            <input id="alamatIsDalamNegeri" name="isDalamNegeri" type="checkbox" class="custom-control-input">
+                            <span class="custom-control-indicator"></span>
+                            <span class="custom-control-description">Alamat Dalam Negeri</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12 alamatDalamNegeri">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <fieldset class="form-group">
+                            <label for="provinsiPenerimaMP">Provinsi</label>
+                            <select class="form-control form-control-sm" value="{{provinsiPenerimaMP}}" name="provinsiPenerimaMP" id="provinsiPenerimaMP"></select>
+                        </fieldset>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <fieldset class="form-group">
+                            <label for="kotaPenerimaMP">Kabupaten/Kota</label>
+                            <select class="form-control form-control-sm" value="{{kotaPenerimaMP}}" name="kotaPenerimaMP" id="kotaPenerimaMP"></select>
+                        </fieldset>
+                    </div>
+                    <div class="col-xs-6">
+                        <fieldset class="form-group">
+                            <label for="kodePosPenerimaMP">
+                                Kode Pos
+                                <label for="changeKodePos" class="custom-control custom-checkbox">
+                                    <input id="changeKodePos" name="kodePos" type="checkbox" class="custom-control-input">
+                                    <span class="custom-control-indicator"></span>
+                                    <span class="custom-control-description"><small>Input Manual</small></span>
+                                </label>
+                            </label>
+                            <input class="form-control form-control-sm" type="text" maxLength="5" value="{{kodePosPenerimaMP}}" name="kodePosPenerimaMP" id="kodePosPenerimaMP" readonly>
+                        </fieldset>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <fieldset class="form-group">
+                            <label for="kecamatanPenerimaMP">Kecamatan</label>
+                            <select class="form-control form-control-sm" value="{{kecamatanPenerimaMP}}" name="kecamatanPenerimaMP" id="kecamatanPenerimaMP"></select>
+                        </fieldset>
+                    </div>
+                    <div class="col-sm-6">
+                        <fieldset class="form-group">
+                            <label for="alamatIndonesiaPenerimaMP">Alamat Lengkap</label>
+                            <textarea class="form-control form-control-sm" name="alamatIndonesiaPenerimaMP" id="alamatIndonesiaPenerimaMP" rows="3">{{alamatIndonesiaPenerimaMP}}</textarea>
+                        </fieldset>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <fieldset class="form-group">
+                            <label for="kelurahanPenerimaMP">Kelurahan</label>
+                            <select class="form-control form-control-sm" value="{{kelurahanPenerimaMP}}" name="kelurahanPenerimaMP" id="kelurahanPenerimaMP"></select>
+                        </fieldset>
+                    </div>
+                    <div class="col-sm-3">
+                        <fieldset class="form-group">
+                            <label for="rtPenerimaMP">RT</label>
+                            <input class="form-control form-control-sm" type="text" maxlength="3" value="{{rtPenerimaMP}}" name="rtPenerimaMP" id="rtPenerimaMP" >
+                        </fieldset>
+                    </div>
+                    <div class="col-sm-3">
+                        <fieldset class="form-group">
+                            <label for="rwPenerimaMP">RW</label>
+                            <input class="form-control form-control-sm" type="text" maxlength="3" value="{{rwPenerimaMP}}" name="rwPenerimaMP" id="rwPenerimaMP" >
+                        </fieldset>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12 alamatLuarNegeri">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <fieldset class="form-group">
+                            <label for="alamatLuarNegeriPenerimaMP">Alamat Lengkap</label>
+                            <textarea class="form-control" value="{{alamatLuarNegeriPenerimaMP}}" name="alamatLuarNegeriPenerimaMP" id="alamatLuarNegeriPenerimaMP" rows="3"></textarea>
+                        </fieldset>
+                    </div>
+                    <div class="col-sm-6">
+                        <fieldset class="form-group">
+                            <label for="negaraPenerimaMP">Negara</label>
+                            <select class="form-control form-control-sm" value="{{negaraPenerimaMP}}" name="negaraPenerimaMP" id="negaraPenerimaMP"></select>
+                        </fieldset>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <fieldset class="form-group">
+                            <label for="emailPenerimaMP">Email</label>
+                            <input class="form-control form-control-sm" type="text" value="{{emailPenerimaMP}}" name="emailPenerimaMP" id="emailPenerimaMP" >
+                        </fieldset>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <fieldset class="form-group">
+                            <label for="negaraPenerimaMP">No HP</label>
+                            <input class="form-control form-control-sm" type="text" value="{{noHPPenerimaMP}}" name="noHPPenerimaMP" id="noHPPenerimaMP" >
+                        </fieldset>
+                    </div>
+                    <div class="col-sm-6">
+                        <fieldset class="form-group">
+                            <label for="negaraPenerimaMP">No Telepon</label>
+                            <input class="form-control form-control-sm" type="text" value="{{noTlpPenerimaMP}}" name="noTlpPenerimaMP" id="noTlpPenerimaMP" >
+                        </fieldset>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="card card-block">
+                    <div class="row form-group">
+                        <div class="col-lg-12">
+                            {{#statusValidasiRadio}}
+                            <label class="custom-control custom-radio radio-inline">
+                                <input id="statusCatatan{{id}}" name="statusCatatan" type="radio" class="custom-control-input" value="{{id}}" required />
+                                <span class="custom-control-indicator"></span>
+                                <span class="custom-control-description">{{namaValidasi}}</span>
+                            </label>
+                            {{/statusValidasiRadio}}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <fieldset class="form-group">
+                                <label for="kategoriCatatan">Kategori Catatan</label>
+                                <select class="form-control form-control-sm" value="{{kategoriCatatan}}" name="kategoriCatatan" id="kategoriCatatan"></select>
+                            </fieldset>
+                        </div>
+                        <div class="col-lg-6">
+                            <fieldset class="form-group">
+                                <label for="catatan">Catatan</label>
+                                <textarea class="form-control form-control-sm" name="catatan" id="catatan" rows="3">{{catatan}}</textarea>
+                            </fieldset>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="card card-block">
+                    <div class="row form-group">
+                        <label for="userStamp" class="col-xs-5">User Stamp</label>
+                        <div class="col-xs-7">
+                            <input class="form-control form-control-sm" type="text" value="{{userStamp}}" id="userStamp2" disabled>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <label for="userValidasi" class="col-xs-5">User Validasi</label>
+                        <div class="col-xs-7">
+                            <input class="form-control form-control-sm" type="text" value="{{userValidasi}}" id="userValidasi2" disabled>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-5">
+        <div class="card card-block">
+            <div class="row">
+                <h5 class="card-title bold col-xs-12">Perhitungan MP</h5>
+            </div>
+            <div class="form-group">
+                <div class="row periode">
+                    <div class="col-sm-6">
+                    </div>
+                    <div class="col-sm-3">
+                    </div>
+                    <div class="col-sm-3">
+                        <small>Pembulatan</small>
+                    </div>
+                </div>
+                <div class="row periode">
+                    <label class="col-sm-6">
+                    </label>
+                    <div class="col-sm-3">
+                        <small class="bg-danger">YY MM DD</small>
+                    </div>
+                    <div class="col-sm-3">
+                        <small class="bg-danger">YY MM</small>
+                    </div>
+                </div>
+                <div class="row periode">
+                    <label for="usiaPesertaSaatBerhenti" class="col-sm-6">
+                        Usia Peserta Saat Berhenti
+                    </label>
+                    <div class="col-sm-3">
+                        <input class="form-control form-control-sm" type="text" value="{{usiaPesertaSaatBerhenti}}" name="usiaPesertaSaatBerhenti" id="usiaPesertaSaatBerhenti" readonly>
+                    </div>
+                    <div class="col-sm-3">
+                        <input class="form-control form-control-sm" type="text" value="{{usiaPesertaSaatBerhentiPembulatan}}" name="usiaPesertaSaatBerhentiPembulatan" id="usiaPesertaSaatBerhentiPembulatan" readonly>
+                    </div>
+                </div>
+                <div class="row periode">
+                    <label for="usiaPenerimaSaatDiBayar" class="col-sm-6">
+                        Usia Penerima Saat Dibayar
+                    </label>
+                    <div class="col-sm-3">
+                        <input class="form-control form-control-sm" type="text" value="{{usiaPenerimaSaatDiBayar}}" name="usiaPenerimaSaatDiBayar" id="usiaPenerimaSaatDiBayar" readonly>
+                    </div>
+                    <div class="col-sm-3">
+                        <input class="form-control form-control-sm" type="text" value="{{usiaPenerimaSaatDiBayarPembulatan}}" name="usiaPenerimaSaatDiBayarPembulatan" id="usiaPenerimaSaatDiBayarPembulatan" readonly>
+                    </div>
+                </div>
+                <div class="row periode">
+                    <label for="masaKerjaSaatHenti" class="col-sm-6">
+                        Masa Kerja Saat Henti
+                    </label>
+                    <div class="col-sm-3">
+                        <input class="form-control form-control-sm" type="text" value="{{masaKerjaSaatHenti}}" name="masaKerjaSaatHenti" id="masaKerjaSaatHenti" readonly>
+
+                    </div>
+                    <div class="col-sm-3">
+                        <input class="form-control form-control-sm" type="text" value="{{masaKerjaSaatHentiPembulatan}}" name="masaKerjaSaatHentiPembulatan" id="masaKerjaSaatHentiPembulatan" readonly>
+                    </div>
+                </div>
+                <div class="row periode">
+                    <label for="masaKerjaTambahan" class="col-sm-6">
+                        Masa Kerja Tambahan
+                    </label>
+                    <div class="col-sm-3">
+                        <input class="form-control form-control-sm" type="text" value="{{masaKerjaTambahan}}" name="masaKerjaTambahan" id="masaKerjaTambahan" readonly>
+                    </div>
+                    <div class="col-sm-3">
+                        <input class="form-control form-control-sm" type="text" value="{{masaKerjaTambahanPembulatan}}" name="masaKerjaTambahanPembulatan" id="masaKerjaTambahanPembulatan" readonly>
+                    </div>
+                </div>
+                <div class="row periode">
+                    <label for="masaKerjaVeteran" class="col-sm-6">
+                        Masa Kerja Veteran
+                    </label>
+                    <div class="col-sm-3">
+                        <input class="form-control form-control-sm" type="text" value="{{masaKerjaVeteran}}" name="masaKerjaVeteran" id="masaKerjaVeteran" readonly>
+                    </div>
+                    <div class="col-sm-3">
+                        <input class="form-control form-control-sm" type="text" value="{{masaKerjaVeteranPembulatan}}" name="masaKerjaVeteranPembulatan" id="masaKerjaVeteranPembulatan" readonly>
+                    </div>
+                </div>
+                <div class="row periode">
+                    <label for="totalMasaKerja" class="col-sm-6">
+                        Total Masa Kerja
+                    </label>
+                    <div class="col-sm-3">
+                        <input class="form-control form-control-sm" type="text" value="{{totalMasaKerja}}" name="totalMasaKerja" id="totalMasaKerja" readonly>
+                    </div>
+                    <div class="col-sm-3">
+                        <input class="form-control form-control-sm" type="text" value="{{totalMasaKerjaPembulatan}}" name="totalMasaKerjaPembulatan" id="totalMasaKerjaPembulatan" readonly>
+                    </div>
+                </div>
+                <div class="row periode">
+                    <label for="masaKerjaMP" class="col-sm-6">
+                        Masa Kerja MP
+                    </label>
+                    <div class="col-sm-3">
+                        &nbsp;
+                    </div>
+                    <div class="col-sm-3">
+                        <input class="form-control form-control-sm" type="text" value="{{masaKerjaMP}}" name="masaKerjaMP" id="masaKerjaMP" readonly>
+                    </div>
+                </div>
+            </div>
+            <div class="card card-block">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <fieldset class="form-group">
+                            <label for="faktorPengurang1">Faktor Pengurang</label>
+                            <input class="form-control form-control-sm" type="text" value="{{faktorPengurang1}}" name="faktorPengurang1" id="faktorPengurang1" readonly>
+                            <input class="form-control form-control-sm" type="text" value="{{faktorPengurang2}}" name="faktorPengurang2" id="faktorPengurang2" readonly>
+                        </fieldset>
+                    </div>
+                    <div class="col-sm-4">
+                        <fieldset class="form-group">
+                            <label for="faktorNS1">Faktor NS</label>
+                            <input class="form-control form-control-sm" type="text" value="{{faktorNS1}}" name="faktorNS1" id="faktorNS1" readonly>
+                            <input class="form-control form-control-sm" type="text" value="{{faktorNS2}}" name="faktorNS2" id="faktorNS2" readonly>
+                        </fieldset>
+                    </div>
+                    <div class="col-sm-4">
+                        <fieldset class="form-group">
+                            <label for="phDP1">phDP</label>
+                            <input class="form-control form-control-sm" type="text" value="{{phDP1}}" name="phDP1" id="phDP1" readonly>
+                            <input class="form-control form-control-sm" type="text" value="{{PhDP2}}" name="PhDP2" id="PhDP2" readonly>
+                        </fieldset>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card card-block mp-bulanan">
+            <div class="row">
+                <h5 class="card-title bold col-xs-12">Pembayaran MP Bulanan</h5>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <fieldset class="form-group">
+                        <label for="mpPerbulan">MP Perbulan (Rumus)</label>
+                        <input class="form-control form-control-sm" type="text" value="{{mpPerbulan}}" name="mpPerbulan" id="mpPerbulan" readonly>
+                    </fieldset>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <fieldset class="form-group">
+                        <label for="mpsPerbulanSetelah20Persen">MPS Perbulan Setelah MPS 20%</label>
+                        <input class="form-control form-control-sm" type="text" value="{{mpsPerbulanSetelah20Persen}}" name="mpsPerbulanSetelah20Persen" id="mpsPerbulanSetelah20Persen" readonly>
+                    </fieldset>
+                </div>
+                <div class="col-sm-6">
+                    <fieldset class="form-group">
+                        <label for="mps20persen">MPS 20%</label>
+                        <input class="form-control form-control-sm" type="text" value="{{mps20persen}}" name="mps20persen" id="mps20persen" readonly>
+                    </fieldset>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <fieldset class="form-group">
+                        <label for="mpsPerbulanSetelah10Juta">MPS Perbulan Setelah MPS 10 Juta</label>
+                        <input class="form-control form-control-sm" type="text" value="{{mpsPerbulanSetelah10Juta}}" name="mpsPerbulanSetelah10Juta" id="mpsPerbulanSetelah10Juta" disabled>
+                    </fieldset>
+                </div>
+                <div class="col-sm-6">
+                    <fieldset class="form-group">
+                        <label for="mpsPerbulanSetelah10Juta">MPS 10 Juta</label>
+                        <input class="form-control form-control-sm" type="text" value="{{mps10Juta}}" name="mps10Juta" id="mps10Juta" disabled>
+                    </fieldset>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <fieldset class="form-group">
+                        <label for="mpyd">MPYD</label>
+                        <input class="form-control form-control-sm" type="text" value="{{mpyd}}" name="mpyd" id="mpyd" disabled>
+                    </fieldset>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <fieldset class="form-group">
+                        <label for="mpBulanKe13">MP Bulan ke-13</label>
+                        <input class="form-control form-control-sm" type="text" value="{{mpBulanKe13}}" name="mpBulanKe13" id="mpBulanKe13" disabled>
+                    </fieldset>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <fieldset class="form-group">
+                        <label for="mpKurangBayar">MP Kurang Bayar</label>
+                        <input class="form-control form-control-sm" type="text" value="{{mpKurangBayar}}" name="mpKurangBayar" id="mpKurangBayar" disabled>
+                    </fieldset>
+                </div>
+                <div class="col-sm-6">
+                    <fieldset class="form-group">
+                        <label for="periodeMutasiMp">Periode Mutasi MP</label>
+                        <input class="form-control form-control-sm" type="text" value="{{periodeMutasiMp}}" name="periodeMutasiMp" id="periodeMutasiMp" disabled>
+                    </fieldset>
+                </div>
+            </div>
+        </div>
+        <div class="card card-block mp-sekaligus">
+            <div class="row">
+                <h5 class="card-title bold col-xs-12">Pembayaran MP Sekaligus</h5>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <fieldset class="form-group">
+                        <label for="mps100Persen">MPS 100 %</label>
+                        <input class="form-control form-control-sm" type="text" value="{{mps100Persen}}" name="mps100Persen" id="mps100Persen" disabled>
+                    </fieldset>
+                </div>
+                <div class="col-sm-6">
+                    <fieldset class="form-group">
+                        <label for="periodeMutasiMp">Periode Mutasi MP</label>
+                        <input class="form-control form-control-sm" type="text" value="{{periodeMutasiMp}}" name="periodeMutasiMp" id="periodeMutasiMp" disabled>
+                    </fieldset>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <fieldset class="form-group">
+                        <label for="mps100PersenPembulatan">MPS 100 % (Pembulatan)</label>
+                        <input class="form-control form-control-sm" type="text" value="{{mps100PersenPembulatan}}" name="mps100PersenPembulatan" id="mps100PersenPembulatan" disabled>
+                    </fieldset>
+                </div>
+            </div>
+        </div>
+        <div class="card card-block" id="fight">
+            <div class="col-xs-9"></div>
+            <div class="col-xs-3 pull-right">
+                <button class="btn btn-primary btn-sm pull-right" id="btnCatat" onclick="cetakReport()">
+                <i class="fa fa-save"></i> Cetak Catatan</button>
+            </div>
+            <div class="col-xs-3 pull-right">
+                <button class="btn btn-primary btn-sm pull-right" id="btnForm" onclick="cetakFormulir()">
+                    <i class="fa fa-save"></i> Cetak Formulir</button>
+            </div>
+        </div>
+    </div>
+    <iframe style="width:100%;height:100%;display: none" id="cetakCatatan" name="cetakCatatan" src=""></iframe>
+</div>

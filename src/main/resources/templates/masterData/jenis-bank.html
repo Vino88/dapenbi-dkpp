@@ -1,0 +1,178 @@
+{{#layout}}
+
+{{#styles}}
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/googleapis/css/component.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/googleapis/css/googleapis.css">
+{{/styles}}
+
+{{#title}}
+Master Jenis Bank - DKPP
+{{/title}}
+<div class="card">
+    <div class="card-header">
+        <div class="col-md-12">
+            <div class="row pull-right">
+                <a class="btn btn-primary btn-icon btn-sm" id="btn-add"><i class="material-icons">add</i> Add</a>
+            </div>
+        </div>
+    </div>
+    <div class="card-block">
+        <div class="table-responsive">
+            <table class="table table-bordered datatable dataTable no-footer" id="golongan_table"
+                   role="grid">
+                <thead>
+                <tr role="row">
+                    <th>
+                        Jenis Bank
+                    </th>
+                    <th>
+                        Active
+                    </th>
+                    <th>
+                        Action
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{{#modal}}
+<div class="modal fade kantor-bayar-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title small bold" id="myModalLabel">Form Master Golongan</h4>
+            </div>
+            <div class="modal-body">
+                <form id="jenisBankForm">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="form-group row">
+                                <label for="jenisBank" class="col-sm-3 bold">Jenis Bank</label>
+                                <div class="col-xs-9">
+                                    <input type="hidden" name="id" id="id">
+                                    <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
+                                    <input class="form-control form-control-sm" type="text" name="jenisBank" id="jenisBank">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="checkbox-active" class="col-sm-3 bold">Active</label>
+                                <div class="col-xs-9">
+                                    <label class="custom-control custom-checkbox m-b-1">
+                                        <input type="checkbox" class="custom-control-input" name="active" id="checkbox-active">
+                                        <span class="custom-control-indicator"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="saveForm()">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+{{/modal}}
+
+{{#scripts}}
+<script src="{{contextPath}}/assets/vendor/datatables/media/js/jquery.dataTables.js"></script>
+<script src="{{contextPath}}/assets/vendor/datatables/media/js/dataTables.bootstrap4.js"></script>
+<script src="{{contextPath}}/assets/vendor/sweetalert/sweetalert.min.js"></script>
+
+<script type="text/javascript">
+    window.RESTFulMode = "";
+    function showPrintOptions(){
+        $('#printOptionsModal').modal('show');
+    }
+
+    $('#btn_ok_print').unbind().on('click', function(){
+        $('#printOptionsModal').modal('hide');
+        $('#pdfReportModal').modal('show');
+    });
+
+    $('#filter_form').hide();
+
+    var golonganTable = dkppDataTable($('.datatable'),
+        '{{contextPath}}/api/jenis-bank',{
+            'columns': [
+                { "data": "jenisBank" },
+                { "data": "active", "ordering": false },
+                { "data": "id"}
+            ],
+            'columnDefs': [
+                {
+                    "targets": -1,
+                    "data": "id",
+                    "render": function(data, type, row, meta){
+                        return "<a class='btn btn-info btn-sm btn-icon btn-edit' onclick='displayEditModal(" + row.id + ")'><i class='material-icons'>edit</i> Edit</a>";
+                    }
+                },
+                {
+                    "targets": -2,
+                    "data": "active",
+                    "render": function(data, type, row, meta){
+                        console.log(data);
+                        if(data == true)
+                            return '<span class="tag tag-pill tag-success">active</span>';
+                        else
+                            return '<span class="tag tag-pill tag-danger">not active</span>';
+                    }
+                }
+            ]
+        });
+
+    function displayEditModal(id) {
+        const jenisBank = golonganTable.rows().data().filter((data) => {return data.id === id})[0];
+        const jenisBankForm = $("form#jenisBankForm");
+
+        $("#id").val(jenisBank.id);
+        $("#jenisBank").val(jenisBank.jenisBank);
+        $("#checkbox-active")[0].checked = jenisBank.active;
+        $('.kantor-bayar-modal').modal('show');
+        window.RESTFulMode = "PUT";
+    }
+
+    function saveForm() {
+        $.ajax({
+            url: "{{contextPath}}/api/jenis-bank",
+            method: window.RESTFulMode,
+            data: formToJSON($("form#jenisBankForm")[0].elements)
+        }).success(function(data) {
+            $('.kantor-bayar-modal').modal('hide');
+            swal({title:"Berhasil",text:data.message, icon:"success", button:"OK"});
+            golonganTable.ajax.reload();
+        });
+    }
+
+    $(document).ready(function(){
+        $('#btn-add').unbind().on('click', function(){
+            var modal = $('.kantor-bayar-modal');
+            modal.modal('show');
+            window.RESTFulMode = 'POST';
+
+            $("#jenisBank").val("");
+            $("#checkbox-active")[0].checked = false;
+
+        });
+        $('.btn-edit').on('click', function(){
+            var modal = $('.kantor-bayar-modal');
+            modal.modal('show');
+            RESTFulMode = 'PUT';
+        });
+    });
+</script>
+{{/scripts}}
+
+{{/layout}}

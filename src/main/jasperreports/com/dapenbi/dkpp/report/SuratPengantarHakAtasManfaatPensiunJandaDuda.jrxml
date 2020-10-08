@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="SuratPermohonanPerubahanDomisili" pageWidth="612" pageHeight="792" whenNoDataType="AllSectionsNoDetail" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="22d91e7e-4e32-468d-a01b-76461748dbb4">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DKPPUAT"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="360"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="628"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<property name="net.sf.jasperreports.awt.ignore.missing.font" value="true"/>
+	<property name="net.sf.jasperreports.default.font.name" value="Sans Serif"/>
+	<parameter name="nip" class="java.lang.String"/>
+	<parameter name="id_kategori_penerima_mp" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[select 
+		nama_peserta,
+       a.nip,
+       a.nama_penerima_mp_baru as nama_penerima_mp, 
+       a.alamat_lengkap,
+       a.rt,
+       a.rw,
+       a.nama_kelurahan,
+       a.nama_kecamatan,
+       a.nama_kota_kab,
+       a.nama_provinsi,
+       a.no_hp,
+       a.nomor_rekening,
+       a.no_sp_bi,
+       a.alamat_lengkap,
+       a.no_SK_dapenbi,
+       to_char(a.tgl_sk_dapenbi,'dd-mm-yyyy') as tgl_sk_dapenbi,
+       to_char(a.tgl_sk_bi,'dd-mm-yyyy') as tgl_sk_bi,
+       a.no_sk_bi,
+       a.nama_kantor_bayar,
+       a.nama_kantor_bayar_baru,
+       a.nama_kategori_pensiun,
+       b.alamat_surat1,
+       b.alamat_surat2,
+       b.alamat_surat3,
+       b.alamat_surat4,
+       to_char(current_date,'DD Month YYYY','nls_date_language = indonesian') as datenow,
+       to_char(to_date(a.periode_mutasi,'MM YYYY','nls_date_language = INDONESIAN'),'Month YYYY','nls_date_language = INDONESIAN') as periode_mutasi,
+       to_char(a.tgl_mutasi, 'dd Month yyyy','nls_date_language = INDONESIAN') as tgl_mutasi
+from tbl_t_mutasi_pensiun a INNER JOIN tbl_r_kantor_bayar b ON a.id_kantor_bayar = b. id_kantor_bayar
+where nip = $P{nip} AND id_kategori_penerima_mp_baru = $P{id_kategori_penerima_mp} AND id_validasi = '2']]>
+	</queryString>
+	<field name="NAMA_PESERTA" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NAMA_PESERTA"/>
+	</field>
+	<field name="NIP" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NIP"/>
+	</field>
+	<field name="NAMA_PENERIMA_MP" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NAMA_PENERIMA_MP"/>
+	</field>
+	<field name="ALAMAT_LENGKAP" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="ALAMAT_LENGKAP"/>
+	</field>
+	<field name="RT" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="RT"/>
+	</field>
+	<field name="RW" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="RW"/>
+	</field>
+	<field name="NAMA_KELURAHAN" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NAMA_KELURAHAN"/>
+	</field>
+	<field name="NAMA_KECAMATAN" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NAMA_KECAMATAN"/>
+	</field>
+	<field name="NAMA_KOTA_KAB" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NAMA_KOTA_KAB"/>
+	</field>
+	<field name="NAMA_PROVINSI" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NAMA_PROVINSI"/>
+	</field>
+	<field name="NO_HP" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NO_HP"/>
+	</field>
+	<field name="NOMOR_REKENING" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NOMOR_REKENING"/>
+	</field>
+	<field name="NO_SP_BI" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NO_SP_BI"/>
+	</field>
+	<field name="COLUMN_14" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="ALAMAT_LENGKAP"/>
+	</field>
+	<field name="NO_SK_DAPENBI" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NO_SK_DAPENBI"/>
+	</field>
+	<field name="TGL_SK_DAPENBI" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="TGL_SK_DAPENBI"/>
+	</field>
+	<field name="TGL_SK_BI" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="TGL_SK_BI"/>
+	</field>
+	<field name="NO_SK_BI" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NO_SK_BI"/>
+	</field>
+	<field name="NAMA_KANTOR_BAYAR" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NAMA_KANTOR_BAYAR"/>
+	</field>
+	<field name="NAMA_KANTOR_BAYAR_BARU" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NAMA_KANTOR_BAYAR_BARU"/>
+	</field>
+	<field name="NAMA_KATEGORI_PENSIUN" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NAMA_KATEGORI_PENSIUN"/>
+	</field>
+	<field name="ALAMAT_SURAT1" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="ALAMAT_SURAT1"/>
+	</field>
+	<field name="ALAMAT_SURAT2" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="ALAMAT_SURAT2"/>
+	</field>
+	<field name="ALAMAT_SURAT3" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="ALAMAT_SURAT3"/>
+	</field>
+	<field name="ALAMAT_SURAT4" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="ALAMAT_SURAT4"/>
+	</field>
+	<field name="DATENOW" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="DATENOW"/>
+	</field>
+	<field name="PERIODE_MUTASI" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="PERIODE_MUTASI"/>
+	</field>
+	<field name="TGL_MUTASI" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="TGL_MUTASI"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="119" splitType="Stretch"/>
+	</pageHeader>
+	<detail>
+		<band height="567" splitType="Stretch">
+			<textField>
+				<reportElement x="38" y="13" width="282" height="19" uuid="d4e2679f-2a8e-48fc-8031-2c7c5c736527"/>
+				<textElement>
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NO_SP_BI}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="38" y="32" width="154" height="19" uuid="e00db3f3-3339-4624-a15f-887d2d902096"/>
+				<textElement>
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Lamp. 1 Berkas + 1 Kartu"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="390" y="13" width="150" height="30" uuid="f305fea8-c12e-44a7-8a58-be74aea0ab23"/>
+				<textElement>
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{DATENOW}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="80" y="362" width="438" height="20" uuid="8ee56b14-a491-4c70-b5bc-8fdc2329e65f"/>
+				<textElement>
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<text><![CDATA[	Demikian agar maklum dan atas kerja sama saudara kami ucapkan terimakasih]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="40" y="168" width="50" height="19" uuid="788e03ce-a912-4289-8bf1-686d979490e5"/>
+				<textElement>
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Perihal :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="41" y="53" width="82" height="16" uuid="3bb12bd8-bd4b-4af7-9f5b-51af8b605118"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<text><![CDATA[Kepada Yth,]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="80" y="250" width="438" height="40" uuid="c9d91beb-ff19-4780-92a7-5151c789b573"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Asli SK Pengurus DAPENBI "+($F{NO_SK_DAPENBI} == null ? "-" : $F{NO_SK_DAPENBI})+" tanggal "+($F{TGL_SK_DAPENBI} == null ? "-" : $F{TGL_SK_DAPENBI})+" tentang Hak Atas Manfaat Pensiun Janda/Duda atas nama yang bersangkutan."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="39" y="142" width="189" height="18" uuid="93a31f67-00ff-468d-b503-92971bd2ed8c"/>
+				<textElement>
+					<font fontName="Arial" size="11" isBold="true" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NAMA_KANTOR_BAYAR}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="262" y="449" width="254" height="19" uuid="017b3619-ac19-458f-811f-28dd5bfdb2c8"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DANA PENSIUN BANK INDONESIA]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="333" y="517" width="116" height="20" uuid="7c38b9ad-0e28-44ed-8636-bea665627f71"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="11" isBold="true" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Achmad Mufit"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="333" y="537" width="116" height="30" uuid="53a9c141-1e2e-4976-bba6-4dddcd2bac6e"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Kepala Divisi"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="41" y="184" width="477" height="70" uuid="c75be91d-fb23-49a8-a794-49321c246205"/>
+				<textElement textAlignment="Justified" markup="styled">
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA["	Dalam rangka memenuhi ketentuan dalam Pasal 14 huruf I Peraturan Dewan Gubernur Bank Indonesia "+($F{NO_SK_BI} == null ? "-" : $F{NO_SK_BI})+" tanggal "+($F{TGL_SK_BI} == null ? "-" : $F{TGL_SK_BI}) +" tentang Peraturan Dana Pensiun dari Dana Pensiun Bank Indonesia, bersama ini kami mohon bantuan Saudara untuk menyampaikan kepada Sdra/i. "+$F{NAMA_PENERIMA_MP}.trim()+" (Janda/Duda Alm. "+$F{NAMA_PESERTA}.trim()+" - "+$F{NIP}.trim()+"), yaitu : "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="92" y="168" width="357" height="19" uuid="1141d785-dc73-4526-a3df-c9b7f7e5f98b"/>
+				<textElement>
+					<font size="12" isBold="true" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Hak Atas Manfaat Pensiun Anak"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="39" y="69" width="234" height="21" uuid="f04f8b9a-ea5e-4051-960c-c66d96922dfb"/>
+				<textElement>
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ALAMAT_SURAT1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="39" y="87" width="234" height="20" uuid="a151e024-89d8-43cd-ae75-69eec8f2a04c"/>
+				<textElement>
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ALAMAT_SURAT2}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="40" y="105" width="234" height="20" uuid="687ceed7-d1e0-4c8b-b6b4-e9c7db512723"/>
+				<textElement>
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ALAMAT_SURAT3}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="40" y="124" width="234" height="16" uuid="cc16d142-296e-4a2e-9493-31b651765316"/>
+				<textElement>
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ALAMAT_SURAT4}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="80" y="277" width="438" height="64" uuid="7299334c-7f84-4eb0-b188-de3d5892844f"/>
+				<textElement textAlignment="Justified" markup="html">
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Sedangkan Kartu Pensiun atas nama Sdra/i."+$F{NAMA_PENERIMA_MP}.trim()+" belum dapat kami cetak karena belum ada foto pada dokumen pensiun atas nama yang bersangkutan. Kami harapkan bantuan Saudara agar pada kesempatan pertama mengirimkan pas foto yang bersangkutan ukuran 4 x 6 cm melalui pos ke alamat DAPENBI atau melalui email <u>layanan@dapenbi.co.id.</u>"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="228" y="426" width="322" height="19" uuid="934c3ba8-c960-45de-a18e-dcd600f8f172"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DIVISI KEPESERTAAN DAN PELAYANAN PENSIUN]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="42" y="247" width="24" height="18" uuid="8b4d61e8-4619-4a38-b7f0-0645143131ea"/>
+				<textElement textAlignment="Center" verticalAlignment="Top"/>
+				<text><![CDATA[-]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="42" y="274" width="24" height="18" uuid="0af6ca77-ded7-44da-9909-175a41b96e07"/>
+				<textElement textAlignment="Center" verticalAlignment="Top"/>
+				<text><![CDATA[-]]></text>
+			</staticText>
+		</band>
+	</detail>
+</jasperReport>

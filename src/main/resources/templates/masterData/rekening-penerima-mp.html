@@ -1,0 +1,432 @@
+{{#layout}}
+
+{{#styles}}
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/googleapis/css/component.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/googleapis/css/googleapis.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/select2/css/select2.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css">
+{{/styles}}
+
+{{#title}}
+Master Rekening Penerima MP - DKPP
+{{/title}}
+
+
+<div class="card">
+    <div class="card-header">
+        <div class="col-md-12">
+            <div class="row pull-right">
+                <a class="btn btn-primary btn-icon btn-sm" id="btn-add"><i class="material-icons">add</i> Add</a>
+            </div>
+        </div>
+    </div>
+    <div class="card-block">
+        <div class="table-responsive">
+            <table class="table table-bordered datatable dataTable no-footer" id="keluarga_table"
+                   role="grid">
+                <thead>
+                <tr role="row">
+                    <th>
+                        NIP
+                    </th>
+                    <th>
+                        Nama Peserta
+                    </th>
+                    <th>
+                        Nama Penerima MP
+                    </th>
+                    <th>
+                        Nama Kategori Penerima
+                    </th>
+                    <th>
+                        Bank
+                    </th>
+                    <th>
+                        Jenis Bank
+                    </th>
+                    <th>
+                        Nama Cabang Bank
+                    </th>
+                    <th>
+                        Nama Rekening
+                    </th>
+                    <th>
+                        No. rekening
+                    </th>
+                    <th>
+                        Active
+                    </th>
+                    <th>
+                        Action
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{{#modal}}
+<div class="modal fade main-modal" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title small bold" id="myModalLabel">Form Rekening Penerima MP</h4>
+            </div>
+            <div class="modal-body">
+                <form id="rekeningPenerimaMpForm">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
+
+                            <div class="form-group row">
+                                <label for="id-penerima-mp" class="col-sm-3 bold">Penerima MP</label>
+                                <div class="col-xs-4">
+                                    <select name="idPenerimaMp" id="id-penerima-mp" class="form-control form-control-sm">
+                                        <option></option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="nama-penerima-mp" class="col-sm-3 bold"> Nama Penerima MP</label>
+                                <div class="col-xs-4">
+                                    <input class="form-control form-control-sm" type="text" name="namaPenerimaMp" id="nama-penerima-mp">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="nip" class="col-sm-3 bold"> NIP</label>
+                                <div class="col-xs-4">
+                                    <input class="form-control form-control-sm" type="text" name="nip" id="nip">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="nama-peserta" class="col-sm-3 bold"> Nama Peserta</label>
+                                <div class="col-xs-4">
+                                    <input class="form-control form-control-sm" type="text" name="namaPeserta" id="nama-peserta">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="id-kategori-penerima" class="col-sm-3 bold"> Id Kategori Penerima</label>
+                                <div class="col-xs-4">
+                                    <select name="idKategoriPenerima" id="id-kategori-penerima" class="form-control form-control-sm">
+                                        <option></option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="nama-kategori-penerima" class="col-sm-3 bold"> Nama Kategori Penerima</label>
+                                <div class="col-sm-4">
+                                    <input class="form-control form-control-sm" type="text" name="namaKategoriPenerima" id="nama-kategori-penerima">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="id-bank" class="col-sm-3 bold">Bank</label>
+                                <div class="col-xs-4">
+                                    <select name="idBank" id="id-bank" class="form-control form-control-sm">
+                                        <option></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="jenis-bank" class="col-sm-3 bold"> Jenis Bank</label>
+                                <div class="col-xs-4">
+                                    <input class="form-control form-control-sm" type="text" name="jenisBank" id="jenis-bank">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="nama-cabang-bank" class="col-sm-3 bold"> Nama Cabang Bank</label>
+                                <div class="col-xs-4">
+                                    <input class="form-control form-control-sm" type="text" name="namaCabangBank" id="nama-cabang-bank">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="nama-rekening" class="col-sm-3 bold"> Nama Rekening</label>
+                                <div class="col-xs-4">
+                                    <input class="form-control form-control-sm" type="text" name="namaRekening" id="nama-rekening">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="nomor-rekening" class="col-sm-3 bold"> Nomor Rekening</label>
+                                <div class="col-xs-4">
+                                    <input class="form-control form-control-sm" type="text" name="nomorRekening" id="nomor-rekening">
+                                </div>
+                            </div>
+
+                            <div class="form-group row checkbox-show-hide">
+                                <label for="checkbox-active" class="col-sm-3 bold">Active</label>
+                                <div class="col-xs-6">
+                                    <label class="custom-control custom-checkbox m-b-1">
+                                        <input type="checkbox" class="custom-control-input" name="active" id="checkbox-active">
+                                        <span class="custom-control-indicator"></span>
+                                    </label>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="saveForm()">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+{{/modal}}
+
+{{#scripts}}
+<script src="{{contextPath}}/assets/vendor/datatables/media/js/jquery.dataTables.js"></script>
+<script src="{{contextPath}}/assets/vendor/datatables/media/js/dataTables.bootstrap4.js"></script>
+<script src="{{contextPath}}/assets/vendor/select2/js/select2.js"></script>
+<script src="{{contextPath}}/assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+<script src="{{contextPath}}/assets/vendor/sweetalert/sweetalert.min.js"></script>
+
+<script type="text/javascript">
+    window.RESTFulMode = "";
+    var selected = 0;
+
+    function showPrintOptions(){
+        $('#printOptionsModal').modal('show');
+    }
+
+    $('#btn_ok_print').unbind().on('click', function(){
+        $('#printOptionsModal').modal('hide');
+        $('#pdfReportModal').modal('show');
+    });
+
+    $('#filter_form').hide();
+
+    var rekeningPenerimaMpTable = dkppDataTable($('.datatable'), '{{contextPath}}/api/rekening-penerima-mp', {
+        'columns': [
+            { "data": "nip"},
+            { "data": "namaPeserta"},
+            { "data": "namaPenerimaMp"},
+            { "data": "namaKategoriPenerima"},
+            { "data": "namaBank"},
+            { "data": "jenisBank"},
+            { "data": "namaCabangBank"},
+            { "data": "namaRekening"},
+            { "data": "nomorRekening"},
+            { "data": "active", "ordering": false },
+            { "data": "nip"}
+        ],
+        'columnDefs': [
+            {
+                "targets": -1,
+                "data": "id",
+                "render": function(data, type, row, meta){
+                    return "<a class='btn btn-info btn-sm btn-icon btn-edit' onclick='displayEditModal(" + row.nip + ")'><i class='material-icons'>edit</i> Edit</a>";
+                }
+            },
+            {
+                "targets": -2,
+                "data": "active",
+                "render": function(data, type, row, meta){
+                    if(data == true)
+                        return '<span class="tag tag-pill tag-success">active</span>';
+                    else
+                        return '<span class="tag tag-pill tag-danger">not active</span>';
+                }
+            }
+        ]
+    });
+
+    function displayEditModal(nip) {
+        $('.checkbox-show-hide').show();
+        const rekeningPenerimaMp = rekeningPenerimaMpTable.rows().data().filter((data) => {return data.nip == nip})[0];
+        const rekeningPenerimaMpForm = $("form#rekeningPenerimaMpForm");
+        $.ajax({
+            url: '{{contextPath}}/data/bank-nf',
+            method: 'GET',
+            success: function(data){
+                $('#id-bank').select2(
+                    {
+                        data: data,
+                        width: "50%",
+                        placeholder: 'Pilih Bank'
+                    }
+                ).val(rekeningPenerimaMp.idBank).trigger('change');
+            }
+
+        });
+
+        $.ajax({
+            url: '{{contextPath}}/data/penerima-mp',
+            method: 'GET',
+            success: function(data){
+                $('#id-penerima-mp').select2(
+                    {
+                        data: data,
+                        width: "50%",
+                        placeholder: 'Pilih Penerima MP'
+                    }
+                ).val(rekeningPenerimaMp.idPenerimaMp).trigger('change');
+            }
+
+        });
+
+        $.ajax({
+            url: '{{contextPath}}/data/kategori-penerima',
+            method: 'GET',
+            success: function(data){
+                $('#id-kategori-penerima').select2(
+                    {
+                        data: data,
+                        width: "50%",
+                        placeholder: 'Pilih Kategori Penerima'
+                    }
+                ).val(rekeningPenerimaMp.idKategoriPenerima).trigger('change');
+            }
+
+        });
+
+        $("#nip").val(rekeningPenerimaMp.nip);
+        $("#nama-peserta").val(rekeningPenerimaMp.namaPeserta);
+        $("#id-penerima-mp").val(rekeningPenerimaMp.idPenerimaMp);
+        $("#nama-penerima-mp").val(rekeningPenerimaMp.namaPenerimaMp);
+        $("#id-kategori-penerima").val(rekeningPenerimaMp.idKategoriPenerima);
+        $("#nama-kategori-penerima").val(rekeningPenerimaMp.namaKategoriPenerima);
+        $("#id-bank").val(rekeningPenerimaMp.idBank);
+        $("#jenis-bank").val(rekeningPenerimaMp.jenisBank);
+        $("#nama-cabang-bank").val(rekeningPenerimaMp.namaCabangBank);
+        $("#nama-rekening").val(rekeningPenerimaMp.namaRekening);
+        $("#nomor-rekening").val(rekeningPenerimaMp.nomorRekening);
+        $('.main-modal').modal({backdrop: 'static', keyboard: false}).modal('show');
+        $("#checkbox-active")[0].checked = rekeningPenerimaMp.active;
+        window.RESTFulMode = "PUT";
+    }
+
+    function saveForm() {
+        $.ajax({
+            url: "{{contextPath}}/api/rekening-penerima-mp",
+            method: window.RESTFulMode,
+            data: formToJSON($("form#rekeningPenerimaMpForm")[0].elements)
+        }).success(function(data) {
+            $('.main-modal').modal('hide');
+            if(data.status == "success") {
+                swal({title: "Berhasil", text: data.message, icon: "success", button: "OK"});
+            }
+            rekeningPenerimaMpTable.ajax.reload();
+        }).error(function(data){
+            if(data.message != undefined )
+                swal({title: "Gagal", text: data.message, icon: "error", button: "OK"});
+            else
+                swal({title: "Gagal", text: "Terjadi kegagalan.", icon: "error", button: "OK"});
+        });
+    }
+
+    $(document).ready(function(){
+        $('#btn-add').unbind().on('click', function(){
+            $("#id").val("");
+
+            $("#id-rekening-penerima").val("");
+            $("#nip").val("");
+            $("#nama-peserta").val("");
+            $("#id-penerima-mp").val("");
+            $("#nama-penerima-mp").val("");
+            $("#id-kategori-penerima").val("");
+            $("#nama-kategori-penerima").val("");
+            $("#id-bank").val("");
+            $("#jenis-bank").val("");
+            $("#nama-cabang-bank").val("");
+            $("#nama-rekening").val("");
+            $("#nomor-rekening").val("");
+            $('.main-modal').modal({backdrop: 'static', keyboard: false}).modal('show');
+            $("#checkbox-active")[0].checked = true;
+            var modal = $('.main-modal');
+            $('.checkbox-show-hide').hide();
+            modal.modal('show');
+            window.RESTFulMode = 'POST';
+        });
+
+        //select2 init
+        $('#id-kategori-penerima').select2({
+            ajax: {
+                url: '{{contextPath}}/data/kategori-penerima',
+                dataType: 'json',
+                delay: 250,
+                processResults: function(data){
+                    return {
+                        results: data
+                    };
+                }
+            },
+            width: "50%",
+            placeholder: 'Pilih Kategori Penerima'
+        });
+
+        $('#id-penerima-mp').select2({
+            ajax: {
+                url: '{{contextPath}}/data/penerima-mp',
+                dataType: 'json',
+                dropdownParent: $(".main-modal"),
+                delay: 250,
+                processResults: function(data){
+                    return {
+                        results: data
+                    };
+                }
+            },
+            width: "50%",
+            placeholder: 'Pilih Penerima MP'
+        });
+
+        $('#id-bank').select2({
+            ajax: {
+                url: '{{contextPath}}/data/bank-nf',
+                dataType: 'json',
+                dropdownParent: $(".main-modal"),
+                delay: 250,
+                processResults: function(data){
+                    return {
+                        results: data
+                    };
+                }
+            },
+            width: "50%",
+            placeholder: 'Pilih Bank'
+        });
+
+        $(document.body).on('change', '#id-penerima-mp', function(val){
+            var id = $('#id-penerima-mp').val();
+            $.ajax({
+                url: '{{contextPath}}/data/penerima-mp/get-detail',
+                method: 'GET',
+                data: {id: id},
+                success: function(data){
+                    $('#nama-penerima-mp').val(data.namaPenerima);
+                    $('#nama-peserta').val(data.namaPenerima);
+                    $('#nip').val(data.nip);
+                }
+            });
+        });
+
+        $(document.body).on('change', '#id-kategori-penerima', function(val){
+            var id = $('#id-kategori-penerima').val();
+            $.ajax({
+                url: '{{contextPath}}/data/kategori-penerima/get-detail',
+                method: 'GET',
+                data: {id: id},
+                success: function(data){
+                    $('#nama-kategori-penerima').val(data.namaKategoriPenerima);
+                }
+            });
+        });
+    });
+</script>
+{{/scripts}}
+
+{{/layout}}

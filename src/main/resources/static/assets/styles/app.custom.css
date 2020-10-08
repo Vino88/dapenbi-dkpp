@@ -1,0 +1,63 @@
+html {
+    font-size: 14px;
+}
+
+[id$="table_wrapper"] > .row:first-child > div:last-child {
+    text-align: right;
+}
+
+[id$="table_wrapper"] > .row:nth-child(2) {
+    margin-left: 1px;
+    width: 100%;
+    overflow: auto;
+}
+
+[id$="table_wrapper"] > .row:nth-child(2) > .col-md-12 {
+    padding-left: 0;
+}
+
+[id$="table_wrapper"] > div:nth-child(2) > div > table {
+    margin-bottom: 0 !important;
+}
+
+select.error + span.select2 > .selection > .select2-selection {
+    border-color: #d26d54;
+}
+
+table.table tr > td {
+    vertical-align: middle;
+}
+
+td.action-box {
+    box-sizing: border-box !important;
+}
+
+.btn-sm {
+    padding-top: 6px;
+    padding-bottom: 6px;
+}
+
+.btn-sm > i {
+    padding-top: 3px;
+    padding-bottom: 3px;
+}
+
+.dkpp-loader {
+    z-index: 10000;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: rgba(200, 200, 200, 0.4);
+}
+
+.dkpp-loader > div {
+    height: 100%;
+}
+
+.dkpp-loader > div > div {
+    text-align: center;
+    top: 45%;
+    position: relative;
+}

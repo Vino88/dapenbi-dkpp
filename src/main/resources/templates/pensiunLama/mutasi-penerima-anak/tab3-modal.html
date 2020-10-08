@@ -1,0 +1,294 @@
+<div class="modal fade bd-example-modal" id="tab3ModalEdit" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+                <div class="modal-header">
+                    <a class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </a>
+                    <h4 class="modal-title small bold" id="myModalLabel">Mutasi Janda/Duda/Anak Bulan Ke-13 (MP 80%)</h4>
+                </div>
+                <form id="tab3Form">
+                <input type="hidden" name="_csrf" id="_csrf" value="{{_csrf.token}}" />
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-12" id="label-status-validasi">
+                            ...
+                        </div><br>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <label for="tab3TglMutasi" class="col-sm-6 bold"  >Tanggal Mutasi</label>
+
+                            <div class="col-sm-6">
+                                <input class="form-control form-control-sm" disabled type="text" name="tglMutasi" value="" id="tab3TglMutasi">
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <label for="tab3PeriodeMutasi" class="col-sm-6 bold" >Periode Mutasi</label>
+
+                            <div class="col-sm-6">
+                                <input class="form-control form-control-sm" disabled type="text" name="periodeMutasi" value="" id="tab3PeriodeMutasi">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12"><hr/></div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <small class="bold">Data Peserta</small>
+                        </div>
+                        <div class="col-lg-6">
+                            <small class="bold">Data Penerima MP</small>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <label for="example-text-input" class="col-sm-6"  >NIP-Nama Peserta</label>
+
+                            <div class="col-sm-6">
+                                <input class="form-control form-control-sm" disabled type="text" value="" id="showNipNamaPeserta">
+                                <input type="hidden" name="nip" id="tab3Nip">
+                                <input type="hidden" name="namaPeserta" id="tab3NamaPeserta">
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <label for="example-text-input" class="col-sm-6" >Nama Penerima MP</label>
+
+                            <div class="col-sm-6">
+                                <input class="form-control form-control-sm" disabled type="text" value="" id="showIdNamaPenerima">
+                                <input type="hidden" name="idPenerimaMp" id="tab3IdPenerimaMp">
+                                <input type="hidden" name="namaPenerimaMp" id="tab3NamaPenerimaMp">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <label for="tab3NamaAgama" class="col-sm-6"  >Agama</label>
+
+                            <div class="col-sm-6">
+                                <input class="form-control form-control-sm" disabled type="text" name="namaAgama" value="" id="tab3NamaAgama">
+                                <input type="hidden" name="idAgama" id="tab3IdAgama">
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <label for="tab3NamaKategoriPenerimaMp" class="col-sm-6" >Jenis Penerima MP</label>
+
+                            <div class="col-sm-6">
+                                <input class="form-control form-control-sm" disabled type="text" name="namaKategoriPenerimaMp" value="" id="tab3NamaKategoriPenerimaMp">
+                                <input type="hidden" name="idKategoriPenerimaMp" id="tab3IdKategoriPenerimaMp">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <label for="tab3JenisKelaminPeserta" class="col-sm-6"  >Jenis Kelamin</label>
+
+                            <div class="col-sm-6">
+                                <input class="form-control form-control-sm" disabled type="text" name="jenisKelaminPeserta" value="" id="tab3JenisKelaminPeserta">
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <label for="example-text-input" class="col-sm-6"  >ID-Nama Penerima MP Baru (*Jika Ada)</label>
+
+                            <div class="col-sm-6">
+                                <input class="form-control form-control-sm" disabled type="text" value="" id="showIdNamaPenerimaBaru">
+                                <input type="hidden" name="idPenerimaMpBaru" id="tab3IdPenerimaMpBaru">
+                                <input type="hidden" name="namaPenerimaMpBaru" id="tab3NamaPenerimaMpBaru">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <label for="tab3GolonganPangkat" class="col-sm-6"  >Golongan</label>
+
+                            <div class="col-sm-6">
+                                <input class="form-control form-control-sm" disabled type="text" name="golonganPangkat" value="" id="tab3GolonganPangkat">
+                                <input type="hidden" name="idGolongan" id="tab3IdGolongan">
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <label for="tab3NamaKategoriPenerimaMpBaru" class="col-sm-6"  >Jenis Penerima MP Baru (*Jika Ada)</label>
+
+                            <div class="col-sm-6">
+                                <input class="form-control form-control-sm" disabled type="text" name="namaKategoriPenerimaMpBaru" value="" id="tab3NamaKategoriPenerimaMpBaru">
+                                <input type="hidden" name="idKategoriPenerimaMpBaru" id="tab3IdKategoriPenerimaMpBaru">
+                            </div>
+                        </div>
+                    </DIV>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <label for="example-text-input" class="col-sm-6"  >Tanggal Meninggal</label>
+
+                            <div class="col-sm-6">
+                                <input class="form-control form-control-sm" disabled type="text" name="tglMeninggalPeserta" value="" id="tab3TglMeninggalPeserta">
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <label for="tab3NamaSuskel" class="col-sm-6"  >ID SusKel</label>
+
+                            <div class="col-sm-6">
+                                <input class="form-control form-control-sm"  type="text" name="namaSuskel" value="d+1" id="tab3NamaSuskel">
+                                <input type="hidden" name="idSuskel" id="tab3IdSuskel">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <label for="example-text-input" class="col-sm-6"  >Kantor Cabang</label>
+
+                            <div class="col-sm-6">
+                                <input class="form-control form-control-sm" disabled type="text" name="namaKantorBayar" value="" id="tab3NamaKantorBayar">
+                                <input type="hidden" name="idKantorBayar" id="tab3IdKantorBayar">
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <label for="tab3NamaSuskelBaru" class="col-sm-6"  >ID SusKel Baru (*Jika Ada)</label>
+
+                            <div class="col-sm-6">
+                                <input class="form-control form-control-sm"  type="text" name="namaSuskelBaru" value="" readonly id="tab3NamaSuskelBaru">
+                                <input type="hidden" name="idSuskelBaru" id="tab3IdSuskelBaru">
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="table-responsive">
+                                <table class="table table-sm">
+                                    <thead>
+                                    <tr>
+                                        <th>
+                                            Tgl. Mutasi
+                                        </th>
+                                        <th>
+                                            Periode Mutasi
+                                        </th>
+                                        <th>
+                                            MP 100%
+                                        </th>
+                                        <th>
+                                            MP 80%
+                                        </th>
+                                        <th>
+                                            Tanggal MP 80%
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>
+                                            <div id="tabelTglMutasi">
+
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div id="tabelPeriodeMutasi">
+
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div id="tabelMp100">
+
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div id="tabelMp80">
+
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div id="tabelTglMp80">
+
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="row"></div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="card card-block">
+
+
+                                    <div class="col-lg-12">
+                                        <label class="radio-inline">
+                                            <input type="radio" name="idValidasi" id="tab3IdValidasi1" value="1" data-name="Belum Validasi"/>
+                                            Belum Validasi
+                                        </label>
+                                        <label class="radio-inline">
+                                            <input type="radio" name="idValidasi" id="tab3IdValidasi2" value="2" data-name="Sudah Validasi"/>
+                                            Sudah Validasi
+                                        </label>
+                                        <label class="radio-inline">
+                                            <input type="radio" name="idValidasi" id="tab3IdValidasi3" value="3" data-name="Batal Koreksi"/>
+                                            Batal Koreksi
+                                        </label>
+                                        <label class="radio-inline">
+                                            <input type="radio" name="idValidasi" id="tab3IdValidasi4" value="4" data-name="Batal Data"/>
+                                            Batal Data
+                                        </label>
+                                        <!--
+                                        <label class="radio-inline">
+                                            <input type="radio" name="idValidasi" id="tab3IdValidasi5" value="5" data-name="Belum Diproses"/>
+                                            Belum Diproses
+                                        </label>
+                                        <label class="radio-inline">
+                                            <input type="radio" name="idValidasi" id="tab3IdValidasi6" value="6" data-name="Otomatis Validasi"/>
+                                            Otomatis Validasi
+                                        </label>
+                                        <label class="radio-inline">
+                                            <input type="radio" name="idValidasi" id="tab3IdValidasi7" value="7" data-name="Batal Validasi"/>
+                                            Batal Validasi
+                                        </label>
+                                        -->
+                                        <input type="hidden" name="namaValidasi" id="tab3NamaValidasi">
+                                    </div>
+
+                                    <div class="col-lg-6">
+                                        Kategori Catatan
+                                        <select class="form-control form-control-sm" name="idKategoriCatatan" id="tab3IdKategoriCatatan">
+                                            <option></option>
+                                        </select>
+                                        <input type="hidden" name="namaKategoriCatatan" id="tab3NamaKategoriCatatan">
+                                    </div>
+                                    <div class="col-lg-6">
+                                        Catatan
+                                        <textarea class="form-control  form-control-sm" name="keterangan" id="tab3Keterangan" rows="3"></textarea>
+                                    </div>
+                                    <div class="col-lg-12"><br></div>
+                                    <div class="col-lg-12">
+                                        <label for="tab3UserStamp" class="col-xs-5">User Stamp</label>
+
+                                        <div class="col-xs-7">
+                                            <input class="form-control form-control-sm" type="text" name="userStamp" value="" id="tab3UserStamp" disabled>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <label for="tab3UserName" class="col-xs-5">User Validasi</label>
+
+                                        <div class="col-xs-7">
+                                            <input class="form-control form-control-sm" type="text" name="userName" value="" id="tab3UserName" disabled>
+                                            <input type="hidden" name="compName" id="tab3CompName" value="">
+                                            <input type="hidden" name="idMutasiPensiun" id="tab3IdMutasiPensiun">
+                                            <input type="hidden" name="mpydBaru" id="tab3MpydBaru">
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </form>
+                <div class="modal-footer">
+                    <a class="btn btn-secondary btn-sm" data-dismiss="modal">Close</a>
+                    <a class="btn btn-primary btn-sm" id="btn-update-tab3" onclick="saveUpdateTab3()">Save</a>
+                </div>
+
+        </div>
+    </div>
+</div>

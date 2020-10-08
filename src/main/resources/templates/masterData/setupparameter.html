@@ -1,0 +1,314 @@
+{{#layout}}
+
+{{#styles}}
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/googleapis/css/component.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/googleapis/css/googleapis.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css">
+{{/styles}}
+
+{{#title}}
+Master Setup Parameter - DKPP
+{{/title}}
+
+
+<div class="card">
+    <div class="card-header">
+        <div class="col-md-12">
+            <div class="row pull-right">
+                <a class="btn btn-success btn-icon" id="btn-add"><i class="material-icons">add</i> Tambah</a>
+            </div>
+        </div>
+    </div>
+    <div class="card-block">
+        <div class="table-responsive">
+            <table class="table table-bordered datatable dataTable no-footer" id="user_table"
+                   role="grid">
+                <thead>
+                <tr role="row">
+                    <th>
+                        Periode
+                    </th>
+                    <th>
+                        Tanggal Awal Bayar
+                    </th>
+                    <th>
+                        Ada Pot Kewajiban
+                    </th>
+                    <th>
+                        Ada Perubahan FPR FS
+                    </th>
+                    <th>
+                        Ada Kenaikan MP
+                    </th>
+                    <th>
+                        Buka Periode
+                    </th>
+                    <th>
+                        Is Active
+                    </th>
+                    <th>
+                        Action
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{{#modal}}
+<div class="modal fade provinsi-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLxabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title small bold" id="myModalLabel">Form Setup Parameter</h4>
+            </div>
+            <div class="modal-body">
+                <form id="provinsiForm">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="form-group row">
+                                <label for="periode" class="col-sm-3 bold">Periode</label>
+                                <div class="col-xs-9">
+                                    <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
+                                    <input class="form-control form-control-sm" type="text" name="periode" id="periode">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="tgl-Awal-Bayar" class="col-sm-3 bold">Tanggal Awal Bayar</label>
+                                <div class="col-xs-3">
+                                    <input placeholder="dd/mm/yyyy" class="form-control form-control-sm text-sm" type="text" name="tglAwalBayar" id="tgl-Awal-Bayar" data-provide="datepicker" data-date-format="dd/mm/yyyy">
+                                </div>
+                            </div>
+
+                            <div class="form-group row ">
+                                <label for="isAdaPotKewajiban" class="col-sm-3 bold">Ada Pot Kewajiban</label>
+                                <div class="col-xs-9">
+                                    <label class="custom-control custom-checkbox m-b-1">
+                                        <input type="checkbox" class="custom-control-input" name="adaPotKewajiban" id="isAdaPotKewajiban">
+                                        <span class="custom-control-indicator"></span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="isAdaPerubahanFprFs" class="col-sm-3 bold">Ada Perubahan Fpr Fs</label>
+                                <div class="col-xs-9">
+                                    <label class="custom-control custom-checkbox m-b-1">
+                                        <input type="checkbox" class="custom-control-input" name="adaPerubahanFprFs" id="isAdaPerubahanFprFs">
+                                        <span class="custom-control-indicator"></span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="form-group row ">
+                                <label for="isAdaKenaikanMp" class="col-sm-3 bold">Ada Kenaikan Mp</label>
+                                <div class="col-xs-9">
+                                    <label class="custom-control custom-checkbox m-b-1">
+                                        <input type="checkbox" class="custom-control-input" name="adaKenaikanMp" id="isAdaKenaikanMp">
+                                        <span class="custom-control-indicator"></span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="form-group row ">
+                                <label for="isBukaPeriode" class="col-sm-3 bold">Buka Periode</label>
+                                <div class="col-xs-9">
+                                    <label class="custom-control custom-checkbox m-b-1">
+                                        <input type="checkbox" class="custom-control-input" name="bukaPeriode" id="isBukaPeriode">
+                                        <span class="custom-control-indicator"></span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="form-group row checkbox-show-hide">
+                                <label for="kategori-active" class="col-sm-3 bold">Active</label>
+                                <div class="col-xs-9">
+                                    <label class="custom-control custom-checkbox m-b-1">
+                                        <input type="checkbox" class="custom-control-input" name="active" id="kategori-active">
+                                        <span class="custom-control-indicator"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="saveForm()">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+{{/modal}}
+
+{{#scripts}}
+<script src="{{contextPath}}/assets/vendor/datatables/media/js/jquery.dataTables.js"></script>
+<script src="{{contextPath}}/assets/vendor/datatables/media/js/dataTables.bootstrap4.js"></script>
+<script src="{{contextPath}}/assets/vendor/sweetalert/sweetalert.min.js"></script>
+<script src="{{contextPath}}/assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+
+
+<script type="text/javascript">
+    $('input[name=periode]').keyup(function(){
+        $(this).val($(this).val().replace(/[^\d]/,''));
+    });
+
+    window.RESTFulMode = "";
+    function showPrintOptions(){
+        $('#printOptionsModal').modal('show');
+    }
+
+    $('#btn_ok_print').unbind().on('click', function(){
+        $('#printOptionsModal').modal('hide');
+        $('#pdfReportModal').modal('show');
+    });
+
+    $('#filter_form').hide();
+
+    var setupParamTable = dkppDataTable($('.datatable'), '{{contextPath}}/api/setupparameter', {
+        'columns': [
+            { "data": "periode" },
+            { "data": "tglAwalBayar" },
+            { "data": "adaPotKewajiban" },
+            { "data": "adaPerubahanFprFs" },
+            { "data": "adaKenaikanMp" },
+            { "data": "bukaPeriode" },
+            { "data": "active", "ordering": false }
+        ],
+        'columnDefs': [
+            {
+                "targets": 1,
+                "data": "tglAwalBayar",
+                "render": function(data, type, row, meta){
+                    return (data == null)? "" : fillDateField(data);
+                }
+            },
+            {
+                "targets": 2,
+                "data": "adaPotKewajiban",
+                "render": function(data, type, row, meta){
+                    if(data == true)
+                        return '<span class="tag tag-pill tag-success">Ya</span>';
+                    else
+                        return '<span class="tag tag-pill tag-danger">Tidak</span>';
+                }
+            },
+            {
+                "targets": 3,
+                "data": "adaPerubahanFprFs",
+                "render": function(data, type, row, meta){
+                    if(data == true)
+                        return '<span class="tag tag-pill tag-success">Ya</span>';
+                    else
+                        return '<span class="tag tag-pill tag-danger">Tidak</span>';
+                }
+            },
+            {
+                "targets": 4,
+                "data": "adaKenaikanMp",
+                "render": function(data, type, row, meta){
+                    if(data == true)
+                        return '<span class="tag tag-pill tag-success">Ya</span>';
+                    else
+                        return '<span class="tag tag-pill tag-danger">Tidak</span>';
+                }
+            },
+            {
+                "targets": 5,
+                "data": "bukaPeriode",
+                "render": function(data, type, row, meta){
+                    if(data == true)
+                        return '<span class="tag tag-pill tag-success">Ya</span>';
+                    else
+                        return '<span class="tag tag-pill tag-danger">Tidak</span>';
+                }
+            },
+            {
+                "targets": 6,
+                "data": "active",
+                "render": function(data, type, row, meta){
+                    if(data == true)
+                        return '<span class="tag tag-pill tag-success">active</span>';
+                    else
+                        return '<span class="tag tag-pill tag-danger">not active</span>';
+                }
+            },
+            {
+                "render": function(data, type, row, meta){
+                    let row_data = JSON.stringify(row);
+                    return "<a class='btn btn-info btn-sm btn-icon btn-edit' onclick='displayEditModal(" + row_data + ")'><i class='material-icons'>edit</i> Edit</a>";
+                },
+
+                "targets": 7
+            }
+        ]
+    });
+
+    function displayEditModal(row) {
+        $('.checkbox-show-hide').show();
+        $('#periode').attr("readonly","readonly");
+        const provinsiTbl = row;
+        console.log("provinsiTbl",provinsiTbl);
+        const provinsiForm = $("form#provinsiForm");
+        $("#periode", provinsiForm).val(provinsiTbl.periode);
+        $("#tgl-Awal-Bayar", provinsiForm).val(fillDateField(provinsiTbl.tglAwalBayar));
+        $("#isAdaPotKewajiban", provinsiForm)[0].checked = provinsiTbl.adaPotKewajiban;
+        $("#isAdaPerubahanFprFs", provinsiForm)[0].checked = provinsiTbl.adaPerubahanFprFs;
+        $("#isAdaKenaikanMp", provinsiForm)[0].checked = provinsiTbl.adaKenaikanMp;
+        $("#isBukaPeriode", provinsiForm)[0].checked = provinsiTbl.bukaPeriode;
+        $("#kategori-active", provinsiForm)[0].checked = provinsiTbl.active;
+        $('.provinsi-modal').modal('show');
+        RESTFulMode = "PUT";
+    }
+
+    function saveForm() {
+        let preparedData = formToJSON($("form#provinsiForm")[0].elements);
+        preparedData.tglAwalBayar = ddMmYyyyToMmDdYyyyFormat(preparedData.tglAwalBayar);
+        $.ajax({
+            url: "{{contextPath}}/api/setupparameter",
+            method: window.RESTFulMode,
+            data: preparedData
+        }).success(function(data) {
+            $('.provinsi-modal').modal('hide');
+            if (data.status = "success"){
+                swal({title:"Berhasil",text:data.message, icon:"success", button:"OK"});
+            }
+            setupParamTable.ajax.reload();
+        }).error(function (data) {
+            if (data.message = undefined)
+                swal({title: "Gagal", text: data.message, icon: "error", button: "OK"});
+            else
+                swal({title: "Gagal", text: "Terjadi kesalahan.", icon: "error", button: "OK"});
+
+        });
+    }
+
+    $(document).ready(function(){
+        $('#btn-add').unbind().on('click', function(){
+            $('#periode').val("").mask("999999");
+            $('#tgl-Awal-Bayar').val("");
+            $('#isAdaPotKewajiban').removeAttr("checked");
+            $('#isAdaPerubahanFprFs').removeAttr("checked");
+            $('#isAdaKenaikanMp').removeAttr("checked");
+            $('#isBukaPeriode').removeAttr("checked");
+            $('.checkbox-show-hide').hide();
+            $('#periode').removeAttr("readonly");
+            var modal = $('.provinsi-modal');
+            modal.modal('show');
+            RESTFulMode = 'POST';
+        });
+
+    });
+</script>
+{{/scripts}}
+
+{{/layout}}

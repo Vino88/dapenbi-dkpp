@@ -1,0 +1,1291 @@
+{{#layout}}
+
+{{#styles}}
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/datatables/media/css/dataTables.bootstrap4.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/googleapis/css/component.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/googleapis/css/googleapis.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/select2/css/select2.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css">
+<style>
+
+</style>
+{{/styles}}
+
+{{#title}}
+Validasi Mutasi Pensiun
+{{/title}}
+
+<div class="card">
+    <div class="card-block">
+        <div class="row form-group">
+            <label for="periodeMutasi" class="col-xs-3">Periode Mutasi</label>
+            <div class="col-xs-3">
+                <input class="form-control form-control-sm" type="text" value="{{periodeMutasi}}" name="periodeMutasi" id="periodeMutasi" disabled/>
+            </div>
+        </div>
+        <hr />
+        <table class="table table-bordered table-striped m-b-0 dataTable no-footer display" id="mutasi_table"
+               role="grid">
+            <thead>
+            <tr role="row">
+                <th>
+                    No Mutasi
+                </th>
+                <th>
+                    Jenis Mutasi
+                </th>
+                <th>
+                    Jumlah Data Mutasi
+                </th>
+                <th>
+                    Belum Validasi
+                </th>
+                <th>
+                    Sudah Validasi
+                </th>
+                <th>
+                    Batal Koreksi
+                </th>
+                <th>
+                    Batal Data
+                </th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+<div class="modal fade bd-example-modal-belum-validasi tutup-modal" role="dialog" aria-labelledby="myLargeModalLabel" id="info-modal-penerima-meninggal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title small bold" id="myModalLabel1">Mutasi Penerima MP Meninggal Dunia Belum Validasi</h4>
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+
+                    <table class="table table-bordered datatablekurs " id="tabel-meninggal-dunia">
+                        <thead>
+                        <tr>
+                            <th>
+                                NIP
+                            </th>
+                            <th>
+                                Nama Peserta
+                            </th>
+                            <th>
+                                Nama Penerima
+                            </th>
+                            <th>
+                                Jenis Penerima
+                            </th>
+                            <th>
+                                Pilih
+                            </th>
+                            <th>
+                                Action
+                            </th>
+
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="validasiSemuaMeninggal()">Validasi Semua</button>
+                <button type="button" class="btn btn-success btn-sm">Validasi Row Terpilih</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bd-example-modal-belum-validasi tutup-modal" role="dialog" aria-labelledby="myLargeModalLabel" id="info-modal-perubahan-kantor" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title small bold" id="myModalLabel2">Mutasi Perubahan Kantor Bayar Belum Validasi</h4>
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+
+                    <table class="table table-bordered datatablekurs " id="tabel-kantor-bayar">
+                        <thead>
+                        <tr>
+                            <th>
+                                NIP
+                            </th>
+                            <th>
+                                Nama Peserta
+                            </th>
+                            <th>
+                                Nama Penerima
+                            </th>
+                            <th>
+                                Jenis Penerima
+                            </th>
+                            <th>
+                                Pilih
+                            </th>
+                            <th>
+                                Action
+                            </th>
+
+                        </tr>
+                        </thead>
+
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary btn-sm">Validasi Semua</button>
+                <button type="button" class="btn btn-success btn-sm">Validasi Row Terpilih</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bd-example-modal-belum-validasi tutup-modal" role="dialog" aria-labelledby="myLargeModalLabel" id="info-modal-jatuh-tempo" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title small bold" id="myModalLabel3">Mutasi Tunda Jatuh Tempo Belum Validasi</h4>
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+
+                    <table class="table table-bordered datatablekurs " id="tabel-tunda-jatuh-tempo">
+                        <thead>
+                        <tr>
+                            <th>
+                                NIP
+                            </th>
+                            <th>
+                                Nama Peserta
+                            </th>
+                            <th>
+                                Nama Penerima
+                            </th>
+                            <th>
+                                Jenis Penerima
+                            </th>
+                            <th>
+                                Status
+                            </th>
+                            <th>
+                                Action
+                            </th>
+
+                        </tr>
+                        </thead>
+
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary btn-sm">Validasi Semua</button>
+                <button type="button" class="btn btn-success btn-sm">Validasi Row Terpilih</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bd-example-modal-belum-validasi tutup-modal" role="dialog" aria-labelledby="myLargeModalLabel" id="info-modal-perubahan-nama" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title small bold" id="myModalLabel4">Mutasi Perubahan Nama Belum Validasi</h4>
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+
+                    <table class="table table-bordered datatablekurs " id="tabel-perubahan-nama">
+                        <thead>
+                        <tr>
+                            <th>
+                                NIP
+                            </th>
+                            <th>
+                                Nama Peserta
+                            </th>
+                            <th>
+                                Nama Penerima
+                            </th>
+                            <th>
+                                Jenis Penerima
+                            </th>
+                            <th>
+                                Pilih
+                            </th>
+                            <th>
+                                Action
+                            </th>
+
+                        </tr>
+                        </thead>
+
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary btn-sm">Validasi Semua</button>
+                <button type="button" class="btn btn-success btn-sm">Validasi Row Terpilih</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bd-example-modal-belum-validasi tutup-modal" role="dialog" aria-labelledby="myLargeModalLabel" id="info-modal-pensiun-baru" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title small bold" id="myModalLabel5">Mutasi Pensiun Baru Belum Validasi</h4>
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+
+                    <table class="table table-bordered datatablekurs " id="tabel-pensiun-baru">
+                        <thead>
+                        <tr>
+                            <th>
+                                NIP
+                            </th>
+                            <th>
+                                Nama Peserta
+                            </th>
+                            <th>
+                                Nama Penerima
+                            </th>
+                            <th>
+                                Jenis Penerima
+                            </th>
+                            <th>
+                                Pilih
+                            </th>
+                            <th>
+                                Action
+                            </th>
+
+                        </tr>
+                        </thead>
+
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary btn-sm">Validasi Semua</button>
+                <button type="button" class="btn btn-success btn-sm">Validasi Row Terpilih</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bd-example-modal-belum-validasi tutup-modal" role="dialog" aria-labelledby="myLargeModalLabel" id="info-modal-penerima-anak25t" aria-hidden="true">
+    <div class="modal-dialog">
+
+        <div class="modal-content" style="width: 611px;">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title small bold" id="myModalLabel6">Mutasi Pensiun Baru Belum Validasi</h4>
+
+            </div>
+            <div class="modal-body">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#two" role="tab">Data Mutasi Otomatis Anak 25 Tahun</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#three" role="tab">Data Mutasi Otomatis Janda/Duda/Anak Bulan Ke-13 (MP 80%)</a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="two" role="tabpanel">
+                        <div class="row">
+                            <table class="table table-bordered datatablekurs " id="tabel-penerima-anak-tab1">
+                                <thead>
+                                <tr>
+                                    <th>
+                                        NIP
+                                    </th>
+                                    <th>
+                                        Nama Peserta
+                                    </th>
+                                    <th>
+                                        Nama Penerima
+                                    </th>
+                                    <th>
+                                        Jenis Penerima
+                                    </th>
+                                    <th>
+                                        Pilih
+                                    </th>
+                                    <th>
+                                        Action
+                                    </th>
+
+                                </tr>
+                                </thead>
+
+                            </table>
+                        </div>
+                        <div>
+                            <button type="button" class="btn btn-primary btn-sm">Validasi Semua</button>
+                            <button type="button" class="btn btn-success btn-sm">Validasi Row Terpilih</button>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="three" role="tabpanel">
+                        <div class="row">
+                            <table class="table table-bordered datatablekurs " id="tabel-penerima-anak-tab2">
+                                <thead>
+                                <tr>
+                                    
+                                    <th>
+                                        NIP
+                                    </th>
+                                    <th>
+                                        Nama Peserta
+                                    </th>
+                                    <th>
+                                        Nama Penerima
+                                    </th>
+                                    <th>
+                                        Jenis Penerima
+                                    </th>
+                                    <th>
+                                        Pilih
+                                    </th>
+                                    <th>
+                                        Action
+                                    </th>
+
+                                </tr>
+                                </thead>
+
+                            </table>
+                        </div>
+                        <div>
+                            <button type="button" class="btn btn-primary btn-sm">Validasi Semua</button>
+                            <button type="button" class="btn btn-success btn-sm">Validasi Row Terpilih</button>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bd-example-modal-belum-validasi tutup-modal" role="dialog" aria-labelledby="myLargeModalLabel" id="info-modal-susunan-keluarga" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title small bold" id="myModalLabel7">Mutasi Susunan Keluarga Belum Validasi</h4>
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+
+                    <table class="table table-bordered datatablekurs " id="tabel-susunan-keluarga">
+                        <thead>
+                        <tr>
+                            <th>
+                                NIP
+                            </th>
+                            <th>
+                                Nama Peserta
+                            </th>
+                            <th>
+                                Nama Penerima
+                            </th>
+                            <th>
+                                Jenis Penerima
+                            </th>
+                            <th>
+                                Pilih
+                            </th>
+                            <th>
+                                Action
+                            </th>
+
+                        </tr>
+                        </thead>
+
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary btn-sm">Validasi Semua</button>
+                <button type="button" class="btn btn-success btn-sm">Validasi Row Terpilih</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bd-example-modal-belum-validasi tutup-modal" role="dialog" aria-labelledby="myLargeModalLabel" id="info-modal-mps-100" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title small bold" id="myModalLabel8">Mutasi Mps 100% Belum Validasi</h4>
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+
+                    <table class="table table-bordered datatablekurs " id="tabel-mps-100">
+                        <thead>
+                        <tr>
+                            <th>
+                                NIP
+                            </th>
+                            <th>
+                                Nama Peserta
+                            </th>
+                            <th>
+                                Nama Penerima
+                            </th>
+                            <th>
+                                Jenis Penerima
+                            </th>
+                            <th>
+                                Pilih
+                            </th>
+                            <th>
+                                Action
+                            </th>
+
+                        </tr>
+                        </thead>
+
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary btn-sm">Validasi Semua</button>
+                <button type="button" class="btn btn-success btn-sm">Validasi Row Terpilih</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bd-example-modal-belum-validasi tutup-modal" role="dialog" aria-labelledby="myLargeModalLabel" id="info-modal-phpdp-merit-increase" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title small bold" id="myModalLabel9">Mutasi Perubahan PhDP/Merit Increase Belum Validasi</h4>
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+
+                    <table class="table table-bordered datatablekurs " id="tabel-phdp-merit">
+                        <thead>
+                        <tr>
+                            <th>
+                                NIP
+                            </th>
+                            <th>
+                                Nama Peserta
+                            </th>
+                            <th>
+                                Nama Penerima
+                            </th>
+                            <th>
+                                Jenis Penerima
+                            </th>
+                            <th>
+                                Pilih
+                            </th>
+                            <th>
+                                Action
+                            </th>
+
+                        </tr>
+                        </thead>
+
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary btn-sm">Validasi Semua</button>
+                <button type="button" class="btn btn-success btn-sm">Validasi Row Terpilih</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bd-example-modal-belum-validasi tutup-modal" role="dialog" aria-labelledby="myLargeModalLabel" id="info-modal-janda-duda-menikah" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title small bold" id="myModalLabel10">Mutasi Penerima Janda Duda Menikah Belum Validasi</h4>
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+
+                    <table class="table table-bordered datatablekurs " id="tabel-jandaduda-menikah">
+                        <thead>
+                        <tr>
+                            <th>
+                                NIP
+                            </th>
+                            <th>
+                                Nama Peserta
+                            </th>
+                            <th>
+                                Nama Penerima
+                            </th>
+                            <th>
+                                Jenis Penerima
+                            </th>
+                            <th>
+                                Pilih
+                            </th>
+                            <th>
+                                Action
+                            </th>
+
+                        </tr>
+                        </thead>
+
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary btn-sm">Validasi Semua</button>
+                <button type="button" class="btn btn-success btn-sm">Validasi Row Terpilih</button>
+            </div>
+        </div>
+    </div>
+</div>
+{{#scripts}}
+<script src="{{contextPath}}/assets/vendor/datatables/media/js/jquery.dataTables.js"></script>
+<script src="{{contextPath}}/assets/vendor/datatables/media/js/dataTables.bootstrap4.js"></script>
+<script src="{{contextPath}}/assets/vendor/select2/js/select2.js"></script>
+<script src="{{contextPath}}/assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+<script src="{{contextPath}}/assets/vendor/jquery-validation/dist/jquery.validate.js"></script>
+<script src="{{contextPath}}/assets/vendor/numeral/numeral.min.js"></script>
+
+<script type="text/javascript">
+    //variable global
+    window.DkppReportParam = {};
+
+    const mutasiTable = dkppDataTable($('#mutasi_table'),
+        '{{contextPath}}{{mutasi_path_api}}', {
+            'columns': [
+                {
+                    "data": "no"
+                },
+                {
+                    "data": "namaMutasi"
+                },
+                {
+                    "data": "jumlahDataMutasi"
+                },
+                {
+                    "data": "jumlahBelumValidasi"
+                },
+                {
+                    "data": "jumlahSudahValidasi"
+                },
+                {
+                    "data": "jumlahBatalKoreksi"
+                },
+                {
+                    "data": "jumlahBatalData"
+                }
+            ],
+            'columnDefs': [
+                {
+                    targets: 2,
+                    render: function(data, type, row, meta){
+                        let param = JSON.stringify(row);
+                        return `<button class='btn btn-primary btn-sm' id='btn-lihat-jumlah' onclick='displayShowModal(`+param+`)'><span>` + row.jumlahDataMutasi + `</span></button>`;
+                    }
+                },
+                {
+                    targets: 3,
+                    render: function(data, type, row, meta){
+                        let param = JSON.stringify(row);
+                        return `<button class='btn btn-info btn-sm' id='btn-lihat-jumlah' onclick='displayEditModal(`+param+`)'><span>` + row.jumlahBelumValidasi + `</span></button>`;
+                    }
+                },
+                {
+                    targets: 4,
+                    render: function(data, type, row, meta){
+                        let param = JSON.stringify(row);
+                        return `<button class='btn btn-warning btn-sm' id='btn-lihat-jumlah'><span>` + row.jumlahSudahValidasi + `</span></button>`;
+                    }
+                },
+                {
+                    targets: 5,
+                    render: function(data, type, row, meta){
+                        let param = JSON.stringify(row);
+                        return `<button class='btn btn-danger btn-sm' id='btn-lihat-jumlah'><span>` + row.jumlahBatalKoreksi + `</span></button>`;
+                    }
+                },
+                {
+                    targets: 6,
+                    render: function(data, type, row, meta){
+                        let param = JSON.stringify(row);
+                        return `<button class='btn btn-primary btn-sm' id='btn-lihat-jumlah'><span>` + row.jumlahBatalData + `</span></button>`;
+                    }
+                }
+            ]
+        });
+
+    function displayEditModal(param) {
+        if (param.namaMutasi == "Mutasi Penerima MP Meninggal Dunia"){
+            $('.tutup-modal').modal('hide');
+
+            const meninggalTable = dkppDataTable($('#tabel-meninggal-dunia'),
+                '{{contextPath}}/api/mutasi-penerima-meninggal/belum-validasi', {
+                    destroy:true,
+                    'columns': [
+                        {
+                            "data": "nip"
+                        },
+                        {
+                            "data": "namaPeserta"
+                        },
+                        {
+                            "data": "namaPenerimaMp"
+                        },
+                        {
+                            "data": "namaKategoriPenerimaMp"
+                        },
+                        {
+                            "data": "namaValidasi"
+                        },
+                        {
+                            "data": "nip"
+                        }
+                    ],
+                    'columnDefs': [
+                        {
+                            "targets": -2,
+                            "render": function(data, type, row, meta) {
+                                return `<input class="checkbox1 cbPenerimaMeninggal" type="checkbox" value="`+row.idMutasiPensiun+`" id="" name=""/>`
+                            }
+                        },
+                        {
+                            "targets": -1,
+                            "className": "action-box",
+                            "render": function(data, type, row, meta){
+                                let param = JSON.stringify(row).replace(/'/g, "&#39;");
+                                let htmlTag = `<a class='btn btn-info btn-sm' onclick='showEditForm(` + param + `)' > Lihat Data</a>`;
+                                return htmlTag;
+                            }
+                        },
+                    ]
+                });
+
+            $('#info-modal-penerima-meninggal').modal('show');
+
+        }else if (param.namaMutasi == "Mutasi Perubahan Kantor Bayar"){
+            $('.tutup-modal').modal('hide');
+            const meninggalTable = dkppDataTable($('#tabel-kantor-bayar'),
+                '{{contextPath}}/api/mutasi-kantor-bayar/belum-validasi', {
+                    destroy:true,
+                    'columns': [
+                        {
+                            "data": "nip"
+                        },
+                        {
+                            "data": "namaPeserta"
+                        },
+                        {
+                            "data": "namaPenerimaMP"
+                        },
+                        {
+                            "data": "namaKategoriPenerimaMP"
+                        },
+                        {
+                            "data": "namaValidasi"
+                        },
+                        {
+                            "data": "id"
+                        }
+                    ],
+                    'columnDefs': [
+                        {
+
+                            "targets": -2,
+                            "render": function(data, type, row, meta) {
+                                return `<input class="checkbox2 cbKantorBayar" value="`+row.id+`" type="checkbox" id="" name=""/>`
+                            }
+                        },
+                        {
+                            "targets": -1,
+                            "className": "action-box",
+                            "render": function(data, type, row, meta){
+                                let param = JSON.stringify(row).replace(/'/g, "&#39;");
+                                let htmlTag = `<a class='btn btn-info btn-sm' onclick='showEditForm(` + param + `)' > Lihat Data</a>`;
+                                return htmlTag;
+                            }
+                        },
+                    ]
+                });
+            $('#info-modal-perubahan-kantor').modal('show');
+        }else if (param.namaMutasi == "Mutasi Tunda Jatuh Tempo"){
+
+            $('.tutup-modal').modal('hide');
+            const jatuhTempoTable = dkppDataTable($('#tabel-tunda-jatuh-tempo'),
+                '{{contextPath}}/api/mutasi-pensiun-tunda/belum-validasi', {
+                    destroy:true,
+                    'columns': [
+                        {
+                            "data": "nip"
+                        },
+                        {
+                            "data": "namaPeserta"
+                        },
+                        {
+                            "data": "namaPenerimaMP"
+                        },
+                        {
+                            "data": "namaKategoriPenerimaMP"
+                        },
+                        {
+                            "data": "namaValidasi"
+                        },
+                        {
+                            "data": "id"
+                        }
+                    ],
+                    'columnDefs': [
+                        {
+
+                            "targets": -2,
+                            "render": function(data, type, row, meta) {
+                                return `<input class="checkbox2 cbPensuinTunda" type="checkbox" value="`+row.id+`" id="" name=""/>`
+                            }
+                        },
+                        {
+                            "targets": -1,
+                            "className": "action-box",
+                            "render": function(data, type, row, meta){
+                                let param = JSON.stringify(row).replace(/'/g, "&#39;");
+                                let htmlTag = `<a class='btn btn-info btn-sm' onclick='showEditForm(` + param + `)' > Lihat Data</a>`;
+                                return htmlTag;
+                            }
+                        },
+                    ]
+                });
+            $('#info-modal-jatuh-tempo').modal('show');
+        }else if (param.namaMutasi == "Mutasi Perubahan Nama Penerima MP"){
+            $('.tutup-modal').modal('hide');
+            const perubahanNamaTable = dkppDataTable($('#tabel-perubahan-nama'),
+                '{{contextPath}}/api/mutasi-perubahan-nama/belum-validasi', {
+                    destroy:true,
+                    'columns': [
+                        {
+                            "data": "nip"
+                        },
+                        {
+                            "data": "namaPeserta"
+                        },
+                        {
+                            "data": "namaPenerimaMP"
+                        },
+                        {
+                            "data": "namaKategoriPenerimaMP"
+                        },
+                        {
+                            "data": "namaValidasi"
+                        },
+                        {
+                            "data": "id"
+                        }
+                    ],
+                    'columnDefs': [
+                        {
+
+                            "targets": -2,
+                            "render": function(data, type, row, meta) {
+                                return `<input class="checkbox2 cbPerubahanNama" type="checkbox" value="`+row.id+`" id="" name=""/>`
+                            }
+                        },
+                        {
+                            "targets": -1,
+                            "className": "action-box",
+                            "render": function(data, type, row, meta){
+                                let param = JSON.stringify(row).replace(/'/g, "&#39;");
+                                let htmlTag = `<a class='btn btn-info btn-sm' onclick='showEditForm(` + param + `)' > Lihat Data</a>`;
+                                return htmlTag;
+                            }
+                        },
+                    ]
+                });
+            $('#info-modal-perubahan-nama').modal('show');
+        }else if (param.namaMutasi == "Mutasi Pensiun Baru"){
+            $('.tutup-modal').modal('hide');
+            const pensiunBaruTable = dkppDataTable($('#tabel-pensiun-baru'),
+                '{{contextPath}}/api/mutasi-pensiun-baru/mutasi/belum-validasi', {
+                    destroy:true,
+                    'columns': [
+                        {
+                            "data": "nip"
+                        },
+                        {
+                            "data": "namaPeserta"
+                        },
+                        {
+                            "data": "namaPenerimaMP"
+                        },
+                        {
+                            "data": "namaKategoriPenerimaMP"
+                        },
+                        {
+                            "data": "namaValidasi"
+                        },
+                        {
+                            "data": "id"
+                        }
+                    ],
+                    'columnDefs': [
+                        {
+
+                            "targets": -2,
+                            "render": function(data, type, row, meta) {
+                                return `<input class="checkbox2 cbPensiunBaru" type="checkbox" value="`+row.id+`" id="" name=""/>`
+                            }
+                        },
+                        {
+                            "targets": -1,
+                            "className": "action-box",
+                            "render": function(data, type, row, meta){
+                                let param = JSON.stringify(row).replace(/'/g, "&#39;");
+                                let htmlTag = `<a class='btn btn-info btn-sm' onclick='showEditForm(` + param + `)' > Lihat Data</a>`;
+                                return htmlTag;
+                            }
+                        },
+                    ]
+                });
+            $('#info-modal-pensiun-baru').modal('show');
+        }else if (param.namaMutasi == "Mutasi Penerima MP Anak 25T dan MP Bulan ke 13"){
+            $('.tutup-modal').modal('hide');
+            const penerimaAnakTab1Table = dkppDataTable($('#tabel-penerima-anak-tab1'),
+                '{{contextPath}}/api/mutasi-penerima-anak/data-mutasi-25-tahun/belum-validasi', {
+                    destroy:true,
+                    'columns': [
+                        {
+                            "data": "nip"
+                        },
+                        {
+                            "data": "namaPeserta"
+                        },
+                        {
+                            "data": "namaPenerimaMp"
+                        },
+                        {
+                            "data": "namaKategoriPenerimaMp"
+                        },
+                        {
+                            "data": "namaValidasi"
+                        },
+                        {
+                            "data": "id"
+                        }
+                    ],
+                    'columnDefs': [
+                        {
+                            "targets":-4,
+                            "render": function (data,type,row,meta) {
+                                if (row.namaPenerimaMpBaru == null){
+                                    return row.namaPenerimaMp;
+                                } else{
+                                    return row.namaPenerimaMpBaru;
+                                }
+                            }
+                        },
+                        {
+                            "targets":-3,
+                            "render": function (data,type,row,meta) {
+                                if (row.namaKategoriPenerimaMpBaru == null){
+                                    return row.namaKategoriPenerimaMp;
+                                } else{
+                                    return row.namaKategoriPenerimaMpBaru;
+                                }
+                            }
+                        },
+                        {
+
+                            "targets": -2,
+                            "render": function(data, type, row, meta) {
+                                return `<input class="checkbox2 cbMutasiAnakTab1" type="checkbox" value="`+row.idMutasiPensiun+`" id="" name=""/>`
+                            }
+                        },
+                        {
+                            "targets": -1,
+                            "className": "action-box",
+                            "render": function(data, type, row, meta){
+                                let param = JSON.stringify(row).replace(/'/g, "&#39;");
+                                let htmlTag = `<a class='btn btn-info btn-sm' onclick='showEditForm(` + param + `)' > Lihat Data</a>`;
+                                return htmlTag;
+                            }
+                        },
+                    ]
+                });
+            const penerimaAnakTab2Table = dkppDataTable($('#tabel-penerima-anak-tab2'),
+                '{{contextPath}}/api/mutasi-penerima-anak/data-mutasi-otomatis-janda-duda-anak-bulan-13/belum-validasi', {
+                    destroy:true,
+                    'columns': [
+                        {
+                            "data": "nip"
+                        },
+                        {
+                            "data": "namaPeserta"
+                        },
+                        {
+                            "data": "namaPenerimaMP"
+                        },
+                        {
+                            "data": "namaKategoriPenerimaMP"
+                        },
+                        {
+                            "data": "namaValidasi"
+                        },
+                        {
+                            "data": "id"
+                        }
+                    ],
+                    'columnDefs': [
+                        {
+                            "targets":-4,
+                            "render": function (data,type,row,meta) {
+                                if (row.namaPenerimaMpBaru == null){
+                                    return row.namaPenerimaMp;
+                                } else{
+                                    return row.namaPenerimaMpBaru;
+                                }
+                            }
+                        },
+                        {
+                            "targets":-3,
+                            "render": function (data,type,row,meta) {
+                                if (row.namaKategoriPenerimaMpBaru == null){
+                                    return row.namaKategoriPenerimaMp;
+                                } else{
+                                    return row.namaKategoriPenerimaMpBaru;
+                                }
+                            }
+                        },
+                        {
+
+                            "targets": -2,
+                            "render": function(data, type, row, meta) {
+                                return `<input class="checkbox2 cbMutasiAnakTab2" type="checkbox" value="`+row.idMutasiPensiun+`" id="" name=""/>`
+                            }
+                        },
+                        {
+                            "targets": -1,
+                            "className": "action-box",
+                            "render": function(data, type, row, meta){
+                                let param = JSON.stringify(row).replace(/'/g, "&#39;");
+                                let htmlTag = `<a class='btn btn-info btn-sm' onclick='showEditForm(` + param + `)' > Lihat Data</a>`;
+                                return htmlTag;
+                            }
+                        },
+                    ]
+                });
+            $('#info-modal-penerima-anak25t').modal('show');
+        }else if (param.namaMutasi == "Mutasi Susunan Keluarga"){
+            $('.tutup-modal').modal('hide');
+            const susunanKeluargaTable = dkppDataTable($('#tabel-susunan-keluarga'),
+                '{{contextPath}}/api/mutasi-susunan-keluarga/belum-validasi', {
+                    destroy:true,
+                    'columns': [
+                        {
+                            "data": "nip"
+                        },
+                        {
+                            "data": "namaPeserta"
+                        },
+                        {
+                            "data": "namaPenerimaMP"
+                        },
+                        {
+                            "data": "namaKategoriPenerimaMP"
+                        },
+                        {
+                            "data": "namaValidasi"
+                        },
+                        {
+                            "data": "id"
+                        }
+                    ],
+                    'columnDefs': [
+                        {
+
+                            "targets": -2,
+                            "render": function(data, type, row, meta) {
+                                return `<input class="checkbox2 cbSuskel" type="checkbox" value="`+row.id+`" id="" name=""/>`
+                            }
+                        },
+                        {
+                            "targets": -1,
+                            "className": "action-box",
+                            "render": function(data, type, row, meta){
+                                let param = JSON.stringify(row).replace(/'/g, "&#39;");
+                                let htmlTag = `<a class='btn btn-info btn-sm' onclick='showEditForm(` + param + `)' > Lihat Data</a>`;
+                                return htmlTag;
+                            }
+                        },
+                    ]
+                });
+            $('#info-modal-susunan-keluarga').modal('show');
+        }else if (param.namaMutasi == "Mutasi MPS 100%") {
+            $('.tutup-modal').modal('hide');
+            const susunanKeluargaTable = dkppDataTable($('#tabel-mps-100'),
+                '{{contextPath}}/api/mutasi-penerima-sekaligus/belum-validasi', {
+                    destroy:true,
+                    'columns': [
+                        {
+                            "data": "nip"
+                        },
+                        {
+                            "data": "namaPeserta"
+                        },
+                        {
+                            "data": "namaPenerimaMP"
+                        },
+                        {
+                            "data": "namaKategoriPenerimaMP"
+                        },
+                        {
+                            "data": "namaValidasi"
+                        },
+                        {
+                            "data": "id"
+                        }
+                    ],
+                    'columnDefs': [
+                        {
+                            "targets":-4,
+                            "render": function (data,type,row,meta) {
+                                if (row.namaPenerimaMpBaru == null){
+                                    return row.namaPenerimaMp;
+                                } else{
+                                    return row.namaPenerimaMpBaru;
+                                }
+                            }
+                        },
+                        {
+                            "targets":-3,
+                            "render": function (data,type,row,meta) {
+                                if (row.namaKategoriPenerimaMpBaru == null){
+                                    return row.namaKategoriPenerimaMp;
+                                } else{
+                                    return row.namaKategoriPenerimaMpBaru;
+                                }
+                            }
+                        },
+                        {
+
+                            "targets": -2,
+                            "render": function(data, type, row, meta) {
+                                return `<input class="checkbox2 cbPenerimaSekalius" type="checkbox" value="`+row.idMutasiPensiun+`" id="" name=""/>`
+                            }
+                        },
+                        {
+                            "targets": -1,
+                            "className": "action-box",
+                            "render": function(data, type, row, meta){
+                                let param = JSON.stringify(row).replace(/'/g, "&#39;");
+                                let htmlTag = `<a class='btn btn-info btn-sm' onclick='showEditForm(` + param + `)' > Lihat Data</a>`;
+                                return htmlTag;
+                            }
+                        },
+                    ]
+                });
+            $('#info-modal-mps-100').modal('show');
+        }else if (param.namaMutasi == "Mutasi Perubahan PhDP/Merit Increase"){
+            $('.tutup-modal').modal('hide');
+            const phpdpMeritTable = dkppDataTable($('#tabel-phdp-merit'),
+                '{{contextPath}}/api/mutasi-perubahan-phdp/belum-validasi', {
+                    destroy:true,
+                    'columns': [
+                        {
+                            "data": "nip"
+                        },
+                        {
+                            "data": "namaPeserta"
+                        },
+                        {
+                            "data": "namaPenerimaMP"
+                        },
+                        {
+                            "data": "namaKategoriPenerimaMP"
+                        },
+                        {
+                            "data": "namaValidasi"
+                        },
+                        {
+                            "data": "id"
+                        }
+                    ],
+                    'columnDefs': [
+                        {
+
+                            "targets": -2,
+                            "render": function(data, type, row, meta) {
+                                return `<input class="checkbox2 cbMeritIncrease" type="checkbox" value="`+row.id+`" id="" name=""/>`
+                            }
+                        },
+                        {
+                            "targets": -1,
+                            "className": "action-box",
+                            "render": function(data, type, row, meta){
+                                let param = JSON.stringify(row).replace(/'/g, "&#39;");
+                                let htmlTag = `<a class='btn btn-info btn-sm' onclick='showEditForm(` + param + `)' > Lihat Data</a>`;
+                                return htmlTag;
+                            }
+                        },
+                    ]
+                });
+            $('#info-modal-phpdp-merit-increase').modal('show');
+        }else if (param.namaMutasi == "Mutasi Penerima Janda/Duda Menikah Kembali"){
+            $('.tutup-modal').modal('hide');
+            const phpdpMeritTable = dkppDataTable($('#tabel-jandaduda-menikah'),
+                '{{contextPath}}/api/mutasi-penerima-menikah/belum-validasi', {
+                    destroy:true,
+                    'columns': [
+                        {
+                            "data": "nip"
+                        },
+                        {
+                            "data": "namaPeserta"
+                        },
+                        {
+                            "data": "namaPenerimaMP"
+                        },
+                        {
+                            "data": "namaKategoriPenerimaMP"
+                        },
+                        {
+                            "data": "namaValidasi"
+                        },
+                        {
+                            "data": "id"
+                        }
+                    ],
+                    'columnDefs': [
+                        {
+                            "targets":-4,
+                            "render": function (data,type,row,meta) {
+                                if (row.namaPenerimaMpBaru == null){
+                                    return row.namaPenerimaMp;
+                                } else{
+                                    return row.namaPenerimaMpBaru;
+                                }
+                            }
+                        },
+                        {
+                            "targets":-3,
+                            "render": function (data,type,row,meta) {
+                                if (row.namaKategoriPenerimaMpBaru == null){
+                                    return row.namaKategoriPenerimaMp;
+                                } else{
+                                    return row.namaKategoriPenerimaMpBaru;
+                                }
+                            }
+                        },
+                        {
+
+                            "targets": -2,
+                            "render": function(data, type, row, meta) {
+                                return `<input class="checkbox2 cbMenikahKembali" type="checkbox" value="`+row.idMutasiPensiun+`" id="" name=""/>`
+                            }
+                        },
+                        {
+                            "targets": -1,
+                            "className": "action-box",
+                            "render": function(data, type, row, meta){
+                                let param = JSON.stringify(row).replace(/'/g, "&#39;");
+                                let htmlTag = `<a class='btn btn-info btn-sm' onclick='showEditForm(` + param + `)' > Lihat Data</a>`;
+                                return htmlTag;
+                            }
+                        },
+                    ]
+                });
+            $('#info-modal-janda-duda-menikah').modal('show');
+        }
+        console.log(param);
+
+    }
+
+    function validasiSemuaMeninggal() {
+        $.ajax({
+            url: "{{contextPath}}/api/mutasi-penerima-meninggal/validasi-semua",
+            method: 'GET',
+        }).success(function(data) {
+            console.log('return',data);
+            if(data.status == "true") {
+
+                $('.info-modal-penerima-meninggal').modal('hide');
+                swal({title: "Berhasil", text: data.message, icon: "success", button: "OK"});
+            }
+            mutasiTable.ajax.reload();
+
+
+        }).error(function(data){
+            if(data.message != undefined )
+                swal({title: "Gagal", text: data.message, icon: "error", button: "OK"});
+            else
+                swal({title: "Gagal", text: "Terjadi kegagalan.", icon: "error", button: "OK"});
+        });
+
+
+    }
+
+</script>
+{{/scripts}}
+
+{{/layout}}

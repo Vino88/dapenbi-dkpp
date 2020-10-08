@@ -1,0 +1,878 @@
+{{#layout}}
+
+{{#styles}}
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/datatables/media/css/dataTables.bootstrap4.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/googleapis/css/component.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/googleapis/css/googleapis.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/select2/css/select2.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css">
+<style>
+    #pelepasan_table {
+        min-width: 1500px;
+    }
+    #mutasi_table {
+        min-width: 2100px;
+    }
+</style>
+
+<style>
+    #progress-wrp {
+        border: 1px solid #0099CC;
+        padding: 1px;
+        position: relative;
+        height: 30px;
+        border-radius: 3px;
+        margin: 10px;
+        text-align: left;
+        background: #fff;
+        box-shadow: inset 1px 3px 6px rgba(0, 0, 0, 0.12);
+    }
+
+    #progress-wrp .progress-bar {
+        height: 100%;
+        border-radius: 3px;
+        background-color: #f39ac7;
+        width: 0;
+        box-shadow: inset 1px 1px 10px rgba(0, 0, 0, 0.11);
+    }
+
+    #progress-wrp .status {
+        top: 3px;
+        left: 50%;
+        position: absolute;
+        display: inline-block;
+        color: #000000;
+    }
+</style>
+{{/styles}}
+
+{{#title}}
+Pensiun Lama - Upload Potongan Kewajiban Pensiun
+{{/title}}
+<div class="card">
+
+    <div class="card-block">
+        <button class="btn btn-primary btn-sm" data-toggle="modal" onclick="showModalUpload()"><i class="fa fa-upload"></i> <span>Upload Data</span></button>
+        <hr/>
+        <div class="table-responsive">
+            <table class="table table-bordered datatable" id="main-table">
+                <thead>
+                <tr>
+                    <th>
+                        Tgl. Upload
+                    </th>
+                    <th>
+                        Periode Mutasi
+                    </th>
+                    <th>
+                        Jenis Potongan
+                    </th>
+                    <th>
+                        Total Data
+                    </th>
+                    <th>
+                        User Stamp
+                    </th>
+                    <th>
+                        Action
+                    </th>
+
+                </tr>
+                </thead>
+            </table>
+        </div>
+
+    </div>
+</div>
+</div>
+<!-- bottom footer -->
+<div class="content-footer">
+    <nav class="footer-right">
+        <ul class="nav">
+            <li>
+                <a href="javascript:;">Feedback</a>
+            </li>
+        </ul>
+    </nav>
+    <nav class="footer-left">
+        <ul class="nav">
+            <li>
+                <a href="javascript:;">
+                    <span>Copyright</span>
+                    &copy; 2016 Your App
+                </a>
+            </li>
+            <li class="hidden-md-down">
+                <a href="javascript:;">Privacy</a>
+            </li>
+            <li class="hidden-md-down">
+                <a href="javascript:;">Terms</a>
+            </li>
+            <li class="hidden-md-down">
+                <a href="javascript:;">help</a>
+            </li>
+        </ul>
+    </nav>
+</div>
+<!-- /bottom footer -->
+</div>
+<!-- /main area -->
+</div>
+<!-- /content panel -->
+
+</div>
+
+<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" id="modal-upload" aria-hidden="true">
+
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title small bold" id="myModalLabel">Upload Potongan Kewajiban</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <form id="modal-upload-form">
+                    <div class="col-lg-4">
+                        <div class="row">
+                            <label for="tanggal-upload" class="col-sm-6 bold">Tanggal Upload</label>
+
+                            <div class="col-xs-6">
+                                <input class="form-control form-control-sm" disabled type="text" value="" id="tanggal-upload" disabled>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <label for="periode-mutasi" class="col-sm-6 bold">Periode Mutasi</label>
+
+                            <div class="col-xs-6">
+                                <input class="form-control form-control-sm" disabled  type="text" value="" id="periode-mutasi" >
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-lg-7">
+
+                        <div class="row">
+                            <label for="jenis-potongan" class="col-sm-4 bold">Jenis Potongan</label>
+
+                            <div class="col-xs-6">
+                                <select class="form-control form-control-sm" id="jenis-potongan" name="jenisPotongan">
+                                    <option value="pga">
+                                        PGA
+                                    </option>
+                                    <option value="kovetri">
+                                        KOVETRI
+                                    </option>
+                                    <option value="olahraga">
+                                        IPEBI
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+
+                            <label for="pilih-file" class="col-sm-4 bold">Pilih File</label>
+
+                            <div class="col-xs-6">
+                                <form id="form-upload">
+                                    <input class="form-control form-control-sm" type="file" value="1" id="pilih-file">
+                                </form>
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="col-lg-4"></div>
+                    <div class="col-lg-7">
+                        <div class="row">
+                            <div class="col-sm-4"></div>
+                            <div class="col-sm-6">
+                                <a class="btn btn-primary btn-sm pull-right" data-target="modal-upload" id="btn-upload"><i class="fa fa-upload"></i> <span>Upload Data</span></a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-12 bold" small>Data Hasil Upload</div>
+                    </form>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-block">
+                                <div class="scroll-y" style="height: 200px;">
+                                    <div id="div-uploaded-table-pga" class="hidden-on-init"><table class="table table-bordered datatable2" id="uploaded-table-pga"></table></div>
+                                    <div id="div-uploaded-table-kovetri" class="hidden-on-init"><table class="table table-bordered datatable2" id="uploaded-table-kovetri"></table></div>
+                                    <div id="div-uploaded-table-olahraga" class="hidden-on-init"><table class="table table-bordered datatable2" id="uploaded-table-olahraga"></table></div>
+
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                    </div>
+                    <div class="col-lg-6">
+                    </div>
+                    <div class="col-lg-6">
+
+                    </div>
+
+                    <div class="row"></div>
+                    <div class="col-lg-12">
+                        <form id="form-summary">
+                        <div class="row">
+                            <label for="total-data" class="col-xs-3">Total Data</label>
+
+                            <div class="col-xs-3">
+                                <input class="form-control form-control-sm" type="text" value="" id="total-data" readonly="readonly">
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label for="jumlah" class="col-xs-3">Jumlah</label>
+
+                            <div class="col-xs-3">
+                                <input class="form-control form-control-sm" type="text" value="" id="jumlah-caption" readonly="readonly">
+                                <input class="form-control form-control-sm" type="hidden" value="" id="jumlah" readonly="readonly">
+
+                            </div>
+                        </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="copyData()"><i class="fa fa-save"></i> Salin Data Ke Potongan KOVETRI/PGA/IPEBI</button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="modal fade bd-example-modal2" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" id="preview-uploaded" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title small bold">Lihat Data Potongan</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+
+                    <div class="col-lg-4">
+                        <div class="row">
+                            <label for="tanggal-upload"  class="col-sm-6 bold">Tanggal Upload</label>
+
+                            <div class="col-xs-6">
+                                <input class="form-control form-control-sm" type="text" value="" id="tanggal-upload-view" disabled>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <label for="periode-mutasi" class="col-sm-6 bold">Periode Mutasi</label>
+
+                            <div class="col-xs-6">
+                                <input class="form-control form-control-sm" disabled  type="text" value="" id="periode-mutasi-view" >
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-7">
+
+                        <div class="row">
+                            <label for="jenis-potongan" class="col-sm-4 bold">Jenis Potongan</label>
+
+                            <div class="col-xs-6">
+                                <input class="form-control form-control-sm" disabled  type="text" value="PGA" id="jenis-potongan-view" >
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                    <div class="col-lg-12 bold" small>Data PGA</div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-block">
+                                <div class="scroll-y" style="height: 250px;">
+                                    <div id="div-copied-table-pga"><table class="table table-bordered datatable2" id="copied-table-pga"></table></div>
+                                    <div id="div-copied-table-kovetri"><table class="table table-bordered datatable2" id="copied-table-kovetri"></table></div>
+                                    <div id="div-copied-table-olahraga"><table class="table table-bordered datatable2" id="copied-table-olahraga"></table></div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                    </div>
+                    <div class="col-lg-6">
+                    </div>
+                    <div class="col-lg-6">
+
+                    </div>
+
+                    <div class="row"></div>
+                    <div class="col-lg-12">
+                        <div class="row">
+                            <label for="total-data" class="col-xs-3">Total Data</label>
+
+                            <div class="col-xs-3">
+                                <input class="form-control form-control-sm" type="text" value="" id="total-data-view" disabled>
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label for="jumlah" class="col-xs-3">Jumlah</label>
+
+                            <div class="col-xs-3">
+                                <input class="form-control form-control-sm" type="text" value="" id="jumlah-view-caption" disabled>
+                                <input class="form-control form-control-sm" type="hidden" value="" id="jumlah-view" disabled>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade bd-example-modal2" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" id="modal-error" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title small bold">Gagal Upload</h4>
+            </div>
+            <div class="modal-body">
+                <div style="padding: 32px">
+                    <div class="row">
+                        Untuk tipe pga pastikan file yang diupload sudah dilakukan cara berikut ini:
+                        <ul>
+                            <li><strong>Copy</strong> lembar kerja sheet pertama dalam file excel yang akan diupload.</li>
+                            <li>Buat file xlsx baru</li>
+                            <li><strong>Paste Special</strong> dan pilih <strong>value</strong> saja.</li>
+                            <li>Simpan sebagai file berekstensi xlsx. Dalam nama file harus terdapat kata "pga".</li>
+                            <li><strong>Upload</strong> kembali file yang baru tersebut.</li>
+                        </ul>
+                    </div>
+                    <div class="row">
+                        Sebagai ilustrasi, cek gambar berikut ini. <a target="_blank" href="{{contextPath}}/assets/images/pga-how-to.png" style="color: #8b211e"><strong>Link Gambar</strong></a>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+{{#scripts}}
+<script src="{{contextPath}}/assets/vendor/datatables/media/js/jquery.dataTables.js"></script>
+<script src="{{contextPath}}/assets/vendor/datatables/media/js/dataTables.bootstrap4.js"></script>
+<script src="{{contextPath}}/assets/vendor/select2/js/select2.js"></script>
+<script src="{{contextPath}}/assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+<script src="{{contextPath}}/assets/vendor/jquery-validation/dist/jquery.validate.js"></script>
+<script src="{{contextPath}}/assets/vendor/numeral/numeral.min.js"></script>
+    <script src="{{contextPath}}/assets/vendor/sweetalert/sweetalert.min.js"></script>
+
+<!-- initialize page scripts -->
+<script type="text/javascript">
+    var globalFile;
+    var Upload = function (file) {
+        this.file = file;
+    };
+
+    Upload.prototype.getType = function() {
+        return this.file.type;
+    };
+    Upload.prototype.getSize = function() {
+        return this.file.size;
+    };
+    Upload.prototype.getName = function() {
+        return this.file.name;
+    };
+    Upload.prototype.doUpload = function () {
+        var that = this;
+        var formData = new FormData();
+
+        // add assoc key values, this will be posts values
+        formData.append("file", this.file, this.getName());
+        formData.append("upload_file", true);
+        formData.append("_csrf", "{{_csrf.token}}");
+        formData.append("jenisPotongan", $('#jenis-potongan').val());
+        loader($("body"), true);
+        $.ajax({
+            timeout: 0,
+            type: "POST",
+            url: "{{contextPath}}{{uploadPotonganLink}}",
+            async: false,
+            xhr: function () {
+                var myXhr = $.ajaxSettings.xhr();
+                if (myXhr.upload) {
+
+                }
+                return myXhr;
+            },
+            success: function (data) {
+                loader($("body"), false);
+                swal("Upload berhasil.");
+                let jenisPotongan = $('#jenis-potongan').val();
+                showUploadedDataTable(jenisPotongan);
+                $('#total-data').val(data.data.totalRow);
+                $('#jumlah').val(data.data.jumlah);
+                $('#jumlah-caption').val(parseFloat(data.data.jumlah).toLocaleString("id", {minimumFractionDigits: 2}));
+                $('#periode-mutasi').val(data.data.periodeMutasi);
+            },
+            // error: function (error) {
+            //     loader($("body"), false);
+            //     swal("Upload gagal");
+            // },
+            statusCode: {
+                500: (response) => {
+                    let strAdditionalInfo = 'Perhatikan pesan tambahan pada jendela berikut ini.';
+                    if($('#jenis-potongan').val() == 'pga')
+                        $('#modal-error').modal({backdrop: 'static', keyboard: false});
+                        $('#modal-upload').modal('hide');
+                    loader($('body'), false);
+                    swal({
+                        html: true,
+                        title: 'Gagal',
+                        text: 'Terjadi kesalahan. Mohon pastikan file yang Anda upload sudah jenis xlsx.' + strAdditionalInfo,
+                        icon: 'error'
+                    });
+                },
+                403: (response) => {
+                    loader($('body'), false);
+                    swal({
+                        title: 'Gagal',
+                        text: 'Hak akses terbatas atau peramban dalam status diam untuk waktu yang lama. Mohon tekan tombol F5 untuk menyegarkan.',
+                        icon: 'error'
+                    });
+                }
+            },
+            async: true,
+            data: formData,
+            cache: false,
+            contentType: false,
+            processData: false
+        });
+    };
+
+    
+
+    $('#btn-upload').on('click', () => {
+            var jenisPotongan = $('#jenis-potongan').val();
+            var upload = new Upload(globalFile);
+
+        $.validator.addMethod('matchFileType', () => {
+            console.log(globalFile.type);
+            if(globalFile.type == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'){
+                return true;
+            } else
+                return false;
+        });
+
+        $.validator.addMethod('fileNameContain', () => {
+            let status = false;
+            let type = $('#jenis-potongan').val();
+            let fileName = globalFile.name.toLowerCase();
+            if (type == 'olahraga'){
+                status = (fileName.includes('olahraga')) || (fileName.includes('ipebi'));
+            } else {
+                status = fileName.includes(type);
+            }
+
+            return status;
+
+        });
+
+        $('#modal-upload-form').validate();
+        $('#pilih-file').rules("add", {
+            required: true,
+            matchFileType: true,
+            fileNameContain: true,
+            messages: {
+                required: 'File tidak boleh kosong.',
+                matchFileType: 'Tipe file yang diizinkan adalah .xlsx',
+                fileNameContain: 'Penamaan file yang diupload tidak sesuai dengan jenis potongan. Sorot di <a onmouseover="swal(\'Contoh untuk tipe PGA, maka nama filenya harus mengandung kata pga. Misalnya, pga-sep-2019.xlsx. Untuk IPEBI harus mengandung kata IPEBI, dan juga untuk KOVETRI harus mengandung kata KOVETRI\');"><strong><u>sini</u></strong></a> untuk info lebih lanjut.'
+            }
+        });
+
+
+        let validForm = $('#modal-upload-form').valid();
+
+        if (validForm)
+            upload.doUpload();
+    });
+
+    $("#pilih-file").on("change", function (e) {
+        globalFile = $(this)[0].files[0];
+    });
+
+    function copyData() {
+
+        $('#form-summary').validate();
+        $('#total-data').rules("add", {
+            required: true,
+            messages: {required: 'Tidak boleh kosong. Upload file yang benar untuk mengisi field ini.'}
+        });
+
+        $('#jumlah').rules("add", {
+            required: true,
+            messages: {required: 'Tidak boleh kosong. Upload file yang benar untuk mengisi field ini.'}
+        });
+
+
+        let validForm = $('#form-summary').valid();
+
+        if (validForm)
+        {
+            loader($("body"), true);
+            $.ajax({
+                timeout: 0,
+                url: "{{contextPath}}/api/upload-potongan/copy_data",
+                data: {
+                    jenisPotongan: $('#jenis-potongan').val(),
+                    tglUpload: $('#tanggal-upload').val(),
+                    periodeMutasi: $('#periode-mutasi').val(),
+                    totalRow: $('#total-data').val(),
+                    jumlah: $('#jumlah').val()
+                },
+                success: (data)=>{
+                    $('#main-table').DataTable().ajax.reload();
+                    $('#modal-upload').modal('hide');
+                    loader($("body"), false);
+                },
+                failure: (data) => {
+                    loader($("body"), false);
+                }
+            });
+        }
+    }
+    
+    function showModalUpload() {
+        $('#modal-upload').modal({backdrop: 'static', keyboard: false});
+        $('#modal-upload-form').trigger("reset");
+        $('#form-summary').trigger("reset");
+        $('.hidden-on-init').hide();
+        $.ajax({
+            url: '{{contextPath}}{{listPeriodeSetupParameter}}',
+            dataType: 'json',
+            method: 'GET',
+            success: (data)=>{
+                $('#tanggal-upload').val(data.tglMutasi);
+                $('#periode-mutasi').val(data.periodeMutasi);
+                // $('#user-stamp-edit').val(data.putModeUserStamp);
+            }
+        });
+
+    }
+
+    function showUploadedDataTable(type) {
+
+        if (type == 'kovetri'){
+            $('#div-uploaded-table-kovetri').show();
+            $('#div-uploaded-table-pga').hide();
+            $('#div-uploaded-table-olahraga').hide();
+            let t = dkppDataTable($('#uploaded-table-kovetri'), "{{contextPath}}/api/upload-potongan/temp_kovetri", {
+                "searching": true,
+                destroy: true,
+                columns: [
+                    {
+                        title: "Periode Mutasi",
+                        data: "periodeMutasi"
+                    },
+                    {
+                        title: "NIP",
+                        data: "nip"
+                    },
+                    {
+                        title: "Iuran",
+                        data: "potongan"
+                    }
+                ],
+                columnDefs: [
+                {
+                    targets: 2,
+                    render: function(data, type, row, meta){
+                        return row.potongan.toLocaleString("id", {minimumFractionDigits: 2})
+                    }
+                }
+            ]
+            });
+
+        } else if (type == "olahraga"){
+            $('#div-uploaded-table-kovetri').hide();
+            $('#div-uploaded-table-pga').hide();
+            $('#div-uploaded-table-olahraga').show();
+
+            let t = dkppDataTable($('#uploaded-table-olahraga'), "{{contextPath}}/api/upload-potongan/temp_olahraga", {
+                "searching": true,
+                destroy: true,
+                columns: [
+                    {
+                        title: "Periode Mutasi",
+                        data: "periodeMutasi"
+                    },
+                    {
+                        title: "NIP",
+                        data: "nip"
+                    },
+                    {
+                        title: "Nama Peserta",
+                        data: "namaPeserta"
+                    },
+                    {
+                        title: "ID Olahraga",
+                        data: "idOlahraga"
+                    },
+                    {
+                        title: "Nama",
+                        data: "namaOlahraga"
+                    },
+                    {
+                        title: "Iuran",
+                        data: "potongan"
+                    }
+                ],
+                columnDefs: [
+                    {
+                        targets: 5,
+                        render: function(data, type, row, meta){
+                            return row.potongan.toLocaleString("id", {minimumFractionDigits: 2})
+                        }
+                    }
+                ]
+            });
+        } else if (type == "pga") {
+            $('#div-uploaded-table-kovetri').hide();
+            $('#div-uploaded-table-pga').show();
+            $('#div-uploaded-table-kovetri').hide();
+
+            let t = dkppDataTable($('#uploaded-table-pga'), "{{contextPath}}/api/upload-potongan/temp_pga", {
+                "searching": true,
+                destroy: true,
+                columns: [
+                    {
+                        title: "Periode Mutasi",
+                        data: "periodeMutasi"
+                    },
+                    {
+                        title: "NIP",
+                        data: "nip"
+                    },
+                    {
+                        title: "Nama Peserta",
+                        data: "namaPeserta"
+                    },
+                    {
+                        title: "Iuran",
+                        data: "potongan"
+                    }
+                ],
+                columnDefs: [
+                    {
+                        targets: 3,
+                        render: function(data, type, row, meta){
+                            return row.potongan.toLocaleString("id", {minimumFractionDigits: 2});
+                        }
+                    }
+                ]
+            });
+        }
+    }
+
+    function showCopiedDataTable(param) {
+        let type = param.jenisPotongan;
+        let data={
+            periodeMutasi: param.periodeMutasi,
+            jenisPotongan: param.jenisPotongan,
+            userStamp: param.userStamp
+        };
+        if (type == 'kovetri'){
+            $('#div-copied-table-kovetri').show();
+            $('#div-copied-table-pga').hide();
+            $('#div-copied-table-olahraga').hide();
+
+            let t = dkppDataTableDataFilter($('#copied-table-kovetri'), "{{contextPath}}/api/upload-potongan/copied_kovetri", data, {
+                destroy: true,
+                "searching": true,
+                columns: [
+                    {
+                        title: "Periode Mutasi",
+                        data: "periodeMutasi"
+                    },
+                    {
+                        title: "NIP",
+                        data: "nip"
+                    },
+                    {
+                        title: "Iuran",
+                        data: "potongan"
+                    }
+                ],
+                columnDefs: [
+                    {
+                        targets: 3,
+                        render: function(data, type, row, meta){
+                            return row.potongan.toLocaleString("id", {minimumFractionDigits: 2});
+                        }
+                    }
+                ]
+            });
+        } else if (type == "olahraga"){
+            $('#div-copied-table-kovetri').hide();
+            $('#div-copied-table-pga').hide();
+            $('#div-copied-table-olahraga').show();
+
+            let t = dkppDataTableDataFilter($('#copied-table-olahraga'), "{{contextPath}}/api/upload-potongan/copied_olahraga", data, {
+                "searching": true,
+                destroy: true,
+                columns: [
+                    {
+                        title: "Periode Mutasi",
+                        data: "periodeMutasi"
+                    },
+                    {
+                        title: "NIP",
+                        data: "nip"
+                    },
+                    {
+                        title: "Nama Peserta",
+                        data: "namaPeserta"
+                    },
+                    {
+                        title: "ID Olahraga",
+                        data: "idOlahraga"
+                    },
+                    {
+                        title: "Nama",
+                        data: "namaOlahraga"
+                    },
+                    {
+                        title: "Iuran",
+                        data: "potongan"
+                    }
+                ],
+                columnDefs: [
+                    {
+                        targets: 5,
+                        render: function(data, type, row, meta){
+                            return row.potongan.toLocaleString("id", {minimumFractionDigits: 2});
+                        }
+                    }
+                ]
+            });
+        } else if (type == "pga") {
+            $('#div-copied-table-kovetri').hide();
+            $('#div-copied-table-pga').show();
+            $('#div-copied-table-olahraga').hide();
+
+            let t = dkppDataTableDataFilter($('#copied-table-pga'), "{{contextPath}}/api/upload-potongan/copied_pga", data,  {
+                destroy: true,
+                "searching": true,
+                columns: [
+                    {
+                        title: "Periode Mutasi",
+                        data: "periodeMutasi"
+                    },
+                    {
+                        title: "NIP",
+                        data: "nip"
+                    },
+                    {
+                        title: "Nama Peserta",
+                        data: "namaPeserta"
+                    },
+                    {
+                        title: "Iuran",
+                        data: "potongan"
+                    }
+                ],
+                columnDefs: [
+                    {
+                        targets: 3,
+                        render: function(data, type, row, meta){
+                            return row.potongan.toLocaleString("id", {minimumFractionDigits: 2});
+                        }
+                    }
+                ]
+            });
+        }
+    }
+
+    function mainTable() {
+
+        var tt = dkppDataTable($('#main-table'), "{{contextPath}}/api/upload-potongan/", {
+            searching: true,
+            columns: [
+                {
+                    data: "tglUpload"
+                },
+                {
+                    data: "periodeMutasi"
+                },
+                {
+                    data: "jenisPotongan"
+                },
+                {
+                    data: "totalData"
+                },
+                {
+                    data: "userStamp"
+                },
+                {
+                    data: "id"
+                }
+            ],
+            columnDefs: [
+                {
+                    targets: -1,
+                    "render": function(data, type, row, meta){
+                        return `<button class="btn btn-primary btn-sm" onclick=showUploadedData("` + row.id + `") ><i class="fa fa-eye" ></i>Lihat Data</button>`;
+                    }
+                }
+            ]
+        }, 'id,desc');
+    }
+
+    function showUploadedData(id){
+        var mainTable = $('#main-table').DataTable();
+        let uploadPotongan = mainTable.rows().data().filter((data) => {return data.id == id})[0];
+        $('#preview-uploaded').modal({backdrop: 'static', keyboard: false});
+        $('#tanggal-upload-view').val(uploadPotongan.tglUpload);
+        $('#periode-mutasi-view').val(uploadPotongan.periodeMutasi);
+        $('#jenis-potongan-view').val(uploadPotongan.jenisPotongan);
+        $('#total-data-view').val(uploadPotongan.totalData);
+        $('#jumlah-view').val(uploadPotongan.jumlah);
+        $('#jumlah-view-caption').val( parseFloat(uploadPotongan.jumlah).toLocaleString("id", {minimumFractionDigits: 2}));
+
+        showCopiedDataTable(uploadPotongan);
+    }
+
+    $(document).ready(function () {
+        mainTable();
+    });
+
+</script>
+
+{{/scripts}}
+
+{{/layout}}

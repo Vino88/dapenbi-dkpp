@@ -1,0 +1,273 @@
+{{#layout}}
+
+{{#styles}}
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/googleapis/css/component.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/googleapis/css/googleapis.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/select2/css/select2.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css">
+{{/styles}}
+
+{{#title}}
+Master Faktor FS - DKPP
+{{/title}}
+
+
+<div class="card">
+    <div class="card-header">
+        <div class="col-md-12">
+            <div class="row pull-right">
+                <a class="btn btn-primary btn-icon btn-sm" id="btn-add"><i class="material-icons">add</i> Add</a>
+            </div>
+        </div>
+    </div>
+    <div class="card-block">
+        <div class="table-responsive">
+            <table class="table table-bordered datatable dataTable no-footer" id="keluarga_table"
+                   role="grid">
+                <thead>
+                <tr role="row">
+                    <th>
+                        Nama Faktor FS
+                    </th>
+                    <th>
+                        Keterangan Faktor FS
+                    </th>
+                    <th>
+                        Tanggal Awal
+                    </th>
+                    <th>
+                        Tanggal Akhir
+                    </th>
+                    <th>
+                        Active
+                    </th>
+                    <th>
+                        Action
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{{#modal}}
+<div class="modal fade faktor-fs-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title small bold" id="myModalLabel">Form Faktor FS</h4>
+            </div>
+            <div class="modal-body">
+                <form id="faktorFsForm">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <input type="hidden" name="id" id="id">
+                            <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
+
+                            <div class="form-group row">
+                                <label for="nama-faktor-fs" class="col-sm-3 bold">Nama Faktor FS</label>
+                                <div class="col-xs-6">
+                                    <input class="form-control form-control-sm" type="text" name="namaFaktorFs" id="nama-faktor-fs">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="keterangan-faktor-fs" class="col-sm-3 bold">Keterangan Faktor FS</label>
+                                <div class="col-xs-6">
+                                    <input class="form-control form-control-sm" type="text" name="keteranganFaktorFs" id="keterangan-faktor-fs">
+                                </div>
+                            </div>
+
+
+                            <div class="form-group row">
+                                <label for="tgl-awal" class="col-sm-3 bold">Tanggal Awal</label>
+                                <div class="col-xs-3">
+                                    <input placeholder="dd/mm/yyyy" class="form-control form-control-sm text-sm" type="text" name="tglAwal" id="tgl-awal" data-provide="datepicker" data-date-format="dd/mm/yyyy">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="tgl-akhir" class="col-sm-3 bold">Tanggal Akhir</label>
+                                <div class="col-xs-3">
+                                    <input placeholder="dd/mm/yyyy" class="form-control form-control-sm text-sm" type="text" name="tglAkhir" id="tgl-akhir" data-provide="datepicker" data-date-format="dd/mm/yyyy">
+                                </div>
+                            </div>
+
+                            <div class="form-group row checkbox-show-hide">
+                                <label for="checkbox-active" class="col-sm-3 bold">Active</label>
+                                <div class="col-xs-6">
+                                    <label class="custom-control custom-checkbox m-b-1">
+                                        <input type="checkbox" class="custom-control-input" name="active" id="checkbox-active">
+                                        <span class="custom-control-indicator"></span>
+                                    </label>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="saveForm()">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+{{/modal}}
+
+{{#scripts}}
+<script src="{{contextPath}}/assets/vendor/datatables/media/js/jquery.dataTables.js"></script>
+<script src="{{contextPath}}/assets/vendor/datatables/media/js/dataTables.bootstrap4.js"></script>
+<script src="{{contextPath}}/assets/vendor/select2/js/select2.js"></script>
+<script src="{{contextPath}}/assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+<script src="{{contextPath}}/assets/vendor/sweetalert/sweetalert.min.js"></script>
+
+<script type="text/javascript">
+    window.RESTFulMode = "";
+    var selected = 0;
+
+    function showPrintOptions(){
+        $('#printOptionsModal').modal('show');
+    }
+
+    $('#btn_ok_print').unbind().on('click', function(){
+        $('#printOptionsModal').modal('hide');
+        $('#pdfReportModal').modal('show');
+    });
+
+    $('#filter_form').hide();
+
+    var faktorFsTable = dkppDataTable($('.datatable'), '{{contextPath}}/api/faktor-fs', {
+        'columns': [
+            { "data": "namaFaktorFs" },
+            { "data": "keteranganFaktorFs" },
+            { "data": "tglAwal" },
+            { "data": "tglAkhir" },
+            { "data": "active", "ordering": false },
+            { "data": "id"}
+        ],
+        'columnDefs': [
+            {
+                "targets": -1,
+                "data": "id",
+                "render": function(data, type, row, meta){
+                    return "<a class='btn btn-info btn-sm btn-icon btn-edit' onclick='displayEditModal(" + row.id + ")'><i class='material-icons'>edit</i> Edit</a>";
+                }
+            },
+            {
+                "targets": 2,
+                "data": "tglAwal",
+                "render": function(data, type, row, meta){
+                    return (data == null)? "" : fillDateField(data);
+                }
+            },
+            {
+                "targets": 3,
+                "data": "tglAkhir",
+                "render": function(data, type, row, meta){
+                    return (data == null)? "" : fillDateField(data);
+                }
+            },
+            {
+                "targets": -2,
+                "data": "active",
+                "render": function(data, type, row, meta){
+                    if(data == true)
+                        return '<span class="tag tag-pill tag-success">active</span>';
+                    else
+                        return '<span class="tag tag-pill tag-danger">not active</span>';
+                }
+            }
+        ]
+    });
+
+    function displayEditModal(id) {
+        $('.checkbox-show-hide').show();
+        const faktorFs = faktorFsTable.rows().data().filter((data) => {return data.id === id})[0];
+        const faktorFsForm = $("form#faktorFsForm");
+
+        $("#id").val(faktorFs.id);
+
+        $("#tgl-awal").val(fillDateField(faktorFs.tglAwal));
+        $("#tgl-akhir").val(fillDateField(faktorFs.tglAkhir));
+        $("#nama-faktor-fs").val(faktorFs.namaFaktorFs);
+        $("#keterangan-faktor-fs").val(faktorFs.keteranganFaktorFs);
+        $('.faktor-fs-modal').modal({backdrop: 'static', keyboard: false}).modal('show');
+        $("#checkbox-active")[0].checked = faktorFs.active;
+        window.RESTFulMode = "PUT";
+    }
+
+    function saveForm() {
+        $.ajax({
+            url: "{{contextPath}}/api/faktor-fs",
+            method: window.RESTFulMode,
+            data: formToJSON($("form#faktorFsForm")[0].elements)
+        }).success(function(data) {
+            $('.faktor-fs-modal').modal('hide');
+            if(data.status == "success") {
+                swal({title: "Berhasil", text: data.message, icon: "success", button: "OK"});
+            }
+            faktorFsTable.ajax.reload();
+        }).error(function(data){
+            if(data.message != undefined )
+                swal({title: "Gagal", text: data.message, icon: "error", button: "OK"});
+            else
+                swal({title: "Gagal", text: "Terjadi kegagalan.", icon: "error", button: "OK"});
+        });
+    }
+
+    $(document).ready(function(){
+        $('#btn-add').unbind().on('click', function(){
+            $("#id").val("");
+
+            $("#tgl-awal").val("");
+            $("#tgl-akhir").val("");
+            $("#nama-faktor-fs").val("");
+            $("#keterangan-faktor-fs").val("");
+            $('.faktor-fs-modal').modal({backdrop: 'static', keyboard: false}).modal('show');
+            $("#checkbox-active")[0].checked = true;
+            var modal = $('.faktor-fs-modal');
+            $('.checkbox-show-hide').hide();
+            modal.modal('show');
+            window.RESTFulMode = 'POST';
+        });
+
+        //select2 init
+        $('#id-kategori-penerima').select2({
+            ajax: {
+                url: '{{contextPath}}/data/kategori-penerima',
+                dataType: 'json',
+                delay: 250,
+                processResults: function(data){
+                    return {
+                        results: data
+                    };
+                }
+            },
+            width: "50%",
+            placeholder: 'Pilih Kategori Penerima'
+        });
+        var gender = [];
+        {{#gender}}
+        gender.push({
+            id: "{{id}}",
+            text: "{{text}}"
+        });
+        {{/gender}}
+        $('#jenis-kelamin').select2({placeholder: "Pilih Jenis Kelamin", data: gender, width: "50%"});
+        $('#jenis-kelamin').select2('val', '');
+    });
+</script>
+{{/scripts}}
+
+{{/layout}}

@@ -1,0 +1,2271 @@
+{{#layout}}
+{{#styles}}
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/googleapis/css/component.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/googleapis/css/googleapis.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/select2/css/select2.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/bootstrap-datepicker/dist/css/bootstrap-datepicker.css">
+<style>
+    .segment-title {
+        margin-top: 35px;
+        margin-bottom: 15px;
+    }
+
+    .segment-title > h4 {
+        border-bottom: inset #eeebeb 1px;
+    }
+
+    .dataTables_wrapper .dataTables_filter {
+        right: -200px;
+        position: relative;
+    }
+
+    .dataTables_wrapper .dataTables_length {
+        left: 0px;
+        position: relative;
+    }
+
+    .dataTables_wrapper .dataTables_info {
+        left: 0px;
+        position: relative;
+    }
+
+    .dataTables_wrapper .dataTables_paginate {
+        right: 300px;
+        position: relative;
+    }
+</style>
+{{/styles}}
+
+{{#title}} Mutasi Penerima MP Janda/Duda Menikah Kembali - DKPP{{/title}}
+<form id="mainForm">
+<div class="card">
+    <div class="card-block">
+
+        <div class="col-lg-8">
+            <div class="card card-block">
+                <div class="row margin-clear">
+                    <div class="col-lg-6">
+                        <label for="periodeMutasi" class="col-sm-4">Periode Mutasi</label>
+                        <div class="col-sm-8">
+                            <input type="hidden" id="idKategoriMutasi" value="{{kategoriMutasi}}">
+                            <input type="hidden" id="idMutasiPensiun" value="{{idMutasiPensiun}}">
+                            <input type="text" id="periodeMutasi" name="periodeMutasi" class="form-control form-control-sm" disabled>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <label for="tglMutasi" class="col-sm-4">Tanggal Mutasi</label>
+                        <div class="col-sm-8">
+                            <input type="text" id="tglMutasi" name="tglMutasi" class="form-control form-control-sm" disabled>
+                        </div>
+                    </div>
+                </div>
+                <div class="row margin-clear">
+                    <div class="col-lg-12 segment-title">
+                        <h4 class="card-title bold"><strong>Data Peserta</strong></h4>
+                    </div>
+                </div>
+                <div class="row margin-clear">
+                    <div class="col-lg-6">
+                        <label for="nip" class="col-sm-4">NIP</label>
+                        <div class="col-sm-8">
+                            {{#nip}}
+                            <input type="text" id="nip" name="nip" class="form-control form-control-sm text-sm" disabled>
+                            {{/nip}}
+                            {{^nip}}
+                            <select name="nip" id="nip" class="form-control form-control-sm">
+                                <option></option>
+                            </select>
+                            {{/nip}}
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <label for="tglMeninggalPeserta" class="col-sm-4">Tanggal Meninggal</label>
+                        <div class="col-sm-8">
+                            <input type="text" id="tglMeninggalPeserta" name="tglMeninggalPeserta" class="form-control form-control-sm text-sm" disabled>
+                        </div>
+                    </div>
+                </div>
+                <div class="row margin-clear">
+                    <div class="col-lg-6">
+                        <label for="namaPeserta" class="col-sm-4">Nama Peserta</label>
+                        <div class="col-sm-8">
+                            <input type="text" id="namaPeserta" name="namaPeserta" class="form-control form-control-sm text-sm" readonly="readonly">
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <label for="phdpLama" class="col-sm-4">Gaji Pokok Terakhir</label>
+                        <div class="col-sm-8">
+                            <input type="text" id="phdpLama" name="phdpLama" class="form-control form-control-sm text-sm" disabled>
+                        </div>
+                    </div>
+                </div>
+                <div class="row margin-clear">
+                    <div class="col-lg-6">
+                        <label for="namaAgama" class="col-sm-4">Agama</label>
+                        <div class="col-sm-8">
+                            <input type="hidden" name="idAgama" id="idAgama">
+                            <input type="text" class="form-control form-control-sm" id="namaAgama" name="namaAgama" readonly="readonly">
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <label for="namaKantorBayar" class="col-sm-4">Kantor Cabang</label>
+                        <div class="col-sm-8">
+                            <input type="text" id="namaKantorBayar" name="namaKantorBayar" class="form-control form-control-sm text-sm" disabled>
+                        </div>
+                    </div>
+                </div>
+                <div class="row margin-clear">
+                    <div class="col-lg-6">
+                        <label for="jenisKelaminPeserta" class="col-sm-4">Jenis Kelamin</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control form-control-sm" name="namaJenisKelamin" id="namaJenisKelamin" readonly="readonly" />
+                            <input type="hidden" class="form-control form-control-sm" name="jenisKelaminPeserta" id="jenisKelaminPeserta">
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <label for="golongan" class="col-sm-4">Golongan/ Jabatan</label>
+                        <div class="col-sm-8">
+                            <input class="form-control form-control-sm" type="text" id="golongan" name="golongan" class="form-control form-control-sm text-sm" readonly="readonly">
+                            <input type="hidden"  name="idGolongan" id="idGolongan" />
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row margin-clear">
+                    <div class="col-lg-12 segment-title">
+                        <h4 class="card-title bold"><strong>Data Keluarga</strong></h4>
+                    </div>
+                </div>
+                <div class="row margin-clear">
+                    <div class="col-lg-12">
+                        <div class="pull-right" style="display: none">
+                            <button type="button" class="btn btn-sm btn-primary btn-icon tombol-tambah-keluarga m-r-xs m-b-xs">
+                                <i class="material-icons">add_box</i>
+                                <span>Tambah</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row margin-clear">
+                    <div class="col-lg-12">
+                        <div class="scroll-y scroll" style="min-height: 200px;overflow:auto; ">
+                            <div class="table-responsive">
+                                <table id="tblKeluargaPensiun" class="table table-sm small">
+                                    <thead>
+                                    <tr>
+                                        <th>No.</th>
+                                        <th>Nama Lengkap</th>
+                                        <th>Jenis Kelamin</th>
+                                        <th>Hubungan Keluarga</th>
+                                        <th>Tgl Lahir</th>
+                                        <th>Tgl Menikah</th>
+                                        <th>Tgl Cerai</th>
+                                        <th>Tgl Meninggal</th>
+                                        <th>Tgl Usia 25 Tahun</th>
+                                    </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row margin-clear">
+                    <div class="col-lg-12 segment-title">
+                        <h4 class="card-title bold">Surat Keputusan</h4>
+                    </div>
+                </div>
+                <div class="row margin-clear">
+                    <div class="col-lg-12">
+                        <div class="col-lg-12 form-group">
+                            <label for="noSpBi" class="col-xs-5">Nomor dan Tanggal Surat Pengantar BI</label>
+                            <div class="col-xs-1">
+                                <label class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" name="isSPBI" id="isSPBI">
+                                    <span class="custom-control-indicator"></span>
+                                </label>
+                            </div>
+                            <div class="col-xs-3">
+                                <input class="form-control form-control-sm" type="text" value="" name="noSpBi" id="noSpBi">
+                            </div>
+                            <div class="col-xs-3">
+                                <input autocomplete="off" placeholder="dd/mm/yyyy" class="form-control form-control-sm text-sm" type="text" value="" name="tglSpBi" id="tglSpBi" data-provide="datepicker" data-date-format="dd/mm/yyyy">
+                            </div>
+                        </div>
+                        <div class="col-lg-12 form-group">
+                            <label for="tanggalSKBI" class="col-xs-5">Nomor dan Tanggal SK Bank Indonesia</label>
+                            <div class="col-xs-1">
+                                <label class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" name="isSKBI" id="isSKBI">
+                                    <span class="custom-control-indicator"></span>
+                                </label>
+                            </div>
+                            <div class="col-xs-3">
+
+                                <input class="form-control form-control-sm" type="text" value="" name="noSkBi" id="noSkBi">
+                            </div>
+                            <div class="col-xs-3">
+                                <input autocomplete="off" placeholder="dd/mm/yyyy" class="form-control form-control-sm text-sm" type="text" value="" name="tglSkBi" id="tglSkBi" data-provide="datepicker" data-date-format="dd/mm/yyyy">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-12">
+
+
+                        <div class="card card-block">
+                            <div class="row">
+                                {{#nip}}<!--Place for mustache nip-->
+                                <div class="col-lg-12">
+                                    <label class="radio-inline">
+                                        <input type="radio" name="idValidasi" id="idValidasi1" value="1" data-name="Belum Validasi" {{#is_pejabat}} disabled {{/is_pejabat}} />
+                                        Belum Validasi
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="idValidasi" id="idValidasi2" value="2" data-name="Sudah Validasi" {{#is_staff}} disabled {{/is_staff}}/>
+                                        Sudah Validasi
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="idValidasi" id="idValidasi3" value="3" data-name="Batal Koreksi"/>
+                                        Batal Koreksi
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="idValidasi" id="idValidasi4" value="4" data-name="Batal Data" {{#is_staff}} disabled {{/is_staff}} />
+                                        Batal Data
+                                    </label>
+                                    <input type="hidden" name="namaValidasi" id="namaValidasi"/>
+                                </div>
+                                {{/nip}}
+                            </div><div class="row">
+                            <div class="col-lg-6">
+                                Kategori Catatan
+                                <select class="form-control form-control-sm" id="idKategoriCatatan" name="idKategoriCatatan">
+                                    <option></option>
+                                </select>
+                                <input type="hidden" id="namaKategoriCatatan" name="namaKategoriCatatan" />
+                            </div>
+                            <div class="col-lg-6">
+                                Catatan
+                                <textarea class="form-control form-control-sm" id="keterangan" name="keterangan" rows="3"></textarea>
+                            </div>
+                        </div>
+
+
+
+                        </div>
+                    </div>
+
+                    <div class="col-lg-12">
+                        <div class="col-lg-6">
+                            <div class="row">
+                                <label for="userStamp" class="col-xs-4">User Stamp</label>
+
+                                <div class="col-xs-7">
+                                    <input class="form-control form-control-sm" type="text" value="" id="userStamp" readonly="readonly">
+
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="row">
+                                <label for="userName" class="col-xs-4">User Validasi</label>
+
+                                <div class="col-xs-7">
+                                    <input class="form-control form-control-sm" type="text" value="" id="userName" name="userName" readonly="readonly">
+                                    <input class="form-control form-control-sm" type="hidden" value="" id="compName" name="compName" readonly="readonly">
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div id="divDataPenerimaMp" class="card card-block">
+                <div class="row margin-clear">
+                    <div class="col-lg-12 segment-title">
+                        <h4 class="card-title bold">Data Penerima MP</h4>
+                    </div>
+                </div>
+                <div class="row margin-clear">
+                    <div class="col-lg-12">
+                        <label for="namaPenerimaMp" class="col-sm-5">Nama Penerima MP</label>
+                        <div class="col-sm-7">
+                            <input type="text" id="namaPenerimaMp" name="namaPenerimaMp" class="form-control form-control-sm text-sm" readonly="readonly">
+                        </div>
+                    </div>
+                </div>
+                <div class="row margin-clear">
+                    <div class="col-lg-12">
+                        <label for="namaKategoriPenerimaMp" class="col-sm-5">Jenis Penerima MP</label>
+                        <div class="col-sm-7">
+                            <input type="text" id="namaKategoriPenerimaMp" name="namaKategoriPenerimaMp" class="form-control form-control-sm text-sm" readonly="readonly">
+                        </div>
+                    </div>
+                </div>
+                <div class="row margin-clear">
+                    <div class="col-lg-12">
+                        <label for="tglMenikahlagiPenerimaMp" class="col-sm-5">Tanggal Menikah Kembali</label>
+                        <div class="col-sm-7">
+                            <input type="text" id="tglMenikahlagiPenerimaMp" name="tglMenikahlagiPenerimaMp" data-provide="datepicker" data-date-format="dd/mm/yyyy" class="form-control form-control-sm text-sm">
+                        </div>
+                    </div>
+                </div>
+                <div class="row margin-clear">
+                    <div class="col-lg-12">
+                        <label for="tglInfNikahPenerimampLama" class="col-sm-5">Tanggal Informasi Diperoleh</label>
+                        <div class="col-sm-7">
+                            <input type="text" id="tglInfNikahPenerimampLama" name="tglInfNikahPenerimampLama" data-provide="datepicker" data-date-format="dd/mm/yyyy" class="form-control form-control-sm text-sm">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="card card-block">
+                <h6 class="card-title small bold">
+                    Alamat Penerima MP
+                </h6>
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" data-toggle="tab" href="#one" role="tab" aria-expanded="true">Wilayah Indonesia</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#two" role="tab" aria-expanded="false">Wilayah Luar Negeri</a>
+                    </li>
+
+                </ul>
+
+
+                <!-- Tab panes -->
+                <div class="tab-content">
+                    <div class="tab-pane active" id="one" role="tabpanel" aria-expanded="true">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <small>
+                                    Kode Pos
+                                </small>
+                            </div>
+
+                            <div class="col-sm-9">
+                                <div class="col-sm-6">
+                                    <input class="form form-control input-group-sm" type="text" name="kodePos" id="kodePos" readonly="readonly">
+                                </div>
+                                <div class="col-sm-6">
+                                    <select name="selectKodePos" id="selectKodePos" class="form-control form-control-sm">
+                                        <option></option>
+                                    </select>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <small>
+                                    Provinsi
+                                </small></div>
+
+                            <div class="col-sm-9">
+                                <select name="idProvinsi" id="idProvinsi" class="form-control form-control-sm">
+                                    <option></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <small>
+                                    Kabupaten/Kota
+                                </small></div>
+
+                            <div class="col-sm-9">
+                                <select name="idKota" id="idKota" class="form-control form-control-sm">
+                                    <option></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <small>
+                                    Kecamatan
+                                </small></div>
+
+                            <div class="col-sm-9">
+                                <select name="idKecamatan" id="idKecamatan" class="form-control form-control-sm">
+                                    <option></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <small>
+                                    Kelurahan
+                                </small></div>
+
+                            <div class="col-sm-9">
+                                <select name="idKelurahan" id="idKelurahan" class="form-control form-control-sm">
+                                    <option></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <small>
+                                    Alamat Lengkap
+                                </small></div>
+
+                            <div class="col-sm-9">
+                                <textarea class="form-control" id="alamatLengkap" name="alamatLengkap" rows="3"></textarea> </div>
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col-sm-3">
+                                <small>
+                                    RT/RW
+                                </small></div>
+
+
+
+                            <div class="col-sm-3">
+                                <input class="form-control form-control-sm" type="text" value="" id="rt" name="rt">
+                            </div>
+                            <div class="col-sm-3">
+                                <input class="form-control form-control-sm" type="text" value="" id="rw" name="rw">
+                            </div>
+
+
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="two" role="tabpanel" aria-expanded="false">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <small>
+                                    Alamat Lengkap
+                                </small></div>
+
+                            <div class="col-sm-9">
+                                <textarea class="form-control" id="alamatLengkapLuarNegeri" rows="3"></textarea> </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <small>
+                                    Negara
+                                </small></div>
+                            <div class="col-sm-6">
+                                <select class="form-control form-control-sm" name="idNegara" id="idNegara">
+                                    <option></option>
+                                </select>
+                                <input type="hidden" id="namaNegara" name="namaNegara" class="form-control form-control-sm text-sm">
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div id="divSimulasiPerhitungan" class="card card-block">
+                <h6 class="card-title small bold">Data Penerima MP Baru (*Jika Masih Ada yang berhak)</h6>
+                <div class="row">
+                    <label for="namaPenerimaMpBaru" class="col-sm-6">Nama Penerima MP</label>
+
+                    <div class="col-xs-6">
+                        <input type="hidden" id="idPenerimaMpBaru" />
+                        <input class="form-control form-control-sm" type="text" value="" id="namaPenerimaMpBaru">
+                    </div>
+                </div>
+                <div class="row">
+                    <label for="namaKategoriPenerimaMpBaru" class="col-sm-6">Jenis Penerima MP</label>
+
+                    <div class="col-xs-6">
+                        <input type="hidden" id="idKategoriPenerimaMpBaru" />
+                        <input class="form-control form-control-sm" disabled="" type="text" value="" id="namaKategoriPenerimaMpBaru">
+                    </div>
+                </div>
+                <div class="row">
+                    <label for="simTglMpBulan13" class="col-sm-6">Tanggal MP Bulan Ke-13</label>
+
+                    <div class="col-xs-6">
+                        <input class="form-control form-control-sm" disabled="" type="text" value="" id="simTglMpBulan13">
+                    </div>
+                </div>
+                <div class="row">
+                    <label for="simMpyd" class="col-sm-6">Manfaat Pensiun</label>
+
+                    <div class="col-xs-6">
+                        <input class="form-control form-control-sm" disabled="" type="hidden" value="" id="simMpyd">
+                        <input class="form-control form-control-sm" disabled="" type="text" value="" id="simMpydCaption">
+                    </div>
+                </div>
+                <div class="row">
+                    <label for="simMpyd" class="col-sm-6">MP Bulan Ke-13</label>
+
+                    <div class="col-xs-6">
+                        <input class="form-control form-control-sm" disabled="" type="text" value="" id="mp13">
+                    </div>
+                </div>
+                <div class="row">
+                    <label for="lebihBayarNominal" class="col-sm-6">Lebih Bayar (Nominal)</label>
+
+                    <div class="col-xs-6">
+                        <input class="form-control form-control-sm" disabled="" type="text" value="" id="lebihBayarNominalCaption">
+                        <input class="form-control form-control-sm" disabled="" type="hidden" value="" id="lebihBayarNominal">
+                    </div>
+                </div>
+                <div class="row">
+                    <label for="lebihBayarBulan" class="col-sm-6">Lebih Bayar (Bulan)</label>
+
+                    <div class="col-xs-6">
+                        <input class="form-control form-control-sm" disabled="" type="text" value="0" id="lebihBayarBulan">
+                    </div>
+                </div>
+                <div class="row">
+                    <label for="simLebihBayarNominal13" class="col-sm-6">Lebih Bayar (Nominal) 13</label>
+
+                    <div class="col-xs-6">
+                        <input class="form-control form-control-sm" disabled="" type="text" value="" id="simLebihBayarNominal13Caption">
+                        <input class="form-control form-control-sm" disabled="" type="hidden" value="" id="simLebihBayarNominal13">
+                    </div>
+                </div>
+                <div class="row">
+                    <label for="simLebihBayarBulan13" class="col-sm-6">Lebih Bayar (Bulan) ke 13</label>
+
+                    <div class="col-xs-6">
+                        <input class="form-control form-control-sm" disabled="" type="text" value="0" id="simLebihBayarBulan13">
+                    </div>
+                </div>
+                <div class="row">
+                    <label for="simNominalTerbayar" class="col-sm-6">Nominal Terbayar</label>
+
+                    <div class="col-xs-6">
+                        <input class="form-control form-control-sm" disabled="" type="hidden" value="" id="simNominalTerbayar">
+                        <input class="form-control form-control-sm" disabled="" type="text" value="" id="simNominalTerbayarCaption">
+                    </div>
+                </div>
+                <div class="row">
+                    <label for="saldoAkhirLebihBayar" class="col-sm-6">Saldo Akhir Lebih Bayar</label>
+
+                    <div class="col-xs-6">
+                        <input class="form-control form-control-sm" disabled="" type="hidden" value="" id="saldoAkhirLebihBayar">
+                        <input class="form-control form-control-sm" disabled="" type="text" value="" id="saldoAkhirLebihBayarCaption">
+                    </div>
+                </div>
+                <div class="row">
+                    <label for="namaSuskel" class="col-sm-6">Perubahan SusKel</label>
+
+                    <div class="col-sm-6">
+
+                        <div class="row col-sm-12">
+                            <input class="form-control form-control-sm" type="hidden" value="" id="idSuskel">
+                            <input class="form-control form-control-sm" disabled="" type="text" value="" id="namaSuskel">
+                        </div>
+
+                        <div class="row col-sm-12">Menjadi</div>
+
+                        <div class="row col-sm-12">
+                            <input class="form-control form-control-sm" disabled="" type="hidden" value="" id="idSuskelBaru">
+                            <input class="form-control form-control-sm" disabled="" type="text" value="" id="namaSuskelBaru">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6"></div>
+                    <div class="col-xs-6">
+                        <label class="radio-inline">
+                            <input type="radio" disabled="" name="statusBayar" id="idStatusBayar1" data-name="Dibayar" value="1">
+                            Dibayar
+                        </label>
+
+                        <label class="radio-inline">
+                            <input type="radio" disabled="" name="statusBayar" id="idStatusBayar6" data-name="Berhenti" value="6">
+                            Berhenti
+                        </label>
+                    </div>
+
+
+                </div>
+                <div class="row">
+                    <label for="example-text-input" class="col-sm-6">Tanggal Henti Bayar</label>
+
+                    <div class="col-xs-6">
+                        <input class="form-control form-control-sm" type="text" value="" data-provide="datepicker" data-date-format="dd/mm/yyyy"  id="tglHentiBayar" name="tglHentiBayar">
+                    </div>
+                </div>
+                <div class="row">
+                    <br>
+                    <div class="col-xs-12">
+                        <div class="col-xs-6">
+                            <a class="btn btn-primary btn-sm pull-right" id="btnProcess" onclick="processMutasiPenerimaMpMenikah()"><i class="fa fa-save"></i><span> Simpan</span></a>
+                        </div>
+
+                        <div class="col-xs-6">
+                            <a class="btn btn-primary btn-sm pull-right" id="btnCetak" onclick="cetakReport()"><i class="fa fa-print"></i><span> Cetak Catatan</span></a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div id="generatedHiddenInput">
+<input type="hidden" id="idKategoriPenerimaMp" name="idKategoriPenerimaMp"/>
+    <iframe style="width:100%;height:100%;display: none" id="cetakCatatan" name="cetakCatatan" src=""></iframe>
+</div>
+</form>
+{{#modal}}
+<div class="modal fade keluargaPeserta-modal" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form id="keluargaPesertaForm">
+                <input type="hidden" name="_csrf" id="_csrf" value="{{_csrf.token}}" />
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title small bold" id="mutasiPensiunLabel">Form Data Keluarga</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-8">
+                            <div class="form-group row">
+                                <label for="namaLengkapKeluarga" class="col-sm-3 bold">Nama Lengkap</label>
+                                <div class="col-xs-9">
+                                    <input type="hidden" name="id" id="id">
+                                    <input class="form-control form-control-sm" type="text" name="namaLengkapKeluarga" id="namaLengkapKeluarga" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="jenisKelaminKeluarga" class="col-sm-3 bold">Jenis Kelamin</label>
+                                <div class="col-xs-9">
+                                    <select class="form-control form-control-sm" name="jenisKelaminKeluarga" id="jenisKelaminKeluarga" required>
+                                        {{#gender}}
+                                        <option value="{{id}}">{{text}}</option>
+                                        {{/gender}}
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="hubunganKeluarga" class="col-sm-3 bold">Hubungan Keluarga</label>
+                                <div class="col-xs-9">
+                                    <select class="form-control form-control-sm" name="hubunganKeluarga" id="hubunganKeluarga" required></select>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="statusKawinKeluarga" class="col-sm-3 bold">Status Kawin</label>
+                                <div class="col-xs-9">
+                                    <select class="form-control form-control-sm" name="statusKawinKeluarga" id="statusKawinKeluarga"></select>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="tglLahirKeluarga" class="col-sm-3 bold">Tanggal Lahir</label>
+                                <div class="col-xs-9">
+                                    <input autocomplete="off" placeholder="dd/mm/yyyy" class="form-control form-control-sm text-sm" type="text" name="tglLahirKeluarga" id="tglLahirKeluarga" data-provide="datepicker" data-date-format="dd/mm/yyyy" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="tglMenikahKeluarga" class="col-sm-3 bold">Tanggal Menikah</label>
+                                <div class="col-xs-9">
+                                    <input autocomplete="off" placeholder="dd/mm/yyyy" class="form-control form-control-sm text-sm" type="text" name="tglMenikahKeluarga" id="tglMenikahKeluarga" data-provide="datepicker" data-date-format="dd/mm/yyyy">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="tglCeraiKeluarga" class="col-sm-3 bold">Tanggal Cerai</label>
+                                <div class="col-xs-9">
+                                    <input autocomplete="off" placeholder="dd/mm/yyyy" class="form-control form-control-sm text-sm" type="text" name="tglCeraiKeluarga" id="tglCeraiKeluarga" data-provide="datepicker" data-date-format="dd/mm/yyyy">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="tglMeninggalKeluarga" class="col-sm-3 bold">Tanggal Meniggal</label>
+                                <div class="col-xs-9">
+                                    <input autocomplete="off" placeholder="dd/mm/yyyy" class="form-control form-control-sm text-sm" type="text" name="tglMeninggalKeluarga" id="tglMeninggalKeluarga" data-provide="datepicker" data-date-format="dd/mm/yyyy">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                    <button type="button" id="btnSaveKeluarga" onclick="saveKeluarga()" class="btn btn-primary btn-sm">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{{/modal}}
+
+{{#scripts}}
+<script src="{{contextPath}}/assets/vendor/datatables/media/js/jquery.dataTables.js"></script>
+<script src="{{contextPath}}/assets/vendor/datatables/media/js/dataTables.bootstrap4.js"></script>
+<script src="{{contextPath}}/assets/vendor/select2/js/select2.js"></script>
+<script src="{{contextPath}}/assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+<script src="{{contextPath}}/assets/vendor/jquery-validation/dist/jquery.validate.js"></script>
+<script src="{{contextPath}}/assets/scripts/helpers/tsf/js/tsf-wizard-plugin.js"></script>
+<script src="{{contextPath}}/assets/vendor/parsley/parsley.min.js"></script>
+<script src="{{contextPath}}/assets/vendor/sweetalert/sweetalert.min.js"></script>
+<script type="text/javascript">
+    var DkppGlobal = {};
+    DkppGlobal.nip = "{{nip}}";
+    DkppGlobal.idMutasiPensiun = "{{idMutasiPensiun}}";
+    DkppGlobal.method = DkppGlobal.nip == "" ? "POST":"PUT";
+    DkppGlobal.cekSuskel = {peserta: null};
+    DkppGlobal.firstLoad = true;
+    const kategoriPenerimaSelectTemplate = "${namaKategoriPenerima}";
+    const statusKawinSelectTemplate = "${statusKawin}";
+    const mpBulan13 = $('#mp13');
+    mpBulan13.number(true, 2);
+    const resetOnChangeNip = function(){
+        $('#divDataPenerimaMp').find('input:text').val('');
+        $('#divSimulasiPerhitungan').find('input:text').val('');
+        $('#divSimulasiPerhitungan').find('input:hidden').val('');
+        $('#divSimulasiPerhitungan').find('input:radio').removeAttr('checked');
+        $('#lebihBayarBulan').val(0);
+        $('#simLebihBayarBulan13').val(0);
+        $('#selectKodePos').val(''); $('#selectKodePos').trigger('change');
+    }
+    const getDataKeluarga = () => {
+        let arrOut = [];
+        let kelPesertaTable = $('#tblKeluargaPensiun').DataTable();
+        keluargaPeserta = kelPesertaTable.rows().data();
+        for(i=0; i<keluargaPeserta.length; i++){
+            let keluarga = keluargaPeserta[i];
+            keluarga["statusKawin"] = keluarga["statusKawin"]["id"];
+            keluarga["namaKategoriPenerima"] = keluarga.kategoriPenerima.namaKategoriPenerima;
+            keluarga["kategoriPenerima"] = keluarga.idKategoriPenerima;
+            keluarga["tglWafat"] = keluarga.tglWafat == null || keluarga.tglWafat == "" ? null : fillDateField(keluarga.tglWafat);
+            keluarga["tglLahir"] = keluarga.tglLahir == null || keluarga.tglLahir == "" ? null : fillDateField(keluarga.tglLahir);
+            keluarga["tglMenikah"] = keluarga.tglMenikah == null || keluarga.tglMenikah == "" ? null : fillDateField(keluarga.tglMenikah);
+            keluarga["tglUsia25"] = keluarga.tglUsia25 == null || keluarga.tglUsia25 == "" ? null : fillDateField(keluarga.tglUsia25);
+
+            if(keluarga.namaKategoriPenerima.includes("ISTRI/SUAMI")){
+                keluarga["tglCerai"] = fillDateField($('#tglMenikahlagiPenerimaMp').val());
+            }
+
+            arrOut.push(keluarga);
+        }
+        return arrOut;
+    };
+
+
+    const searchPenerima = () => {
+        const keluargaPesertaTable = $('#tblKeluargaPensiun').DataTable();
+        const tableData = keluargaPesertaTable.rows().data();
+
+        for(i=0; i<tableData.length; i++){
+            let kandidat = tableData[i];
+            if( kandidat.kategoriPenerima.namaKategoriPenerima != undefined && (kandidat.kategoriPenerima.namaKategoriPenerima).includes("ANAK") && kandidat.tglUsia25 != null ){
+                let q = new Date();
+                let m = q.getMonth()+1;
+                let d = q.getDay();
+                let y = q.getFullYear();
+
+                let dateNow = new Date(y,m,d);
+                let tglUsia25 = new Date(kandidat.tglUsia25);
+                if(dateNow < tglUsia25)
+                    return kandidat;
+            }
+        }
+        return null;
+    };
+
+    function setNamaValidasi(strValue){
+        $('#namaValidasi').val(strValue);
+    }
+
+    function cufnMenikahSimulation(){
+        let arg = {
+            nip: $('#nip').val(),
+            tglMenikah: ddMmYyyyToJavaDateFormat($('#tglMenikahlagiPenerimaMp').val()),
+            periodeMutasi: $('#periodeMutasi').val(),
+            idStatusBayar: $('[name=statusBayar]:checked').val() == null || $('[name=statusBayar]:checked').val() == undefined ? 1 : $('[name=statusBayar]:checked').val()
+        };
+        $.ajax({
+            url: "{{contextPath}}{{cufnMenikahSimulation}}",
+            method: 'GET',
+            data: arg,
+            success: function(result){
+                if(result.MPYD != null){
+                    $('#simMpydCaption').val(parseFloat(result.MPYD).toLocaleString('id', {minimumFractionDigits: 2}));
+                    $('#simMpyd').val(result.MPYD);
+                }
+                if(result.SALDO_AKHIR_LEBIH_BAYAR != null ){
+                    $('#saldoAkhirLebihBayarCaption').val(parseFloat(result.SALDO_AKHIR_LEBIH_BAYAR).toLocaleString('id', {minimumFractionDigits: 2}));
+                    $('#saldoAkhirLebihBayar').val(result.SALDO_AKHIR_LEBIH_BAYAR);
+                }
+                if(result.LEBIH_BAYAR_NOMINAL != null){
+                    $('#lebihBayarNominalCaption').val(parseFloat(result.LEBIH_BAYAR_NOMINAL).toLocaleString('id', {minimumFractionDigits: 2}));
+                    $('#lebihBayarNominal').val(result.LEBIH_BAYAR_NOMINAL);
+                }
+
+                if(result.SALDO_LEBIH_BAYAR_NOMINAL != null){
+                    $('#saldoLebihBayarNominalCaption').val(parseFloat(result.SALDO_LEBIH_BAYAR_NOMINAL).toLocaleString('id', {minimumFractionDigits: 2}));
+                    $('#saldoLebihBayarNominal').val(result.SALDO_LEBIH_BAYAR_NOMINAL);
+                }
+
+                if(result.NOMINAL_TERBAYAR != null){
+                    $('#simNominalTerbayarCaption').val(parseFloat(result.NOMINAL_TERBAYAR == null ? 0 : result.NOMINAL_TERBAYAR).toLocaleString('id', {minimumFractionDigits: 2}));
+                    $('#simNominalTerbayar').val(result.NOMINAL_TERBAYAR);
+                }
+
+                if(result.MP_BULAN_13 != null){
+                    $('#mp13').val(parseFloat(result.MP_BULAN_13 == null ? 0 : result.MP_BULAN_13).toLocaleString('id', {minimumFractionDigits: 2}));
+                    $('#mp13').val(result.MP_BULAN_13);
+                }
+
+                if(result.LEBIH_BAYAR_BULAN != null)
+                    $('#lebihBayarBulan').val(result.LEBIH_BAYAR_BULAN);
+                else
+                    $('#lebihBayarBulan').val(0);
+
+                if(result.TGL_MP_BULAN_KE13 != null)
+                    $('#simTglMpBulan13').val( ddMmYyyyFormat(result.TGL_MP_BULAN_KE13) );
+
+                if(result.LEBIH_BAYAR_BULAN_13 != null){
+                    $('#simLebihBayarBulan13').val(result.LEBIH_BAYAR_BULAN_13);
+                } else {
+                    $('#simLebihBayarBulan13').val(0);
+                }
+
+                if(result.LEBIH_BAYAR_NOMINAL_13 != null){
+
+                    $('#simLebihBayarNominal13Caption').val(parseFloat(result.LEBIH_BAYAR_NOMINAL_13).toLocaleString('id', {minimumFractionDigits: 2}));
+                    $('#simLebihBayarNominal13').val(result.LEBIH_BAYAR_NOMINAL_13);
+                }
+                console.log(result);
+            }
+
+        });
+    }
+
+    cekSuskel = () => {
+        let newIndex = "dataKeluarga";
+        let csrfIndex = "_csrf";
+        let dataKeluarga = getDataKeluarga();
+        DkppGlobal.cekSuskel.peserta[newIndex] = dataKeluarga;
+        DkppGlobal.cekSuskel.peserta[csrfIndex] = $('#_csrf').val();
+
+        //cleansing data
+
+        DkppGlobal.cekSuskel.peserta['nip'] = DkppGlobal.cekSuskel.peserta.nip;
+        DkppGlobal.cekSuskel.peserta['jenisKelamin'] = DkppGlobal.cekSuskel.peserta.jenisKelaminPeserta;
+        DkppGlobal.cekSuskel.peserta['alasanHenti'] = DkppGlobal.cekSuskel.peserta.alasanHenti.keterangan;
+        DkppGlobal.cekSuskel.peserta['golongan'] = DkppGlobal.cekSuskel.peserta.golongan.idGolongan;
+        DkppGlobal.cekSuskel.peserta['predikatPemberhentian'] = DkppGlobal.cekSuskel.peserta.predikatPemberhentian.idPemberhentian;
+        DkppGlobal.cekSuskel.peserta['statusKawin'] = DkppGlobal.cekSuskel.peserta.statusKawin.idStatusKawin;
+        DkppGlobal.cekSuskel.peserta['suskel'] = DkppGlobal.cekSuskel.peserta.suskel.idSuskel;
+        DkppGlobal.cekSuskel.peserta['tglMeninggal'] = DkppGlobal.cekSuskel.peserta.tglMeninggalPeserta;
+
+        //end cleansing data
+        $.ajax({
+            url: "{{contextPath}}{{cekSuskel}}",
+            method: 'POST',
+            data: DkppGlobal.cekSuskel.peserta,
+            success: function(result){
+                suskel = result.data;
+                $('#idSuskelBaru').val(suskel.idSuskel);
+                $('#namaSuskelBaru').val(suskel.namaSuskel);
+            }
+        });
+    };
+
+    fillAddress = function(obj){
+        $.ajax({
+            url: '{{contextPath}}{{listProvinsiCombo}}',
+            method: 'GET',
+            data: {
+                valueColumn: 'id',
+                textColumn: "${id}-${namaProvinsi}",
+                searchColumn: [
+                    'namaProvinsi'
+                ],
+                includeObject: true
+            },
+            success: function(data){
+                $('#idProvinsi').select2(
+                    {
+                        data: data,
+                        width: "100%",
+                        placeholder: 'Pilih Provinsi'
+                    }
+                ).val(obj.idProvinsi).trigger('change');
+
+                //Kota
+                $.ajax({
+                    url: '{{contextPath}}{{listKotaCombo}}',
+                    method: 'GET',
+                    data: {
+                        valueColumn: 'id',
+                        textColumn: "${id}-${namaKota}",
+                        searchColumn: [
+                            'namaKota'
+                        ],
+                        referenceValue: [
+                            {
+                                table: "provinsi",
+                                column: "id",
+                                value: $('#idProvinsi').val()
+                            }
+                        ],
+                        includeObject: true
+                    },
+                    success: function(data){
+                        $('#idKota').select2(
+                            {
+                                data: data,
+                                width: "100%",
+                                placeholder: 'Pilih Kota'
+                            }
+                        ).val(obj.idKota).trigger('change');
+
+                        //kecamatan
+                        $.ajax({
+                            url: '{{contextPath}}{{listKecamatanCombo}}',
+                            method: 'GET',
+                            data: {
+                                valueColumn: 'id',
+                                textColumn: "${id}-${namaKecamatan}",
+                                searchColumn: [
+                                    'namaKecamatan'
+                                ],
+                                referenceValue: [
+                                    {
+                                        table: "kota",
+                                        column: "id",
+                                        value: $('#idKota').val()
+                                    }
+                                ],
+                                includeObject: true
+                            },
+                            success: function(data){
+                                $('#idKecamatan').select2(
+                                    {
+                                        data: data,
+                                        width: "100%",
+                                        placeholder: 'Pilih Kecamatan'
+                                    }
+                                ).val(obj.idKecamatan).trigger('change');
+
+                                //kelurahan
+                                $.ajax({
+                                    url: '{{contextPath}}{{listKelurahanCombo}}',
+                                    method: 'GET',
+                                    data: {
+                                        valueColumn: 'id',
+                                        textColumn: "${id}-${namaKelurahan}",
+                                        searchColumn: [
+                                            'namaKelurahan'
+                                        ],
+                                        referenceValue: [
+                                            {
+                                                table: "kecamatan",
+                                                column: "id",
+                                                value: $('#idKecamatan').val()
+                                            }
+                                        ],
+                                        includeObject: true
+                                    },
+                                    success: function(data){
+                                        $('#idKelurahan').select2(
+                                            {
+                                                data: data,
+                                                width: "100%",
+                                                placeholder: 'Pilih Kelurahan'
+                                            }
+                                        ).val(obj.idKelurahan).trigger('change');
+                                    }
+                                });
+                                //kelurahan
+                            }
+                        });
+                        //kecamatan
+                    }
+                });
+                //Kota
+            }
+        });
+    }
+
+    $(document).ready(function(){
+        $('#periodeMutasi').val("{{periodeMutasi}}");
+        $("#tglMulaiBerlakuPhDP").datepicker({
+            format: 'yyyy-mm-dd',
+            autoclose : true
+        });
+
+        $('#tglMenikahlagiPenerimaMp')
+            .datepicker()
+            .on('changeDate', function(){
+                if($('#tglMenikahlagiPenerimaMp').val().length < 10) return false;
+                let penerima = searchPenerima();
+                if(penerima != null) {
+                    $('#idPenerimaMpBaru').val(penerima.id);
+                    $('#namaPenerimaMpBaru').val(penerima.namaKeluarga);
+                    $('#idKategoriPenerimaMpBaru').val(penerima.idKategoriPenerima);
+                    $('#namaKategoriPenerimaMpBaru').val(penerima.kategoriPenerima.namaKategoriPenerima);
+                    //dibayar
+                    $('#idStatusBayar1').prop('checked', 'checked');
+                    $('#tglHentiBayar').prop('disabled','disabled');
+                } else {
+                    //henti bayar
+                    $('#namaPenerimaMpBaru').val('-');
+                    $('#namaKategoriPenerimaMpBaru').val('-');
+                    $('#idStatusBayar6').prop('checked', 'checked');
+                    $('#tglHentiBayar').removeAttr('disabled');
+                }
+                cufnMenikahSimulation();
+                $('#tglMenikahlagiPenerimaMp').datepicker('hide');
+
+                cekSuskel();
+            });
+
+        getDetail= function(){
+            $.ajax({
+                url: "{{contextPath}}/api/mutasi-penerima-menikah/get-detail",
+                method: "GET",
+                data: DkppGlobal,
+                success: (data) => {
+
+                    let keys = Object.keys(data);
+                    for(i = 0; i<keys.length; i++){
+                        if ($('#' + keys[i]).val() != undefined){
+                            $('#' + keys[i]).val(data[keys[i]]);
+                        }
+                        else
+                        {
+                            $('#generatedHiddenInput').append("<input type='hidden' id='" + keys[i] + "' value='" + data[keys[i]] + "'>");
+                        }
+                    }
+
+                    var radioValue = $("input[name='idValidasi']:checked").val();
+                    if(radioValue == "2" || radioValue == "4") {
+                    let jenKel = {W: 'Wanita', P: 'Pria'};
+                        $('#jenisKelaminPeserta').val(data['jenisKelaminPeserta']);
+                        $('#namaJenisKelamin').val(function () {
+                            if ($('#jenisKelaminPeserta').val() == "P") return "Pria"; else if ($('#jenisKelaminPeserta').val() == "W") return "Wanita"; else return "-"
+                        });
+                        $('#idKategoriCatatan').val(data['idKategoriCatatan']).prop('disabled', 'true');
+                        $('#idKategoriCatatan').trigger('change').prop('disabled', 'true');
+                        $('#golongan').val(data['golonganPangkat']);
+                        $('#idAgama').trigger('change');
+                        $('#tglSpBi').val(ddMmYyyyFormat($('#tglSpBi').val())).prop('disabled', 'true');
+                        $('#tglSkBi').val(ddMmYyyyFormat($('#tglSkBi').val())).prop('disabled', 'true');
+                        $('#isSPBI').attr('checked', 'checked');
+                        $('#isSKBI').attr('checked', 'checked');
+                        $('#tglMenikahlagiPenerimaMp').val(ddMmYyyyFormat($('#tglMenikahlagiPenerimaMp').val())).prop('disabled', 'true');
+                        $('#tglInfNikahPenerimampLama').val(ddMmYyyyFormat($('#tglInfNikahPenerimampLama').val())).prop('disabled', 'true');
+                        $('#tglHentiBayar').val(($('#tglHentiBayar').val() != "") ? ddMmYyyyFormat($('#tglHentiBayar').val()) : '').prop('disabled', 'true');
+                        $('#tglMutasi').val(javaDateToIndonesiaDate(data['tglMutasi']));
+                        $('#tglMeninggalPeserta').val(ddMmYyyyFormat($('#tglMeninggalPeserta').val()));
+                        $('#idValidasi' + data['idValidasi']).attr('checked', 'checked');
+                        $('#idStatusBayar' + data['idStatusBayar']).attr('checked', 'checked');
+                        $('#simTglMpBulan13').val(ddMmYyyyFormat(data['tglMpBulanKe13']));
+                        $('#keterangan').prop('disabled', 'true');
+                        $('#idProvinsi').prop('disabled', 'true');
+                        $('#idKota').prop('disabled', 'true');
+                        $('#idKecamatan').prop('disabled', 'true');
+                        $('#idKelurahan').prop('disabled', 'true');
+
+                        fillAddress({
+                            idProvinsi: data['idProvinsi'],
+                            idKota: data['idKotaKab'],
+                            idKecamatan: data['idKecamatan'],
+                            idKelurahan: data['idKelurahan']
+                        });
+                        if (data['alamatIsDalamNegeri'] != null && (data['alamatIsDalamNegeri'] != true || data['alamatIsDalamNegeri'] != 1))
+                            $('#idNegara').trigger('change');
+
+                    }else{
+
+                        $('#jenisKelaminPeserta').val(data['jenisKelaminPeserta']);
+                        $('#namaJenisKelamin').val(function(){if($('#jenisKelaminPeserta').val() == "P") return "Pria"; else if ($('#jenisKelaminPeserta').val() == "W") return "Wanita"; else return "-"});
+                        $('#idKategoriCatatan').val(data['idKategoriCatatan']);
+                        $('#idKategoriCatatan').trigger('change');
+                        $('#golongan').val(data['golonganPangkat']);
+                        $('#idAgama').trigger('change');
+                        $('#tglSpBi').val(ddMmYyyyFormat($('#tglSpBi').val()));
+                        $('#tglSkBi').val(ddMmYyyyFormat($('#tglSkBi').val()));
+                        $('#tglMenikahlagiPenerimaMp').val(ddMmYyyyFormat($('#tglMenikahlagiPenerimaMp').val()));
+                        $('#tglInfNikahPenerimampLama').val(ddMmYyyyFormat($('#tglInfNikahPenerimampLama').val()));
+                        $('#tglHentiBayar').val(($('#tglHentiBayar').val() != "")?ddMmYyyyFormat($('#tglHentiBayar').val()):'');
+                        $('#tglMutasi').val(javaDateToIndonesiaDate(data['tglMutasi']));
+                        $('#tglMeninggalPeserta').val( ddMmYyyyFormat($('#tglMeninggalPeserta').val()) );
+                        $('#idValidasi' + data['idValidasi']).attr('checked', 'checked');
+                        $('#idStatusBayar' + data['idStatusBayar']).attr('checked', 'checked');
+                        $('#simTglMpBulan13').val(ddMmYyyyFormat(data['tglMpBulanKe13']));
+                        fillAddress({idProvinsi: data['idProvinsi'], idKota: data['idKotaKab'], idKecamatan: data['idKecamatan'], idKelurahan: data['idKelurahan']});
+                        if(data['alamatIsDalamNegeri'] != null && (data['alamatIsDalamNegeri'] != true || data['alamatIsDalamNegeri'] != 1))
+                            $('#idNegara').trigger('change');
+                    }
+
+                    var radioValue = $("input[name='idValidasi']:checked").val();
+                    if (radioValue == "2" || radioValue == "4") {
+                        $('#btnProcess').hide();
+                        $('#tglMenikahlagiPenerimaMp').prop('disabled',true);
+                        $('#tglInfNikahPenerimampLama').prop('disabled',true);
+                        $('#selectKodePos').prop('disabled',true);
+                        $('#idProvinsi').prop('disabled',true);
+                        $('#idKota').prop('disabled',true);
+                        $('#idKecamatan').prop('disabled',true);
+                        $('#idKelurahan').prop('disabled',true);
+                        $('#alamatLengkap').prop('disabled',true);
+                        $('#rt').prop('disabled',true);
+                        $('#rw').prop('disabled',true);
+                        $('#alamatLengkapLuarNegeri').hide();
+                        $('#idNegara').prop('disabled',true);
+                        $('#namaPenerimaMpBaru').prop('disabled',true);
+                        $('#tglHentiBayar').prop('disabled',true);
+                        $('#idKategoriCatatan').prop('disabled',true);
+                        $('#keterangan').prop('disabled',true);
+                    } else {
+                        $('#btnProcess').show();
+                        $('#tglMenikahlagiPenerimaMp').prop('disabled',false);
+                        $('#tglInfNikahPenerimampLama').prop('disabled',false);
+                        $('#selectKodePos').prop('disabled',false);
+                        $('#idProvinsi').prop('disabled',false);
+                        $('#idKota').prop('disabled',false);
+                        $('#idKecamatan').prop('disabled',false);
+                        $('#idKelurahan').prop('disabled',false);
+                        $('#alamatLengkap').prop('disabled',false);
+                        $('#rt').prop('disabled',false);
+                        $('#rw').prop('disabled',false);
+                        $('#alamatLengkapLuarNegeri').prop('disabled',false);
+                        $('#idNegara').prop('disabled',false);
+                        $('#namaPenerimaMpBaru').prop('disabled',false);
+                        $('#tglHentiBayar').prop('disabled',false);
+                        $('#idKategoriCatatan').prop('disabled',false);
+                        $('#keterangan').prop('disabled',false);
+                    }
+
+                    var radioVal = $("input[name='statusBayar']:checked").val();
+                    if (radioVal == "6") {
+                        $('#btnCetak').hide();
+                    } else if (radioVal == "1") {
+                        $('#btnCetak').show();
+                    }
+
+                    //isi hasil simulasi
+                    $('#simMpyd').val(data['mpydLama']);
+                    $('#simMpydCaption').val(data['mpydLama'].toLocaleString('id', {minimumFractionDigits: 2}));
+                    $('#lebihBayarNominalCaption').val(data['lebihBayarNominal'].toLocaleString('id', {minimumFractionDigits: 2}));
+                    $('#lebihBayarNominal').val(data['lebihBayarNominal']);
+                    $('#lebihBayarBulan').val(data['lebihBayarJmlBulan'] == null ? 0 : data['lebihBayarJmlBulan']);
+                    $('#simLebihBayarNominal13').val(data['lebihBayarNominal13']);
+                    $('#simLebihBayarNominal13Caption').val(data['lebihBayarNominal13'].toLocaleString('id', {minimumFractionDigits: 2}));
+                    $('#simLebihBayarBulan13').val(data['lebihBayarJmlBln13'] == null?0:data['lebihBayarJmlBln13']);
+                    $('#simNominalTerbayar').val(data['nominalTerbayar']);
+                    $('#simNominalTerbayarCaption').val(data['nominalTerbayar'].toLocaleString('id', {minimumFractionDigits: 2}));
+                    $('#saldoAkhirLebihBayar').val(data['rapelMpydLebih']);
+                    $('#saldoAkhirLebihBayarCaption').val(data['rapelMpydLebih'].toLocaleString('id', {minimumFractionDigits: 2}));
+                    $('#mp13').val(data['mpBulan13']);
+                    $('#rt').val(data['rt']).mask('999999999');
+                    $('#rw').val(data['rw']).mask('999999999');
+
+                    const phdpLamaElmnt = $('#phdpLama');
+                    phdpLamaElmnt.number(true, 2);
+
+                    $.ajax({
+                        url: '{{contextPath}}{{listPeriodeSetupParameter}}',
+                        dataType: 'json',
+                        method: 'GET',
+                        success: (data)=>{
+                            $('#userStamp').val(data.putModeUserStamp);
+                            $('#tglMutasi').val(data.tglMutasi);
+                            $('#compName').val(data.compName);
+                            $('#userName').val(data.userName);
+                        }
+                    });
+
+
+                }
+            });
+        }
+
+        if(DkppGlobal.nip != ""){
+            getDetail();
+        }
+
+        $('#isSPBI').on('change', function(){
+            if( $('#isSPBI').prop('checked') == false ){
+                $('#noSpBi').attr('readonly', 'readonly');
+                $('#tglSpBi').attr('readonly', 'readonly');
+            } else {
+                $('#noSpBi').removeAttr('readonly');
+                $('#tglSpBi').removeAttr('readonly');
+            }
+        });
+
+        $('#isSKBI').on('change', function(){
+            if( $('#isSKBI').prop('checked') == false ){
+                $('#noSkBi').attr('readonly', 'readonly');
+                $('#tglSkBi').attr('readonly', 'readonly');
+            } else {
+                $('#noSkBi').removeAttr('readonly');
+                $('#tglSkBi').removeAttr('readonly');
+            }
+        });
+
+        $(document).ajaxStop(function() {
+            // if( $('#noSpBi').val() != '' ){
+            //     $('#isSPBI').prop('checked', 'checked');
+            // } else {
+            //     $('#isSPBI').removeProp('checked');
+            // }
+            //
+            //
+            // if( $('#noSkBi').val() != '' ){
+            //     $('#isSKBI').prop('checked', 'checked');
+            // } else {
+            //     $('#isSKBI').removeProp('checked');
+            // }
+
+            if( $('#isSPBI').prop('checked') == false ){
+                $('#noSpBi').attr('readonly', 'readonly');
+                $('#tglSpBi').attr('readonly', 'readonly');
+            } else {
+                $('#noSpBi').removeAttr('readonly');
+                $('#tglSpBi').removeAttr('readonly');
+            }
+
+            if( $('#isSKBI').prop('checked') == false ){
+                $('#noSkBi').attr('readonly', 'readonly');
+                $('#tglSkBi').attr('readonly', 'readonly');
+            } else {
+                $('#noSkBi').removeAttr('readonly');
+                $('#tglSkBi').removeAttr('readonly');
+            }
+
+            if( $('#idStatusBayar1').prop('checked') == true ) {
+                $('#tglHentiBayar').prop('disabled', 'disabled');
+            }
+
+            if(DkppGlobal.firstLoad == true) {
+
+                if ($("input[name='idValidasi']:checked").val() == '2')
+                    $(':input').prop('disabled', 'disabled');
+
+                DkppGlobal.firstLoad = false;
+
+            }
+        });
+
+    });
+
+
+    $("#btnSave").click(function(){
+        var phDPBaru = $("#phDPBaru").val();
+        var tglMulaiBerlakuPhDP = $("#tglMulaiBerlakuPhDP").val();
+        var kategoriCatatan = $("#idKategoriCatatan").val();
+        var keterangan = $("#keterangan").val();
+
+        if(phDPBaru == null || phDPBaru == ""){
+            swal("","PhDP Baru tidak boleh kosong","error");
+            $("#phDPBaru").focus();
+            return;
+        }
+
+        if(tglMulaiBerlakuPhDP == null || tglMulaiBerlakuPhDP == ""){
+            swal("","Tgl Mulai Berlaku PhDP Baru tidak boleh kosong","error");
+            $("#tglMulaiBerlakuPhDP").focus();
+            return;
+        }
+
+        $.ajax({
+            url: "{{contextPath}}/api/mutasi-perubahan-phdp/cuspMutasiPerubahanPhdp",
+            method: "GET",
+            data: {
+                "idMutasi": $("#idMutasi").val(),
+                "nip": $("#nip").val(),
+                "phdpBaru": $("#phDPBaru").val(),
+                "tglBerlakuPhdpBaru": $("#tglMulaiBerlakuPhDP").val(),
+                "tglMutasi": $("#tglInput").val(),
+                "periodeMutasi": $("#periodeMutasi").val(),
+                "kategoriCatatan": $("#kategoriCatatan").val(),
+                "keterangan": $("#keterangan").val(),
+                "keteranganOtomatisUpdate": $("#keteranganOtomatisUpdate").val(),
+                "validasi": $("#validasi").val(),
+                "namaValidasi": $("#namaValidasi").val()
+            }
+        }).done((response) => {
+            var status = response.status;
+
+        if(status){
+            swal("",status.message,"success");
+            setTimeout(function(){
+                window.location.href = "{{contextPath}}/pensiun-baru/mutasi-perubahan-phdp";
+            },2000);
+        }else{
+            swal("","Terjadi kesalahan","error");
+        }
+
+    }).error(() => {
+            swal({title:"Gagal",text: "Terjadi kesalahan", icon:"error", button:"OK"});
+    });
+    });
+
+
+
+    //kategoriCatatan
+    $.ajax({
+        url: '{{contextPath}}{{listKategoriCatatanCombo}}',
+        dataType: 'json',
+        method: 'GET',
+        data: {
+            valueColumn: 'id',
+            textColumn: "${id} - ${namaKategoriCatatan}",
+            searchColumn: [
+                'namaKategoriCatatan'
+            ],
+            referenceValue: [
+                {
+                    column: "id",
+                    table: "kategoriMutasi",
+                    value: '06'
+                },
+                {
+                    column: "id",
+                    table: "kategoriMutasi",
+                    value: '07'
+                }
+            ],
+            referenceValueType: 'or',
+            includeObject: true
+        },
+        success: function(data){
+            $('#idKategoriCatatan').select2(
+                {
+                    data: data,
+                    width: "100%",
+                    placeholder: 'Pilih Kategori Catatan'
+                }
+            );
+
+            $('#idKategoriCatatan').on('change', (e) => {
+                if ($(e.target).select2('data')){
+                    const data = $(e.target).select2('data')[0];
+                    if ($('#idKategoriCatatan').val() != '' && $('#idKategoriCatatan').val() != null ) {
+                        $("#namaKategoriCatatan").val(data.dataProperties.namaKategoriCatatan);
+                    }
+                }
+            });
+        }
+    });
+    //kategoriCatatan
+
+    //negara
+    $.ajax({
+        url: '{{contextPath}}{{listNegaraCombo}}',
+        method: 'GET',
+        data: {
+            valueColumn: 'id',
+            textColumn: "${id}-${namaNegara}",
+            searchColumn: [
+                'namaNegara'
+            ],
+            includeObject: true
+        },
+        success: function(data){
+            console.log(data);
+            let select2Negara = $('#idNegara').select2(
+                {
+                    data: data,
+                    width: "100%",
+                    placeholder: 'Pilih Negara'
+                }
+            );
+
+            select2Negara.on('change', function(e){
+                if ($(e.target).select2('data')){
+                    const data = $(e.target).select2('data')[0];
+                    $('#namaNegara').val(data.dataProperties.namaNegara);
+                }
+            });
+        }
+    });
+
+    //negara
+
+    var select2Provinsi = $('#idProvinsi').select2({
+        ajax: {
+            url: '{{contextPath}}{{listProvinsiCombo}}',
+            dataType: 'json',
+            method: 'GET',
+            data: function(params){
+                return {
+                    searchParam: params.term,
+                    valueColumn: 'id',
+                    textColumn: "${id}-${namaProvinsi}",
+                    searchColumn: [
+                        'namaProvinsi'
+                    ],
+                    // referenceValue: [
+                    //     {
+                    //         column: "idStatusBayar",
+                    //         value: 1
+                    //     }
+                    // ],
+                    includeObject: true
+                }
+            },
+            //dropdownParent: $(".main-modal"),
+            delay: 250,
+            processResults: function(data){
+                return {
+                    results: data
+                };
+            }
+        },
+        width: "100%",
+        placeholder: 'Pilih Provinsi'
+    });
+
+    var select2Kota= $('#idKota').select2({
+        width: "100%",
+        placeholder: 'Pilih Kota'
+    });
+
+    var select2Kecamatan= $('#idKecamatan').select2({
+        width: "100%",
+        placeholder: 'Pilih Kecamatan'
+    });
+    periodeMutasi
+    var select2Kelurahan= $('#idKelurahan').select2({
+        width: "100%",
+        placeholder: 'Pilih Kelurahan'
+    });
+
+    var select2KodePos= $('#selectKodePos').select2({
+        width: "100%",
+        ajax: {
+            url: '{{contextPath}}{{listKelurahanCombo}}',
+            dataType: 'json',
+            method: 'GET',
+            data: function(params){
+                return {
+                    searchParam: params.term,
+                    valueColumn: 'id',
+                    textColumn: "${kodePos}-${namaKelurahan}",
+                    searchColumn: [
+                        'kodePos','namaKelurahan'
+                    ],
+                    includeObject: true
+                }
+            },
+            //dropdownParent: $(".main-modal"),
+            delay: 250,
+            processResults: function(data){
+                return {
+                    results: data
+                };
+            }
+        },
+        width: "100%",
+        placeholder: 'Pilih Kode Pos'
+    });
+
+    select2Provinsi.on('change', function (e) {
+        if ($(e.target).select2('data')){
+            const data = $(e.target).select2('data')[0];
+            DkppGlobal['idProvinsi'] = data.dataProperties.idProvinsi;
+            DkppGlobal['namaProvinsi'] = data.dataProperties.namaProvinsi;
+            $('#idKota').select2({
+                ajax: {
+                    url: '{{contextPath}}{{listKotaCombo}}',
+                    dataType: 'json',
+                    method: 'GET',
+                    data: function(params){
+                        return {
+                            searchParam: params.term,
+                            valueColumn: 'id',
+                            textColumn: "${id}-${namaKota}",
+                            searchColumn: [
+                                'namaKota'
+                            ],
+                            referenceValue: [
+                                {
+                                    column: "id",
+                                    table: "provinsi",
+                                    value: $('#idProvinsi').val()
+                                }
+                            ],
+                            includeObject: true
+                        }
+                    },
+                    //dropdownParent: $(".main-modal"),
+                    delay: 250,
+                    processResults: function(data){
+                        return {
+                            results: data
+                        };
+                    }
+                },
+                width: "100%",
+                placeholder: 'Pilih Kota'
+            });
+        }
+    });
+
+    select2Kota.on('change', function (e) {
+        if ($(e.target).select2('data')){
+            const data = $(e.target).select2('data')[0];
+            console.log(data);
+            DkppGlobal['idKota'] = data.id;
+            DkppGlobal['namaKota'] = data.dataProperties.namaKota;
+            $('#idKecamatan').select2({
+                ajax: {
+                    url: '{{contextPath}}{{listKecamatanCombo}}',
+                    dataType: 'json',
+                    method: 'GET',
+                    data: function(params){
+                        return {
+                            searchParam: params.term,
+                            valueColumn: 'id',
+                            textColumn: "${id}-${namaKecamatan}",
+                            searchColumn: [
+                                'namaKecamatan'
+                            ],
+                            referenceValue: [
+                                {
+                                    table: "kota",
+                                    column: "id",
+                                    value: $('#idKota').val()
+                                }
+                            ],
+                            includeObject: true
+                        }
+                    },
+                    //dropdownParent: $(".main-modal"),
+                    delay: 250,
+                    processResults: function(data){
+                        return {
+                            results: data
+                        };
+                    }
+                },
+                width: "100%",
+                placeholder: 'Pilih Kecamatan'
+            });
+        }
+    });
+
+    select2Kecamatan.on('change', function (e) {
+        if ($(e.target).select2('data')){
+            const data = $(e.target).select2('data')[0];
+            $('#idKelurahan').select2({
+                ajax: {
+                    url: '{{contextPath}}{{listKelurahanCombo}}',
+                    dataType: 'json',
+                    method: 'GET',
+                    data: function(params){
+                        return {
+                            searchParam: params.term,
+                            valueColumn: 'id',
+                            textColumn: "${id}-${namaKelurahan}",
+                            searchColumn: [
+                                'namaKelurahan'
+                            ],
+                            referenceValue: [
+                                {
+                                    table: "kecamatan",
+                                    column: "id",
+                                    value: $('#idKecamatan').val()
+                                }
+                            ],
+                            includeObject: true
+                        }
+                    },
+                    //dropdownParent: $(".main-modal"),
+                    delay: 250,
+                    processResults: function(data){
+                        return {
+                            results: data
+                        };
+                    }
+                },
+                width: "100%",
+                placeholder: 'Pilih Kelurahan'
+            });
+        }
+    });
+
+    select2Kelurahan.on('change', (e) => {
+        const data = $(e.target).select2('data')[0];
+        dataProperties = data.dataProperties;
+        //$('#kodePos').val(dataProperties.kodePos);
+    });
+
+    select2KodePos.on('change', (e) => {
+        const data = $(e.target).select2('data')[0];
+        dataProperties = data.dataProperties;
+        if($('#selectKodePos').val() != '')
+            $('#kodePos').val(dataProperties.kodePos);
+        $.ajax({
+            url: "{{contextPath}}{{detailAlamat}}",
+            method: "GET",
+            data: {
+                id: data.id
+            },
+            success: (data) => {
+                if(data[0] != undefined && data[0][0] != undefined)
+                {
+                    obj = {
+                        idKelurahan: data[0][0],
+                        namaKelurahan: data[0][1],
+                        kodePos: data[0][2],
+                        idKecamatan: data[0][3],
+                        namaKecamatan: data[0][4],
+                        idKota: data[0][5],
+                        namaKota: data[0][6],
+                        idProvinsi: data[0][7],
+                        namaProvinsi: data[0][8]
+                    };
+                    fillAddress(obj);
+                }
+            }
+        });
+    });
+
+
+    function toRp(bilangan){
+        var number_string = bilangan.toString(),
+            sisa 	= number_string.length % 3,
+            rupiah 	= number_string.substr(0, sisa),
+            ribuan 	= number_string.substr(sisa).match(/\d{3}/g);
+
+        if (ribuan) {
+            separator = sisa ? '.' : '';
+            rupiah += separator + ribuan.join('.');
+        }
+
+        return"Rp." + rupiah;
+    }
+</script>
+
+<script>
+
+    if(DkppGlobal.nip != "")
+        var dafamilyDataTable = $('#tblKeluargaPensiun').DataTable( {
+            destroy: true,
+            'ajax': {
+                url: '{{contextPath}}/api/keluarga-pensiun/{{nip}}/by-nip',
+                data: function(data){
+                    return {data: data}
+                }
+            },
+            'columns': [
+                {data: 'id'},
+                {data: 'namaKeluarga'},
+                {data: 'jenisKelamin'},
+                {data: 'kategoriPenerima.namaKategoriPenerima'},
+                {data: 'tglLahir'},
+                {data: 'tglMenikah'},
+                {data: 'tglCerai'},
+                {data: 'tglWafat'},
+                {data: 'tglUsia25'}
+            ],
+            'columnDefs': [
+                {
+                    "targets": 0,
+                    "render": function(data, type, row, meta) {
+                        return meta.row + 1;
+                    }
+                },
+                {
+                    "targets": 2,
+                    "render": function(data, type, row, meta){
+                        let out = {'W': 'Wanita', 'P': 'Pria'};
+                        return (row.jenisKelamin != null)?out[row.jenisKelamin]:'-';
+                    }
+                },
+                {
+                    "targets": 4,
+                    render: function(data, type, row, meta){
+                        return row.tglLahir != null ? fillDateField(row.tglLahir) : '-';
+                    }
+                },
+                {
+                    "targets": 5,
+                    render: function(data, type, row, meta){
+                        return row.tglMenikah != null ? fillDateField(row.tglMenikah) : '-';
+                    }
+                },
+                {
+                    "targets": 6,
+                    render: function(data, type, row, meta){
+                        return row.tglCerai != null ? fillDateField(row.tglCerai) : '-';
+                    }
+                },
+                {
+                    "targets": 7,
+                    render: function(data, type, row, meta){
+                        return row.tglWafat != null ? fillDateField(row.tglWafat) : '-';
+                    }
+                },
+                {
+                    "targets": 8,
+                    render: function(data, type, row, meta){
+                        if(row.kategoriPenerima.namaKategoriPenerima != undefined && (row.kategoriPenerima.namaKategoriPenerima.includes('SUAMI') || row.kategoriPenerima.namaKategoriPenerima.includes('ISTRI') ))
+                            return '';
+                        else
+                            return row.tglUsia25 != null ? fillDateField(row.tglUsia25) : '-';
+                    }
+                }
+            ]
+        });
+
+
+
+    $('.tombol-tambah-keluarga').on('click', function(){
+        resetFormKeluarga();
+        $('.keluargaPeserta-modal').modal('show');
+
+    });
+
+    let keluargaPesertaForm = $("#keluargaPesertaForm").validate({
+        submitHandler: function(e) {
+            saveKeluarga();
+        },
+        errorPlacement: function (error, element) {
+            let elem = $(element);
+            if (element.is("[aria-hidden]")) {
+                elem = element.siblings()
+            }
+            error.insertAfter(elem);
+        },
+        rules: {
+            hubunganKeluarga: {
+                statusKawin: true
+            }
+        }
+    });
+
+    const selectGenderKeluarga = $('#jenisKelaminKeluarga');
+    selectGenderKeluarga.select2({placeholder: "Pilih Jenis Kelamin", width: "100%"});
+    selectGenderKeluarga.on('change', (e) => {
+        statusKawinKeluargaSelect.val(null).trigger("change");
+    });
+
+    $("select[class*=select2]").on('change', function() {
+        //$(this).valid();
+    });
+
+    const kategoriPenerimaSelect = $('#hubunganKeluarga').select2({
+        ajax: {
+            url: '{{contextPath}}{{kategoriPenerimaPathApi}}/dropdown',
+            dataType: 'json',
+            delay: 250,
+            cache: true,
+            data: function (params) {
+                return {
+                    searchParam: params.term, // search term
+                    valueColumn: "id",
+                    textColumn: kategoriPenerimaSelectTemplate,
+                    searchColumn: [
+                        "namaKategoriPenerima"
+                    ],
+                    includeObject: true
+                };
+            },
+            processResults: function(data){
+                return {
+                    results: data
+                };
+            }
+        },
+        width: "100%",
+        placeholder: 'Pilih Kategori Penerima'
+    });
+    kategoriPenerimaSelect.on('change', (e) => {
+        keluargaPesertaForm.valid();
+    });
+    kategoriPenerimaSelect.on('select2:select', (e, e2) => {
+        $(e.currentTarget).select2('data')[0].dataProperties = e.params.data.dataProperties || e.params.data
+    });
+
+    const statusKawinKeluargaSelect = $('#statusKawinKeluarga').select2({
+        ajax: {
+            url: '{{contextPath}}{{statusKawinPathApi}}/dropdown',
+            dataType: 'json',
+            delay: 250,
+            cache: true,
+            data: function (params) {
+                return {
+                    searchParam: params.term, // search term
+                    valueColumn: "id",
+                    textColumn: statusKawinSelectTemplate,
+                    searchColumn: [
+                        "statusKawin"
+                    ],
+                    referenceValue: [
+                        {
+                            column: "statusKawin",
+                            value: `%${$("#jenisKelaminKeluarga").select2('data')[0].text}%`
+                        }
+                    ],
+                    includeObject: true
+                };
+            },
+            processResults: function(data){
+                return {
+                    results: data
+                };
+            }
+        },
+        width: "100%",
+        placeholder: 'Pilih Status Kawin'
+    });
+    statusKawinKeluargaSelect.on('change', (e) => {
+        keluargaPesertaForm.valid();
+        kategoriPenerimaSelect.change();
+    });
+
+    let saveKeluarga = function() {
+        let keluarga = {
+            nip: $('#nip').val(),
+            id: generateIdKel(),
+            namaKeluarga: $('#namaLengkapKeluarga').val(),
+            jenisKelamin: $('#jenisKelaminKeluarga').val(),
+            idKategoriPenerima: $('#hubunganKeluarga').val(),
+            statusKawin: $('#statusKawinKeluarga').val(),
+            tglLahir: $('#tglLahirKeluarga').val(),
+            tglMenikah: $('#tglMenikahKeluarga').val(),
+            tglCerai:  $('#tglCeraiKeluarga').val(),
+            tglWafat: $('#tglMeninggalKeluarga').val(),
+            _csrf: $('#_csrf').val()
+        };
+
+        $.ajax({
+            url: "{{contextPath}}/api/keluarga-pensiun/",
+            data: keluarga,
+            method: 'POST',
+            success: function(data){
+                $('.keluargaPeserta-modal').modal('hide');
+                $('#tblKeluargaPensiun').DataTable().ajax.reload();
+            }
+        });
+    };
+
+    generateIdKel = function(){
+        let table = $('#tblKeluargaPensiun').DataTable();
+        let rowCount = table.rows().count();
+        let nextId = rowCount + 1;
+        let nip = $('#nip').val();
+
+        return nip + "-" + nextId;
+    }
+
+    resetFormKeluarga = function() {
+        $('#keluargaPesertaForm').trigger("reset");
+        $('#jenisKelaminKeluarga').val('').trigger('change');
+        $('#hubunganKeluarga').val('').trigger('change');
+        $('#statusKawinKeluarga').val('').trigger('change');
+    }
+
+    displayEditModal = function(rowData){
+        $('.keluargaPeserta-modal').modal('show');
+
+        //kategoriPenerima
+        $.ajax({
+            url: '{{contextPath}}{{kategoriPenerimaPathApi}}/dropdown',
+            method: 'GET',
+            data: {
+                valueColumn: "id",
+                textColumn: kategoriPenerimaSelectTemplate,
+                searchColumn: [
+                    'namaKategoriPenerima'
+                ],
+                referenceValue: [
+                    {
+                        table: "kecamatan",
+                        column: "id",
+                        value: $('#idKecamatan').val()
+                    }
+                ],
+                includeObject: true
+            },
+            success: function(data){
+                $('#hubunganKeluarga').select2(
+                    {
+                        data: data,
+                        width: "100%",
+                        placeholder: 'Pilih Kategori Penerima'
+                    }
+                ).val(obj.idKategoriPenerima).trigger('change');
+            }
+        });
+    }
+
+
+    //create mode
+    if(DkppGlobal.nip == ""){
+        $('#btnCetak').hide();
+        $.ajax({
+            url: '{{contextPath}}{{listPeriodeSetupParameter}}',
+            dataType: 'json',
+            method: 'GET',
+            success: (data)=>{
+                $('#userStamp').val(data.putModeUserStamp);
+                $('#tglMutasi').val(data.tglMutasi);
+                $('#compName').val(data.compName);
+                $('#userName').val(data.userName);
+            }
+        });
+
+        var select2Nip = $('#nip').select2({
+            ajax: {
+                url: '{{contextPath}}{{listPesertaCombo}}',
+                dataType: 'json',
+                method: 'GET',
+                data: function(params){
+                    return {
+                        searchParam: params.term,
+                        valueColumn: 'nip',
+                        textColumn: "${nip}-${namaPeserta}",
+                        searchColumn: [
+                            'nip',
+                            'namaPeserta'
+                        ],
+                        sort: 'nip,asc'
+                    }
+                },
+                //dropdownParent: $(".main-modal"),
+                delay: 250,
+                processResults: function(data){
+                    return {
+                        results: data
+                    };
+                }
+            },
+            width: "100%",
+            placeholder: 'Pilih Peserta'
+        });
+
+        select2Nip.on('change', function(e){
+            DkppGlobal.nip =select2Nip.val();
+            resetOnChangeNip();
+            checkExistMutasi("{{contextPath}}", select2Nip.val(), function(isExist){
+                //if(isExist == 1){
+                //    $('#btnProcess').hide();
+                //} else {
+                  //  $('#btnProcess').show();
+               // }
+            });
+
+            if ($(e.target).select2('data')){
+                const data = $(e.target).select2('data')[0];
+                DkppGlobal.cekSuskel.peserta = data.dataProperties;
+                let keys = Object.keys(data.dataProperties);
+                for(i = 0; i<keys.length; i++){
+                    if ($('#' + keys[i]).val() != undefined){
+                        $('#' + keys[i]).val(data[keys[i]]);
+                    }
+                    else
+                    {
+                        $('#generatedHiddenInput').append("<input type='hidden' id='" + keys[i] + "' value='" + data.dataProperties[keys[i]] + "'>");
+                    }
+                }
+
+                if (DkppGlobal.nip != '' && DkppGlobal.nip != null) {
+                    console.log({DataProperties: data.dataProperties});
+                    $('#nip').val(data.dataProperties.nip);
+                    $('#namaPeserta').val(data.dataProperties.namaPeserta);
+                    $('#namaAgama').val(data.dataProperties.namaAgama);
+                    $('#idAgama').val(data.dataProperties.idAgama.id);
+                    $('#jenisKelaminPeserta').val(data.dataProperties.jenisKelaminPeserta);$('#jenisKelaminPeserta').trigger('change');
+                    $('#namaJenisKelamin').val(data.dataProperties.jenisKelaminPeserta == "P"? "Pria": "Wanita");
+                    $('#tglMeninggalPeserta').val(ddMmYyyyFormat(data.dataProperties.tglMeninggalPeserta) );
+                    $('#phdpLama').val(data.dataProperties.phdp);
+                    $('#namaKantorBayar').val(data.dataProperties.namaKantorBayar);
+                    $('#golongan').val(data.dataProperties.golongan.namaGolongan + " / " + data.dataProperties.golonganPangkat);
+                    $('#idGolongan').val(data.dataProperties.golongan.id);
+                    $('#idKategoriPenerimaMp').val(data.dataProperties.kategoriPenerima.id);
+                    $('#namaPenerimaMp').val(data.dataProperties.namaPenerimaMp);
+                    $('#namaKategoriPenerimaMp').val(data.dataProperties.namaKategoriPenerimaMp);
+                    $('#noSpBi').val(data.dataProperties.noSpBi);
+                    $('#tglSpBi').val((data.dataProperties.tglSpBi == null || data.dataProperties.tglSpBi == '')?'':ddMmYyyyFormat(data.dataProperties.tglSpBi));
+                    $('#noSkBi').val(data.dataProperties.noSkBi);
+                    $('#tglSkBi').val((data.dataProperties.tglSkBi == null || data.dataProperties.tglSkBi == '')?'':ddMmYyyyFormat(data.dataProperties.tglSkBi));
+                    $('#idSuskel').val(data.dataProperties.suskel.id);
+                    $('#namaSuskel').val(data.dataProperties.suskel.namaSuskel);
+                    $('#alamatLengkap').val(data.dataProperties.alamatLengkap);
+                    $('#rt').val(data.dataProperties.rt).mask("999999999");
+                    $('#rw').val(data.dataProperties.rw).mask("999999999");
+                    $('#kodePos').val(data.dataProperties.kodePos);
+
+                    const phdpLamaElmnt = $('#phdpLama');
+                    phdpLamaElmnt.number(true, 2);
+                    if(data.dataProperties.kelurahan != null){
+                    let obj = {
+                        idKelurahan: data.dataProperties.kelurahan.id,
+                        namaKelurahan: data.dataProperties.kelurahan.namaKelurahan,
+                        kodePos: data.dataProperties.kodePos,
+                        idKecamatan: data.dataProperties.kecamatan.id,
+                        namaKecamatan: data.dataProperties.kecamatan.namaKecamatan,
+                        idKota: data.dataProperties.kota.id,
+                        namaKota: data.dataProperties.kota.namaKota,
+                        idProvinsi: data.dataProperties.provinsi.id,
+                        namaProvinsi: data.dataProperties.provinsi.namaProvinsi
+                    };
+
+                    fillAddress(obj);
+                    }
+
+                    var dafamilyDataTable = $('#tblKeluargaPensiun').DataTable( {
+                        destroy: true,
+                        'ajax': {
+                            url: '{{contextPath}}/api/keluarga-pensiun/' + DkppGlobal.nip + '/by-nip',
+                            data: function(data){
+                                return {data: data}
+                            }
+                        },
+                        'columns': [
+                            {data: 'id'},
+                            {data: 'namaKeluarga'},
+                            {data: 'jenisKelamin'},
+                            {data: 'kategoriPenerima.namaKategoriPenerima'},
+                            {data: 'tglLahir'},
+                            {data: 'tglMenikah'},
+                            {data: 'tglCerai'},
+                            {data: 'tglWafat'},
+                            {data: 'tglUsia25'}
+                        ],
+                        'columnDefs': [
+                            {
+                                "targets": 0,
+                                "render": function(data, type, row, meta) {
+                                    return meta.row + 1;
+                                }
+                            },
+                            {
+                                "targets": 2,
+                                "render": function(data, type, row, meta){
+                                    let out = {'W': 'Wanita', 'P': 'Pria'};
+                                    return (row.jenisKelamin != null)?out[row.jenisKelamin]:'-';
+                                }
+                            },
+                            {
+                                "targets": 3,
+                                defaultContent: '-'
+                            },
+                            {
+                                "targets": 4,
+                                render: function(data, type, row, meta){
+                                    return row.tglLahir != null ? fillDateField(row.tglLahir) : '-';
+                                }
+                            },
+                            {
+                                "targets": 5,
+                                render: function(data, type, row, meta){
+                                    return row.tglMenikah != null ? fillDateField(row.tglMenikah) : '-';
+                                }
+                            },
+                            {
+                                "targets": 6,
+                                render: function(data, type, row, meta){
+                                    return row.tglCerai != null ? fillDateField(row.tglCerai) : '-';
+                                }
+                            },
+                            {
+                                "targets": 7,
+                                render: function(data, type, row, meta){
+                                    return row.tglWafat != null ? fillDateField(row.tglWafat) : '-';
+                                }
+                            },
+                            {
+                                "targets": 8,
+                                render: function(data, type, row, meta){
+                                    if(row.kategoriPenerima.namaKategoriPenerima != undefined && (row.kategoriPenerima.namaKategoriPenerima.includes('SUAMI') || row.kategoriPenerima.namaKategoriPenerima.includes('ISTRI') ))
+                                        return '';
+                                    else
+                                        return row.tglUsia25 != null ? fillDateField(row.tglUsia25) : '-';
+                                }
+                            }
+                        ]
+                    });
+                }
+            }
+        });
+    }
+    fillParam = function(strElementId){
+        if(DkppGlobal[strElementId] != undefined)
+            return DkppGlobal[strElementId];
+        if($('#' + strElementId).val() === undefined)
+            return "";
+        else if ($('#' + strElementId).val() == "null")
+            return "";
+        else
+            return $('#' + strElementId).val()
+    }
+    processMutasiPenerimaMpMenikah = function(){
+
+        $('#mainForm').validate();
+        $('#tglMenikahlagiPenerimaMp').rules("add", {
+            required: true,
+            messages: {
+                required: 'Tidak boleh kosong.'
+            }
+        });
+
+        $('#tglInfNikahPenerimampLama').rules("add", {
+            required: true,
+            messages: {
+                required: 'Tidak boleh kosong.'
+            }
+        });
+
+        $('#tglHentiBayar').rules("add", {
+            required: true,
+            messages: {
+                required: 'Tidak boleh kosong.'
+            }
+        });
+
+        if( $('#tglHentiBayar').val() == '' && $('#idStatusBayar6').prop('checked') == true){
+            swal('', 'Tanggal Henti Bayar harus diisi', 'error');
+            $('#tglHentiBayar').focus();
+            return false;
+        }
+
+        if( $('#tglHentiBayar').val() != '' && $('#idStatusBayar1').prop('checked') == true){
+
+            $('#tglHentiBayar').val('');
+        }
+
+        let validForm = $('#mainForm').valid();
+
+        if(validForm){
+            SPParam = {
+                roleId: null,
+                compName: fillParam('compName'),
+                userName: fillParam('userName'),
+                parIdMutasi: fillParam('idMutasiPensiun'),
+                parKodeMutasi: fillParam('kodeMutasi'),
+                parPeriodeMutasi: fillParam('periodeMutasi'),
+                parTglMutasi: indonesiaDateToJavaDateFormat(fillParam('tglMutasi')),
+                parNip: fillParam('nip'),
+                parNamaPesertaUpdate: fillParam('namaPeserta'),
+                parIdAgamaUpdate: fillParam('idAgama'),
+                parNamaAgamaUpdate: fillParam('namaAgama'),
+                parIdGolonganUpdate: fillParam('idGolongan'),
+                parNamaGolonganUpdate: fillParam('golongan'),
+                parPhdp: fillParam('phdpLama'),
+                parIdKantorBayarUpdate: fillParam('idKantorBayar'),
+                parNamaKantorBayarUpdate: fillParam('namaKantorBayar'),
+                parTglSpBiUpdate: ddMmYyyyToJavaDateFormat(fillParam('tglSpBi')),
+                parNoSpBiUpdate: fillParam('noSpBi'),
+                parTglSkBiUpdate: ddMmYyyyToJavaDateFormat(fillParam('tglSkBi')),
+                parNoSkBiUpdate: fillParam('noSkBi'),
+                parAlmtIsDalamnegeriUpdate: fillParam('almtIsDalamnegeri'),
+                parIdProvinsiUpdate: fillParam('idProvinsi'),
+                parNamaProvinsiUpdate: fillParam('namaProvinsi'),
+                parIdKotaKabUpdate: fillParam('idKota'),
+                parNamaKotaKabUpdate: fillParam('namaKota'),
+                parIdKecamatanUpdate: fillParam('idKecamatan'),
+                parNamaKecamatanUpdate: fillParam('namaKecamatan'),
+                parIdKelurahanUpdate: fillParam('idKelurahan'),
+                parNamaKelurahanUpdate: fillParam('namaKelurahan'),
+                parKodePosUpdate: fillParam('kodePos'),
+                parAlamatLengkapUpdate: fillParam('alamatLengkap'),
+                parNoHpUpdate: fillParam('noHp'),
+                parNoTlpUpdate: fillParam('noTlp'),
+                parEmailUpdate: fillParam('email'),
+                parRtUpdate: fillParam('rt'),
+                parRwUpdate: fillParam('rw'),
+                parIdNegaraUpdate: fillParam('idNegara'),
+                parNamaNegaraUpdate: fillParam('namaNegara'),
+                parIdPenerimampLama: fillParam('idPenerimaMp'),
+                parNamaPenerimamplamaUpdate: fillParam('namaPenerimaMp'),
+                parIdKatPenerimampLama: fillParam('idKategoriPenerimaMp'),
+                parTglNikahPenerimamplama: ddMmYyyyToJavaDateFormat(fillParam('tglMenikahlagiPenerimaMp')),
+                parTglInfnkhPenerimamplama: ddMmYyyyToJavaDateFormat(fillParam('tglInfNikahPenerimampLama')),
+                parIdPenerimaMpBaru: fillParam('idPenerimaMpBaru'),
+                parNamaPenerimaMpBaru: fillParam('namaPenerimaMpBaru'),
+                parIdKatPenerimampBaru: fillParam('idKategoriPenerimaMpBaru'),
+                parNamaKatPenerimampBaru: fillParam('namaKategoriPenerimaMpBaru'),
+                parJkPenerimampBaru: fillParam('jenisKelaminPenerimaMpBaru'),
+                parTglLhrPenerimampBaru: fillParam('tglLahirPenerimaMpBaru'),
+                parIdKawinPenerimampBaru: fillParam('idKawinPenerimampBaru'),
+                parNamaKawinPenerimampBaru: fillParam('namaKawinPenerimampBaru'),
+                parIdSuskelBaru: fillParam('idSuskelBaru'),
+                parNamaSuskelBaru: fillParam('namaSuskelBaru'),
+                parTglBulan13: fillParam('simTglMpBulan13'),
+                parLebihBayarNominal: fillParam('lebihBayarNominal'),
+                parLebihBayarJmlBulan: fillParam('lebihBayarBulan'),
+                parLebihBayarNominal13: fillParam('simLebihBayarNominal13'),
+                parLebihBayarJmlBulan13: fillParam('simLebihBayarBulan13'),
+                parNominalTerbayar: fillParam('simNominalTerbayar'),
+                parSaldoAkhirLebihBayar: fillParam('saldoAkhirLebihBayar'),
+                parIdStatusBayarUpdate: $( "[name='statusBayar']:checked" ).val(),
+                parNamaStatusBayarUpdate: $( "[name='statusBayar']:checked" ).data('name'),
+                parTglHentiBayarUpdate: ddMmYyyyToJavaDateFormat(fillParam('tglHentiBayar')),
+                parIdKategoriCatatan: fillParam('idKategoriCatatan'),
+                parNamaKategoriCatatan: fillParam('namaKategoriCatatan'),
+                parKeterangan: fillParam('keterangan'),
+                parIdValidasi: $( "[name='idValidasi']:checked" ).val() == undefined ? "1" : $( "[name='idValidasi']:checked" ).val(),
+                parNamaValidasi: $( "[name='idValidasi']:checked" ).data('name') == undefined ? "Belum Validasi" : $( "[name='idValidasi']:checked" ).data('name'),
+                _csrf: $('#_csrf').val()
+            };
+
+            $.ajax({
+                url: "{{contextPath}}/api/mutasi-penerima-menikah",
+                method: DkppGlobal.method,
+                data: SPParam,
+                success: function(data){
+                    if(data.status == "success") {
+                        swal({title: "Berhasil", text: "Data berhasil ditambahkan", icon: "success", button: "OK"})
+                        .then(()=>{
+                            setTimeout(function(){window.location.href = "{{gridPath}}";}, 2000);
+                        });
+                    }
+                },
+                statusCode: {
+                    403: function(xhr){
+                        swal({title: 'Gagal', text: 'Masa berlaku form habis. Silakan di-refresh kembali atau tekan tombol F5', button: 'OK', icon: 'warning'});
+                    },
+                    500: function(xhr){
+                        if(xhr.responseJSON)
+                        swal({title: 'Gagal', text: xhr.responseJSON.message, button: 'OK', icon: 'error'});
+                    }
+                }
+            });
+        }
+
+
+    }
+    function cetakReport(){
+        let idKategoriMutasi = $('#idKategoriMutasi').val();
+        let idMutasiPensiun = $('#idMutasi').val();
+        console.log(idMutasiPensiun);
+        console.log(idKategoriMutasi);
+        data = {
+            tipeReport: 'catatan_perhitungan_manfaat_pensiun',
+            nip: $('#nip').val(),
+            idKategoriMutasi: idKategoriMutasi,
+            periodeMutasi: $('#periodeMutasi').val(),
+            idKategoriPenerimaMpBaru: $('#idKategoriPenerimaMp').val(),
+            idMutasiPensiun: idMutasiPensiun
+        };
+        const param = $.param(data);
+        console.log(param);
+        const reportFrame = $("#cetakCatatan");
+        const res = encodeURI(('src', `{{contextPath}}/api/mutasi-penerima-menikah/report?${param}`));
+        window.open(res, '_blank');
+    }
+
+</script>
+
+{{/scripts}} {{/layout}}

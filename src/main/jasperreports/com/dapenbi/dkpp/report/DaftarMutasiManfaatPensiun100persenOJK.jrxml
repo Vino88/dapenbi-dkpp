@@ -1,0 +1,427 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="DaftarMutasiManfaatPensiun100persenOJK" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="8f8dbade-b9a4-470a-99e0-1918cf0a3ee7">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DKPP_DEVL"/>
+	<parameter name="periode_mutasi" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT 
+a.phdp_lama as phdp
+,a.mpyd_lama as mpyd_lama
+,a.mps_20persen_lama as mps_20persen
+,a.mp_perbulan_20persen_lama as mp_setelah_mps20persen
+,a.mps_10juta_lama as mps_10jt_lama
+,a.mp_perbulan_10juta_lama as mp_setelah_mps_10jt
+,a.id_kantor_bayar as kode_cabang
+,a.nama_kantor_bayar as kantor_bayar
+,a.nip
+,a.nama_peserta
+,a.nama_penerima_mp as nama_penerima
+,a.nilai_fs as faktor_fs
+ ,to_char(a.tgl_mutasi, 'Month') as bulan_mutasi
+ ,to_char(a.tgl_mutasi,'YYYY') as tahun_mutasi
+ ,to_char(SYSDATE,'dd Month yyyy') as sign_date
+ ,to_char(SYSDATE,'dd-mm-yyyy') as date_now
+ ,to_char(to_date(a.periode_mutasi,'MM YYYY','nls_date_language = INDONESIAN'),'Month YYYY','nls_date_language = INDONESIAN') as periode_mutasi
+ ,total.total_mpyd
+FROM tbl_t_mutasi_pensiun a ,
+(select SUM(MPYD_LAMA)as total_mpyd from tbl_t_mutasi_pensiun
+WHERE  periode_mutasi = $P{periode_mutasi})total
+
+WHERE periode_mutasi = $P{periode_mutasi} AND mpyd_lama <= 1500000]]>
+	</queryString>
+	<field name="PHDP" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="PHDP"/>
+	</field>
+	<field name="MPYD_LAMA" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="MPYD_LAMA"/>
+	</field>
+	<field name="MPS_20PERSEN" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="MPS_20PERSEN"/>
+	</field>
+	<field name="MP_SETELAH_MPS20PERSEN" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="MP_SETELAH_MPS20PERSEN"/>
+	</field>
+	<field name="MPS_10JT_LAMA" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="MPS_10JT_LAMA"/>
+	</field>
+	<field name="MP_SETELAH_MPS_10JT" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="MP_SETELAH_MPS_10JT"/>
+	</field>
+	<field name="KODE_CABANG" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="KODE_CABANG"/>
+	</field>
+	<field name="KANTOR_BAYAR" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="KANTOR_BAYAR"/>
+	</field>
+	<field name="NIP" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NIP"/>
+	</field>
+	<field name="NAMA_PESERTA" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NAMA_PESERTA"/>
+	</field>
+	<field name="NAMA_PENERIMA" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NAMA_PENERIMA"/>
+	</field>
+	<field name="FAKTOR_FS" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="FAKTOR_FS"/>
+	</field>
+	<field name="BULAN_MUTASI" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="BULAN_MUTASI"/>
+	</field>
+	<field name="TAHUN_MUTASI" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="TAHUN_MUTASI"/>
+	</field>
+	<field name="SIGN_DATE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="SIGN_DATE"/>
+	</field>
+	<field name="DATE_NOW" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="DATE_NOW"/>
+	</field>
+	<field name="PERIODE_MUTASI" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="PERIODE_MUTASI"/>
+	</field>
+	<field name="TOTAL_MPYD" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="TOTAL_MPYD"/>
+	</field>
+	<variable name="number" class="java.lang.Integer" calculation="Count"/>
+	<variable name="Total_phdp" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{PHDP}]]></variableExpression>
+	</variable>
+	<variable name="Total_mpyd" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{MPYD_LAMA}]]></variableExpression>
+	</variable>
+	<variable name="Total_MPS20" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{MPS_20PERSEN}]]></variableExpression>
+	</variable>
+	<variable name="Total_MPS_dibayar" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{MPS_20PERSEN}]]></variableExpression>
+	</variable>
+	<variable name="Stlh_MPS20" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{MP_SETELAH_MPS20PERSEN}]]></variableExpression>
+	</variable>
+	<group name="BULAN_MUTASI">
+		<groupExpression><![CDATA[$F{BULAN_MUTASI}]]></groupExpression>
+	</group>
+	<group name="KANTOR_BAYAR">
+		<groupExpression><![CDATA[$F{KANTOR_BAYAR}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="65" splitType="Stretch">
+			<textField>
+				<reportElement x="-20" y="39" width="592" height="20" uuid="1f8f708d-cd68-40f2-8711-58c1ea74952c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Bulan "+$F{PERIODE_MUTASI}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="-20" y="20" width="592" height="19" uuid="3a851ea3-cb9b-41c0-ad88-00a8cb39c4f4"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DAFTAR MUTASI MANFAAT PENSIUN SEKALIGUS (JUMLAH TERTENTU)]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="81" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Opaque" x="180" y="47" width="130" height="31" backcolor="#DBFEFF" uuid="8934cdcf-545b-4682-a4c6-9d16d4cc1971"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nama Cabang]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="62" y="47" width="118" height="31" backcolor="#DBFEFF" uuid="55a6ee51-9cd8-4e15-afb5-a38b018e3732"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nama Peserta
+Nama Penerima]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="22" y="47" width="40" height="31" backcolor="#DBFEFF" uuid="769fa53b-3264-4622-a18f-faaaf6f9b951"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[NIP]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="-8" y="47" width="30" height="31" backcolor="#D7FAF5" uuid="9aa4aa04-5d10-46b7-af2b-2a5794fad158"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[No.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="310" y="47" width="88" height="31" backcolor="#DBFEFF" uuid="b9037d75-bdc9-4b2f-87c2-994efa69ed87"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[MPYD]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="398" y="47" width="69" height="31" backcolor="#DBFEFF" uuid="b703315b-96fb-4ec6-a293-0f3492133105"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[MPS 750]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="467" y="47" width="88" height="31" backcolor="#DBFEFF" uuid="24f38c84-6786-45b9-b211-a79961b8af0c"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Pajak]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="480" y="0" width="74" height="17" uuid="f1b28d36-bea1-4fa0-812c-81ae65798eb3"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Hal : "+$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="463" y="20" width="91" height="17" uuid="35cdee6a-15a4-49f7-b70a-4c64573413be"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{DATE_NOW}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="44">
+			<line>
+				<reportElement x="-2" y="37" width="556" height="1" uuid="a5a7542b-0e73-41da-bb68-5f43f59573e6"/>
+			</line>
+			<textField pattern="#,000.00#;#,000.00#-">
+				<reportElement x="310" y="7" width="87" height="30" uuid="8c9b0902-1447-4988-be58-6ac884f12069"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{MPYD_LAMA}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Group" evaluationGroup="KANTOR_BAYAR" pattern="#,000.00#;#,000.00#-">
+				<reportElement x="397" y="7" width="70" height="30" uuid="2da5262f-e83f-4c4a-8e50-c075a017af65"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" "]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Group" evaluationGroup="KANTOR_BAYAR" pattern="#,000.00#;#,000.00#-">
+				<reportElement x="467" y="7" width="88" height="30" uuid="ac4c8853-74d0-4746-a103-cd3db6e5eb3f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[""]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Group" evaluationGroup="KANTOR_BAYAR" pattern="#,000.00#;#,000.00#-">
+				<reportElement x="180" y="7" width="130" height="30" uuid="eb4859f0-6925-4264-a3a8-a1e9557b21ed"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{KANTOR_BAYAR}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="-8" y="6" width="27" height="30" uuid="7508b622-3161-4635-96bf-c23620793621"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="22" y="7" width="40" height="29" uuid="2a0ed7f2-d64d-48ef-8a60-b955a5e500b6"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NIP}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="62" y="-2" width="118" height="20" uuid="80041b35-c24a-448a-b038-07a46603731e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NAMA_PESERTA}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="62" y="17" width="118" height="20" uuid="dc3f09ab-5411-475b-bbe5-c3b988ac66c8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NAMA_PENERIMA}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<lastPageFooter>
+		<band height="178">
+			<staticText>
+				<reportElement x="320" y="20" width="209" height="20" uuid="500c285c-6bcc-42e3-9673-4d7f67f97fd1"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Seksi Administrasi dan Pelayanan Pensiun]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="408" y="100" width="71" height="16" uuid="8395764f-2bb6-48d8-b65d-c530a37f39f8"/>
+				<textFieldExpression><![CDATA["Kepala Seksi"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="360" y="80" width="150" height="20" uuid="53cf0325-c5f2-4c63-bbdd-c1834e758c3b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["Rosalind Permatasari"]]></textFieldExpression>
+			</textField>
+			<textField pattern="MMMMM dd, yyyy">
+				<reportElement x="328" y="2" width="199" height="15" uuid="dac226da-6c95-4b58-89fa-ce37a9c60ae1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{KANTOR_BAYAR}+", "+$F{SIGN_DATE}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="370" y="100" width="140" height="1" uuid="12e6ffa9-a3bd-427d-b9fa-4eef37c739e5"/>
+			</line>
+			<textField>
+				<reportElement x="10" y="30" width="261" height="30" uuid="3669e144-6b7e-4267-a2d5-11924b48b544"/>
+				<box>
+					<pen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Persetujuan Penghentian Pembayaran MP"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="10" y="100" width="87" height="40" uuid="020e4bcf-cb34-4c79-8a75-1cac4740e74c"/>
+				<box>
+					<pen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Menyetujui"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="10" y="60" width="87" height="40" uuid="5beffeb7-5353-4382-89b8-cf6ae278578a"/>
+				<box>
+					<pen lineWidth="1.0" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Direview"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="97" y="60" width="87" height="40" uuid="2e1bd238-dfe0-4024-a5e4-e0501986e2b6"/>
+				<box>
+					<pen lineWidth="1.0" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Kepala Divisi"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="97" y="100" width="87" height="40" uuid="3b00630d-ddb2-4ada-8065-78a7fc8cb588"/>
+				<box>
+					<pen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Direktur Bidang"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="184" y="60" width="87" height="40" uuid="e2ea4c99-c3df-4cec-8419-94361def0e23"/>
+				<box>
+					<pen lineWidth="1.0" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="184" y="100" width="87" height="40" uuid="7e722675-0652-4cce-b3ca-5aa0ff8ab273"/>
+				<box>
+					<pen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[""]]></textFieldExpression>
+			</textField>
+		</band>
+	</lastPageFooter>
+	<summary>
+		<band height="47">
+			<staticText>
+				<reportElement x="-20" y="11" width="182" height="19" uuid="6eba9ec7-f571-4f7a-aa40-f4ab4226c664"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total MPS 750]]></text>
+			</staticText>
+			<textField pattern="#,000.00#;(#,000.00#-)">
+				<reportElement x="310" y="10" width="86" height="30" uuid="a45b4557-c1a6-4389-a4e1-80eeafd308c5"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{TOTAL_MPYD}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,000.00#;(#,000.00#-)">
+				<reportElement x="397" y="10" width="65" height="30" uuid="5ef445c6-c458-4275-9d8f-883ab4dc9544"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[""]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,000.00#;(#,000.00#-)">
+				<reportElement x="467" y="8" width="88" height="30" uuid="9f688e86-c948-4b94-b3fc-a33598899283"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[""]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

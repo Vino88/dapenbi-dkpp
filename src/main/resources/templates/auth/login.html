@@ -1,0 +1,68 @@
+{{#authLayout}}
+<div class="entityManager-content" style='background: url("{{contextPath}}/assets/images/bg_login.jpg") no-repeat center center fixed; background-size: 100%'>
+    <div class="card card-block form-layout">
+        <form action="{{contextPath}}/auth/login" method="post" id="validate">
+            <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
+            <div class="text-xs-center m-b-3">
+                <img src="{{contextPath}}/assets/images/logo_dapenbi.png" height="80" alt="avatar" class="m-b-1"/>
+                <h5>
+                    Login
+                </h5>
+            </div>
+            {{#loginError}}
+                <div class="alert {{style}}">
+                    {{message}}
+                </div>
+            {{/loginError}}
+            <fieldset class="form-group">
+                <label for="username">
+                    Enter your username
+                </label>
+                <input type="text" class="form-control form-control-lg" id="username" name="username" placeholder="username" required/>
+            </fieldset>
+            <fieldset class="form-group">
+                <label for="password">
+                    Enter your password
+                </label>
+                <input type="password" class="form-control form-control-lg" id="password" name="password" placeholder="********" required/>
+            </fieldset>
+            <label class="custom-control custom-checkbox m-b-1">
+                <input type="checkbox" class="custom-control-input" id="remember" name="remember-me">
+                <span class="custom-control-indicator"></span>
+                <span class="custom-control-description">Stay logged in</span>
+            </label>
+            <button class="btn btn-primary btn-block btn-lg" type="submit" onclick="sweet()">
+                Login
+            </button>
+            <div class="divider">
+                  <span>
+                    OR
+                  </span>
+            </div>
+            <div class="text-xs-center">
+                <p>
+                    <a href="{{contextPath}}/auth/forgot">
+                        Forgot password?
+                    </a>
+                    &nbsp;&nbsp;·&nbsp;&nbsp;
+                    <a href="{{contextPath}}/auth/signup">
+                        Create an account
+                    </a>
+                </p>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        function sweet(){
+            swal({
+                title: "Good job!",
+                text: "You clicked the button!",
+                icon: "success",
+            });
+        }
+    })
+</script>
+{{/authLayout}}

@@ -1,0 +1,238 @@
+{{#layout}}
+
+{{#styles}}
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/datatables/media/css/dataTables.bootstrap4.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/googleapis/css/component.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/googleapis/css/googleapis.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/select2/css/select2.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css">
+<style>
+    #pelepasan_table {
+        min-width: 1500px;
+    }
+    #mutasi_table {
+        min-width: 2100px;
+    }
+</style>
+{{/styles}}
+
+{{#title}}
+Validasi Mutasi Pensiun
+{{/title}}
+
+<div class="card">
+    <div class="card-block">
+        <div class="row form-group">
+            <label for="periodeMutasi" class="col-xs-3">Periode Mutasi</label>
+            <div class="col-xs-3">
+                <input class="form-control form-control-sm" type="text" value="{{periodeMutasi}}" name="periodeMutasi" id="periodeMutasi" disabled/>
+            </div>
+        </div>
+        <hr />
+        <table class="table table-bordered table-striped m-b-0 dataTable no-footer display" id="mutasi_table"
+               role="grid">
+            <thead>
+            <tr role="row">
+                <th>
+                    Tanggal Mutasi
+                </th>
+                <th>
+                    NIP
+                </th>
+                <th>
+                    Nama Peserta
+                </th>
+                <th>
+                    Agama
+                </th>
+                <th>
+                    Jenis Kelamin
+                </th>
+                <th>
+                    Golongan/Jabatan
+                </th>
+                <th>
+                    PHDP
+                </th>
+                <th>
+                    Tgl. Lahir Peserta
+                </th>
+                <th>
+                    Tgl. Bekerja di BI
+                </th>
+                <th>
+                    Tgl. Berhenti Bekerja
+                </th>
+                <th>
+                    Kategori Pensiun
+                </th>
+                <th>
+                    Jenis Pengambilan MPS
+                </th>
+                <th>
+                    Status Validasi
+                </th>
+                <th>
+                    Action
+                </th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+
+
+{{#scripts}}
+<script src="{{contextPath}}/assets/vendor/datatables/media/js/jquery.dataTables.js"></script>
+<script src="{{contextPath}}/assets/vendor/datatables/media/js/dataTables.bootstrap4.js"></script>
+<script src="{{contextPath}}/assets/vendor/select2/js/select2.js"></script>
+<script src="{{contextPath}}/assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+<script src="{{contextPath}}/assets/vendor/jquery-validation/dist/jquery.validate.js"></script>
+<script src="{{contextPath}}/assets/vendor/numeral/numeral.min.js"></script>
+
+<script type="text/javascript">
+    //variable global
+    window.DkppReportParam = {};
+
+    const mutasiTable = dkppDataTable($('#mutasi_table'),
+        '{{contextPath}}{{mutasi_path_api}}', {
+            'columns': [
+                {
+                    "data": "periodeMutasi",
+                    "width": "50px"
+                },
+                {
+                    "data": "nip",
+                    "width": "50px"
+                },
+                {
+                    "data": "namaPeserta"
+                },
+                {
+                    "data": "agama",
+                    "width": "125px"
+                },
+                {
+                    "data": "jenisKelaminPeserta",
+                    "width": "70px"
+                },
+                {
+                    "data": "golongan",
+                    "width": "100px"
+                },
+                {
+                    "data": "phdpBaru",
+                    "width": "100px"
+                },
+                {
+                    "data": "tglLahirPeserta",
+                    "width": "100px"
+                },
+                {
+                    "data": "tglKerjaPeserta",
+                    "width": "100px"
+                },
+                {
+                    "data": "tglHentiKerjaPeserta",
+                    "width": "100px"
+                },
+                {
+                    "data": "kategoriPensiun",
+                    "width": "100px"
+                },
+                {
+                    "data": "jenisMps",
+                    "width": "100px"
+                },
+                {
+                    "data": "statusValidasi",
+                    "width": "100px"
+                },
+                {
+                    "data": "nip",
+                    "width": "50px"
+                }
+            ],
+            'columnDefs': [
+                {
+                    "targets": 3,
+                    "render": function(data, type, row, meta) {
+                        return data && data.namaAgama;
+                    }
+                },
+                {
+                    "targets": 4,
+                    "render": function(data, type, row, meta) {
+                        return data && genderText(data);
+                    }
+                },
+                {
+                    "targets": 5,
+                    "render": function(data, type, row, meta) {
+                        return data && (data.namaGolongan + (data.jabatan ? ("/" + data.jabatan) : ""));
+                    }
+                },
+                {
+                    "targets": 6,
+                    "render": function(data, type, row, meta) {
+                        const phpd = data ? data : row.phdpLama;
+                        return phpd && numeral(phpd).format("0,0.00");
+                    }
+                },
+                {
+                    "targets": [7, 8, 9],
+                    "render": function(data, type, row, meta) {
+                        return data && moment(data).format("DD/MM/YYYY");
+                    }
+                },
+                {
+                    "targets": 10,
+                    "render": function(data, type, row, meta) {
+                        return data && data.namaKategoriPensiun;
+                    }
+                },
+                {
+                    "targets": 11,
+                    "render": function(data, type, row, meta) {
+                        return data && data.namamps;
+                    }
+                },
+                {
+                    "targets": 12,
+                    "render": function(data, type, row, meta) {
+                        return data && data.namaValidasi;
+                    }
+                },
+                {
+                    "targets": 13,
+                    "className": "action-box",
+                    "render": function(data, type, row, meta) {
+                        let htmlTag = `<a class='btn btn-info btn-sm btn-icon btn-edit' href='{{contextPath}}${objectToText(row, "{{entry_mutasi_path}}")}?id=${row.id}' > ${[2, 4].includes(row.statusValidasi.id) ? '<i class=\'material-icons\'>zoom_in</i>view' : '<i class=\'material-icons\'>edit</i>Process'}</a>`;
+                        if (row.namaValidasi === "Sudah Validasi") {
+                        param = JSON.stringify(
+                            {
+                                idKategoriPensiun: row.kategoriPensiun.id,
+                                nip: row.nip,
+                                idKategoriMutasi: row.kodeMutasi,
+                                idJenisMps: row.jenisMps.id,
+                                periodeMutasi: row.periodeMutasi,
+                                namaKategoriPenerimaMP: row.namaKategoriPenerimaMP
+
+                            }
+                        );
+                        htmlTag  = `<a class='btn btn-info btn-sm btn-icon btn-edit' href='{{contextPath}}${objectToText(row, "{{entry_mutasi_path}}")}?id=${row.id}&status=view' > ${[2, 4].includes(row.statusValidasi.id) ? '<i class=\'material-icons\'>zoom_in</i>view' : '<i class=\'material-icons\'>edit</i>Process'}</a>`+`<br><a class=\'btn btn-info btn-sm btn-icon btn-printer\' onclick=\'displayCetak(` + param + `);\'><i class=\'material-icons\'>printer</i> Cetak</a>`;
+                        } else {
+                            htmlTag = `<a class='btn btn-info btn-sm btn-icon btn-edit' href='{{contextPath}}${objectToText(row, "{{entry_mutasi_path}}")}?id=${row.id}' > ${[2, 4].includes(row.statusValidasi.id) ? '<i class=\'material-icons\'>zoom_in</i>view' : '<i class=\'material-icons\'>edit</i>Process'}</a>`;
+                        }
+                        return htmlTag;
+
+                    }
+                }
+            ]
+        }, 'nip,asc');
+
+
+</script>
+{{/scripts}}
+
+{{/layout}}

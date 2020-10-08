@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content=""/>
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1"/>
+    <meta name="msapplication-tap-highlight" content="no">
+
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="Milestone">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Milestone">
+
+    <meta name="theme-color" content="#4C7FF0">
+
+    <title>{{{layout.title}}}</title>
+
+    <!-- page stylesheets -->
+    {{{layout.styles}}}
+    <!-- end page stylesheets -->
+
+    <!-- main style -->
+    <link rel="stylesheet" href="{{contextPath}}/assets/vendor/bootstrap/dist/css/bootstrap.css"/>
+    <link rel="stylesheet" href="{{contextPath}}/assets/vendor/pace/themes/blue/pace-theme-minimal.css"/>
+    <link rel="stylesheet" href="{{contextPath}}/assets/vendor/font-awesome/css/font-awesome.css"/>
+    <link rel="stylesheet" href="{{contextPath}}/assets/vendor/animate.css/animate.css"/>
+    <!-- end main style -->
+
+    <!-- app style -->
+    <link rel="stylesheet" href="{{contextPath}}/assets/styles/app.css" id="load_styles_before"/>
+    <link rel="stylesheet" href="{{contextPath}}/assets/styles/loaders.css"/>
+    <link rel="stylesheet" href="{{contextPath}}/assets/styles/app.custom.css"/>
+    <link rel="stylesheet" href="{{contextPath}}/assets/styles/app.skins.css"/>
+    <!-- end app style -->
+
+    <!-- app icon -->
+    <link rel="shortcut icon" href="{{contextPath}}/assets/images/logo_dapenbi.png" />
+    <!-- end app icon -->
+
+</head>
+<body>
+<div class="app expanding">
+    <!--sidebar panel-->
+    <div class="off-canvas-overlay" data-toggle="sidebar"></div>
+    <div class="sidebar-panel">
+        <div class="brand">
+            <!-- toggle offscreen menu -->
+            <a href="javascript:;" data-toggle="sidebar" class="toggle-offscreen hidden-lg-up">
+                <i class="material-icons">menu</i>
+            </a>
+            <!-- /toggle offscreen menu -->
+            <!-- logo -->
+            <a class="user-scalable">
+                <img class="expanding-hidden" src="" alt=""/>
+            </a>
+            <!-- /logo -->
+        </div>
+        <div class="nav-profile dropdown">
+            <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
+                {{#userInfo}}
+                    <div class="user-image">
+                        <img src="{{contextPath}}{{profilePicture}}" class="avatar img-circle" alt="user" title="user"/>
+                    </div>
+                    <div class="user-info expanding-hidden">
+                        {{name}}
+                        <small class="bold">{{division}}</small>
+                    </div>
+                {{/userInfo}}
+            </a>
+            <div class="dropdown-menu">
+                <a class="dropdown-item" href="javascript:;">Edit Profile</a>
+                <a class="dropdown-item" href="{{contextPath}}/auth/forgot">Change Password</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item logout-link" onclick="javascript: $('#logout').submit();">Logout</a>
+                <form id="logout" action="{{contextPath}}/auth/logout" method="post">
+                    <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
+                </form>
+            </div>
+        </div>
+        <!-- main navigation -->
+        <nav>
+            {{#menus}}
+                {{^title}}
+                    <ul class="nav">
+                        <li><hr /></li>
+                    </ul>
+                {{/title}}
+                {{#title}}
+                    <p class="nav-title">{{title}}</p>
+                    <ul class="nav">
+                    {{#children}}
+                        <li>
+                            <a href="{{contextPath}}{{path}}">
+                                <i class="material-icons {{style}}">{{icon}}</i>
+                                <span>{{title}}</span>
+                            </a>
+                        </li>
+                    {{/children}}
+                    </ul>
+                {{/title}}
+            {{/menus}}
+        </nav>
+        <!-- /main navigation -->
+    </div>
+    <!-- /sidebar panel -->
+    <!-- content panel -->
+    <div class="main-panel">
+        <!-- top header -->
+        <nav class="header navbar">
+            <div class="header-inner">
+                <div class="navbar-item navbar-spacer-right brand hidden-lg-up">
+                    <!-- toggle offscreen menu -->
+                    <a href="javascript:;" data-toggle="sidebar" class="toggle-offscreen">
+                        <i class="material-icons">menu</i>
+                    </a>
+                    <!-- /toggle offscreen menu -->
+                    <!-- logo -->
+                    <a class="brand-logo hidden-xs-down">
+                        <img src="{{contextPath}}/images/logo_white.png" alt="logo"/>
+                    </a>
+                    <!-- /logo -->
+                </div>
+                <a class="navbar-item navbar-spacer-right navbar-heading hidden-md-down" href="#">
+                    <span>Home</span>
+                </a>
+            </div>
+        </nav>
+        <!-- /top header -->
+
+        <!-- main area -->
+        <div class="main-content">
+            <div class="content-view">
+                {{#breadcrumbHolder}}
+                    {{breadcrumb}}
+                {{/breadcrumbHolder}}
+
+                {{#messages}}
+                    {{#alertMessages}}
+                        {{.}}
+                    {{/alertMessages}}
+                {{/messages}}
+
+                {{{layout.body}}}
+            </div>
+
+            <!-- bottom footer -->
+            <div class="content-footer">
+                <nav class="footer-right">
+                    <ul class="nav">
+                        <li>
+                            <a href="javascript:;">Feedback</a>
+                        </li>
+                    </ul>
+                </nav>
+                <nav class="footer-left">
+                    <ul class="nav">
+                        <li>
+                            <a href="javascript:;">
+                                <span>Copyright</span>
+                                &copy; 2018 DKPP
+                            </a>
+                        </li>
+                        <li class="hidden-md-down">
+                            <a href="javascript:;">Privacy</a>
+                        </li>
+                        <li class="hidden-md-down">
+                            <a href="javascript:;">Terms</a>
+                        </li>
+                        <li class="hidden-md-down">
+                            <a href="javascript:;">help</a>
+                        </li>
+                        <li class="hidden-md-down">
+                            <a href="javascript:;">15/05/2019 WAR</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            <!-- /bottom footer -->
+        </div>
+        <!-- /main area -->
+    </div>
+    <!-- /content panel -->
+
+    <!-- modal -->
+        <!-- Preloader Modal -->
+        <div class="modal fade modal-loader preloader" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <img src="{{contextPath}}/assets/images/Preloader_3.gif">
+
+            </div>
+        </div>
+        <!-- /Preloader Modal -->
+    {{{layout.modal}}}
+
+    <!-- /modal -->
+
+</div>
+
+<!-- main scripts -->
+<script src="{{contextPath}}/assets/vendor/jquery/dist/jquery.js"></script>
+<script src="{{contextPath}}/assets/vendor/pace/pace.js"></script>
+<script src="{{contextPath}}/assets/vendor/tether/dist/js/tether.js"></script>
+<script src="{{contextPath}}/assets/vendor/bootstrap/dist/js/bootstrap.js"></script>
+<script src="{{contextPath}}/assets/vendor/momentjs/moment.js"></script>
+<script src="{{contextPath}}/assets/vendor/fastclick/lib/fastclick.js"></script>
+<script src="{{contextPath}}/assets/vendor/jquery-mask/src/jquery.mask.js"></script>
+<script src="{{contextPath}}/assets/vendor/jquery-number-master/jquery.number.min.js"></script>
+<script src="{{contextPath}}/assets/scripts/constants.js"></script>
+<script src="{{contextPath}}/assets/scripts/main.js"></script>
+<script src="{{contextPath}}/assets/scripts/dkppMain.js"></script>
+<script src="{{contextPath}}/assets/vendor/noty/js/noty/packaged/jquery.noty.packaged.min.js"></script>
+<script src="{{contextPath}}/assets/scripts/helpers/noty-defaults.js"></script>
+<script type="text/javascript">
+    /*$( document ).ajaxStart(function() {
+        $('.preloader').modal('show');
+    });
+    $( document ).ajaxComplete(function() {
+        $('.preloader').modal('hide');
+    });
+    $( document ).ajaxStop(function() {
+        $('.preloader').modal('hide');
+    });
+    $( document ).ajaxError(function() {
+        $('.preloader').modal('hide');
+    });*/
+    //var tanggal = new Date();
+    //var r = tanggal.toLocaleString();
+    //document.getElementById("tglNow").innerHTML = r;
+
+</script>
+<!-- end main scripts -->
+
+{{{layout.scripts}}}
+
+</body>
+</html>

@@ -1,0 +1,628 @@
+{{#layout}}
+
+{{#styles}}
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/datatables/media/css/dataTables.bootstrap4.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/googleapis/css/component.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/googleapis/css/googleapis.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/select2/css/select2.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css">
+<style>
+    #dibayar_table {
+        min-width: 1500px;
+    }
+    #belumJatuhTempo_table {
+        min-width: 1500px;
+    }
+    #pensiunTunda_table {
+        min-width: 2100px;
+    }
+</style>
+{{/styles}}
+
+{{#title}}
+Pensiun Baru - Mutasi Pensiun Tunda
+{{/title}}
+<ul class="nav nav-tabs" role="tablist">
+    <li class="nav-item">
+        <a class="nav-link active" data-toggle="tab" href="#dibayar" role="tab">Data Pensiun Tunda Jatuh Tempo Dibayar</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#belumJatuhTempo" role="tab">Data Pensiun Tunda Belum Jatuh Tempo</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#pensiunTunda" role="tab">Mutasi Pensiun Tunda</a>
+    </li>
+</ul>
+
+
+<div class="tab-content">
+    <div class="tab-pane active" id="dibayar" role="tabpanel">
+        <div class="card">
+            <div class="card-block">
+                <table class="table table-bordered table-striped m-b-0 dataTable no-footer display" id="dibayar_table"
+                       role="grid">
+                    <thead>
+                    <tr role="row">
+                        <th>
+                            NIP
+                        </th>
+                        <th>
+                            Nama Peserta
+                        </th>
+                        <th>
+                            Nama Penerima MP
+                        </th>
+                        <th>
+                            Jenis Penerima MP
+                        </th>
+                        <th>
+                            PHDP
+                        </th>
+                        <th>
+                            Cabang KPW-BI
+                        </th>
+                        <th>
+                            Tgl. Bekerja di BI
+                        </th>
+                        <th>
+                            Tgl. Berhenti Bekerja
+                        </th>
+                        <th>
+                            Tgl. Awal Bayar
+                        </th>
+                        <th>
+                            Kategori Pensiun
+                        </th>
+                        <th>
+                            Jenis Pengamilan MPS
+                        </th>
+                        <th>
+                            Action
+                        </th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="tab-pane" id="belumJatuhTempo" role="tabpanel">
+        <div class="card">
+            <div class="card-block">
+                <table class="table table-bordered table-striped m-b-0 dataTable no-footer display" id="belumJatuhTempo_table"
+                       role="grid">
+                    <thead>
+                    <tr role="row">
+                        <th>
+                            NIP
+                        </th>
+                        <th>
+                            Nama Peserta
+                        </th>
+                        <th>
+                            Nama Penerima MP
+                        </th>
+                        <th>
+                            Jenis Penerima MP
+                        </th>
+                        <th>
+                            PHDP
+                        </th>
+                        <th>
+                            Cabang KPW-BI
+                        </th>
+                        <th>
+                            Tgl. Bekerja di BI
+                        </th>
+                        <th>
+                            Tgl. Berhenti Bekerja
+                        </th>
+                        <th>
+                            Usia Saat Berhenti
+                        </th>
+                        <th>
+                            Tgl. Awal Bayar
+                        </th>
+                        <th>
+                            Kategori Pensiun
+                        </th>
+                        <th>
+                            Jenis Pengamilan MPS
+                        </th>
+                        <th>
+                            Action
+                        </th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="tab-pane" id="pensiunTunda" role="tabpanel">
+        <div class="card">
+            <div class="card-block">
+                <div class="row form-group">
+                    <label for="periodeMutasi" class="col-xs-3">Periode Mutasi</label>
+                    <div class="col-xs-3">
+                        <input class="form-control form-control-sm" type="text" value="{{periodeMutasi}}" name="periodeMutasi" id="periodeMutasi" disabled/>
+                    </div>
+                </div>
+                <hr />
+                <table class="table table-bordered table-striped m-b-0 dataTable no-footer display" id="pensiunTunda_table"
+                       role="grid">
+                    <thead>
+                    <tr role="row">
+                        <th>
+                            Tanggal Mutasi
+                        </th>
+                        <th>
+                            NIP
+                        </th>
+                        <th>
+                            Nama Peserta
+                        </th>
+                        <th>
+                            Nama Penerima MP
+                        </th>
+                        <th>
+                            Jenis Penerima MP
+                        </th>
+                        <th>
+                            PHDP
+                        </th>
+                        <th>
+                            Cabang KPW-BI
+                        </th>
+                        <th>
+                            Tgl. Bekerja di BI
+                        </th>
+                        <th>
+                            Tgl. Berhenti Bekerja
+                        </th>
+                        <th>
+                            Tgl. Awal Bayar
+                        </th>
+                        <th>
+                            Kategori Pensiun
+                        </th>
+                        <th>
+                            Jenis Pengamilan MPS
+                        </th>
+                        <th>
+                            Status Validasi
+                        </th>
+                        <th>
+                            Action
+                        </th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+    <iframe style="display: none" id="report" name="report" src=""></iframe>
+</div>
+{{#modal}}
+<div class="modal fade report-modal" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title small bold" id="myModalLabel">Form Cetak Laporan Mutasi Pensiun Baru</h4>
+            </div>
+            <div class="modal-body">
+                <form id="pesertaForm">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="form-group row">
+                                <div class="radio" id="radio_catatan">
+                                    <label>
+                                        <input name="optradio" type="radio"  value="catatan_perhitungan_manfaat_pensiun"> Catatan Perhitungan Manfaat Pensiun Tunda (Dipercepat / Normal)
+                                        </input>
+                                    </label>
+                                </div>
+                                <div class="radio" id="radio_sk">
+                                    <label>
+                                        <input name="optradio" type="radio" value="surat_keputusan"> Surat Keputusan Pensiun Tunda Jatuh Tempo
+                                        </input>
+                                    </label>
+                                </div>
+
+                                <div class="radio" id="surat_pengantar_sk">
+                                    <label>
+                                        <input name="optradio" type="radio" value="surat_pengantar_sk"> Surat Pengantar SK Pensiun Tunda Jatuh Tempo
+                                        </input>
+                                    </label>
+                                </div>
+                                <div class="radio" id="struk_bayangan">
+                                    <label>
+                                        <input name="optradio" type="radio" value="struk_bayangan_mp"> Struk Bayangan (hasil mutasi)
+                                        </input>
+                                    </label>
+                                </div>
+                                <div class="radio" id="struk_mp">
+                                    <label>
+                                        <input name="optradio" type="radio" value="struk_manfaat_pensiun"> Struk MP
+                                        </input>
+                                    </label>
+                                </div>
+                                <div class="radio" id="kpp">
+                                    <label>
+                                        <input name="optradio" type="radio" value="kartu_peserta_pensiun"> Kartu Peserta Pensiun
+                                        </input>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="cetakReport()">Cetak</button>
+            </div>
+        </div>
+    </div>
+</div>
+{{/modal}}
+{{#scripts}}
+<script src="{{contextPath}}/assets/vendor/datatables/media/js/jquery.dataTables.js"></script>
+<script src="{{contextPath}}/assets/vendor/datatables/media/js/dataTables.bootstrap4.js"></script>
+<script src="{{contextPath}}/assets/vendor/select2/js/select2.js"></script>
+<script src="{{contextPath}}/assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+<script src="{{contextPath}}/assets/vendor/jquery-validation/dist/jquery.validate.js"></script>
+<script src="{{contextPath}}/assets/vendor/numeral/numeral.min.js"></script>
+
+<script type="text/javascript">
+    //variable global
+    window.DkppReportParam = {};
+
+    let dibayarTable = dkppDataTable($('#dibayar_table'),
+        '{{contextPath}}{{dibayar_path_api}}', {
+            'columns': [
+                {
+                    "data": "nip"
+                },
+                {
+                    "data": "namaPeserta"
+                },
+                {
+                    "data": "namaPenerimaMp"
+                },
+                {
+                    "data": "kategoriPenerima"
+                },
+                {
+                    "data": "phdp"
+                },
+                {
+                    "data": "kantorBayar"
+                },
+                {
+                    "data": "tglKerjaPeserta"
+                },
+                {
+                    "data": "tglHentiKerjaPeserta"
+                },
+                {
+                    "data": "tglAwalBayar"
+                },
+                {
+                    "data": "kategoriPensiun"
+                },
+                {
+                    "data": "jenisMps"
+                },
+                {
+                    "data": "jenisMps",
+                    "width": "50px"
+                }
+            ],
+            'columnDefs': [
+                {
+                    "targets": 3,
+                    "render": function(data, type, row, meta) {
+                        return data && data.namaKategoriPenerima;
+                    }
+                },
+                {
+                    "targets": 4,
+                    "render": function(data, type, row, meta) {
+                        return data && numeral(data).format("0,0.00");
+                    }
+                },
+                {
+                    "targets": 5,
+                    "render": function(data, type, row, meta) {
+                        return data && data.namaKantorBayar;
+                    }
+                },
+                {
+                    "targets": [ 6, 7, 8],
+                    "render": function(data, type, row, meta) {
+                        return data && moment(data).format("DD/MM/YYYY");
+                    }
+                },
+                {
+                    "targets": 9,
+                    "render": function(data, type, row, meta) {
+                        return data && data.namaKategoriPensiun;
+                    }
+                },
+                {
+                    "targets": 10,
+                    "render": function(data, type, row, meta) {
+                        return data && data.namamps;
+                    }
+                },
+                {
+                    "targets": 11,
+                    "className": "action-box",
+                    "render": function(data, type, row, meta){
+                        let htmlTag = "";
+                        htmlTag = `<a class='btn btn-info btn-sm btn-icon btn-edit' href='{{contextPath}}${objectToText(row, "{{entry_mutasi_path}}")}' ><i class='material-icons'>edit</i>Process</a>`;
+                        /*if (row.namaValidasi == "Sudah Validasi"){
+                            param = JSON.stringify(
+                                {
+                                    idKategoriPensiun: row.kategoriPensiun.id,
+                                    nip: row.nip,
+                                    idJenisMps: row.jenisMps.id,
+                                    periodeMutasi: row.periodeMutasi,
+                                    namaKategoriPenerimaMP: row.namaKategoriPenerimaMP,
+                                    idKategoriMutasi: row.kategoriMutasi.id,
+                                    kategoriPenerima: row.kategoriPenerima.id
+
+                                }
+                            );
+                            htmlTag  = `<a class='btn btn-info btn-sm btn-icon btn-edit' href='{{contextPath}}${objectToText(row, "{{entry_mutasi_path}}")}?id=${row.id}&status=view' > ${[2, 4].includes(row.statusValidasi.id) ? '<i class=\'material-icons\'>zoom_in</i>view' : '<i class=\'material-icons\'>edit</i>Process'}</a>`+`<br><a class=\'btn btn-info btn-sm btn-icon btn-printer\' onclick=\'displayCetak(` + param + `);\'><i class=\'material-icons\'>printer</i> Cetak</a>`;
+                        }else {
+                            htmlTag = `<a class='btn btn-info btn-sm btn-icon btn-edit' href='{{contextPath}}${objectToText(row, "{{entry_mutasi_path}}")}?id=${row.id}' > ${[2, 4].includes(row.statusValidasi.id) ? '<i class=\'material-icons\'>zoom_in</i>view' : '<i class=\'material-icons\'>edit</i>Process'}</a>`;
+                        }*/
+                        //return htmlTag;
+                        return htmlTag;
+
+                    }
+                }
+            ]
+        }, 'nip,asc');
+
+    let belumJatuhTempoTable = dkppDataTable($('#belumJatuhTempo_table'),
+        '{{contextPath}}{{belum_jatuh_tempo_path_api}}', {
+            'columns': [
+                {
+                    "data": "nip",
+                    "width": "50px"
+                },
+                {
+                    "data": "namaPeserta"
+                },
+                {
+                    "data": "namaPenerimaMp"
+                },
+                {
+                    "data": "kategoriPenerima"
+                },
+                {
+                    "data": "phdp"
+                },
+                {
+                    "data": "kantorBayar"
+                },
+                {
+                    "data": "tglKerjaPeserta"
+                },
+                {
+                    "data": "tglHentiKerjaPeserta"
+                },
+                {
+                    "data": "usiaSaatHentiBulat"
+                },
+                {
+                    "data": "tglAwalBayar"
+                },
+                {
+                    "data": "kategoriPensiun"
+                },
+                {
+                    "data": "jenisMps"
+                },
+                {
+                    "data": "nip",
+                    "width": "50px"
+                }
+            ],
+            'columnDefs': [
+                {
+                    "targets": 3,
+                    "render": function(data, type, row, meta) {
+                        return data && data.namaKategoriPenerima;
+                    }
+                },
+                {
+                    "targets": 5,
+                    "render": function(data, type, row, meta) {
+                        return data && data.namaKantorBayar;
+                    }
+                },
+                {
+                    "targets": [6, 7, 9],
+                    "render": function(data, type, row, meta) {
+                        return data && moment(data).format("DD/MM/YYYY");
+                    }
+                },
+                {
+                    "targets": 10,
+                    "render": function(data, type, row, meta) {
+                        return data && data.namaKategoriPensiun;
+                    }
+                },
+                {
+                    "targets": 11,
+                    "render": function(data, type, row, meta) {
+                        return data && data.namamps;
+                    }
+                },
+                {
+                    "targets": 12,
+                    "className": "action-box",
+                    "render": function(data, type, row, meta){
+                        return `<a class='btn btn-info btn-sm btn-icon btn-edit' href='{{contextPath}}${objectToText(row, "{{entry_mutasi_path}}")}' ><i class='material-icons'>edit</i>Process</a>`;
+                    }
+                }
+            ]
+        });
+
+    let pensiunTundaTable = dkppDataTable($('#pensiunTunda_table'),
+        '{{contextPath}}{{pensiun_tunda_path_api}}', {
+            'columns': [
+                {
+                    "data": "tglMutasi"
+                },
+                {
+                    "data": "nip",
+                    "width": "50px"
+                },
+                {
+                    "data": "namaPeserta"
+                },
+                {
+                    "data": "namaPenerimaMP"
+                },
+                {
+                    "data": "kategoriPenerima"
+                },
+                {
+                    "data": "phdpLama"
+                },
+                {
+                    "data": "kantorBayar"
+                },
+                {
+                    "data": "tglKerjaPeserta"
+                },
+                {
+                    "data": "tglHentiKerjaPeserta"
+                },
+                {
+                    "data": "tglAwalBayar"
+                },
+                {
+                    "data": "kategoriPensiun"
+                },
+                {
+                    "data": "jenisMps"
+                },
+                {
+                    "data": "statusValidasi",
+                    "width": "50px"
+                }
+            ],
+            'columnDefs': [
+                {
+                    "targets": 4,
+                    "render": function(data, type, row, meta) {
+                        return data && data.namaKategoriPenerima;
+                    }
+                },
+                {
+                    "targets": 5,
+                    "render": function(data, type, row, meta) {
+                        return data && numeral(data).format("0,0.00");
+                    }
+                },
+                {
+                    "targets": 6,
+                    "render": function(data, type, row, meta) {
+                        return data && data.namaKantorBayar;
+                    }
+                },
+                {
+                    "targets": [0, 7, 8, 9],
+                    "render": function(data, type, row, meta) {
+                        return data && moment(data).format("DD/MM/YYYY");
+                    }
+                },
+                {
+                    "targets": 10,
+                    "render": function(data, type, row, meta) {
+                        return data && data.namaKategoriPensiun;
+                    }
+                },
+                {
+                    "targets": 11,
+                    "render": function(data, type, row, meta) {
+                        return data && data.namamps;
+                    }
+                },
+                {
+                    "targets": 12,
+                    "render": function(data, type, row, meta) {
+                        return data && data.namaValidasi;
+                    }
+                },
+                {
+                    "targets": 13,
+                    "className": "action-box",
+                    "render": function(data, type, row, meta){
+                        return `<a class='btn btn-info btn-sm btn-icon btn-edit' href='{{contextPath}}${objectToText(row, "{{entry_mutasi_path}}")}?id=${row.id}' > ${[2, 4].includes(row.statusValidasi.id) ? '<i class=\'material-icons\'>zoom_in</i>view' : '<i class=\'material-icons\'>edit</i>Process'}</a>`;
+                    }
+                }
+            ]
+        }, 'tgl_mutasi,asc');
+
+    $(document).ready(function() {
+
+    });
+
+    function displayCetak(param) {
+        window.DkppReportParam = param;
+        $('.report-modal').modal('show');
+        let kategoriPensiun = param.idKategoriPensiun;
+
+        console.log(param);
+
+        let allRadioId = ['radio_catatan', 'radio_sk', 'surat_pengantar_sk', 'struk_bayangan', 'struk_mp', 'kpp' ];
+
+        let radioGroup = {
+            PD: ['radio_catatan', 'radio_sk', 'surat_pengantar_sk', 'struk_mp', 'kpp'],
+            PN: ['radio_catatan', 'radio_sk', 'surat_pengantar_sk', 'struk_mp', 'kpp'],
+            PM: ['radio_catatan', 'radio_sk', 'surat_pengantar_sk', 'struk_mp', 'kpp'],
+            PC: ['radio_catatan', 'radio_sk', 'surat_pengantar_sk', 'struk_mp', 'kpp'],
+        };
+
+        for(i = 0; i<allRadioId.length; i++){
+            $('#' + allRadioId[i]).hide();
+        }
+
+        for(j = 0; j < radioGroup[kategoriPensiun].length; j++){
+            $('#' + radioGroup[kategoriPensiun][j]).show();
+        }
+        $('.dkpp-hide').hide();
+
+    }
+    function cetakReport(){
+        let radioReport = $("input[name='optradio']:checked").val();
+        data = {
+            tipeReport: radioReport,
+            nip: window.DkppReportParam.nip,
+            idKategoriPensiun: window.DkppReportParam.idKategoriPensiun,
+            idJenisMps: window.DkppReportParam.idJenisMps,
+            periodeMutasi: window.DkppReportParam.periodeMutasi,
+            namaKategoriPenerimaMP: window.DkppReportParam.namaKategoriPenerimaMP,
+            idKategoriMutasi: window.DkppReportParam.idKategoriMutasi,
+            kategoriPenerima: window.DkppReportParam.kategoriPenerima
+        };
+        const param = $.param(data);
+        const reportFrame = $("#report");
+        const res = encodeURI(('src', `{{contextPath}}/api/mutasi-pensiun-tunda/report-tunda?${param}`));
+        window.open(res,'_blank');
+        /*let param = $.param(data);
+        var res = encodeURI('{{contextPath}}{{report_path_api}}') + "?" + param;
+        window.open(res,'_blank');
+        $('.report-modal').modal('hide');*/
+    }
+</script>
+{{/scripts}}
+
+{{/layout}}

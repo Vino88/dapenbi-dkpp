@@ -1,0 +1,403 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RincianLebihBayarManfaatPensiun" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="a748b9b3-6a17-4ab7-8731-36b36def3a77">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="dbserver"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<parameter name="PERIODE_MUTASI" class="java.lang.String"/>
+	<parameter name="id_kantor_bayar" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select 
+a.nip,
+a.nama_peserta,
+a.nama_penerima_mp,
+a.id_kantor_bayar,
+a.nama_kantor_bayar as kantor_bayar,
+a.saldo_lebih_bayar as saldo_awal,
+a.nominal_angsuran as angsuran,
+a.sisa_lebih_bayar as saldo_akhir,
+to_char(to_date(a.periode_mutasi,'MM YYYY'),'Month YYYY','nls_date_language = INDONESIAN') as periode_mutasi,
+to_char(SYSDATE,'dd Month yyyy') as sign_date
+FROM tbl_t_lebih_bayar a
+WHERE periode_mutasi =  $P{PERIODE_MUTASI} and (a.id_kantor_bayar = $P{id_kantor_bayar} OR $P{id_kantor_bayar} = '00' )]]>
+	</queryString>
+	<field name="NIP" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NIP"/>
+	</field>
+	<field name="NAMA_PESERTA" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NAMA_PESERTA"/>
+	</field>
+	<field name="NAMA_PENERIMA_MP" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NAMA_PENERIMA_MP"/>
+	</field>
+	<field name="ID_KANTOR_BAYAR" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="ID_KANTOR_BAYAR"/>
+	</field>
+	<field name="KANTOR_BAYAR" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="KANTOR_BAYAR"/>
+	</field>
+	<field name="SALDO_AWAL" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="SALDO_AWAL"/>
+	</field>
+	<field name="ANGSURAN" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="ANGSURAN"/>
+	</field>
+	<field name="SALDO_AKHIR" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="SALDO_AKHIR"/>
+	</field>
+	<field name="PERIODE_MUTASI" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="PERIODE_MUTASI"/>
+	</field>
+	<field name="SIGN_DATE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="SIGN_DATE"/>
+	</field>
+	<variable name="total_saldo_awal" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{SALDO_AWAL}]]></variableExpression>
+	</variable>
+	<variable name="total_angsuran" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{ANGSURAN}]]></variableExpression>
+	</variable>
+	<variable name="total_saldo_akhir" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{SALDO_AKHIR}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="52" splitType="Stretch">
+			<staticText>
+				<reportElement x="2" y="2" width="801" height="17" uuid="1d37f3fa-f48c-4ae6-bfb8-8e4c21476137"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[RINCIAN LEBIH BAYAR MANFAAT PENSIUN]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="2" y="20" width="801" height="17" uuid="c54a3060-ebab-491c-8719-7898ba0567c2"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PERIODE_MUTASI} == null ? "-" :  "Bulan "+$F{PERIODE_MUTASI}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="32">
+			<textField>
+				<reportElement x="1" y="9" width="550" height="17" uuid="6e8aaf7f-8ae2-4d78-920a-93cb0193acb2">
+					<printWhenExpression><![CDATA[new Boolean 
+($P{id_kantor_bayar}.equals("003")||($P{id_kantor_bayar}.equals("010")||($P{id_kantor_bayar}.equals("020")||($P{id_kantor_bayar}.equals("030")||($P{id_kantor_bayar}.equals("040")||($P{id_kantor_bayar}.equals("050")||($P{id_kantor_bayar}.equals("060")||($P{id_kantor_bayar}.equals("070")||($P{id_kantor_bayar}.equals("090")||($P{id_kantor_bayar}.equals("100")||($P{id_kantor_bayar}.equals("120")||($P{id_kantor_bayar}.equals("130")||($P{id_kantor_bayar}.equals("140")||($P{id_kantor_bayar}.equals("150")||($P{id_kantor_bayar}.equals("190")||($P{id_kantor_bayar}.equals("220")||($P{id_kantor_bayar}.equals("230")||($P{id_kantor_bayar}.equals("240")||($P{id_kantor_bayar}.equals("310")||($P{id_kantor_bayar}.equals("320")||($P{id_kantor_bayar}.equals("330")||($P{id_kantor_bayar}.equals("340")||($P{id_kantor_bayar}.equals("350")||($P{id_kantor_bayar}.equals("003")||($P{id_kantor_bayar}.equals("360")||($P{id_kantor_bayar}.equals("370")||($P{id_kantor_bayar}.equals("380")||($P{id_kantor_bayar}.equals("390")||($P{id_kantor_bayar}.equals("410")||($P{id_kantor_bayar}.equals("470")||($P{id_kantor_bayar}.equals("510")||($P{id_kantor_bayar}.equals("530")||($P{id_kantor_bayar}.equals("540")||($P{id_kantor_bayar}.equals("560")||($P{id_kantor_bayar}.equals("570")||($P{id_kantor_bayar}.equals("580")||($P{id_kantor_bayar}.equals("600")||($P{id_kantor_bayar}.equals("610")||($P{id_kantor_bayar}.equals("620")||($P{id_kantor_bayar}.equals("630")||($P{id_kantor_bayar}.equals("690")||($P{id_kantor_bayar}.equals("710")||($P{id_kantor_bayar}.equals("720")||($P{id_kantor_bayar}.equals("740")||($P{id_kantor_bayar}.equals("770")||($P{id_kantor_bayar}.equals("810")||($P{id_kantor_bayar}.equals("820")||($P{id_kantor_bayar}.equals("880")))))))))))))))))))))))))))))))))))))))))))))))))]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Left">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ID_KANTOR_BAYAR} == null ? "-" : $F{ID_KANTOR_BAYAR}+" "+$F{KANTOR_BAYAR} == null ? "-" : $F{KANTOR_BAYAR}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="53" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Opaque" x="1" y="1" width="31" height="51" backcolor="#FFFFFF" uuid="790f6991-92ef-4c49-a272-37196b8e9f90"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[No.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="33" y="1" width="47" height="51" backcolor="#FFFFFF" uuid="d5a024b7-9281-4fad-9d60-2567f4a8b141"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[NIP]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="81" y="1" width="88" height="51" backcolor="#FFFFFF" uuid="a7341acd-6ae2-4eeb-be88-22f6575760bf"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nama Peserta]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="170" y="1" width="108" height="51" backcolor="#FFFFFF" uuid="44e968a0-c6bf-497c-94b8-9c55fb0b7349"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nama Penerima]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="280" y="1" width="69" height="51" backcolor="#FFFFFF" uuid="021008a3-c952-4a7c-ba21-c069a84e44b4"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ID Cabang]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="350" y="1" width="97" height="51" backcolor="#FFFFFF" uuid="a4eee70e-f4fb-4dc5-935e-6902ed0b6c88"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nama Cabang]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="447" y="0" width="356" height="25" backcolor="#FFFFFF" uuid="86af91ae-35ff-42cc-9b8a-d4e0a18ad1d0"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[LEBIH BAYAR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="566" y="25" width="118" height="28" backcolor="#FFFFFF" uuid="ce026e19-a24f-48c9-a786-0aa300ff900d"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+					<paragraph lineSpacing="Fixed" rightIndent="5"/>
+				</textElement>
+				<text><![CDATA[ANGSURAN]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="447" y="25" width="118" height="28" backcolor="#FFFFFF" uuid="c7a99152-db5d-4e11-88ca-43a42ee1a1da"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+					<paragraph lineSpacing="Fixed" rightIndent="5"/>
+				</textElement>
+				<text><![CDATA[SALDO AWAL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="685" y="25" width="118" height="28" backcolor="#FFFFFF" uuid="a3e1a262-d6dc-4b26-be62-6319ff07c8bc"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+					<paragraph lineSpacing="Fixed" rightIndent="5"/>
+				</textElement>
+				<text><![CDATA[SALDO AKHIR]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="35" splitType="Stretch">
+			<textField>
+				<reportElement x="1" y="2" width="31" height="28" uuid="e2415e5a-2162-439e-a7d9-d6b0939f4fae"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT} == null ? "-" : $V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="33" y="2" width="47" height="28" uuid="051de6fc-d4eb-4e48-9754-a2c7ac660b56"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NIP} == null ? "-" : $F{NIP}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="81" y="2" width="88" height="28" uuid="d291d430-16c3-4d2f-aacc-bdbd05b5d71b"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NAMA_PESERTA} == null ? "-" : $F{NAMA_PESERTA}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="170" y="2" width="108" height="28" uuid="17bebcc3-3138-4090-a420-7537cbfa2fcc"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NAMA_PENERIMA_MP} == null ? "-" : $F{NAMA_PENERIMA_MP}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="280" y="2" width="69" height="28" uuid="1f98496e-2a98-426c-a414-899698ce9f60"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ID_KANTOR_BAYAR} == null ? "-" : $F{ID_KANTOR_BAYAR}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="350" y="2" width="97" height="28" uuid="3624e726-ce72-4d47-a6d3-fadbb5aaad8a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{KANTOR_BAYAR} == null ? "-"  : $F{KANTOR_BAYAR}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="-1" y="33" width="801" height="1" uuid="f74bc627-2980-4cbc-b938-cee9dd1a9f97"/>
+			</line>
+			<textField>
+				<reportElement x="447" y="2" width="118" height="28" uuid="caebfbb5-fb75-444b-949b-81729667d975"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="12"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{SALDO_AWAL} == null ? "-" : $F{SALDO_AWAL}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="566" y="2" width="118" height="28" uuid="37635318-7c0c-443c-a9ed-e44fcea5af91"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="12"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ANGSURAN} == null ? "-" : $F{ANGSURAN}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="685" y="2" width="118" height="28" uuid="85cdd74c-71e2-4ecd-94a0-1977ca0e3cb9"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="12"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{SALDO_AKHIR} == null ? "-" : $F{SALDO_AKHIR}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="158" splitType="Stretch">
+			<textField>
+				<reportElement x="425" y="8" width="375" height="21" uuid="8a466349-d1f5-4952-84e3-48ddac358666"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{SIGN_DATE} == null ? "Jakarta, " : "Jakarta, "+$F{SIGN_DATE}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="425" y="29" width="375" height="17" uuid="417cc423-776c-4f8b-989f-b53b7f1f2a5b"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Divisi Kepersertaan Dan Pelayanan Pensiun]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="425" y="105" width="200" height="17" uuid="2b515b3b-c9d6-47c6-a507-abd72b70be05"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Achmad Mufit]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="425" y="122" width="200" height="17" uuid="d8c9307d-b48b-429d-9df3-5f30d32b5c80"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Kepala Divisi]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="625" y="105" width="175" height="17" uuid="cba0a91b-d89b-4ba0-a24f-e850b08af428"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Rosalind P.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="625" y="122" width="175" height="17" uuid="3df772b0-38a7-4014-9421-ebaeb8d16d3f"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Kepala Seksi]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="35" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Transparent" x="4" y="3" width="107" height="28" backcolor="#6AD5D9" uuid="c3ffcd02-2f6b-4dd9-94c2-4b5bc19f03a0"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ Total Percabang]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="447" y="2" width="118" height="28" uuid="7f047101-2300-4c8a-8312-314b5f1b1be1"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{total_saldo_awal} == null ? "-" : $V{total_saldo_awal}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="566" y="2" width="118" height="28" uuid="8c38cb53-1285-40fc-8222-416199dfe935"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{total_angsuran} == null ? "-"  : $V{total_saldo_awal}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="685" y="2" width="118" height="28" uuid="0fc9198e-3af5-472f-b0c6-ff3ec44b9859"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{total_saldo_akhir} == null ? "-" : $V{total_saldo_akhir}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

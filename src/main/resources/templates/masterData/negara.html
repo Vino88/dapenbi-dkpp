@@ -1,0 +1,192 @@
+{{#layout}}
+
+{{#styles}}
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/datatables/media/css/dataTables.bootstrap4.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/googleapis/css/component.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/googleapis/css/googleapis.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/select2/css/select2.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css">
+{{/styles}}
+
+{{#title}}
+Master Negara - DKPP
+{{/title}}
+
+
+<div class="card">
+    <div class="card-header">
+        <div class="col-md-12">
+            <div class="row pull-right">
+                <a class="btn btn-primary btn-icon btn-sm" id="btn-add"><i class="material-icons">add</i> Add</a>
+            </div>
+        </div>
+    </div>
+    <div class="card-block">
+        <table class="table table-bordered table-striped m-b-0 dataTable no-footer display" id="mutasi_keluarga_pensiun_table"
+               role="grid">
+            <thead>
+            <tr role="row">
+                <th>
+                    Nama Negara
+                </th>
+                <th>
+                    Status
+                </th>
+                <th>
+                    Actions
+                </th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+
+{{#modal}}
+<div class="modal fade pensiun-modal" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form id="mutasiKeluargaPensiunForm">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title small bold" id="myModalLabel">Form Master Negara</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group row">
+                                <label for="namaNegara" class="col-sm-3 bold">Negara</label>
+                                <div class="col-xs-9">
+                                    <input type="hidden" name="id" id="id">
+                                    <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
+                                    <input class="form-control form-control-sm" type="text" name="namaNegara" id="namaNegara" required>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="checkbox-active" class="col-sm-3 bold">Active</label>
+                                <div class="col-xs-9">
+                                    <label class="custom-control custom-checkbox m-b-1">
+                                        <input type="checkbox" class="custom-control-input" name="active" id="checkbox-active">
+                                        <span class="custom-control-indicator"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary btn-sm">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{{/modal}}
+
+{{#scripts}}
+<script src="{{contextPath}}/assets/vendor/datatables/media/js/jquery.dataTables.js"></script>
+<script src="{{contextPath}}/assets/vendor/datatables/media/js/dataTables.bootstrap4.js"></script>
+<script src="{{contextPath}}/assets/vendor/select2/js/select2.js"></script>
+<script src="{{contextPath}}/assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+<script src="{{contextPath}}/assets/vendor/jquery-validation/dist/jquery.validate.js"></script>
+<script src="{{contextPath}}/assets/vendor/sweetalert/sweetalert.min.js"></script>
+
+<script type="text/javascript">
+    let RESTFulMode = "";
+
+    let form = $("#mutasiKeluargaPensiunForm").validate({
+        submitHandler: function() {
+            saveForm();
+        },
+        errorPlacement: function (error, element) {
+            let elem = $(element);
+            if (element.is("[aria-hidden]")) {
+                elem = element.siblings()
+            }
+            error.insertAfter(elem);
+        }
+    });
+
+    let pensiunTable = dkppDataTable($('.dataTable'),
+        '{{contextPath}}/api/negara', {
+            'columns': [
+                {
+                    "data": "namaNegara",
+                },
+                {
+                    "data": "active",
+                    "ordering": false
+                },
+                {
+                    "data": "id"
+                }
+
+            ],
+            'columnDefs': [
+                {
+                    "targets": -2,
+                    "data": "active",
+                    "render": function(data, type, row, meta) {
+                        const text = (data ? '' : 'Non ') + 'Active';
+                        const tag = data ? 'success' : 'danger';
+
+                        return `<span class="tag tag-pill tag-${tag}">${text}</span>`;
+                    }
+                },
+                {
+                    "targets": -1,
+                    "data": "id",
+                    "className": "action-box",
+                    "render": function(data, type, row, meta){
+                        return "<a class='btn btn-info btn-sm btn-icon btn-edit' onclick='displayEditModal(" + row.id + ")'><i class='material-icons'>edit</i> Edit</a>";
+                    }
+                }
+            ]
+        });
+
+    function displayEditModal(id) {
+        const negara = pensiunTable.rows().data().filter((data) => {return data.id === id})[0];
+
+        $("#id").val(negara.id);
+        $("#namaNegara").val(negara.namaNegara);
+        $("#checkbox-active").prop("checked", negara.active);
+        $('.pensiun-modal').modal('show');
+        RESTFulMode = "PUT";
+    }
+
+    function saveForm() {
+        $.ajax({
+            url: "{{contextPath}}/api/negara",
+            method: RESTFulMode,
+            data: formToJSON($("form#mutasiKeluargaPensiunForm")[0].elements)
+        }).success((data) => {
+            $('.pensiun-modal').modal('hide');
+        swal({title:"Berhasil",text:data.message, icon:"success", button:"OK"});
+        pensiunTable.ajax.reload();
+    }).error(response => {
+            swal({title: "Gagal", text: response.message ? response.message : "Terjadi kesalahan.", icon: "error", button: "OK"});
+    });
+    }
+
+    $(document).ready(function() {
+        $(".pensiun-modal").on("hide.bs.modal", () => {
+            form.resetForm();
+    });
+
+        $('#btn-add').unbind().on('click', function(){
+            var modal = $('.pensiun-modal');
+            modal.modal('show');
+            RESTFulMode = 'POST';
+
+            $("#id").val("");
+            $("#namaNegara").val("");
+            $("#checkbox-active").prop("checked", false);
+        });
+
+    });
+</script>
+{{/scripts}}
+
+{{/layout}}

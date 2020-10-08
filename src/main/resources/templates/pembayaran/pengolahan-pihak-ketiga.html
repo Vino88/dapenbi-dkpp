@@ -1,0 +1,358 @@
+{{#layout}}
+
+{{#styles}}
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/datatables/media/css/dataTables.bootstrap4.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/googleapis/css/component.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/googleapis/css/googleapis.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/select2/css/select2.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/font-awesome/css/font-awesome.css"/>
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/animate.css/animate.css"/>
+<style>
+    body {
+        padding: 15px;
+    }
+
+    .table-hideable td,
+    .table-hideable th {
+        width: auto;
+        transition: width .5s, margin .5s;
+    }
+
+    .btn-condensed.btn-condensed {
+        padding: 0 5px;
+        box-shadow: none;
+    }
+
+
+    /* use class to have a little animation */
+    .hide-col {
+        width: 0px !important;
+        height: 0px !important;
+        display: block !important;
+        overflow: hidden !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        border: none !important;
+    }
+</style>
+
+<!-- endbuild -->
+
+<!-- page stylesheets -->
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/multiselect/css/multi-select.css">
+<!-- end page stylesheets -->
+{{/styles}}
+
+{{#title}}
+Pengolahan Data Berkala - DKPP
+{{/title}}
+<!-- content panel -->
+<div class="card-header" id="filter_form" style="display: none;"></div>
+                        <div class="card">
+                            <div class="card-block">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <label for="kantorBayar" class="col-xs-2">Jenis Report</label>
+                                        <div class="col-xs-3">
+                                            <select class="custom-select" id="kantorBayar">
+                                                <option value="">-- Pilih Kantor Bayar--</option>
+                                                <option value="0">Seluruh Kantor Bayar</option>
+                                                <option value="1">Kantor Pusat (KP)</option>
+                                                <option value="2">Kantor Perwakilan Bank Indoensia (KPwBI)</option>
+                                            </select>
+                                        </div>
+                                        <label for="periodeMutasi" class="col-xs-1">Periode</label>
+                                        <div class="col-xs-2">
+                                            <input class="form-control form-control-sm" type="text" value="{{periodeMutasi}}" id="periodeMutasi">
+                                            <input class="form-control form-control-sm" type="hidden" value="{{userName}}" id="userName">
+                                            <input class="form-control form-control-sm" type="hidden" value="{{compName}}" id="compName">
+                                        </div>
+                                        <div class="col-xs-3">
+                                            <button class="btn btn-primary btn-sm" id="generateManage"><i class="fa fa-file"></i> <span>Generate Report</span></button>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="col-xs-4">
+                                            <a class="btn btn-success toggle-vis" id="showDataManage" href="#">Show all <i class="fa fa-eye"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12"><hr/></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        *Generated Report Will Appear Here
+                                        <div class="table-responsive" id="tb-manage">
+                                            <table class="table table-bordered table-striped m-b-0 dataTables_scrollFoot" id="data-manage"
+                                                   role="grid" style="overflow-x: auto;overflow-y: auto">
+                                                <thead>
+                                                <tr role="row">
+                                                    <th>
+                                                        NIP
+                                                        <a class="btn btn-secondary toggle-vis pull-right"  data-column="0">
+                                                            <i class="fa fa-eye-slash"></i>
+                                                        </a>
+                                                    </th>
+                                                    <th>
+                                                        NAMA PESERTA
+                                                        <a class="btn btn-secondary toggle-vis pull-right" data-column="1">
+                                                            <i class="fa fa-eye-slash"></i></a>
+                                                    </th>
+                                                    <th>
+                                                        NAMA PENERIMA
+                                                        <a class="btn btn-secondary toggle-vis pull-right" data-column="2">
+                                                            <i class="fa fa-eye-slash"></i></a>
+                                                    </th>
+                                                    <th>
+                                                        JENIS KELAMIN_PESERTA
+                                                        <a class="btn btn-secondary toggle-vis pull-right" data-column="3">
+                                                            <i class="fa fa-eye-slash"></i></a>
+                                                    </th>
+                                                    <th>
+                                                        GOLONGAN / PANGKAT
+                                                        <a class="btn btn-secondary toggle-vis pull-right" data-column="4">
+                                                            <i class="fa fa-eye-slash"></i>
+                                                        </a>
+                                                    </th>
+                                                    <th>
+                                                        NAMA KANTOR BAYAR
+                                                        <a class="btn btn-secondary toggle-vis pull-right" data-column="5">
+                                                            <i class="fa fa-eye-slash"></i>
+                                                        </a>
+                                                    </th>
+                                                    <th>
+                                                        KATEGORI PENSIUN
+                                                        <a class="btn btn-secondary toggle-vis pull-right" data-column="6">
+                                                            <i class="fa fa-eye-slash"></i>
+                                                        </a>
+
+                                                    </th>
+                                                    <th>
+                                                        NAMA MPS
+                                                        <a class="btn btn-secondary toggle-vis pull-right" data-column="7">
+                                                            <i class="fa fa-eye-slash"></i>
+                                                        </a>
+                                                    </th>
+                                                    <th>
+                                                        MP PERBULAN
+                                                        <a class="btn btn-secondary toggle-vis pull-right" data-column="8">
+                                                            <i class="fa fa-eye-slash"></i>
+                                                        </a>
+                                                    </th>
+                                                    <th>
+                                                        MP BULAN KE-13
+                                                        <a class="btn btn-secondary toggle-vis pull-right" data-column="9">
+                                                            <i class="fa fa-eye-slash"></i>
+                                                        </a>
+                                                    </th>
+                                                </tr>
+                                                </thead>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /content panel -->
+{{#modal}}
+<!-- Modal1 -->
+{{/modal}}
+
+{{#scripts}}
+<script src="{{contextPath}}/assets/vendor/datatables/media/js/jquery.dataTables.js"></script>
+<script src="{{contextPath}}/assets/vendor/datatables/media/js/dataTables.bootstrap4.js"></script>
+<script src="{{contextPath}}/assets/vendor/select2/js/select2.js"></script>
+<script src="{{contextPath}}/assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+<script src="{{contextPath}}/assets/vendor/jquery-validation/dist/jquery.validate.js"></script>
+<script src="{{contextPath}}/assets/vendor/numeral/numeral.min.js"></script>
+<script src="{{contextPath}}/assets/vendor/multiselect/js/jquery.multi-select.js"></script>
+<script src="{{contextPath}}/assets/scripts/forms/plugins.js"></script>
+<script src="{{contextPath}}/assets/vendor/sweetalert/sweetalert.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="//cdn.datatables.net/buttons/1.0.3/js/dataTables.buttons.min.js"></script>
+<script src="//cdn.datatables.net/buttons/1.2.1/js/buttons.html5.min.js"></script>
+<script src="//cdn.datatables.net/buttons/1.5.2/js/buttons.print.min.js"></script>
+<script src="//cdn.datatables.net/buttons/1.5.4/js/dataTables.buttons.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+
+
+<script type="text/javascript">
+    $("#tb-manage").hide();
+
+    $(document).ready(function() {
+        var dataManage = dkppDataTable($('#data-manage'), '{{contextPath}}/api/pengolahan-pihak-ketiga/manajemen', {
+            bSortable: false,
+            dom: 'Bfrtip',
+            "lengthMenu": [[50000]],
+            buttons: [
+                {
+                    extend: 'excel',
+                    text: '<i class="fa fa-file-excel-o"></i> Export to Excell',
+                    className: 'btn btn-primary',
+                    filename: 'LaporanPengolahanDataBerkala',
+                    messageTop: 'Pengolahan Data Berkala Untuk YKKBI',
+                    customize: function(xlsx) {
+                        var sheet = xlsx.xl.worksheets['Sheet1.xml'];
+                        $('row c[r="A2"]', sheet).attr('s', '25');
+                        $('row c[r="B2"]', sheet).attr('s', '25');
+                    },
+                    exportOptions: {
+                        columns: ':visible',
+                        title: 'Laporan Pengolahan Data Berkala'
+                    }
+                },
+                {
+                    extend: 'print',
+                    text: '<i class="fa fa-print" ></i> Print',
+                    className:'btn btn-primary',
+                    autoPrint: true,
+                    exportOptions: {
+                        columns: ':visible'
+                    },
+                    customize: function (win) {
+                        $(win.document.body).find('table').addClass('display').css('font-size', '9px');
+                        $(win.document.body).find('tr:nth-child(odd) td').each(function(index){
+                            $(this).css('background-color','#D0D0D0');
+                        });
+                        $(win.document.body).find('h1').css('text-align','center');
+                    }
+
+                }
+            ],
+            'columns': [
+                {
+                    "data": "nip"
+                },
+                {
+                    "data": "namaPeserta"
+                },
+                {
+                    "data": "namaPenerimaMp"
+                },
+                {
+                    "data": "jenisKelaminPeserta"
+                },
+                {
+                    "data": "golonganPangkat"
+                },
+                {
+                    "data": "namaKantorBayar"
+                },
+                {
+                    "data": "namaKategoriPensiun"
+                },
+                {
+                    "data": "namaMps"
+                },
+                {
+                    "data": "mpPerbulanRumus"
+                },
+                {
+                    "data": "mpBulan13"
+                }
+            ],
+            'columnDefs': [
+                {
+                    "targets": [8,9],
+                    "render": function (data, type, row, meta) {
+                        return data && numeral(data).format("0,0.00");
+                    }
+                },
+            ]
+
+        });
+
+
+        $('a.toggle-vis').on('click', function (e) {
+            e.preventDefault();
+
+            // Get the column API object
+            var column = dataManage.column($(this).attr('data-column'));
+
+            // Toggle the visibility
+            column.visible(!column.visible());
+
+            $("#showDataManage").click(function () {
+                column.visible(['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10']);
+                $('#data-manage').DataTable().ajax.reload();
+            });
+
+            $(function () {
+                var table = $('#data-manage').DataTable();
+
+                $("#btnExport").click(function (e) {
+                    table.page.len(-1).draw();
+                    window.open('data:application/vnd.ms-excel,' +
+                        encodeURIComponent($('#data-manage').parent().html()));
+                });
+            });
+
+        });
+
+
+        $.ajax({
+            url: '{{contextPath}}/api/setupparameter/get_periode',
+            dataType: 'json',
+            method: 'GET',
+            success: function (data) {
+                param :{
+                    $('#user-stamp').val(data.postModeUserStamp);
+                    $('#periodeMutasi').val(data.periodeMutasi);
+                    $('#compName').val(data.compName);
+                    $('#userName').val(data.userName);
+                }
+            }
+        });
+
+        $(document).ready(function () {
+            $("#generateManage").click(function () {
+                var periodeMutasi = $("#periodeMutasi").val();
+                var compName = $('#compName').val();
+                var userName = $('#userName').val();
+                var kantorBayar = $('#kantorBayar option:selected').val();
+                $("#tb-manage").show();
+                let paramsend = {
+                    _csrf: "{{_csrf.token}}",
+                    compName: compName,
+                    userName: userName,
+                    periodeMutasi: periodeMutasi,
+                    kantorBayar: kantorBayar,
+                    jenisReport: 'KANTOR'
+                };
+
+                $.ajax({
+                    url: "{{contextPath}}/api/pengolahan-pihak-ketiga/report-manajemen",
+                    method: 'POST',
+                    data: paramsend,
+                    success: function (data) {
+                        if (data.status = "success"){
+                            swal({title:"Berhasil",text:data.message, icon:"success", button:"OK"});
+                        }
+                        else{
+                            swal({title: "Gagal", text: "Terjadi kegagalan.", icon: "error", button: "OK"});
+                        }
+                        $('#data-manage').DataTable().ajax.reload();
+                        console.log(data);
+                        $('#periode').val(data.periode);
+                        $('#compName').val(data.compName);
+                        $('#userName').val(data.userName);
+                    }
+
+                })
+            });
+        });
+    });
+
+</script>
+{{/scripts}}
+
+{{/layout}}

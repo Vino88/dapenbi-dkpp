@@ -1,0 +1,48 @@
+version: '3.1'
+
+services:
+
+### Database Container #######################################
+
+  dkpp-12c-db:
+    image: sath89/oracle-12c
+    container_name: dkpp-12c-db
+    ports:
+      - "8081:8080"
+      - "1521:1521"
+    volumes:
+      - ../oracle:/u01/app/oracle
+
+  dkpp-11g-db:
+    image: sath89/oracle-xe-11g
+    container_name: dkpp-11g-db
+    ports:
+      - "8081:8080"
+      - "1521:1521"
+
+  dkpp-server:
+    image: tomcat:8
+    container_name: dkpp-server
+    environment:
+     - SERVER_PORT=8010
+     - SERVER_ADDRESS=dkpp-server
+     - DB_HOST=dkpp-12c-db
+     - DB_PORT=1521
+     - DB_USER_NAME=system
+     - DB_PASSWORD=oracle
+     - DB_NAME=xe
+     - MAIL_HOST=192.168.4.13
+     - MAIL_PORT=1025
+     - MAIL_USERNAME=username
+     - MAIL_PASSWORD=password
+     - MAIL_AUTH=false
+     - MAIL_SSL=false
+     - HIBERNATE_DIALECT=org.hibernate.dialect.Oracle12cDialect
+     - SERVER_CONTEXT_PATH=/dkpp
+    volumes:
+      - ../tomcat/conf/tomcat-users.xml:/usr/local/tomcat/conf/tomcat-users.xml
+      - ../tomcat/manager/context.xml:/usr/local/tomcat/webapps/manager/META-INF/context.xml
+      - ./build/libs/dkpp-0.0.1-SNAPSHOT.war:/usr/local/tomcat/webapps/dkpp.war
+    ports:
+      - "8000:8080"
+      - "8010:8010"

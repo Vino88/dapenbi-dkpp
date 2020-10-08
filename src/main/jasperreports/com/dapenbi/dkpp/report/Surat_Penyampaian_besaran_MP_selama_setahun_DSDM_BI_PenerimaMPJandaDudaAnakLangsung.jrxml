@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="SP_PENSIUN_NORMAL" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="22d91e7e-4e32-468d-a01b-76461748dbb4">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="db_dapenbi"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="360"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="628"/>
+	<property name="net.sf.jasperreports.awt.ignore.missing.font" value="true"/>
+	<property name="net.sf.jasperreports.default.font.name" value="Sans Serif"/>
+	<parameter name="nip" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[select nama_peserta,
+       nip, 
+       nama_penerima_mp,
+       no_sp_bi,
+       alamat_lengkap,
+       no_SK_dapenbi,
+       nama_kantor_bayar,
+       nama_kantor_bayar_baru,
+       nama_kategori_pensiun,
+       to_char(current_date,'DD Month YYYY','nls_date_language = indonesian') as datenow,
+       to_char(phdp_lama,'999,999,999,999.00') as phdp_lama,
+       '2,5 x' as rumus,
+       '80%' as rumus80,
+       to_char(mpyd_lama,'999,999,999,999.00') as mp_perbulan,
+       nilai_fpr,
+       SUBSTR(masa_kerja_mp, 1, 2) || ' ' || (CASE SUBSTR(masa_kerja_mp, 3, 2) WHEN '00' THEN '' ELSE SUBSTR(masa_kerja_mp, 3, 2) || '/12' END) as masa_kerja_mp,
+       to_char(mp_bulan13, '999,999,999,999.00') as mp_bulan13,
+       to_char(tgl_awal_bayar, 'dd Month yyyy','nls_date_language = INDONESIAN') as tgl_awal_bayar,
+       to_char(tgl_mp_bulan_ke13, 'dd Month yyyy','nls_date_language = INDONESIAN') as tgl_bulan_13,
+       to_char(tgl_meninggal_peserta, 'dd Month yyyy','nls_date_language = INDONESIAN') as tgl_meninggal
+       
+from tbl_t_mutasi_pensiun
+where nip = $P{nip} AND id_kategori_pensiun = 'PM' AND id_kategori_penerima_mp NOT IN ('1','11')]]>
+	</queryString>
+	<field name="NAMA_PESERTA" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NAMA_PESERTA"/>
+	</field>
+	<field name="NIP" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NIP"/>
+	</field>
+	<field name="NAMA_PENERIMA_MP" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NAMA_PENERIMA_MP"/>
+	</field>
+	<field name="NO_SP_BI" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NO_SP_BI"/>
+	</field>
+	<field name="ALAMAT_LENGKAP" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="ALAMAT_LENGKAP"/>
+	</field>
+	<field name="NO_SK_DAPENBI" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NO_SK_DAPENBI"/>
+	</field>
+	<field name="NAMA_KANTOR_BAYAR" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NAMA_KANTOR_BAYAR"/>
+	</field>
+	<field name="NAMA_KANTOR_BAYAR_BARU" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NAMA_KANTOR_BAYAR_BARU"/>
+	</field>
+	<field name="NAMA_KATEGORI_PENSIUN" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NAMA_KATEGORI_PENSIUN"/>
+	</field>
+	<field name="DATENOW" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="DATENOW"/>
+	</field>
+	<field name="PHDP_LAMA" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="PHDP_LAMA"/>
+	</field>
+	<field name="RUMUS" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="RUMUS"/>
+	</field>
+	<field name="RUMUS80" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="RUMUS80"/>
+	</field>
+	<field name="MP_PERBULAN" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="MP_PERBULAN"/>
+	</field>
+	<field name="NILAI_FPR" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="NILAI_FPR"/>
+	</field>
+	<field name="MASA_KERJA_MP" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="MASA_KERJA_MP"/>
+	</field>
+	<field name="MP_BULAN13" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="MP_BULAN13"/>
+	</field>
+	<field name="TGL_AWAL_BAYAR" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="TGL_AWAL_BAYAR"/>
+	</field>
+	<field name="TGL_BULAN_13" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="TGL_BULAN_13"/>
+	</field>
+	<field name="TGL_MENINGGAL" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="TGL_MENINGGAL"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="103" splitType="Stretch"/>
+	</pageHeader>
+	<detail>
+		<band height="597" splitType="Stretch">
+			<textField>
+				<reportElement x="38" y="13" width="282" height="19" uuid="d4e2679f-2a8e-48fc-8031-2c7c5c736527"/>
+				<textElement>
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NO_SP_BI} == null ? "-" : $F{NO_SP_BI}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="38" y="28" width="154" height="19" uuid="e00db3f3-3339-4624-a15f-887d2d902096"/>
+				<textElement>
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Lamp. 1 Berkas + 1 Kartu"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="390" y="13" width="150" height="30" uuid="f305fea8-c12e-44a7-8a58-be74aea0ab23"/>
+				<textElement>
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{DATENOW}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="40" y="166" width="50" height="19" uuid="788e03ce-a912-4289-8bf1-686d979490e5"/>
+				<textElement>
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Perihal :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="38" y="58" width="82" height="20" uuid="3bb12bd8-bd4b-4af7-9f5b-51af8b605118"/>
+				<textElement>
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<text><![CDATA[Kepada Yth,]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="39" y="78" width="223" height="20" uuid="f58c7f62-370f-40f9-9523-8fa65db80fa9"/>
+				<textElement>
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Kepada Yth,Divisi Pengelolaan, Remunerasi dan Informasi SDM"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="39" y="118" width="220" height="15" uuid="424b15e1-2b25-421d-aceb-31f5f9b039c4"/>
+				<textElement>
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Jl. MH. Thamrin No.2"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="39" y="134" width="189" height="18" uuid="93a31f67-00ff-468d-b503-92971bd2ed8c"/>
+				<textElement>
+					<font fontName="Arial" size="11" isBold="true" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["JAKARTA - 10350"]]></textFieldExpression>
+			</textField>
+			<textField pattern="MMMMM dd, yyyy">
+				<reportElement x="277" y="410" width="254" height="20" uuid="d76b4f33-d90b-48d3-97bf-523c4170add8"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["PENGURUS"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="277" y="429" width="254" height="19" uuid="017b3619-ac19-458f-811f-28dd5bfdb2c8"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DANA PENSIUN BANK INDONESIA]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="242" y="502" width="210" height="20" uuid="7c38b9ad-0e28-44ed-8636-bea665627f71"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="11" isBold="true" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Rasmo Samiun"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="256" y="522" width="184" height="30" uuid="53a9c141-1e2e-4976-bba6-4dddcd2bac6e"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Direktur Utama"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="99" y="165" width="441" height="35" uuid="16bd8879-fcc2-4965-90e7-1a23d96f645a"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Surat Penyampaian besaran MP selama setahun ke DSDM BI untuk Penerima MP Janda/ Duda/ Anak Langsung"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="41" y="192" width="509" height="43" uuid="b2804fe8-e9f4-40b7-93d3-4091a155c551"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA["	Menunjuk surat Saudara No.19/599/DSDM-GOpMPRIS/SrURhs tanggal 22 September 2017 perihal Penyampaian Data dan Informasi Pegawai serta Fotokopi SK, dengan ini disampaikan bahwa Mantaat Pensiun Janda per bulan atas nama :"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="41" y="278" width="509" height="46" uuid="28e93fcb-2cba-4b35-9833-c26b846d2fb5"/>
+				<textElement textAlignment="Justified" markup="html">
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA["a. Selama 12 (dua belas) bulan pertama terhitung sejak tanggal "+$F{TGL_AWAL_BAYAR}+" sampai dengan "+($F{TGL_BULAN_13} == null ? "-" : $F{TGL_BULAN_13})+" adalah sebesar 100% x Rp. "+$F{MP_PERBULAN}.trim()+" = Rp. "+$F{MP_PERBULAN}.trim()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="62" y="368" width="189" height="17" uuid="e1819a03-91ea-4204-b1cb-9ae0c4825396"/>
+				<textElement>
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<text><![CDATA[Demikian agar Saudara maklum]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="419" y="522" width="137" height="30" uuid="8070c461-b8a1-4886-a8a2-36ff070c8edf"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Direktur"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="406" y="502" width="163" height="20" uuid="768900ca-f04b-49d8-8906-489a2b0b4fcb"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="11" isBold="true" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Sutikno"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="40" y="567" width="450" height="30" uuid="c5366be7-b695-4a51-87b7-0c2fa15a9895"/>
+				<textElement>
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<text><![CDATA[cc : - Divisi Pengelolaan Remunerasi dan Informasi SDM Bank Indonesia
+       - Yayasan Kesejahteraan Bank Indonesia (YKKBI)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="40" y="98" width="222" height="20" uuid="00b45953-0eec-4960-9543-c0998ee6ea87"/>
+				<textElement>
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<text><![CDATA[Bank Indonesia]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="39" y="232" width="511" height="16" uuid="4cfe1acf-f14b-4e65-aa7d-06a51b4b13cd"/>
+				<textElement markup="html"/>
+				<textFieldExpression><![CDATA["Sdra/i <b>"+$F{NAMA_PENERIMA_MP}+"</b>"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="40" y="246" width="510" height="40" uuid="6b0787f4-7b6a-47dd-a3d9-37f208754866"/>
+				<textElement textAlignment="Justified" markup="html">
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Janda / Duda yang berhak atas Manfaat Pensiun alm. <b>"+$F{NAMA_PESERTA}+" - "+$F{NIP}+"</b> yang meninggal dunia pada tanggal "+($F{TGL_MENINGGAL} == null ? "-" : $F{TGL_MENINGGAL})+", adalah sebagai berikut :"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="41" y="307" width="509" height="42" uuid="e7c46ecc-3a92-43f9-a290-f14dc4a09434"/>
+				<textElement textAlignment="Justified" markup="html">
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA["b. Setanjutnya untuk bulan ke-13 (tiga belas), yaitu terhitung sejak tanggal "+$F{TGL_BULAN_13}+" dan seterusnya adalah sebesar 80% x Rp. "+$F{MP_PERBULAN}.trim()+" = Rp. "+$F{MP_BULAN13}.trim()]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

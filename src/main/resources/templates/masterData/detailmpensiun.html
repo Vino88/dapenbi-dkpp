@@ -1,0 +1,1639 @@
+{{#layout}}
+
+{{#styles}}
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/googleapis/css/component.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/googleapis/css/googleapis.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css">
+{{/styles}}
+
+{{#title}}
+Master Pensiun - DKPP
+{{/title}}
+
+
+<div class="card">
+    <div class="col-md-12 card-block">
+        <div class="col-md-6 card-block">
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold">Nip </label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label id="nip" name="nip">{{nip}}</label>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold">Nama Peserta </label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label id="namaPeserta" name="namaPeserta">{{namaPeserta}}</label>
+                    </div>
+                </div>
+
+
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold">Jenis Kelamin Peserta </label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label id="jenisKelaminPeserta" name="namaPeserta">{{jenisKelaminPeserta}}</label>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="form-group">
+
+                    <div class="col-md-12 card-block">
+                        <div class="col-md-4 card-block">
+                            <label class="font-weight-bold">Tanggal Lahir Peserta </label>
+                        </div>
+                        <div class="col-md-1 card-block">
+                            <label class="font-weight-bold">: </label>
+                        </div>
+                        <div class="col-md-5 card-block">
+                            <label id="tglLahirPeserta" name="tglLahirPeserta">{{tglLahirPeserta}}</label>
+                        </div>
+                    </div>
+
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold">Tanggal Kerja Peserta </label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label id="tglKerjaPeserta" name="tglKerjaPeserta">{{tglKerjaPeserta}}</label>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold">Tanggal DHPT Peserta </label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label id="tglDhptPeserta" name="tglDhptPeserta">{{tglDhptPeserta}}</label>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold">Tanggal Henti Kerja Peserta </label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label id="tglHentiKerjaPeserta" name="tglHentiKerjaPeserta">{{tglHentiKerjaPeserta}}</label>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold">Tempat Meninggal Peserta</label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label id="tempatMeninggalPeserta" name="tempatMeninggalPeserta">{{tempatMeninggalPeserta}}</label>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold">Tanggal Meninggal Peserta</label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label id="tglMeninggalPeserta" name="tglMeninggalPeserta">{{tglMeninggalPeserta}}</label>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold">Tempat Lahir Peserta</label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label id="tempatLahirPeserta" name="tempatLahirPeserta">{{tempatLahirPeserta}}</label>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold">ID Golongan</label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label id="golongan" name="golongan">{{golongan}}</label>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold">Golongan Pangkat</label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label id="golonganPangkat" name="golonganPangkat">{{golonganPangkat}}</label>
+                    </div>
+                </div>
+           </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold">ID Agama</label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label id="idAgama" name="idAgama">{{idAgama}}</label>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold">Nama Agama</label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label id="namaAgama" name="namaAgama">{{namaAgama}}</label>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold">ID Kantor Bayar</label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label id="idKantorBayar" name="idKantorBayar">{{idKantorBayar}}</label>
+                    </div>
+                </div>
+
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold">Nama Kantor Bayar</label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label id="namaKantorBayar" name="namaKantorBayar">{{namaKantorBayar}}</label>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold">ID Predikat</label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label id="idPredikatPemberhentian" name="idPredikatPemberhentian">{{idPredikatPemberhentian}}</label>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold">Nama Predikat</label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label id="namaPredikat" name="namaPredikat">{{namaPredikat}}</label>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold">ID Alasan Henti</label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label id="idAlasanHenti" name="idAlasanHenti">{{idAlasanHenti}}</label>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold">Keterangan Henti </label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label id="keteranganHenti" name="keteranganHenti">{{idAlasanHenti}}</label>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold">Tanggal SP BI </label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label id="tglSpBi" name="tglSpBi">{{tglSpBi}}</label>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold">No SP BI</label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label id="noSpBi" name="noSpBi">{{noSpBi}}</label>
+                    </div>
+                </div>
+
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold">Tanggal SK BI</label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label id="tglSkBi" name="tglSkBi">{{tglSkBi}}</label>
+                    </div>
+                </div>
+
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold"> No SK BI</label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label id="noSkBi" name="noSkBi">{{noSkBi}}</label>
+                    </div>
+                </div>
+
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold"> PHDP</label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label id="phdp" name="phdp">{{phdp}}</label>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold"> Tunjangan Veteran</label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label id="upahVeteran" name="upahVeteran">{{upahVeteran}}</label>
+                    </div>
+                </div>
+
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold"> ID Jenis MPS </label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label id="idJenisMps" name="idJenisMps">{{idJenisMps}}</label>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold"> Nama Jenis MPS </label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label id="namaMps" name="namaMps">{{namaMps}}</label>
+                    </div>
+                </div>
+
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold"> ID Kategori Pensiun </label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label id="kategoriPensiun" name="kategoriPensiun">{{kategoriPensiun}}</label>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold"> Nama Kategori Pensiun </label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label id="namaKategoriPensiun" name="namaKategoriPensiun">{{namaKategoriPensiun}}</label>
+                    </div>
+                </div>
+
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold"> ID Usia Bayar </label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label id="idUsiaBayar" name="idUsiaBayar">{{idUsiaBayar}}</label>
+                    </div>
+                </div>
+
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold"> Nama Usia Bayar </label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label id="namaUsiaBayar" name="namaUsiaBayar">{{namaUsiaBayar}}</label>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold"> ID Status Bayar </label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label  id="idStatusBayar" name="idStatusBayar">{{idStatusBayar}}</label>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold"> Status Bayar  </label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label  id="statusBayar" name="statusBayar">{{statusBayar}}</label>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold"> Tanggal Tunda Jatuh Tempo </label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label  id="tglTundaJatuhTempo" name="tglTundaJatuhTempo">{{tglTundaJatuhTempo}}</label>
+                    </div>
+                </div>
+
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold"> Tanggal Awal Bayar </label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label  id="tglAwalBayar" name="tglAwalBayar">{{tglAwalBayar}}</label>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold"> Tanggal MP Bulan Ke 13  </label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label  id="tglMpBulananKe13" name="tglMpBulananKe13">{{tglMpBulananKe13}}</label>
+                    </div>
+                </div>
+
+
+
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold"> Tanggal Henti Bayar  </label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label  id="tglHentiBayar" name="tglHentiBayar">{{tglHentiBayar}}</label>
+                    </div>
+                </div>
+
+
+
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold"> ID Penerima MP  </label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label  id="idPenerimaMP" name="idPenerimaMP">{{idPenerimaMP}}</label>
+                    </div>
+                </div>
+
+
+
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold"> Nama Penerima MP  </label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label  id="namaPenerimaMp" name="namaPenerimaMp">{{namaPenerimaMp}}</label>
+                    </div>
+                </div>
+
+
+
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold"> Tanggal Lahir Penerima MP  </label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label  id="tglLahirPenerimaMp" name="tglLahirPenerimaMp">{{tglLahirPenerimaMp}}</label>
+                    </div>
+                </div>
+
+
+
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold"> Jenis Kelamin Penerima MP  </label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label  id="jenisKelaminPenerimaMp" name="jenisKelaminPenerimaMp">{{jenisKelaminPenerimaMp}}</label>
+                    </div>
+                </div>
+
+
+
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold"> ID Kategori Penerima MP  </label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label  id="idKategoriPenerima" name="idKategoriPenerima">{{idKategoriPenerima}}</label>
+                    </div>
+                </div>
+
+
+
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold"> Nama Kategori Penerima MP  </label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label  id="namaKategoriPenerimaMp" name="namaKategoriPenerimaMp">{{namaKategoriPenerimaMp}}</label>
+                    </div>
+                </div>
+
+
+
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold"> Tanggal SK DAPENBI  </label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label  id="tglSkDapenbi" name="tglSkDapenbi">{{tglSkDapenbi}}</label>
+                    </div>
+                </div>
+
+
+
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold"> No SK DAPENBI  </label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label  id="noSkDapenbi" name="noSkDapenbi">{{noSkDapenbi}}</label>
+                    </div>
+                </div>
+
+
+            </div>
+            <br>
+
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold"> Alamat Is Dalam Negeri  </label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label  id="alamatIsDalamNegeri" name="alamatIsDalamNegeri">{{alamatIsDalamNegeri}}</label>
+                    </div>
+                </div>
+
+
+
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold"> ID Negara  </label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label  id="idNegara" name="idNegara">{{idNegara}}</label>
+                    </div>
+                </div>
+
+
+
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold"> Nama Negara  </label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label  id="namaNegara" name="namaNegara">{{namaNegara}}</label>
+                    </div>
+                </div>
+
+
+
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold"> ID Provinsi  </label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label  id="idProvinsi" name="idProvinsi">{{idProvinsi}}</label>
+                    </div>
+                </div>
+
+
+
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold"> Nama Provinsi  </label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label  id="namaProvinsi" name="namaProvinsi">{{namaProvinsi}}</label>
+                    </div>
+                </div>
+
+            </div>
+            <br>
+        </div>
+        <div class="col-md-6 card-block">
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold"> ID Kota/Kab </label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label  id="idKota" name="idKota">{{idKota}}</label>
+                    </div>
+                </div>
+
+
+
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold"> Nama Kota/Kab  </label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label  id="namaKota" name="namaKota">{{namaKota}}</label>
+                    </div>
+                </div>
+
+
+
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold"> ID Kecamatan  </label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label  id="idKecamatan" name="idKecamatan">{{idKecamatan}}</label>
+                    </div>
+                </div>
+
+
+
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold"> Nama Kecamatan  </label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label  id="namaKecamatan" name="namaKecamatan">{{namaKecamatan}}</label>
+                    </div>
+                </div>
+
+
+
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold"> ID Kelurahan  </label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label  id="idKelurahan" name="idKelurahan">{{idKelurahan}}</label>
+                    </div>
+                </div>
+
+
+
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold"> ID Kelurahan </label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label  id="namaKelurahan" name="namaKelurahan">{{namaKelurahan}}</label>
+                    </div>
+                </div>
+
+
+
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold"> Alamat lengkap  </label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label  id="alamatLengkap" name="alamatLengkap">{{alamatLengkap}}</label>
+                    </div>
+                </div>
+
+
+
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold"> Rt  </label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label  id="rt" name="rt">{{rt}}</label>
+                    </div>
+                </div>
+
+
+
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold"> Rw </label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label  id="rw" name="rw">{{rw}}</label>
+                    </div>
+                </div>
+
+
+
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold"> Kode Pos  </label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label  id="kodePos" name="kodePos">{{rw}}</label>
+                    </div>
+                </div>
+
+
+
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold"> Usia Saat Henti </label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label  id="usiaSaatHenti" name="usiaSaatHenti">{{usiaSaatHenti}}</label>
+                    </div>
+                </div>
+
+
+
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold"> Usia Saat Henti Bulat  </label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label  id="usiaSaatHentiBulat" name="usiaSaatHentiBulat">{{usiaSaatHentiBulat}}</label>
+                    </div>
+                </div>
+
+
+
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold"> Usia Penerima Bayar  </label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label  id="usiaPenerimaBayar" name="usiaPenerimaBayar">{{usiaPenerimaBayar}}</label>
+                    </div>
+                </div>
+
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold"> Usia Penerima Bayar Bulat </label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label  id="usiaPenerimaBayarBulat" name="usiaPenerimaBayarBulat">{{usiaPenerimaBayarBulat}}</label>
+                    </div>
+                </div>
+
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold"> Masa Kerja Tambahan  </label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label  id="masaKerjaTambahan" name="masaKerjaTambahan">{{masaKerjaTambahan}}</label>
+                    </div>
+                </div>
+
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold"> Masa Kerja Tambahan Bulat  </label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label  id="masaKerjaTambahanBulat" name="masaKerjaTambahanBulat">{{masaKerjaTambahanBulat}}</label>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold"> Masa Kerja Veteran  </label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label  id="masaKerjaVeteran" name="masaKerjaVeteran">{{masaKerjaVeteran}}</label>
+                    </div>
+                </div>
+
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold"> Masa Kerja Veteran Bulat </label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label  id="masaKerjaVeteranBulat" name="masaKerjaVeteranBulat">{{masaKerjaVeteranBulat}}</label>
+                    </div>
+                </div>
+
+
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold"> Total Masa Kerja  </label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label  id="totalMasaKerja" name="totalMasaKerja">{{totalMasaKerja}}</label>
+                    </div>
+                </div>
+
+
+
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold"> Total Masa Kerja Bulat  </label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label  id="totalMasaKerjaBulat" name="totalMasaKerjaBulat">{{totalMasaKerjaBulat}}</label>
+                    </div>
+                </div>
+
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold"> Masa Kerja MP  </label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label  id="masaKerjaMp" name="masaKerjaMp">{{masaKerjaMp}}</label>
+                    </div>
+                </div>
+
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold"> ID Faktor FPR  </label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label  id="idFaktorFPR" name="idFaktorFPR">{{idFaktorFPR}}</label>
+                    </div>
+                </div>
+
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold"> Nama Faktor FPR  </label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label  id="namaFaktorFpr" name="namaFaktorFpr">{{namaFaktorFpr}}</label>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold"> Nilai Faktor FPR  </label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label  id="nilaiFpr" name="nilaiFpr">{{nilaiFpr}}</label>
+                    </div>
+                </div>
+
+
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold"> ID Faktor FS  </label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label  id="idFaktorFs" name="idFaktorFs">{{idFaktorFs}}</label>
+                    </div>
+                </div>
+
+
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold"> Nama Faktor FS  </label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label  id="namaFaktorFs" name="namaFaktorFs">{{namaFaktorFs}}</label>
+                    </div>
+                </div>
+
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold"> Nilai Faktor FS  </label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label  id="nilaiFs" name="nilaiFs">{{nilaiFs}}</label>
+                    </div>
+                </div>
+
+
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold"> MPS 20 Persen  </label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label  id="mps20persen" name="mps20persen">{{mps20persen}}</label>
+                    </div>
+                </div>
+
+
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold"> MPS 10 Juta  </label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label  id="mps10juta" name="mps10juta">{{mps10juta}}</label>
+                    </div>
+                </div>
+
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold"> MPS 100 Persen  </label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label  id="mps100persen" name="mps100persen">{{mps100persen}}</label>
+                    </div>
+                </div>
+
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold"> MP Perbulan Rumus  </label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label  id="mpPerbulanRumus" name="mpPerbulanRumus">{{mpPerbulanRumus}}</label>
+                    </div>
+                </div>
+
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold"> MP Perbulan 20 Persen  </label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label  id="mpPerbulan20persen" name="mpPerbulan20persen">{{mpPerbulan20persen}}</label>
+                    </div>
+                </div>
+
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold"> MP Perbulan 10 Juta  </label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label  id="mpPerbulan10juta" name="mpPerbulan10juta">{{mpPerbulan10juta}}</label>
+                    </div>
+                </div>
+
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold"> MPYD  </label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label  id="mpyd" name="mpyd">{{mpyd}}</label>
+                    </div>
+                </div>
+
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold"> MP Bulan 13  </label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label  id="mpBulan13" name="mpBulan13">{{mpBulan13}}</label>
+                    </div>
+                </div>
+
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold"> Total Masa Kerja ADJ  </label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label  id="totalMasaKerjaAdj" name="totalMasaKerjaAdj">{{totalMasaKerjaAdj}}</label>
+                    </div>
+                </div>
+
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold"> Total Masa Kerja ADJ Bulat  </label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label  id="totalMasaKerjaAdjBulat" name="totalMasaKerjaAdjBulat">{{totalMasaKerjaAdjBulat}}</label>
+                    </div>
+                </div>
+
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold"> ID Suskel  </label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label  id="idSuskel" name="idSuskel">{{idSuskel}}</label>
+                    </div>
+                </div>
+
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold"> Nama Suskel  </label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label  id="namaSuskel" name="namaSuskel">{{namaSuskel}}</label>
+                    </div>
+                </div>
+
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold"> ID Status Kawin  </label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label  id="idStatusKawin" name="idStatusKawin">{{idStatusKawin}}</label>
+                    </div>
+                </div>
+
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold"> Status Kawin Penerima MP  </label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label  id="namaStatusKawinPenerimaMp" name="namaStatusKawinPenerimaMp">{{namaStatusKawinPenerimaMp}}</label>
+                    </div>
+                </div>
+
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold"> No Hp  </label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label  id="noHp" name="noHp">{{noHp}}</label>
+                    </div>
+                </div>
+
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold"> Email  </label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label  id="email" name="email">{{email}}</label>
+                    </div>
+                </div>
+
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold"> Keterangan Otomatis  </label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label  id="keteranganOtomatis" name="keteranganOtomatis">{{keteranganOtomatis}}</label>
+                    </div>
+                </div>
+
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold"> Masa Kerja Henti  </label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label  id="masaKerjaHenti" name="masaKerjaHenti">{{masaKerjaHenti}}</label>
+                    </div>
+                </div>
+
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold"> Masa Kerja Henti Bulat  </label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label  id="masaKerjaHentiBulat" name="masaKerjaHentiBulat">{{masaKerjaHentiBulat}}</label>
+                    </div>
+                </div>
+
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold"> Ref ID Mutasi  </label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label  id="refIdMutasi" name="refIdMutasi">{{refIdMutasi}}</label>
+                    </div>
+                </div>
+
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold"> Tanggal Usia 25 Tahun Penerima MP  </label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label  id="tglUsia25tPenerimaMp" name="tglUsia25tPenerimaMp">{{tglUsia25tPenerimaMp}}</label>
+                    </div>
+                </div>
+
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold"> MPS 100 Persen Bulat  </label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label  id="mps100persenBulat" name="mps100persenBulat">{{mps100persenBulat}}</label>
+                    </div>
+                </div>
+
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold"> Faktor FS  </label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label  id="faktorFs" name="faktorFs">{{faktorFs}}</label>
+                    </div>
+                </div>
+
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold"> No Telepon  </label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label  id="noTelp" name="noTelp">{{noTelp}}</label>
+                    </div>
+                </div>
+
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-md-12 card-block">
+                    <div class="col-md-4 card-block">
+                        <label class="font-weight-bold"> Active  </label>
+                    </div>
+                    <div class="col-md-1 card-block">
+                        <label class="font-weight-bold">: </label>
+                    </div>
+                    <div class="col-md-5 card-block">
+                        <label  id="isActive" name="isActive">{{noTelp}}</label>
+                    </div>
+                </div>
+            </div>
+            <br>
+        </div>
+    </div>
+
+{{#modal}}
+
+{{/modal}}
+
+{{#scripts}}
+<script src="{{contextPath}}/assets/vendor/datatables/media/js/jquery.dataTables.js"></script>
+<script src="{{contextPath}}/assets/vendor/datatables/media/js/dataTables.bootstrap4.js"></script>
+<script src="{{contextPath}}/assets/vendor/sweetalert/sweetalert.min.js"></script>
+    <script src="{{contextPath}}/assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#alamatIsDalamNegeri").text( ($("#alamatIsDalamNegeri").text()==true)? "Ya":"Tidak" );
+        $("#tglLahirPeserta").text(ddMmYyyyFormat($("#tglLahirPeserta").text()));
+        $("#tglKerjaPeserta").text(ddMmYyyyFormat($("#tglKerjaPeserta").text()));
+        $("#tglDhptPeserta").text(ddMmYyyyFormat($("#tglDhptPeserta").text()));
+        $("#tglHentiKerjaPeserta").text(fillDateField($("#tglHentiKerjaPeserta").text()));
+        $("#tglMeninggalPeserta").text(ddMmYyyyFormat($("#tglMeninggalPeserta").text()));
+        $("#tglSpBi").text(ddMmYyyyFormat($("#tglSpBi").text()));
+        $("#tglSkBi").text(ddMmYyyyFormat($("#tglSkBi").text()));
+        $("#tglTundaJatuhTempo").text(ddMmYyyyFormat($("#tglTundaJatuhTempo").text()));
+        $("#tglAwalBayar").text(ddMmYyyyFormat($("#tglAwalBayar").text()));
+        $("#tglMpBulananKe13").text(ddMmYyyyFormat($("#tglMpBulananKe13").text()));
+        $("#tglHentiBayar").text(ddMmYyyyFormat($("#tglHentiBayar").text()));
+        $("#tglLahirPenerimaMp").text(ddMmYyyyFormat($("#tglLahirPenerimaMp").text()));
+        $("#tglSkDapenbi").text(ddMmYyyyFormat($("#tglSkDapenbi").text()));
+        $("#tglUsia25tPenerimaMp").text(ddMmYyyyFormat($("#tglUsia25tPenerimaMp").text()));
+        $("#isActive").text( ($("#isActive").text()==true)? "Active":"Not Active" );
+        $("#jenisKelaminPeserta").text( ($("#jenisKelaminPeserta").text()=="W")? "Wanita":"Pria" );
+        $("#jenisKelaminPenerimaMp").text( ($("#jenisKelaminPenerimaMp").text()=="W")? "Wanita":"Pria" );
+
+
+        var xx = '{{tglSkDapenbi}}';
+
+        console.log(xx);
+    });
+</script>
+{{/scripts}}
+
+{{/layout}}

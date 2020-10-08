@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="HakAtasmanfaatPensiunPeserta" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="9bbac03a-f5db-4dde-a287-bc96c6132dec">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="db_dapenbi"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<parameter name="periode_mutasi" class="java.lang.String"/>
+	<parameter name="nip" class="java.lang.String"/>
+	<parameter name="id_kategori_mutasi" class="java.lang.String"/>
+	<parameter name="id_kantor_bayar" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select 
+	a.nip
+	,a.nama_penerima_mp
+    ,a.no_sk_dapenbi
+    , b.alamat_surat1
+    , b.alamat_surat2
+    , b.alamat_surat3
+    , b.alamat_surat4
+    ,a.id_kantor_bayar
+    ,a.alamat_lengkap
+    ,a.rt
+    ,a.rw
+    ,a.nama_kelurahan
+    ,a.nama_kecamatan
+    ,a.nama_kota_kab
+    ,a.nama_provinsi
+    , a.nama_kantor_bayar
+    , to_char(a.tgl_sk_dapenbi,'dd Month yyyy','nls_date_language = INDONESIAN') as tgl_sk_dapenbi
+    , a.nama_peserta
+    , a.nip
+    , to_char(a.tgl_awal_bayar, 'Month','nls_date_language = INDONESIAN') as bulan_mutasi
+    , to_char(a.tgl_awal_bayar,'YYYY','nls_date_language = INDONESIAN') as tahun_mutasi
+    , to_char(SYSDATE,'dd Month yyyy','nls_date_language = INDONESIAN') as sign_date
+    , to_char(SYSDATE,'dd-mm-yyyy','nls_date_language = INDONESIAN') as date_now
+    ,to_char(to_date(a.periode_mutasi,'MMyyyy'),'Month YYYY', 'nls_date_language = INDONESIAN') as periode_mutasi
+from TBL_T_MUTASI_PENSIUN a
+INNER JOIN TBL_R_KANTOR_BAYAR b
+ON a.id_kantor_bayar = b.id_kantor_bayar
+WHERE a.periode_mutasi = $P{periode_mutasi} AND a.nip = $P{nip} AND a.id_kategori_mutasi = $P{id_kategori_mutasi} AND a.id_kantor_bayar = $P{id_kantor_bayar}]]>
+	</queryString>
+	<field name="NIP" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NIP"/>
+	</field>
+	<field name="NAMA_PENERIMA_MP" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NAMA_PENERIMA_MP"/>
+	</field>
+	<field name="NO_SK_DAPENBI" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NO_SK_DAPENBI"/>
+	</field>
+	<field name="ALAMAT_SURAT1" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="ALAMAT_SURAT1"/>
+	</field>
+	<field name="ALAMAT_SURAT2" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="ALAMAT_SURAT2"/>
+	</field>
+	<field name="ALAMAT_SURAT3" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="ALAMAT_SURAT3"/>
+	</field>
+	<field name="ALAMAT_SURAT4" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="ALAMAT_SURAT4"/>
+	</field>
+	<field name="ID_KANTOR_BAYAR" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="ID_KANTOR_BAYAR"/>
+	</field>
+	<field name="ALAMAT_LENGKAP" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="ALAMAT_LENGKAP"/>
+	</field>
+	<field name="RT" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="RT"/>
+	</field>
+	<field name="RW" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="RW"/>
+	</field>
+	<field name="NAMA_KELURAHAN" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NAMA_KELURAHAN"/>
+	</field>
+	<field name="NAMA_KECAMATAN" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NAMA_KECAMATAN"/>
+	</field>
+	<field name="NAMA_KOTA_KAB" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NAMA_KOTA_KAB"/>
+	</field>
+	<field name="NAMA_PROVINSI" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NAMA_PROVINSI"/>
+	</field>
+	<field name="NAMA_KANTOR_BAYAR" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NAMA_KANTOR_BAYAR"/>
+	</field>
+	<field name="TGL_SK_DAPENBI" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="TGL_SK_DAPENBI"/>
+	</field>
+	<field name="NAMA_PESERTA" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NAMA_PESERTA"/>
+	</field>
+	<field name="COLUMN_19" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NIP"/>
+	</field>
+	<field name="BULAN_MUTASI" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="BULAN_MUTASI"/>
+	</field>
+	<field name="TAHUN_MUTASI" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="TAHUN_MUTASI"/>
+	</field>
+	<field name="SIGN_DATE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="SIGN_DATE"/>
+	</field>
+	<field name="DATE_NOW" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="DATE_NOW"/>
+	</field>
+	<field name="PERIODE_MUTASI" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="PERIODE_MUTASI"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="116" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="188" splitType="Stretch">
+			<textField>
+				<reportElement x="22" y="0" width="220" height="20" uuid="5bf53a78-e437-49bb-9113-e755e6040719"/>
+				<textElement>
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NO_SK_DAPENBI} == null ? "-" : $F{NO_SK_DAPENBI}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="22" y="20" width="460" height="20" uuid="a51a69fc-ba42-4dfe-9b33-b69c4ad0ed97"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="11" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Lamp. 1 (satu) berkas]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="22" y="40" width="460" height="20" uuid="5ceb3ea3-214d-4f8e-8851-1fb0f3824448"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Kepada Yth,]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="22" y="63" width="460" height="20" uuid="a6318955-a68e-4542-9dfb-9b022505f9e5"/>
+				<textElement markup="html">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Sdra / Sdri <b>"+$F{NAMA_PENERIMA_MP}+" - "+$F{NIP}+"</b>"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="22" y="80" width="460" height="20" uuid="5f63b15f-eee1-44b1-a4ab-05b42e7fe886"/>
+				<textElement markup="html">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{ALAMAT_LENGKAP} == null ? "-" : $F{ALAMAT_LENGKAP})+" RT / "+($F{RT} == null ? "" : $F{RT})+" RW / "+($F{RW} == null ? " " : $F{RW})]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="22" y="98" width="460" height="20" uuid="a2531b5e-1d0d-4b92-b2e6-976c41012b06"/>
+				<textElement>
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{NAMA_KELURAHAN} == null ? "-" : $F{NAMA_KELURAHAN})+" "+($F{NAMA_KECAMATAN} == null ? "-" : $F{NAMA_KECAMATAN})]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="22" y="134" width="460" height="20" uuid="283420d9-fad9-4bba-9471-a703b8608723"/>
+				<textElement>
+					<font size="11" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NAMA_PROVINSI} == null ? "-" : $F{NAMA_PROVINSI}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="370" y="0" width="180" height="20" uuid="342d0ae7-c533-4f35-b52e-8afc8cb3a4b7"/>
+				<textElement>
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Jakarta, "+($F{SIGN_DATE} == null ? "-" : $F{SIGN_DATE})]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="22" y="116" width="460" height="20" uuid="509da314-bbfa-4628-a7bc-c6e48e889fc6"/>
+				<textElement>
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NAMA_KOTA_KAB} == null ? "-" : $F{NAMA_KOTA_KAB}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="45" splitType="Stretch">
+			<staticText>
+				<reportElement x="22" y="-29" width="410" height="20" uuid="9fd760f9-611a-4322-86fa-ddc93bf2d2ad"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Perihal : Hak atas Manfaat Pensiun Peserta]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="138" splitType="Stretch">
+			<textField>
+				<reportElement x="22" y="-50" width="528" height="100" uuid="54a4265b-2af4-4710-a767-f16c03bfd28c"/>
+				<textElement textAlignment="Justified" markup="styled">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA["	Dalam rangka memenuhi ketentuan dalam Pasal 14 huruf I Peraturan Dewan Gubernur Bank Indonesia No. 17/6/PDG/2017 tanggal 18 Agustus 2017 tentang Peraturan Dana Pensiun dari Dana pensiun Bank Indonesia, bersama ini kami mohon bantuan Saudara untuk menyampaikan Asli Keputusan Pengurus DAPENBI "+($F{NO_SK_DAPENBI} == null ? "-" : $F{NO_SK_DAPENBI})+" tanggal "+($F{TGL_SK_DAPENBI} == null ? "-" : $F{TGL_SK_DAPENBI})+" atas nama <b>"+$F{NAMA_PESERTA}+" - NIP "+$F{NIP}+"</b> , sehubungan dengan penyesuaian PhDP karena penyesuain Gaji Pokok atau Merit Increase."]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="22" y="24" width="528" height="71" uuid="7d3a0423-96c7-4064-a2e0-0f72b765076d"/>
+				<textElement textAlignment="Justified" markup="styled">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA["	Adapun perubahan PhDP tersebut telah kami sesuaikan pada Penerima Manfaat Pensiun yang bersangkutan dan telah kami bayarkan bersamaan dengan pembayaran manfaat Pensiun bulan "+$F{PERIODE_MUTASI}+" Selain hal tersebut diatas bersama ini juga disampaikan satu set tembusan surat keputusan dimaksud untuk disampaikan ke Kantor Perwakilan Dalam Negeri Bank Indonesia "+($F{NAMA_KANTOR_BAYAR} == null ? "-" : $F{NAMA_KANTOR_BAYAR})]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="40" y="110" width="430" height="20" uuid="5204930c-402e-4a83-8d8d-ffa0e0c17f56"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Demikian agar maklum dan dapat diterima dengan baik.]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="154" splitType="Stretch">
+			<staticText>
+				<reportElement x="240" y="4" width="300" height="20" uuid="d4f89039-7e9f-4520-9054-744eb4adbf01"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="11" isBold="false"/>
+				</textElement>
+				<text><![CDATA[DIVISI KEPERSERTAAN DAN PELAYANAN PENSIUN]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="240" y="25" width="300" height="20" uuid="aba43ab8-082e-448c-93ff-20d4b4c52572"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11" isBold="false"/>
+				</textElement>
+				<text><![CDATA[DANA PENSIUN BANK INDONESIA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="240" y="98" width="300" height="20" uuid="a7d6536d-d72f-4c53-b054-90d5ca4f78f0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Kepala Divisi]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="134" width="550" height="20" isRemoveLineWhenBlank="true" uuid="085ce567-4f13-4d11-83af-071e3e491ace">
+					<printWhenExpression><![CDATA[new Boolean ($P{id_kantor_bayar}.equals("010")||($P{id_kantor_bayar}.equals("020")||($P{id_kantor_bayar}.equals("030")||($P{id_kantor_bayar}.equals("040")||($P{id_kantor_bayar}.equals("050")||($P{id_kantor_bayar}.equals("060")||($P{id_kantor_bayar}.equals("070")||($P{id_kantor_bayar}.equals("090")||($P{id_kantor_bayar}.equals("100")||($P{id_kantor_bayar}.equals("120")||($P{id_kantor_bayar}.equals("130")||($P{id_kantor_bayar}.equals("140")||($P{id_kantor_bayar}.equals("150")||($P{id_kantor_bayar}.equals("190")||($P{id_kantor_bayar}.equals("220")||($P{id_kantor_bayar}.equals("230")||($P{id_kantor_bayar}.equals("240")||($P{id_kantor_bayar}.equals("310")||($P{id_kantor_bayar}.equals("320")||($P{id_kantor_bayar}.equals("330")||($P{id_kantor_bayar}.equals("340")||($P{id_kantor_bayar}.equals("350")||($P{id_kantor_bayar}.equals("003")||($P{id_kantor_bayar}.equals("360")||($P{id_kantor_bayar}.equals("370")||($P{id_kantor_bayar}.equals("380")||($P{id_kantor_bayar}.equals("390")||($P{id_kantor_bayar}.equals("410")||($P{id_kantor_bayar}.equals("470")||($P{id_kantor_bayar}.equals("510")||($P{id_kantor_bayar}.equals("530")||($P{id_kantor_bayar}.equals("540")||($P{id_kantor_bayar}.equals("560")||($P{id_kantor_bayar}.equals("570")||($P{id_kantor_bayar}.equals("580")||($P{id_kantor_bayar}.equals("600")||($P{id_kantor_bayar}.equals("610")||($P{id_kantor_bayar}.equals("620")||($P{id_kantor_bayar}.equals("630")||($P{id_kantor_bayar}.equals("690")||($P{id_kantor_bayar}.equals("710")||($P{id_kantor_bayar}.equals("720")||($P{id_kantor_bayar}.equals("740")||($P{id_kantor_bayar}.equals("770")||($P{id_kantor_bayar}.equals("810")||($P{id_kantor_bayar}.equals("820")||($P{id_kantor_bayar}.equals("880"))))))))))))))))))))))))))))))))))))))))))))))))]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA["cc: Kantor Perwakilan  Dalam Negeri Bank Indonesia "+($F{NAMA_KANTOR_BAYAR} == null ?"-" : $F{NAMA_KANTOR_BAYAR})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="288" y="88" width="210" height="20" uuid="56914f14-4e1f-4441-bb7b-df2c32f80a51"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="11" isBold="true" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Achmad Mufit"]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnFooter>
+</jasperReport>

@@ -1,0 +1,3054 @@
+{{#layout}}
+
+{{#styles}}
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/datatables/media/css/dataTables.bootstrap4.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/googleapis/css/component.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/googleapis/css/googleapis.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/select2/css/select2.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css">
+<style>
+    .modal-dialog{
+        overflow-y: initial !important
+    }
+    .modal-body{
+        height: 75vh;
+        overflow-y: auto;
+    }
+</style>
+{{/styles}}
+
+{{#title}}
+Penerima Manfaat Pensiun NF - DKPP
+{{/title}}
+<div class="main-content">
+    <div class="content-view">
+
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#one" role="tab">Master Data Pensiun NF</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link " data-toggle="tab" href="#four" role="tab">Master Kurs</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#two" role="tab">Pembayaran Manfaat Pensiun NF</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#three" role="tab">Mutasi Hapus Penerima MP NF</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#hutang" role="tab">Hutang MP NF</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#six" role="tab">Pembayaran Hutang MP NF</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#her" role="tab">Her Registrasi MP NF</a>
+            </li>
+        </ul>
+
+        <div class="tab-content">
+            <div class="tab-pane active" id="one" role="tabpanel">
+                <div class="card">
+                    <div class="card-block">
+                        <table class="table table-bordered datatable responsive" id="tblMPensiunNf">
+                            <thead>
+                            <tr>
+                                <th>NIP</th>
+                                <th>Nama Peserta</th>
+                                <th>Tgl Lahir</th>
+                                <th>Jenis Kelamin</th>
+                                <th>Tgl Bekerja di BI</th>
+                                <th>Tgl Berhenti</th>
+                                <th>Nama Penerima MP</th>
+                                <th>MP (EURO)</th>
+                                <th>Tgl Meninggal</th>
+                                <th>
+                                    Action
+                                </th>
+                            </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane" id="six" role="tabpanel">
+                <div class="card">
+                    <div class="card-block">
+                        {{#isStaff}}
+                        <button class="btn btn-primary btn-sm" id="btn-add"><i class="fa fa-plus"></i> <span>Tambah Pembayaran Hutang MP NF</span></button>
+                        {{/isStaff}}
+                        <hr/>
+                        <div class="col-lg-12">
+                            <div class="row">
+                                <label for="example-text-input" class="col-sm-1">Periode Mutasi</label>
+                                <div class="col-xs-2">
+                                    <input class="form-control form-control-sm" disabled type="text" value="{{periodeMutasi}}" id="periodeMutasi">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-12"><hr/></div>
+                        <table class="table table-bordered table-striped" id="pembayaran-hutang-nf">
+                            <thead>
+                            <tr>
+                                <th>
+                                    Tanggal Bayar
+                                </th>
+                                <th>
+                                    Periode Mutasi
+                                </th>
+                                <th>
+                                    NIP
+                                </th>
+                                <th>
+                                    Nama Peserta
+                                </th>
+                                <th>
+                                    Nama Penerima MP
+                                </th>
+                                <th>
+                                    Nominal Pembayaran
+                                </th>
+                                <th>
+                                    Sudah Di Kirim ke PTR
+                                </th>
+                                <th>
+                                    Action
+                                </th>
+                            </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane" id="hutang" role="tabpanel">
+                <div class="card">
+                    <div class="card-block">
+                        <div class="col-lg-12">
+                            <div class="row">
+                                <label for="example-text-input" class="col-sm-1">Periode Mutasi</label>
+                                <div class="col-xs-2">
+                                    <input class="form-control form-control-sm" disabled type="text" value="{{periodeMutasi}}" id="periodeMutasi">
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <hr/>
+                        <table class="table table-bordered table-striped " id="hutang-data">
+                            <thead>
+                            <tr>
+                                <th>
+                                    Periode Mutasi
+                                </th>
+                                <th>
+                                    NIP
+                                </th>
+                                <th>
+                                    Nama Peserta
+                                </th>
+                                <th>
+                                    Nama Penerima MP
+                                </th>
+                                <th>
+                                    Saldo Hutang
+                                </th>
+                            </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="tab-pane" id="two" role="tabpanel">
+                {{^isPejabat}}
+                <div class="card">
+                    <div class="card-block">
+                        <div class="row">
+                            <label for="pembMPNFPeriodeMutasi" class="col-xs-1">Periode Mutasi</label>
+                            <div class="col-xs-1">
+                                <input class="form-control form-control-sm" type="text" value="" id="pembMPNFPeriodeMutasi">
+                            </div>
+                            <div class="col-xs-1">
+                                <a class="btn btn-primary btn-sm" onclick="prosesPembayaranMPNF()" ><i class="fa fa-edit"></i> <span>Proses</span></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {{/isPejabat}}
+                <div class="card">
+                    <div class="card-block">
+                        <table class="table table-bordered datatable2 " id="tblPembayaranMpNf">
+                            <thead>
+                            <tr>
+                                <th>
+                                    Tanggal Mutasi
+                                </th>
+                                <th>
+                                    Periode Mutasi
+                                </th>
+                                <th>
+                                    NIP Peserta
+                                </th>
+                                <th>
+                                    Nama Peserta
+                                </th>
+                                `  <th>
+                                Nama Penerima MP
+                            </th>
+                                <th>
+                                    MP (EURO)
+                                </th>
+                                <th>
+                                    MP (IDR)
+                                </th>
+                                <th>
+                                    Status Her Registrasi
+                                </th>
+                                <th>
+                                    Status Validasi
+                                </th>
+                                <th>
+                                    Action
+                                </th>
+                            </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane" id="three" role="tabpanel">
+                <div class="card">
+                    <div class="card-block">
+                        <div class="col-lg-12">
+                            {{#isStaff}}
+                            <div class="row">
+                                <button class="btn btn-primary btn-sm" data-toggle="modal" onclick="addMutasiHapusPenerimaMpNf()"><i class="fa fa-plus"></i> <span>Tambah Data Mutasi</span></button>
+                                <hr/>
+                                <label for="tab3PeriodeMutasi" class="col-sm-1">Periode Mutasi</label>
+                                <div class="col-xs-2">
+                                    <input class="form-control form-control-sm" disabled type="text" value="" id="tab3PeriodeMutasi">
+                                </div>
+                            </div>
+                            {{/isStaff}}
+                        </div>
+                        <div class="col-lg-12"><hr/></div>
+                        <table class="table table-bordered datatable3 responsive" id="tblMutasiHapusPenerimaMpNf">
+                            <thead>
+                            <tr>
+                                <th>
+                                    Tanggal Mutasi
+                                </th>
+                                <th>
+                                    Periode Mutasi
+                                </th>
+                                <th>
+                                    NIP
+                                </th>
+                                <th>
+                                    Nama Peserta
+                                </th>
+                                <th>
+                                    Nama Penerima
+                                </th>
+                                <th>
+                                    Tanggal Meninggal
+                                </th>
+                                <th>
+                                    Status Bayar
+                                </th>
+                                <th>
+                                    User Stamp
+                                </th>
+                                <th>
+                                    Status Validasi
+                                </th>
+                                <th>
+                                    Action
+                                </th>
+                            </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane" id="four" role="tabpanel">
+                <div class="card">
+                    <div class="card-block">
+                        {{#isStaff}}<button class="btn btn-primary btn-sm" onclick="addKursMaster()"><i class="fa fa-plus"></i> <span>Tambah Master Kurs</span></button>{{/isStaff}}
+                        <hr/>
+                        <table class="table table-bordered" id="tblKurs">
+                            <thead>
+                            <tr>
+                                <th>
+                                    No
+                                </th>
+                                <th>
+                                    Periode Mutasi
+                                </th>
+                                <th>
+                                    Kurs Euro
+                                </th>
+                                <th>
+                                    Kurs Rupiah
+                                </th>
+                                <th>
+                                    Action
+                                </th>
+                            </tr>
+                            </thead>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+            <div class="tab-pane" id="her" role="tabpanel">
+                <div class="card">
+                    {{#isStaff}}
+                    <div class="card-block">
+                        <div class="row">
+                            <label for="parTahunHer" class="col-xs-1">Tahun Her Registrasi</label>
+                            <div class="col-xs-1">
+                                <input class="form-control form-control-sm" type="text" value="{{tahunHer}}" id="parTahunHer">
+                                <input class="form-control form-control-sm" type="hidden" value="{{userName}}" id="userName">
+                                <input class="form-control form-control-sm" type="hidden" value="{{compName}}" id="compName">
+                            </div>
+                            <div class="col-xs-1">
+                                <button class="btn btn-primary btn-sm" id="btnProses"><i class="fa fa-edit"></i> <span>Proses</span></button>
+                            </div>
+                        </div>
+                    </div>
+                    {{/isStaff}}
+                </div>
+                <div class="card">
+                    <div class="card-block">
+                        <table class="table table-bordered" id="tb-her">
+                            <thead>
+                            <tr>
+                                <th>
+                                    Tahun Her Registrasi
+                                </th>
+                                <th>
+                                    Status Her Registrasi
+                                </th>
+                                <th>
+                                    Total Pensiunan
+                                </th>
+                                <th>
+                                    Action
+                                </th>
+                            </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{{#modal}}
+<!-- Modal demos -->
+<div class="modal fade bd-example-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="MasterDataPensiunNfModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title small bold" id="">Master Data Penerima Manfaat Pensiun NF</h4>
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="col-lg-6">
+                        <small class="bold">Data Peserta</small>
+                    </div>
+                    <div class="col-lg-6">
+                        <small class="bold">Data Penerima MP</small>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="row">
+                            <label for="example-text-input" class="col-sm-5">NIP-Nama Peserta</label>
+
+                            <div class="col-xs-7">
+                                <input class="form-control form-control-sm" disabled type="text"  value="" id="nipNamaPeserta">
+                                <input type="hidden" value="" name="nip" id="nip">
+                                <input type="hidden" value="" name="namaPeserta" id="namaPeserta">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label for="example-text-input" class="col-sm-5">Jenis Kelamin</label>
+
+                            <div class="col-xs-7">
+                                <input class="form-control form-control-sm" type="hidden" value="" name="jenisKelamin" id="jenisKelamin">
+                                <input class="form-control form-control-sm" type="text" id="jenisKelaminCaption" value="" readonly="readonly">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label for="example-text-input" class="col-sm-5">Tempat dan Tanggal Lahir</label>
+
+                            <div class="col-xs-3">
+                                <input class="form-control form-control-sm" type="text" value="" name="tempatLahir" id="tempatLahir">
+                            </div>
+                            <div class="col-xs-4">
+                                <input class="form-control form-control-sm" type="text" value="" name="tglLahir" id="tglLahir" data-provide="datepicker" data-date-format="dd/mm/yyyy">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label for="example-text-input" class="col-sm-5">Tempat dan Tanggal Menikah</label>
+
+                            <div class="col-xs-3">
+                                <input class="form-control form-control-sm" type="text" value="" name="tempatMenikah" id="tempatMenikah">
+                            </div>
+                            <div class="col-xs-4">
+                                <input class="form-control form-control-sm" type="text" value="" name="tglMenikah" id="tglMenikah" data-provide="datepicker" data-date-format="dd/mm/yyyy">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label for="example-text-input" class="col-sm-5">Tanggal Mulai Bekerja</label>
+
+                            <div class="col-xs-7">
+                                <input class="form-control form-control-sm" type="text" value="" name="tglMulaiKerja" id="tglMulaiKerja" readonly="readonly">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label for="example-text-input" class="col-sm-5">Tanggal Berhenti Bekerja</label>
+
+                            <div class="col-xs-7">
+                                <input class="form-control form-control-sm" type="text" value="" disabled name="tglBerhentiKerja" id="tglBerhentiKerja">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="row">
+                            <label for="example-text-input" class="col-sm-5">Nama Penerima MP</label>
+
+                            <div class="col-xs-7">
+                                <input readonly="readonly" class="form-control form-control-sm" type="text" value="" name="namaPenerimaMp" id="namaPenerimaMp">
+                                <input class="form-control form-control-sm" type="hidden" value="" name="idPenerimaMp" id="idPenerimaMp">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label for="example-text-input" class="col-sm-5">Jenis Kelamin</label>
+
+                            <div class="col-xs-7">
+                                <input type="text" class="form-control form-control-sm" id="jenisKelaminPenerimaMpCaption" readonly="readonly">
+                                <input type="hidden" name="jenisKelaminPenerimaMp" id="jenisKelaminPenerimaMp">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label for="example-text-input" class="col-sm-5">Tanggal Lahir</label>
+
+                            <div class="col-xs-7">
+                                <input class="form-control form-control-sm" type="text" value="" name="tglLahirPenerimaMp" id="tglLahirPenerimaMp" data-provide="datepicker" data-date-format="dd/mm/yyyy">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label for="example-text-input" class="col-sm-5">Tanggal Meninggal</label>
+
+                            <div class="col-xs-7">
+                                <input class="form-control form-control-sm" type="text" value="" readonly="readonly" name="tglMeninggal" id="tglMeninggal" data-provide="datepicker" data-date-format="dd/mm/yyyy">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label for="example-text-input" class="col-sm-5">MP (EURO)</label>
+
+                            <div class="col-xs-7">
+                                <input class="form-control form-control-sm" type="text" value="" disabled name="mpBulananEuro" id="mpBulananEuro">
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <label for="example-text-input" class="col-sm-5">Status Bayar</label>
+
+                            <div class="col-xs-7">
+                                <label class="radio-inline">
+                                    <input type="radio"  name="inlineRadioOptions" disabled id="idStatusBayar1" data-name="1"/>
+                                    Dibayar
+                                </label>
+
+                                <label class="radio-inline">
+                                    <input type="radio"  name="inlineRadioOptions" disabled id="idStatusBayar6" data-name="0"/>
+                                    Berhenti
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-lg-6 small bold">Alamat</div>
+                    <div class="col-lg-6 small bold">
+                        Informasi Rekening
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="row">
+                            <label for="example-text-input" class="col-sm-5">Alamat</label>
+
+                            <div class="col-xs-7">
+								<textarea readonly="readonly" class="form-control" id="alamat" rows="3"></textarea>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label for="example-text-input" class="col-sm-5">Kode Pos</label>
+
+                            <div class="col-xs-7">
+                                <input readonly="readonly" class="form-control form-control-sm" type="text" value="" name="kodePos" id="kodePos">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label for="example-text-input" class="col-sm-5">Kota</label>
+
+                            <div class="col-xs-7">
+                                <input readonly="readonly" class="form-control form-control-sm" type="text" value="" name="kota" id="kota">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="row">
+                            <label for="example-text-input" class="col-sm-5">Nomor Rekening</label>
+
+                            <div class="col-xs-7">
+                                <input class="form-control form-control-sm" type="text" value="" name="nomorRekening" id="nomorRekening">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label for="example-text-input" class="col-sm-5">Nama Bank</label>
+
+                            <div class="col-xs-7">
+                                <select id="idBankNf" class="forom-control form-control-sm">
+                                    <option></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label for="example-text-input" class="col-sm-5">Nama Pada Rekening</label>
+
+                            <div class="col-xs-7">
+                                <input class="form-control form-control-sm" type="text" value="" name="namaRekening" id="namaRekening">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label for="example-text-input" class="col-sm-5">SWIFT CODE</label>
+
+                            <div class="col-xs-7">
+                                <input class="form-control form-control-sm" type="text" value="" name="swiftCode" id="swiftCode">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label for="example-text-input" class="col-sm-5">IBAN CODE</label>
+
+                            <div class="col-xs-7">
+                                <input class="form-control form-control-sm" type="text" value="" name="ibanCode" id="ibanCode">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label for="example-text-input" class="col-sm-5">PERS NS</label>
+
+                            <div class="col-xs-7">
+                                <input class="form-control form-control-sm" type="text" value="" name="persNs" id="persNs">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+
+                    <div class="col-lg-6 small bold">Data Keluarga</div>
+                    <div class="col-lg-6 small bold">
+                        <button class="btn btn-primary btn-sm pull-right" onclick="$('#formDataKeluargaNf').trigger('reset');$('#idKeluarga').val('')" data-toggle="collapse" data-target="#collapseFormKeluarga" aria-expanded="false" aria-controls="collapseFormKeluarga"> <i class="fa fa-plus"></i> <span>Tambah</span></button>
+                    </div>
+                    <div class="col-lg-6"></div>
+                    <div class="col-lg-6 collapse" id="collapseFormKeluarga">
+                        <form id="formDataKeluargaNf">
+                            <div class="card card-block">
+                                <p class="bold">Data Keluarga</p>
+                                <div class="row">
+                                    <label for="example-text-input" class="col-sm-5">Nama Lengkap</label>
+
+                                    <div class="col-xs-7">
+                                        <input type="hidden" id="idKeluarga" />
+                                        <input class="form-control form-control-sm" type="text" value="" name="nama" id="nama">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <label for="example-text-input" class="col-sm-5">Jenis Kelamin</label>
+
+                                    <div class="col-xs-7">
+                                        <select class="form-control form-control-sm" name="jenisKelaminKeluarga" id="jenisKelaminKeluarga" required>
+                                            {{#gender}}
+                                            <option value="{{id}}">{{text}}</option>
+                                            {{/gender}}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <label for="example-text-input" class="col-sm-5">Hubungan Keluarga</label>
+                                    <div class="col-xs-7">
+                                        <select class="form-control form-control-sm" name="hubunganKeluarga" id="hubunganKeluarga" required></select>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <label for="example-text-input" class="col-sm-5">Tanggal Lahir</label>
+
+                                    <div class="col-xs-7">
+                                        <input class="form-control form-control-sm" type="text" value="" name="tglLahir" id="tglLahirKeluarga" data-provide="datepicker" data-date-format="dd/mm/yyyy">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-5"></div>
+                                    <div class="col-xs-7"> <button type="button" class="btn btn-primary btn-sm pull-right" onclick="saveKeluargaNf()">Save</button></div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+
+                </div>
+                <div class="row">
+                    <div class="card-block">
+                        <div class="scroll-y scroll" style="height: 100px;overflow:auto; ">
+                            <div class="table-responsive">
+                                <table class="table table-sm" id="tblMKeluargaPensiunNf">
+                                    <thead>
+                                    <tr>
+                                        <th>
+                                            No.
+                                        </th>
+                                        <th>
+                                            Nama Lengkap
+                                        </th>
+                                        <th>
+                                            Jenis Kelamin
+                                        </th>
+
+                                        <th>
+                                            Hubungan Keluarga
+                                        </th>
+                                        <th>
+                                            Tgl Lahir
+                                        </th>
+                                        <th>
+                                            Action
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="row">
+                            <label for="example-text-input" class="col-sm-5">User Stamp</label>
+
+                            <div class="col-xs-7">
+                                <input class="form-control form-control-sm" disabled  type="text"  value="" id="userStamp">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary btn-sm" id="btnSavePensiunNf">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Kurs -->
+<div class="modal fade bd-example-modal2" tabindex="-1" role="dialog" aria-labelledby="modalKurs" aria-hidden="true" id="modalKurs">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title small bold" id="modalKursLabel">Form Kurs</h4>
+            </div>
+            <div class="modal-body" style="height: 25vh; !important;">
+                <div class="row">
+                    <form id="formKurs">
+                        <div class="col-lg-6">
+                            <div class="row">
+                                <label for="example-date-input" class="col-sm-6 bold">Periode Mutasi</label>
+
+                                <div class="col-xs-6">
+                                    <input class="form-control form-control-sm" disabled type="text" value="{{periodeMutasi}}" id="periodeMutasi" >
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+                                <label for="example-date-input" class="col-sm-6 bold">Kurs Euro</label>
+
+                                <div class="col-xs-6">
+                                    <input class="form-control form-control-sm" disabled type="text" value="1" id="kursEuro" >
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+                                <label for="example-date-input" class="col-sm-6 bold">Kurs Rupiah</label>
+
+                                <div class="col-xs-6">
+                                    <input class="form-control form-control-sm" type="text" value="" id="kursRupiah" >
+                                </div>
+
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary btn-sm" id="btnSaveKurs">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal Kurs -->
+
+<div class="modal fade bd-example-modal2" role="dialog" aria-labelledby="myLargeModalLabel" id="modalHapusPenerimaMpNf" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title small bold" id="myModalLabel">Mutasi Hapus Penerima MP NF</h4>
+            </div>
+            <div class="modal-body">
+                <form id="formMutHapus">
+                    <div class="row">
+
+                        <div class="col-lg-6">
+                            <div class="row">
+                                <label for="mutHapusTglMutasi" class="col-sm-6 bold">Tanggal Mutasi</label>
+
+                                <div class="col-xs-6">
+                                    <input class="form-control form-control-sm" disabled type="text" value="" id="mutHapusTglMutasi" disabled>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="row">
+                                <label for="mutHapusPeriodeMutasi" class="col-sm-6 bold">Periode Mutasi</label>
+
+                                <div class="col-xs-6">
+                                    <input class="form-control form-control-sm" disabled type="text" value="" id="mutHapusPeriodeMutasi" >
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-lg-12"><hr/></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <small class="bold">Data Peserta</small>
+                        </div>
+                        <div class="col-lg-6">
+                            <small class="bold">Data Penerima MP</small>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="row">
+                                <label for="mutHapusNip" class="col-sm-6">NIP</label>
+
+                                <div class="col-xs-6 mutHapusInsert">
+                                    <select name="mutHapusNip" id="mutHapusNip" class="form-control form-control-sm">
+                                        <option></option>
+                                    </select>
+                                </div>
+
+                                <div class="col-xs-6 mutHapusEdit">
+                                    <input type="text" class="form-control form-control-sm" disabled value="" id="mutHapusNipEdit" />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label for="mutHapusNamaPeserta" class="col-sm-6">Nama Peserta</label>
+
+                                <div class="col-xs-6">
+                                    <input class="form-control form-control-sm" disabled type="text"  value="" id="mutHapusNamaPeserta">
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="row">
+                                <label for="mutHapusIdNamaPenerimaMp" class="col-sm-6">ID-Nama Penerima MP</label>
+
+                                <div class="col-xs-6">
+                                    <input class="form-control form-control-sm" disabled type="text"  value="" id="mutHapusIdNamaPenerimaMp">
+                                    <input type="hidden" id="mutHapusIdPenerimaMp" />
+                                    <input type="hidden" id="mutHapusNamaPenerimaMp" />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label for="mutHapusTglMeninggal" class="col-sm-6">Tanggal Meninggal</label>
+
+                                <div class="col-xs-6">
+                                    <input class="form-control form-control-sm"  type="text" data-provide="datepicker" data-date-format="dd/mm/yyyy" value="" id="mutHapusTglMeninggal">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label for="mutHapusStatusBayar" class="col-sm-6">Status Bayar</label>
+
+                                <div class="col-xs-6">
+                                    <label class="radio-inline">
+                                        <input type="radio"  name="mutHapusStatusBayar"  id="mutHapusStatusBayar1" value="1"/>
+                                        Dibayar
+                                    </label>
+
+                                    <label class="radio-inline">
+                                        <input type="radio"  name="mutHapusStatusBayar"  id="mutHapusStatusBayar6" value="6"/>
+                                        Berhenti
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <br>
+
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="row">
+
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="row">
+                                <label for="mutHapusCatatan" class="col-sm-6">Catatan</label>
+
+                                <div class="col-xs-6">
+                                    <textarea class="form-control  form-control-sm" id="mutHapusCatatan" rows="3"></textarea>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr/>
+                    <div class="row mutHapusEdit">
+                        <div class="col-lg-12">
+                            <label class="radio-inline">
+                                <input type="radio" name="mutHapusIdValidasi" id="mutHapusIdValidasi1" value="1" data-name="Belum Validasi" />
+                                Belum Validasi
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="mutHapusIdValidasi" id="mutHapusIdValidasi2" value="2" data-name="Sudah Validasi"/>
+                                Sudah Validasi
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="mutHapusIdValidasi" id="mutHapusIdValidasi3" value="3" data-name="Batal Koreksi"/>
+                                Batal Koreksi
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="mutHapusIdValidasi" id="mutHapusIdValidasi7" value="7" data-name="Batal Validasi"/>
+                                Batal Validasi
+                            </label>
+                            <input type="hidden" id="mutHapusIdMutasiNf" />
+                        </div>
+                    </div>
+                    <div class="row mutHapusEdit">
+                        <div class="col-lg-6">
+                            <div class="row">
+                                <label for="mutHapusUserStamp" class="col-sm-6">User Stamp</label>
+
+                                <div class="col-xs-6">
+                                    <input class="form-control form-control-sm" disabled="" type="text" value="" id="mutHapusUserStamp">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="row">
+                                <label for="mutHapusUserValidasi" class="col-sm-6">User Validasi</label>
+
+                                <div class="col-xs-6">
+                                    <input class="form-control form-control-sm" disabled="" type="text" value="" id="mutHapusUserValidasi">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm " data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary btn-sm mutHapusInsert" onclick="insertMutasiHapusPenerimaMpNf()">Save</button>
+                <button type="button" class="btn btn-primary btn-sm mutHapusEdit" onclick="updateMutasiHapusPenerimaMpNf()">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bd-example-modal4" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="modalPembayaranMpNf">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title small bold" id="myModalLabel">Pembayaran MP NF</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-lg-12" id="pembLabelInfoValidasi">
+                        <span class="tag tag-pill tag-info pull-right">Belum Validasi</span>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="row">
+                            <label for="pembTglMutasi" class="col-sm-6 bold">Tanggal Mutasi</label>
+
+                            <div class="col-xs-6">
+                                <input class="form-control form-control-sm" disabled type="text" value="" id="pembTglMutasi" disabled>
+                                <input type="hidden" id="pembIdPembayaran">
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="row">
+                            <label for="pembPeriodeMutasi" class="col-sm-6 bold">Periode Mutasi</label>
+
+                            <div class="col-xs-6">
+                                <input class="form-control form-control-sm" disabled type="text" value="" id="pembPeriodeMutasi" >
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-lg-12"><hr/></div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <small class="bold">Data Peserta</small>
+                    </div>
+                    <div class="col-lg-6">
+                        <small class="bold">Data Penerima MP</small>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="row">
+                            <label for="pembNip" class="col-sm-6">NIP</label>
+
+                            <div class="col-xs-6">
+                                <input class="form-control form-control-sm" disabled type="text"  value="" id="pembNip">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label for="pembNamaPeserta" class="col-sm-6">Nama Peserta</label>
+
+                            <div class="col-xs-6">
+                                <input class="form-control form-control-sm" disabled type="text"  value="" id="pembNamaPeserta">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="row">
+                            <label for="pembNamaPenerimaMp" class="col-sm-6">ID-Nama Penerima MP</label>
+
+                            <div class="col-xs-6">
+                                <input class="form-control form-control-sm" disabled type="text"  value="" id="pembNamaPenerimaMp">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label for="pembEuro" class="col-sm-6">MP (EURO)</label>
+                            <div class="col-xs-6">
+                                <input class="form-control form-control-sm" disabled type="text"  value="" id="pembEuro">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label for="pembIdr" class="col-sm-6">MP (IDR)</label>
+
+                            <div class="col-xs-6">
+                                <input class="form-control form-control-sm" disabled type="text"  value="" id="pembIdrCaption">
+                                <input class="form-control form-control-sm" disabled type="hidden"  value="" id="pembIdr">
+                            </div>
+                        </div>
+                        <DIV class="row">
+                            <div class="col-lg-12">
+                                <label class="radio-inline">
+                                    <input type="radio" name="pembStatusHer" id="pembStatusHer1" data-value="1"/>
+                                    Sudah Her Registrasi
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="pembStatusHer" id="pembStatusHer0" data-value="0"/>
+                                    Belum Her Registrasi
+                                </label>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <br>
+
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="row">
+
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="row">
+                            <label for="pembKeterangan" class="col-sm-6">Catatan</label>
+
+                            <div class="col-xs-6">
+									<textarea class="form-control  form-control-sm" id="pembKeterangan" rows="3"></textarea>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <hr/>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <label class="radio-inline">
+                            <input type="radio" name="idValidasi" id="idValidasi1" value="1" data-name="Belum Validasi" />
+                            Belum Validasi
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="idValidasi" id="idValidasi2" value="2" data-name="Sudah Validasi"/>
+                            Sudah Validasi
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="idValidasi" id="idValidasi3" value="3" data-name="Batal Koreksi"/>
+                            Batal Koreksi
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="idValidasi" id="idValidasi7" value="7" data-name="Batal Validasi"/>
+                            Batal Validasi
+                        </label>
+                        <input type="hidden" name="namaValidasi" id="namaValidasi"/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="row">
+                            <label for="pembUserStamp" class="col-sm-6">User Stamp</label>
+
+                            <div class="col-xs-6">
+                                <input class="form-control form-control-sm" disabled  type="text"  value="" id="pembUserStamp">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="row">
+                            <label for="pembUserValidasi" class="col-sm-6">User Validasi</label>
+
+                            <div class="col-xs-6">
+                                <input class="form-control form-control-sm" disabled  type="text"  value="" id="pembUserValidasi">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</a>
+                <a type="button" id="btnPembMpNfSave" class="btn btn-primary btn-sm" onclick="updatePembayaranMpNf()">Save</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="modal fade bd-example-modal-kurs" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title small bold" id="myModalLabel">Master Kurs</h4>
+                </div>
+                <div class="modal-body">
+
+                    <div class="row">
+
+                        <div class="col-lg-6">
+                            <div class="row">
+                                <label for="example-date-input" class="col-sm-6 bold">Periode Mutasi</label>
+
+                                <div class="col-xs-6">
+                                    <input class="form-control form-control-sm" disabled type="text" value="" id="example-text-input" >
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-lg-12"><hr/></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="row">
+                                <label for="example-text-input" class="col-sm-6">Kurs (EURO)</label>
+
+                                <div class="col-xs-6">
+                                    <input class="form-control form-control-sm"  type="text"  value="" id="example-text-input">
+                                </div>
+
+                            </div>
+                            <div class="row">
+                                <label for="example-text-input" class="col-sm-6">Kurs (Rupiah)</label>
+
+                                <div class="col-xs-6">
+                                    <input class="form-control form-control-sm"  type=""  value="" id="example-text-input">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary btn-sm">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade bd-example-modal-bayar2" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="modalPembayaranHutangMpNf">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title small bold" id="titleModalPembayaranMpNf">Pembayaran MP NF</h4>
+                </div>
+                <div class="modal-body">
+
+                    <div class="row">
+
+                        <div class="col-lg-6">
+                            <div class="row">
+                                <label for="PembMPTglMutasi" class="col-sm-6 bold">Tanggal Mutasi</label>
+
+                                <div class="col-xs-6">
+                                    <input class="form-control form-control-sm" disabled type="text" value="" id="PembMPTglMutasi" disabled>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="row">
+                                <label for="PembMPPeriodeMutasi" class="col-sm-6 bold">Periode Mutasi</label>
+
+                                <div class="col-xs-6">
+                                    <input class="form-control form-control-sm" disabled type="text" value="" id="PembMPPeriodeMutasi" >
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-lg-12"><hr/></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <small class="bold">Data Peserta</small>
+                        </div>
+                        <div class="col-lg-6">
+                            <small class="bold">Data Penerima MP</small>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="row">
+                                <label for="PembMPNip" class="col-sm-6">NIP</label>
+
+                                <div class="col-xs-4">
+                                    <input class="form-control form-control-sm" type="text"  value="" id="PembMPNip">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label for="PembMPNamaPeserta" class="col-sm-6">Nama Peserta</label>
+
+                                <div class="col-xs-6">
+                                    <input class="form-control form-control-sm" disabled type="text"  value="" id="PembMPNamaPeserta">
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="row">
+                                <label for="PembMPIdNamaPenerimaMp" class="col-sm-6">ID-Nama Penerima MP</label>
+
+                                <div class="col-xs-6">
+                                    <input class="form-control form-control-sm" disabled type="text"  value="" id="PembMPIdNamaPenerimaMp">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label for="PembMPEuro" class="col-sm-6">Nominal Pengembalian</label>
+
+                                <div class="col-xs-6">
+                                    <input class="form-control form-control-sm"  type="text"  value="" id="PembMPEuro">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <br>
+
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="row">
+                                <label for="example-date-input" class="col-sm-6">Kategori Catatan</label>
+
+                                <div class="col-xs-6">
+                                    <select class="form-control form-control-sm" id="exampleSelect1">
+                                        <option>
+                                            Mutasi karena ...
+                                        </option>
+                                        <option>
+                                            Lain-lain
+                                        </option></select>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="row">
+                                <label for="example-date-input" class="col-sm-6">Catatan</label>
+
+                                <div class="col-xs-6">
+										<textarea class="form-control  form-control-sm" id="exampleTextarea" rows="3">
+									</textarea>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <hr/>
+
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="row">
+                                <label for="example-text-input" class="col-sm-6">User Stamp</label>
+
+                                <div class="col-xs-6">
+                                    <input class="form-control form-control-sm" disabled  type="text"  value="" id="example-text-input">
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary btn-sm">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" role="dialog"  aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title small bold" id="myModalLabel">Pembayaran MP NF</h4>
+                </div>
+                <div class="modal-body">
+
+                    <div class="row">
+
+                        <div class="col-lg-6">
+                            <div class="row">
+                                <label for="example-date-input" class="col-sm-6 bold">Tanggal Mutasi</label>
+
+                                <div class="col-xs-6">
+                                    <input class="form-control form-control-sm" disabled type="text" value="" id="example-text-input" disabled>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="row">
+                                <label for="example-date-input" class="col-sm-6 bold">Periode Mutasi</label>
+
+                                <div class="col-xs-6">
+                                    <input class="form-control form-control-sm" disabled type="text" value="" id="example-text-input" >
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-lg-12"><hr/></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <small class="bold">Data Peserta</small>
+                        </div>
+                        <div class="col-lg-6">
+                            <small class="bold">Data Penerima MP</small>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="row">
+                                <label for="example-text-input" class="col-sm-6">NIP</label>
+
+                                <div class="col-xs-6">
+                                    <input class="form-control form-control-sm" disabled type="text"  value="" id="example-text-input">
+                                </div>
+
+                            </div>
+                            <div class="row">
+                                <label for="example-text-input" class="col-sm-6">Nama Peserta</label>
+
+                                <div class="col-xs-6">
+                                    <input class="form-control form-control-sm" disabled type="text"  value="" id="example-text-input">
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="row">
+                                <label for="example-text-input" class="col-sm-6">ID-Nama Penerima MP</label>
+
+                                <div class="col-xs-6">
+                                    <input class="form-control form-control-sm" disabled type="text"  value="" id="example-text-input">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label for="example-text-input" class="col-sm-6">Nominal Pengembalian</label>
+
+                                <div class="col-xs-6">
+                                    <input class="form-control form-control-sm"  type="text"  value="" id="example-text-input">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <br>
+
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="row">
+                                <label for="example-date-input" class="col-sm-6">Kategori Catatan</label>
+
+                                <div class="col-xs-6">
+                                    <select class="form-control form-control-sm" id="exampleSelect1">
+                                        <option>
+                                            Mutasi karena ...
+                                        </option>
+                                        <option>
+                                            Lain-lain
+                                        </option>
+                                    </select>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="row">
+                                <label for="example-date-input" class="col-sm-6">Catatan</label>
+
+                                <div class="col-xs-6">
+										<textarea class="form-control  form-control-sm" id="exampleTextarea" rows="3">
+										</textarea>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <hr/>
+
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="row">
+                                <label for="example-text-input" class="col-sm-6">User Stamp</label>
+
+                                <div class="col-xs-6">
+                                    <input class="form-control form-control-sm" disabled  type="text"  value="" id="example-text-input">
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary btn-sm">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal Edit -->
+    <div class="modal fade modal-hutang" tabindex="1" role="dialog"  aria-hidden="true" id="modalHutang">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">*</span>
+                    </button>
+                    <h4 class="modal-title small bold" id="myModalLabel">Pembayaran Hutang MP NF</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="row">
+                                <label for="tglBayar" class="col-sm-6 bold">Tanggal Mutasi</label>
+                                <div class="col-xs-6">
+                                    <input class="form-control form-control-sm" type="text" value="" id="tglBayar">
+                                    <input type="hidden" value="{{idBayarHutNf}}" name="idBayarHutNf" id="idBayarHutNf">
+                                    <input type="hidden" name="_csrf" value="{{_csrf.token}}" id="csrf"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="row">
+                                <label for="periodeBayar" class="col-sm-6 bold">Periode Mutasi</label>
+                                <div class="col-xs-6">
+                                    <input class="form-control form-control-sm" disabled type="text" value="" id="periodeBayar" >
+                                    <input type="hidden" value="{{periodeMutasi}}" id="periodeBayar">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-12"><hr/></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <small class="bold">Data Peserta</small>
+                        </div>
+                        <div class="col-lg-6">
+                            <small class="bold">Data Penerima MP</small>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="row">
+                                <label for="nip-peserta" class="col-sm-6">NIP</label>
+
+                                <div class="col-xs-6">
+                                    <input class="form-control form-control-sm" disabled type="text"  value="" name="nip-peserta" id="nip-peserta">
+                                </div>
+
+                            </div>
+                            <div class="row">
+                                <label for="nama-peserta" class="col-sm-6">Nama Peserta</label>
+
+                                <div class="col-xs-6">
+                                    <input class="form-control form-control-sm" disabled type="text"  value="" name="nama-peserta" id="nama-peserta">
+                                    <input type="hidden" value="{{namaPeserta}}" name="namaPeserta" id="namaPeserta">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="row">
+                                <label for="id-nama-penerima-mp" class="col-sm-6">ID-Nama Penerima MP</label>
+
+                                <div class="col-xs-6">
+                                    <input class="form-control form-control-sm" disabled type="text"  value="" id="id-nama-penerima-mp">
+                                    <input type="hidden" id="id-penerima-mp" value="{{idPenerimaMp}}" name="id-penerima-mp">
+                                    <input type="hidden" id="nama-penerima-mp" value="{{namaPenerimaMp}}" name="nama-penerima-mp">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label for="nominalPembayaran" class="col-sm-6">Nominal Pengembalian</label>
+
+                                <div class="col-xs-6">
+                                    <input class="form-control form-control-sm"  type="text"  value="" id="nominalPembayaran">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="row">
+                                <label for="keterangan" class="col-sm-3">Catatan</label>
+
+                                <div class="col-xs-9">
+								<textarea class="form-control  form-control-sm" id="keterangan" rows="3">
+							</textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr/>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="row">
+                                <label for="user-stamp" class="col-xs-3">User Stamp</label>
+                                <div class="col-xs-7">
+                                    <input class="form-control form-control-sm" type="text" value="" name="userStamp" id="user-stamp" disabled>
+                                    <input type="hidden" name="compName" id="compName">
+                                    <input type="hidden" name="userName" id="userName">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary btn-sm" id="btnUpdate">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+<!-- Modal Tambah -->
+<div class="modal fade modal-hutang" tabindex="1" role="dialog"  aria-hidden="true" id="addHutang">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="tambahHutang">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">*</span>
+                </button>
+                <h4 class="modal-title small bold" id="myModalLabel">Pembayaran Hutang MP NF</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="row">
+                            <label for="hutTglBayar" class="col-sm-6 bold">Tanggal Mutasi</label>
+                            <div class="col-xs-6">
+                                <input placeholder="dd-mm-yyyy" class="form-control form-control-sm text-sm" type="text" name="hutTglBayar" id="hutTglBayar" data-provide="datepicker" data-date-format="dd/mm/yyyy">
+                                <input type="hidden" name="hutIdBayar" id="hutIdBayar" value="{{idBayarHutNf}}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="row">
+                            <label for="hutPeriodeBayar" class="col-sm-6 bold">Periode Mutasi</label>
+                            <div class="col-xs-6">
+                                <input class="form-control form-control-sm" disabled type="text" value="" id="hutPeriodeBayar" >
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12"><hr/></div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <small class="bold">Data Peserta</small>
+                    </div>
+                    <div class="col-lg-6">
+                        <small class="bold">Data Penerima MP</small>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="row">
+                            <label for="example-text-input" class="col-sm-6">NIP</label>
+                            <input id="nip" type="hidden" name="nip">
+                            <div class="col-xs-6">
+                                <select name="nip" id="id-peserta-mp" required class="form-control form-control-sm" style="width: 100%">
+                                    <option></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label for="hut-nama-peserta" class="col-sm-6">Nama Peserta</label>
+
+                            <div class="col-xs-6">
+                                <input class="form-control form-control-sm" type="text" readonly name="hut-nama-peserta"  id="hut-nama-peserta">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="row">
+                            <label for="hutang-penerima" class="col-sm-6">ID-Nama Penerima MP</label>
+
+                            <div class="col-xs-6">
+                                <input class="form-control form-control-sm" disabled type="text"  value="" id="hutang-penerima" name="hutang-penerima">
+                                <input type="hidden" value="{{idPenerimaMp}}" name="hut-idPenerimaMp" id="hut-idPenerimaMp">
+                                <input type="hidden" value="{{namaPenerimaMp}}" name="hut-namaPenerimaMp" id="hut-namaPenerimaMp">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label for="hut-nominalPembayaran" class="col-sm-6">Nominal Pengembalian</label>
+
+                            <div class="col-xs-6">
+                                <input class="form-control form-control-sm"  type="text"  value="" id="hut-nominalPembayaran">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="row">
+                            <label for="hut-keterangan" class="col-sm-3">Catatan</label>
+
+                            <div class="col-xs-9">
+								<textarea class="form-control  form-control-sm" id="hut-keterangan" rows="3"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr/>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="row">
+                            <label for="user-stamp" class="col-xs-3">User Stamp</label>
+                            <div class="col-xs-7">
+                                <input class="form-control form-control-sm" type="text" value="" name="userStamp" id="hut-user-stamp" disabled>
+                                <input type="hidden" name="compName" id="hut-compName">
+                                <input type="hidden" name="userName" id="hut-userName">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary btn-sm" id="btn-addHutang">Save</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+    {{/modal}}
+{{#scripts}}
+<script src="{{contextPath}}/assets/vendor/datatables/media/js/jquery.dataTables.js"></script>
+<script src="{{contextPath}}/assets/vendor/datatables/media/js/dataTables.bootstrap4.js"></script>
+<script src="{{contextPath}}/assets/vendor/select2/js/select2.js"></script>
+<script src="{{contextPath}}/assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+<script src="{{contextPath}}/assets/vendor/jquery-validation/dist/jquery.validate.js"></script>
+<script src="{{contextPath}}/assets/vendor/numeral/numeral.min.js"></script>
+<script src="{{contextPath}}/assets/vendor/sweetalert/sweetalert.min.js"></script>
+<script type="text/javascript">
+    window.DkppGlobal = {};
+    window.DkppGlobal.isPejabat = {{isPejabat}};
+    window.DkppGlobal.isAdmin = {{isAdmin}};
+    window.DkppGlobal.isStaff = {{isStaff}};
+
+    const addMutasiHapusPenerimaMpNf = () => {
+        $('#formMutHapus').trigger("reset");
+        $.ajax({
+            url: '{{contextPath}}{{listPeriodeSetupParameter}}',
+            dataType: 'json',
+            method: 'GET',
+            success: (data)=>{
+                $('#mutHapusTglMutasi').val(data.tglMutasi.replace(/-/g, "/"));
+                $('#mutHapusPeriodeMutasi').val(data.periodeMutasi);
+            }
+        });
+
+        $.ajax({
+            url: '{{linkPenerimaMpNf}}',
+            dataType: 'json',
+            method: 'GET',
+            data: {
+                valueColumn: 'nip',
+                textColumn: "${nip} - ${namaPeserta}",
+                searchColumn: [
+                    'namaPeserta'
+                ],
+                includeObject: true
+            },
+            success: function(data){
+                $('#mutHapusNip').select2(
+                    {
+                        data: data,
+                        width: "100%",
+                        placeholder: 'Pilih Peserta'
+                    }
+                );
+
+                $('#mutHapusNip').on('change', (e) => {
+                    if ($(e.target).select2('data')){
+                        const data = $(e.target).select2('data')[0];
+                        if ($('#mutHapusNip').val() != '' && $('#mutHapusNip').val() != null ) {
+                            $("#mutHapusNip").val(data.dataProperties.nip);
+                            $('#mutHapusNamaPeserta').val(data.dataProperties.namaPeserta);
+                            $('#mutHapusIdNamaPenerimaMp').val(data.dataProperties.idPenerimaMp + " - " + data.dataProperties.namaPenerimaMp);
+                            $('#mutHapusIdPenerimaMp').val(data.dataProperties.idPenerimaMp);
+                            $('#mutHapusNamaPenerimaMp').val(data.dataProperties.namaPenerimaMp);
+
+                        }
+                    }
+                });
+            }
+        });
+
+        $('.mutHapusInsert').show();
+        $('.mutHapusEdit').hide();
+        $('#modalHapusPenerimaMpNf').modal('show');
+    };
+
+    const select2IdBankNf = () => {
+
+    };
+
+    const editMutasiHapusPenerimaMpNf = (row) => {
+        $('#formMutHapus').trigger("reset");
+        $.ajax({
+            url: '{{contextPath}}{{listPeriodeSetupParameter}}',
+            dataType: 'json',
+            method: 'GET',
+            success: (data)=>{
+                $('#mutHapusTglMutasi').val(data.tglMutasi.replace(/-/g, "/"));
+                $('#mutHapusPeriodeMutasi').val(data.periodeMutasi);
+            }
+        });
+        $('#mutHapusIdMutasiNf').val(row.idMutasiNf);
+        $('#mutHapusIdPenerimaMp').val(row.idPenerimaMp);
+        $('#mutHapusNamaPenerimaMp').val(row.namaPenerimaMp);
+        $('#mutHapusNamaPeserta').val(row.namaPeserta);
+        $('#mutHapusCatatan').val(row.keterangan);
+        $('#mutHapusIdNamaPenerimaMp').val(row.idPenerimaMp + " - " + row.namaPenerimaMp);
+        $('#mutHapusNipEdit').val(row.nip);
+        $('#mutHapusIdMutasi').val(row.idMutasiNf);
+        $('#mutHapusTglMeninggal').val(fillDateField(row.tglMeninggal));
+        if(row.idStatusBayar != undefined)
+            $('#mutHapusStatusBayar' + row.idStatusBayar).prop('checked', 'checked');
+        $('.mutHapusInsert').hide();
+        $('.mutHapusEdit').show();
+
+        $('[name="mutHapusIdValidasi"]').attr('disabled', 'disabled');
+        if(window.DkppGlobal.isPejabat == true) {
+            $('#mutHapusIdValidasi1').removeAttr('disabled');
+            $('#mutHapusIdValidasi2').removeAttr('disabled');
+            $('#mutHapusIdValidasi3').removeAttr('disabled');
+            $('#mutHapusIdValidasi7').removeAttr('disabled');
+        } else if (window.DkppGlobal.isStaff == true) {
+            $('#mutHapusIdValidasi1').removeAttr('disabled');
+            $('#mutHapusIdValidasi3').removeAttr('disabled');
+        }
+        if(row.idValidasi != undefined){
+            $('#mutHapusIdValidasi' + row.idValidasi).prop("checked", "checked");
+        }
+        $('#mutHapusUserStamp').val(row.userStamp);
+        $('#mutHapusUserValidasi').val('{{username}}');
+        $('#modalHapusPenerimaMpNf').modal('show');
+    };
+
+    const updateMutasiHapusPenerimaMpNf = () => {
+        let params={
+            parRoleId: null,
+            parCompName: null,
+            parUserName: null,
+            parPeriodeMutasi: $('#mutHapusPeriodeMutasi').val(),
+            parTglMutasi: $('#mutHapusTglMutasi').val(),
+            parIdMutasi: $('#mutHapusIdMutasiNf').val(),
+            parNip: $('#mutHapusNipEdit').val(),
+            parNamaPeserta: $('#mutHapusNamaPeserta').val(),
+            parIdPenerimaMp: $('#mutHapusIdPenerimaMp').val(),
+            parNamaPenerimaMp: $('#mutHapusNamaPenerimaMp').val(),
+            parTglMeninggal: $('#mutHapusTglMeninggal').val(),
+            parKeterangan: $('#mutHapusCatatan').val(),
+            parIdValidasi: $( "[name='mutHapusIdValidasi']:checked" ).val() == undefined ? 1 : $( "[name='mutHapusIdValidasi']:checked" ).val(),
+            parIdStatusBayar: $( "[name='mutHapusStatusBayar']:checked" ).val() == undefined ? 1 : $( "[name='mutHapusStatusBayar']:checked" ).val(),
+            parNamaValidasi: $( "[name='mutHapusIdValidasi']:checked" ).data('name') == undefined ? "Belum Validasi" : $( "[name='mutHapusIdValidasi']:checked" ).data('name'),
+            _csrf: '{{_csrf.token}}'
+        };
+
+        $('#formMutHapus').validate();
+        $('#mutHapusTglMeninggal').rules('add', {
+            required: true,
+            messages: {
+                required: 'Tanggal meninggal harus diisi.'
+            }
+        });
+
+        let validForm = $('#formMutHapus').valid();
+        if(validForm){
+            $.ajax({
+                url: '{{linkInsertMutasiHapus}}',
+                method: 'POST',
+                data: params,
+                success: (response) => {
+                    swal({title: "Berhasil", text: response.message, icon: "success", button: "OK"})
+                        .then(()=>{
+                            $('#tblMutasiHapusPenerimaMpNf').DataTable().ajax.reload();
+                            $('#modalHapusPenerimaMpNf').modal('hide');
+                        });
+                },
+                statusCode: {
+                    500: function(response){
+                        swal({title: 'Gagal', text: response.responseJSON.message, icon: 'error', button: 'OK'})
+                    }
+                }
+            });
+        }
+
+
+    };
+
+    const insertMutasiHapusPenerimaMpNf = () => {
+        let params={
+            parRoleId: null,
+            parCompName: null,
+            parUserName: null,
+            parPeriodeMutasi: $('#mutHapusPeriodeMutasi').val(),
+            parTglMutasi: $('#mutHapusTglMutasi').val(),
+            parIdMutasi: null,
+            parNip: $('#mutHapusNip').val(),
+            parNamaPeserta: $('#mutHapusNamaPeserta').val(),
+            parIdPenerimaMp: $('#mutHapusIdPenerimaMp').val(),
+            parNamaPenerimaMp: $('#mutHapusNamaPenerimaMp').val(),
+            parTglMeninggal: $('#mutHapusTglMeninggal').val(),
+            parKeterangan: $('#mutHapusCatatan').val(),
+            parIdValidasi: $('#mutHapusIdValidasi').val(),
+            parIdStatusBayar: $( "[name='mutHapusStatusBayar']:checked" ).val() == undefined ? 1 : $( "[name='mutHapusStatusBayar']:checked" ).val(),
+            parNamaValidasi: $('#mutHapusNamaValidasi').val(),
+            _csrf: '{{_csrf.token}}'
+        };
+
+        $.ajax({
+            url: '{{linkInsertMutasiHapus}}',
+            method: 'POST',
+            data: params,
+            success: (response) => {
+                swal({title: "Berhasil", text: response.message, icon: "success", button: "OK"})
+                    .then(()=>{
+                        $('#tblMutasiHapusPenerimaMpNf').DataTable().ajax.reload();
+                        $('#modalHapusPenerimaMpNf').modal('hide');
+                    });
+            }
+        });
+
+
+        $('#modalHapusPenerimaMpNf').modal('hide');
+    };
+
+    //Function
+    function addKursMaster(){
+        $('#btnSaveKurs').show();
+        $.ajax({
+            url: '{{checkKursCurrentPeriode}}/' + $('#periodeMutasi').val(),
+            method: 'GET',
+            success: function(response){
+                if(response.status == 'failed'){
+                    swal({title: "Peringatan", text: response.message, icon: "warning", button: "OK"});
+                    $('#btnSaveKurs').hide();
+                }
+            }
+        });
+        $('#formKurs').trigger('reset');
+        $('#modalKurs').modal('show');
+    }
+
+    function editKurs(row){
+        $('#btnSaveKurs').hide();
+        $('#periodeMutasi').val(row.periodeMutasi);
+        $('#kursEuro').val(row.kursEuro);
+        $('#kursRupiah').val(row.kursRupiah);
+
+        $('#modalKurs').modal('show');
+    }
+
+    function displayEditModalPensiunNf(data){
+        var row = data;
+        $('#collapseFormKeluarga').collapse('hide');
+
+        $('#nipNamaPeserta').val(data.nip + ' - ' + data.namaPeserta);
+        $('#nip').val(data.nip);
+        $('#namaPeserta').val(data.namaPeserta);
+        $('#tempatLahir').val(data.tempatLahir);
+        $('#tglLahir').val((data.tglLahir != '' || data.tglLahir != undefined || data.tglLahir != null)?fillDateField(data.tglLahir):'');
+        $('#jenisKelamin').val(data.jenisKelamin);
+        $('#jenisKelaminCaption').val( (data.jenisKelamin == 'P' ? 'Pria' : 'Wanita') );
+        $('#tempatMenikah').val(data.tempatMenikah);
+        $('#tglMenikah').val((data.tglMenikah != '' || data.tglMenikah != undefined || data.tglMenikah != null)?fillDateField(data.tglMenikah):'');
+        $('#tglMulaiKerja').val((data.tglMulaiKerja != '' || data.tglMulaiKerja != null || data.tglMulaiKerja != undefined)?fillDateField(data.tglMulaiKerja):'');
+        $('#tglBerhentiKerja').val((data.tglBerhentiKerja != '' || data.tglBerhentiKerja != undefined || data.tglBerhentiKerja != null)? fillDateField(data.tglBerhentiKerja):'');
+        $('#alamat').val(data.alamat);
+        $('#kota').val(data.kota);
+        $('#kodePos').val(data.kodePos);
+        $('#idPenerimaMp').val(data.idPenerimaMp);
+        $('#namaPenerimaMp').val(data.namaPenerimaMp);
+        $('#jenisKelaminPenerimaMp').val(data.jenisKelaminPenerimaMp);
+        $('#jenisKelaminPenerimaMpCaption').val(data.jenisKelaminPenerimaMp == undefined ? '-' : (data.jenisKelaminPenerimaMp == 'W')? 'Wanita':'Pria' );
+        $('#tglLahirPenerimaMp').val((data.tglLahirPenerimaMp != '' || data.tglLahirPenerimaMp != null || data.tglLahirPenerimaMp != undefined)?fillDateField(data.tglLahirPenerimaMp):'');
+        $('#tglMenikahPenerimaMp').val((data.tglMenikahPenerimaMp != '' || data.tglMenikahPenerimaMp != null || data.tglMenikahPenerimaMp != undefined )?fillDateField(data.tglMenikahPenerimaMp):'');
+        $('#mpBulananEuro').val(data.mpBulananEuro);
+        $('#idStatusBayar').val(data.idStatusBayar);
+        $('#nomorRekening').val(data.nomorRekening);
+        $('#namaRekening').val(data.namaRekening);
+        $('#idBankNf').val(data.idBankNf);
+        $('#swiftCode').val(data.swiftCode);
+        $('#ibanCode').val(data.ibanCode);
+        $('#keteranganHenti').val(data.keteranganHenti);
+        $('#userStamp').val(data.userStamp);
+        if(data.tglMeninggal != '' && data.tglMeninggal != undefined && data.tglMeninggal != null)
+            $('#tglMeninggal').val(fillDateField(data.tglMeninggal));
+        $('#persNs').val(data.persNs);
+        $('#createdAt').val(data.createdAt);
+        $('#updatedAt').val(data.updatedAt);
+        $('#isActive').val(data.isActive);
+        $('#MasterDataPensiunNfModal').modal('show');
+        $('#idStatusBayar' + data.idStatusBayar).prop('checked', 'checked');
+        $('#userStamp').val(data.userStamp);
+        $('#jenisKelaminKeluarga').select2({width: "100%"});
+
+        let tblMKeluargaPensiunNf = $('#tblMKeluargaPensiunNf').DataTable({
+            'ajax': {
+                url: '{{tblMPensiunNfData}}/' + $('#nip').val() + '/get-keluarga',
+                data: function(data){
+                    return {data: data}
+                }
+            },
+            destroy: true,
+            'columns': [
+                {data: 'idKeluarga'},
+                {data: 'nama'},
+                {data: 'jenisKelamin'},
+                {data: 'hubungan'},
+                {data: 'tglLahir'},
+                {data: 'idKeluarga'}
+            ],
+            'columnDefs': [
+                {
+                    targets: 2,
+                    render: function(data, tyep, row, meta){
+                        return (data == '' || data == undefined)?'-':( data=='P'?'Pria':'Wanita');
+                    }
+                },
+                {
+                    targets: 4,
+                    render: function(data, type, row, meta){
+                        return fillDateField(data);
+                    }
+                },
+                {
+                    "targets": -1,
+                    "render": function(data, type, row, meta){
+                        let jsonRow = JSON.stringify(row);
+                        return "<a class='btn btn-info btn-sm btn-icon btn-edit' onclick='editKeluargaPensiunNf(" + jsonRow + ")'><i class='material-icons'>edit</i> Edit</a>"+
+                            "<a class='btn btn-danger btn-sm btn-icon btn-remove' onclick='deleteKeluargaPensiunNf(" + jsonRow + ")'><i class='material-icons'>edit</i> Hapus</a>";
+                    }
+                }
+            ]
+        });
+
+        tblMKeluargaPensiunNf.on( 'order.dt search.dt', function () {
+            tblMKeluargaPensiunNf.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+                cell.innerHTML = i+1;
+            } );
+        } ).draw();
+
+        $.ajax({
+            url: '{{linkBankNf}}',
+            dataType: 'json',
+            method: 'GET',
+            data: {
+                valueColumn: 'id',
+                textColumn: "${id} - ${namaBankNF}",
+                searchColumn: [
+                    'namaBankNF'
+                ],
+                includeObject: true
+            },
+            success: function(data){
+                $('#idBankNf').select2(
+                    {
+                        data: data,
+                        width: "100%",
+                        placeholder: 'Pilih Bank'
+                    }
+                );
+
+                $('#idBankNf').on('change', (e) => {
+                    if ($(e.target).select2('data')){
+                        let data = $(e.target).select2('data')[0];
+                        if ($('#idBankNf').val() != '' && $('#idBankNf').val() != null ) {
+                            $("#swiftCode").val(data.dataProperties.swiftCode);
+                            $('#ibanCode').val(data.dataProperties.ibanCode);
+                        }
+                    }
+                });
+
+                $('#idBankNf').val(row.idBankNf).trigger('change');
+            }
+        });
+    }
+
+    function editKeluargaPensiunNf(row){
+        $('#collapseFormKeluarga').collapse('hide');
+        $('#idKeluarga').val(row.idKeluarga);
+        $('#nama').val(row.nama);
+        $('#jenisKelaminKeluarga').val(row.jenisKelamin); $('#jenisKelaminKeluarga').trigger('change');
+        $('#hubunganKeluarga').val(row.hubungan); $('#hubunganKeluarga').trigger('change');
+        $('#tglLahirKeluarga').val( ddMmYyyyFormat(row.tglLahir) );
+        $('#collapseFormKeluarga').collapse("show");
+    }
+
+    function deleteKeluargaPensiunNf(row){
+        swal({
+            title: "Anda yakin?",
+            text: "Data yang telah dihapus tidak dapat dikembalikan!",
+            icon: "warning",
+            buttons: [
+                'Tidak',
+                'Ya'
+            ],
+            dangerMode: true,
+        }).then(function(isConfirm) {
+
+            if (isConfirm) {
+                $.ajax({
+                    url: '{{tblMPensiunNfData}}/delete-keluarga/' + row.idKeluarga,
+                    method: 'POST',
+                    data: {
+                        _csrf: '{{_csrf.token}}'
+                    },
+                    success: function(response){
+                        swal({
+                            title: 'Terhapus',
+                            text: 'Data berhasil dihapus.',
+                            icon: 'success'
+                        }).then(function() {
+                            $('#tblMKeluargaPensiunNf').DataTable().ajax.reload();
+                        });
+                    }
+                });
+
+            } else {
+                swal("Batal", "Data batal dihapus.", "error");
+            }
+        });
+    }
+
+    function saveKeluargaNf(){
+        let params = {
+            idKeluarga: $('#idKeluarga').val(),
+            nip: $('#nip').val(),
+            nama: $('#nama').val(),
+            hubungan: $('#hubunganKeluarga').val(),
+            tempatLahir: "-",
+            tglLahir: $('#tglLahirKeluarga').val(),
+            jenisKelamin: $('#jenisKelaminKeluarga').val(),
+            userStamp: '',
+            _csrf: '{{_csrf.token}}'
+        };
+
+        if($('#idKeluarga').val() == ''){
+            $.ajax({
+                url: '{{tblMPensiunNfData}}/post-keluarga',
+                method: 'POST',
+                data: params,
+                success: function(response){
+                    $('#tblMKeluargaPensiunNf').DataTable().ajax.reload();
+                    $('#collapseFormKeluarga').collapse('hide');
+                }
+            });
+        } else {
+            $.ajax({
+                url: '{{tblMPensiunNfData}}/put-keluarga',
+                method: 'PUT',
+                data: params,
+                success: function(response){
+                    $('#tblMKeluargaPensiunNf').DataTable().ajax.reload();
+                    $('#collapseFormKeluarga').collapse('hide');
+                }
+            });
+        }
+
+    }
+
+    const editPembayaranMpNf = (row) => {
+
+        $('#pembIdPembayaran').val(row.idPembayaran);
+        $('#pembTglMutasi').val( fillDateField ( row.tglMutasi) );
+        $('#pembPeriodeMutasi').val(row.periodeMutasi);
+        $('#pembidPenerimaMp').val(row.idPenerimaMp);
+        $('#pembNamaPenerimaMp').val(row.namaPenerimaMp);
+        $('#pembKeterangan').val(row.keterangan);
+        $('#pembEuro').val(row.mpEuro);
+        $('#pembIdr').val(row.mpRupiah);
+        $('#pembIdrCaption').val(row.mpRupiah.toLocaleString("id", {minimumFractionDigits: 2}));
+        $('#pembNamaPenerimaMp').val(row.namaPenerimaMp);
+        $('#pembNamaPeserta').val(row.namaPeserta);
+        $('#pembNamaValidasi').val(row.namaValidasi);
+        $('#pembNip').val(row.nip);
+        $('#pembUserStamp').val(row.userStamp);
+        $('#userValidasi').val(row.userValidasi);
+        $('#idValidasi' + row.idValidasi).prop('checked', 'checked');
+
+        $('#pembStatusHer0').prop('disabled', 'disabled');
+        $('#pembStatusHer1').prop('disabled', 'disabled');
+
+        if(row.statusHer == '1'){
+            $('#pembStatusHer1').prop('checked', 'checked');
+        } else {
+            $('#pembStatusHer0').prop('checked', 'checked');
+
+        }
+
+        $('[name="idValidasi"]').attr('disabled', 'disabled');
+        if(window.DkppGlobal.isPejabat == true) {
+            $('#idValidasi1').removeAttr('disabled');
+            $('#idValidasi2').removeAttr('disabled');
+            $('#idValidasi3').removeAttr('disabled');
+            $('#idValidasi7').removeAttr('disabled');
+        } else if (window.DkppGlobal.isStaff == true) {
+            $('#idValidasi1').removeAttr('disabled');
+            $('#idValidasi3').removeAttr('disabled');
+        }
+        $('#btnPembMpNfSave').show();
+        if(row.idValidasi == 1){
+            $('#pembLabelInfoValidasi').html(`<span class="tag tag-pill tag-info pull-right">Belum Validasi</span>`);
+        }
+        if(row.idValidasi == 2){
+            $('#pembLabelInfoValidasi').html(`<span class="tag tag-pill tag-success pull-right">Sudah Validasi</span>`);
+            $('#btnPembMpNfSave').hide();
+        }
+        if(row.idValidasi == 3){
+            $('#pembLabelInfoValidasi').html(`<span class="tag tag-pill tag-warning pull-right">Batal Koreksi</span>`);
+        }
+        if(row.idValidasi == 6){
+            $('#pembLabelInfoValidasi').html(`<span class="tag tag-pill tag-danger pull-right">Otomatis Validasi</span>`);
+            $('#btnPembMpNfSave').hide();
+        }
+        if(row.idValidasi == 7){
+            $('#pembLabelInfoValidasi').html(`<span class="tag tag-pill tag-danger pull-right">Batal Validasi</span>`);
+        }
+
+
+        $('#modalPembayaranMpNf').modal('show');
+
+
+    };
+
+    const updatePembayaranMpNf = () => {
+        let params={
+            parRoleId: null,
+            parCompName: null,
+            parUserName: null,
+            parPeriodeMutasi: $('#pembPeriodeMutasi').val(),
+            parIdPembayaran: $('#pembIdPembayaran').val(),
+            parNip: $('#pembNip').val(),
+            parStatusHer: null,
+            parIdKategoriCatatan: null,
+            parKeterangan: $('#pembKeterangan').val(),
+            parIdValidasi: $( "[name='idValidasi']:checked" ).val() == undefined ? "1" : $( "[name='idValidasi']:checked" ).val(),
+            parNamaValidasi: $( "[name='idValidasi']:checked" ).data('name') == undefined ? "Belum Validasi" : $( "[name='idValidasi']:checked" ).data('name'),
+
+            _csrf: '{{_csrf.token}}'
+        };
+
+        $.ajax({
+            url: '{{linkProsesPembayaranMPNF}}',
+            method: 'POST',
+            data: params,
+            success: (response) => {
+                if(response.status == "success") {
+                    swal({title: "Berhasil", text: response.message, icon: "success", button: "OK"})
+                        .then(()=>{
+                            $('#tblPembayaranMpNf').DataTable().ajax.reload();
+                            $('#modalPembayaranMpNf').modal('hide');
+                        });
+                }
+            },
+            statusCode: {
+                409: function(response){
+                    loader($('body'), false);
+                    swal({title: "Gagal", text: response.responseJSON.message, icon: 'error', button: 'OK'});
+                },
+                404: function(){
+                    loader($('body'), false);
+                    swal({title: "Error", text: '404 Not Found', icon: 'error', button: 'OK'});
+                }
+            }
+        });
+    };
+
+    const sendPembayaranMpNf = (row) => {
+        let params={
+            _csrf: '{{_csrf.token}}',
+            parCompName: null,
+            parUserName: null,
+            parIdPembayaran: row.idPembayaran,
+            parMutasiBayar: row.periodeMutasi,
+            parNominal: row.mpRupiah
+        }
+        loader($('body'), true);
+        $.ajax({
+            url: '{{linkProsesPembayaranMPNFPTR}}',
+            method: 'POST',
+            data: params,
+            success: (response) => {
+                loader($('body'), false);
+                if(response.status == "success") {
+                    swal({title: "Berhasil", text: response.message, icon: "success", button: "OK"})
+                        .then(()=>{
+                            $('#tblPembayaranMpNf').DataTable().ajax.reload();
+                            $('#modalPembayaranMpNf').modal('hide');
+                        });
+                } else if (response.status == "failed"){
+                    swal({title: "Gagal", text: response.message, icon: 'error', button: 'OK'});
+                }
+            },
+            statusCode: {
+                409: function(response){
+                    loader($('body'), false);
+                    swal({title: "Gagal", text: response.responseJSON.message, icon: 'error', button: 'OK'});
+                },
+                404: function(){
+                    loader($('body'), false);
+                    swal({title: "Error", text: '404 Not Found', icon: 'error', button: 'OK'});
+                }
+            }
+        });
+    };
+
+    //Start: Pembayaran NP NF
+    const prosesPembayaranMPNF = () => {
+        let params={
+            parRoleId: null,
+            parCompName: null,
+            parUserName: null,
+            parPeriodeMutasi: $('#pembMPNFPeriodeMutasi').val(),
+            parIdPembayaran: null,
+            parNip: null,
+            parStatusHer: null,
+            parIdKategoriCatatan: null,
+            parKeterangan: null,
+            parIdValidasi: null,
+            parNamaValidasi: null,
+            parStatusEksekusi: null,
+            _csrf: '{{_csrf.token}}'
+        };
+
+        if($('#pembMPNFPeriodeMutasi').val() == ''){
+            swal({title: "Error", text: 'Periode Mutasi tidak boleh kosong.', icon: 'error', button: 'OK'});
+            return false;
+        }
+
+        $.ajax({
+            url: '{{linkProsesPembayaranMPNF}}',
+            method: 'POST',
+            data: params,
+            success: (response) => {
+                if(response.status == "success") {
+                    swal({title: "Berhasil", text: response.message, icon: "success", button: "OK"})
+                        .then(()=>{
+                            $('#tblPembayaranMpNf').DataTable().ajax.reload();
+                        });
+                }
+            },
+            statusCode: {
+                409: function(response){
+                    loader($('body'), false);
+                    swal({title: "Gagal", text: response.responseJSON.message, icon: 'error', button: 'OK'});
+                },
+                404: function(){
+                    loader($('body'), false);
+                    swal({title: "Error", text: '404 Not Found', icon: 'error', button: 'OK'});
+                }
+            }
+        });
+    };
+
+    $(document).ready(function() {
+
+        var tblMPensiunNf = dkppDataTable($('#tblMPensiunNf'), '{{tblMPensiunNfData}}', {
+            destroy: true,
+            'columns': [
+                {data: 'nip'},
+                {data: 'namaPeserta'},
+                {data: 'tglLahir'},
+                {data: 'jenisKelamin'},
+                {data: 'tglMulaiKerja'},
+                {data: 'tglBerhentiKerja'},
+                {data: 'namaPenerimaMp'},
+                {data: 'mpBulananEuro'},
+                {data: 'tglMeninggal'},
+                {data: 'nip'}
+            ],
+            'columnDefs': [
+                {
+                    targets: 2,
+                    render: function(data, type, row, meta){
+                        return fillDateField(data);
+                    }
+                },
+                {
+                    targets: 3,
+                    render: function(data, type, row, meta){
+                        return (row.jenisKelamin == null)?'-':( (row.jenisKelamin == 'P')?'Pria':'Wanita' )
+                    }
+                },
+                {
+                    targets: 4,
+                    render: function(data, type, row, meta){
+                        return fillDateField(data);
+                    }
+                },
+                {
+                    targets: 5,
+                    render: function(data, type, row, meta){
+                        return fillDateField(data);
+                    }
+                },
+                {
+                    targets: 8,
+                    render: function(data, type, row, meta){
+                        return (data == null || data == undefined || data == '')? '' : fillDateField(data);
+                    }
+                },
+                {
+                    "targets": -1,
+                    "data": "id",
+                    "className": "action-box",
+                    "render": function(data, type, row, meta){
+                        let jsonRow = JSON.stringify(row);
+                        return "<a class='btn btn-info btn-sm btn-icon btn-edit' onclick='displayEditModalPensiunNf(" + jsonRow + ")'><i class='material-icons'>edit</i> Edit</a>";
+                    }
+                }
+            ]
+        });
+        tblMPensiunNf.on( 'order.dt search.dt', function () {
+            tblMPensiunNf.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+                cell.innerHTML = i+1;
+            } );
+        } ).draw();
+
+        var kategoriPenerimaSelect = $('#hubunganKeluarga').select2({
+            data: [
+                {id: 'Istri', text: 'Istri'},
+                {id: 'Suami', text: 'Suami'},
+                {id: 'Anak', text: 'Anak'}
+            ],
+            width: "100%",
+            placeholder: 'Pilih Kategori Penerima'
+        });
+
+        $('#btnSavePensiunNf').on('click', () => {
+            var params={
+                parRoleId: $('#roleId').val(),
+                parCompName: $('#compName').val(),
+                parUserName: $('#userName').val(),
+                parNip: $('#nip').val(),
+                parTempatLahir: $('#tempatLahir').val(),
+                parTglLahir: $('#tglLahir').val(),
+                parTempatMenikah: $('#tempatMenikah').val(),
+                parTglMenikah: $('#tglMenikah').val(),
+                parTglLahirPenerimaMp: $('#tglLahirPenerimaMp').val(),
+                parTglMeninggal: $('#tglMeninggal').val(),
+                parMpBulananEuro: $('#mpBulananEuro').val(),
+                parAlamat: $('#alamat').val(),
+                parKota: $('#kota').val(),
+                parKodePos: $('#kodePos').val(),
+                parNomorRekening: $('#nomorRekening').val(),
+                parNamaRekening: $('#namaRekening').val(),
+                parIdBankNf: $('#idBankNf').val(),
+                parSwiftCode: $('#swiftCode').val(),
+                parIbanCode: $('#ibanCode').val(),
+                parPersNs: $('#persNs').val(),
+                parKeterangan: $('#keterangan').val(),
+                parStatusEksekusi: $('#statusEksekusi').val(),
+                parMsg: $('#msg').val(),
+                _csrf: '{{_csrf.token}}'
+            }
+
+            $.ajax({
+                url: '{{mPensiunNfUpdateLink}}',
+                method: 'PUT',
+                data: params,
+                success: function(data){
+                    if(data.status == "success") {
+                        swal({title: "Berhasil", text: data.message, icon: "success", button: "OK"})
+                            .then(()=>{
+                                //setTimeout(function(){window.location.href = "{{gridPath}}";}, 500);
+                                $('#tblMPensiunNf').DataTable().ajax.reload();
+                                $('#MasterDataPensiunNfModal').modal('hide');
+                            });
+                    }
+                },
+                error: function(data){
+                    if(data.message != undefined )
+                        swal({title: "Gagal", text: data.message, icon: "error", button: "OK"});
+                    else
+                        swal({title: "Gagal", text: "Terjadi kesalahan.", icon: "error", button: "OK"});
+                }
+            });
+        });
+
+        let tblTKurs = $('#tblKurs').DataTable({
+            'ajax': {
+                url: '{{mPensiunNfKursLink}}',
+                data: function(data){
+                    return {data: data}
+                }
+            },
+            destroy: true,
+            'columns': [
+                {data: 'periodeMutasi'},
+                {data: 'periodeMutasi'},
+                {data: 'kursEuro'},
+                {data: 'kursRupiah'},
+                {data: 'periodeMutasi'}
+            ],
+            'columnDefs': [
+                {
+                    targets: 3,
+                    render: function(data, type, row, meta){
+                        return (row.kursRupiah > 0)?row.kursRupiah.toLocaleString('id', { minimumFractionDigits: 2 }):'-';
+                    }
+                },
+                {
+                    "targets": -1,
+                    "data": "id",
+                    "className": "action-box",
+                    "render": function(data, type, row, meta){
+                        let jsonRow = JSON.stringify(row);
+                        return "<a class='btn btn-info btn-sm btn-icon btn-edit' onclick='editKurs(" + jsonRow + ")'><i class='material-icons'>edit</i>Edit</a>";
+                    }
+                }
+            ]
+        });
+
+        tblTKurs.on('draw.dt', function(){
+            let pageInfo = $('#tblKurs').DataTable().page.info();
+            tblTKurs.column(0, {page: 'current'}).nodes().each(function(cell, i){
+                cell.innerHTML = i + 1 + pageInfo.start;
+            });
+        });
+
+        //tblPembayaranMpNf
+        var tblPembayaranMpNf = dkppDataTable( $('#tblPembayaranMpNf'), '{{tblPembayaranMpNfLinkData}}' ,{
+            destroy: true,
+            'columns': [
+                {data: 'tglMutasi'},
+                {data: 'periodeMutasi'},
+                {data: 'nip'},
+                {data: 'namaPeserta'},
+                {data: 'namaPenerimaMp'},
+                {data: 'mpEuro'},
+                {data: 'mpRupiah'},
+                {data: 'statusHer'},
+                {data: 'namaValidasi'},
+                {data: 'idPembayaran'},
+            ],
+            'columnDefs': [
+                {
+                    targets: 0,
+                    render: (data, type, row, meta) => {
+                        return (row.tglMutasi != null) ? fillDateField(row.tglMutasi): '';
+                    }
+                },
+                {
+                    "targets": 8,
+                    "render": function(data, type, row, meta) {
+                        var result="";
+                        if (data == "Sudah Validasi")
+                        {
+                            result = '<span class="tag tag-pill tag-success">' + data + '</span>';
+                        }
+                        else if (data == "Batal Validasi")
+                        {
+                            result = '<span class="tag tag-pill tag-danger">' + data + '</span>';
+                        }
+                        else if (data == "Belum Validasi")
+                        {
+                            result = '<span class="tag tag-pill tag-info">' + data + '</span>';
+                        }
+                        else if (data == "Batal Koreksi")
+                        {
+                            result = '<span class="tag tag-pill tag-warning">' + data + '</span>';
+                        } else if (data == "Otomatis Validasi"){
+                            result = '<span class="tag tag-pill tag-danger">' + data + '</span>';
+                        }
+                        return result;
+                    }
+                },
+                {
+                    targets: 6,
+                    render: function(data, type, row, meta){
+                        return (row.mpRupiah == undefined)?'-':row.mpRupiah.toLocaleString('id', { minimumFractionDigits: 2 })
+                    }
+                },
+                {
+                    targets: 7,
+                    render: function(data, type, row, meta){
+                        return (row.statusHer == null || row.statusHer == undefined )? '-' : ( (row.statusHer == 1)?'Sudah Her':'Belum Her' )
+                    }
+                },
+                {
+                    targets: -1,
+                    render: (data, type, row, meta) => {
+                        let jsonRow = JSON.stringify(row);
+                        let btnSendPTR = (row.isSentToPtr == '0' || row.isSentToPtr == undefined || row.isSentToPtr == null) && row.isHutang == 0 && row.idValidasi == 2 ? "<a class='btn btn-info btn-sm btn-icon btn-edit' onclick='sendPembayaranMpNf(" + jsonRow + ")'><i class='material-icons'>forward</i> Send to PTR</a>":"";
+                        return "<a class='btn btn-info btn-sm btn-icon btn-edit' onclick='editPembayaranMpNf(" + jsonRow + ")'><i class='material-icons'>edit</i> Edit</a> "+ btnSendPTR;
+                    }
+                }
+            ]
+        });
+
+        $('#btnSaveKurs').click(() => {
+
+            var kursParam={
+                parPeriodeMutasi: $('#periodeMutasi').val(),
+                parKursEuro: $('#kursEuro').val(),
+                parKursRupiah: $('#kursRupiah').val(),
+                _csrf: '{{_csrf.token}}'
+            }
+
+
+            $.ajax({
+                url: '{{mPensiunNfKursLink}}',
+                method: 'POST',
+                data: kursParam,
+                success: function(response){
+                    if(response.status == "success") {
+                        swal({title: "Berhasil", text: response.message, icon: "success", button: "OK"})
+                            .then(()=>{
+                                $('#tblKurs').DataTable().ajax.reload();
+                                $('#modalKurs').modal('hide');
+                            });
+                    }
+                },
+                error: function(response){
+                    if(response.message != undefined )
+                        swal({title: "Gagal", text: response.message, icon: "error", button: "OK"});
+                    else
+                        swal({title: "Gagal", text: "Mohon periksa kembali nilai yang Anda masukkan.", icon: "error", button: "OK"});
+                }
+            });
+        });
+
+        let tblMutasiHapusPenerimaMpNf = dkppDataTable($('#tblMutasiHapusPenerimaMpNf'), '{{tblMutasiHapusPenerimaMpNfData}}', {
+            destroy: true,
+            'columns': [
+                {data: 'tglMutasi'},
+                {data: 'periodeMutasi'},
+                {data: 'nip'},
+                {data: 'namaPeserta'},
+                {data: 'namaPenerimaMp'},
+                {data: 'tglMeninggal'},
+                {data: 'idStatusBayar'},
+                {data: 'userStamp'},
+                {data: 'namaValidasi'},
+                {data: 'nip'}
+            ],
+            'columnDefs': [
+                {
+                    targets: 0,
+                    render: function(data, type, row, meta){
+                        return fillDateField(data);
+                    }
+                },
+                {
+                    targets: 5,
+                    render: (data, type, row, meta) => {
+                        return fillDateField(data);
+                    }
+                },
+                {
+                    targets: 6,
+                    render: (data, type, row, meta) => {
+                        return row.idStatusBayar == 1 ? 'Dibayar' : (row.idStatusBayar == 6 ? 'Berhenti' : '-');
+                    }
+                },
+                {
+                    "targets": -1,
+                    "data": "id",
+                    "className": "action-box",
+                    "render": function(data, type, row, meta){
+                        let jsonRow = JSON.stringify(row);
+                        return "<a class='btn btn-info btn-sm btn-icon btn-edit' onclick='editMutasiHapusPenerimaMpNf(" + jsonRow + ")'><i class='material-icons'>edit</i> Edit</a>";
+                    }
+                },
+                {
+                    "targets": -2,
+                    "render": function(data, type, row, meta) {
+                        var result="";
+                        if (data == "Sudah Validasi")
+                        {
+                            result = '<span class="tag tag-pill tag-success">' + data + '</span>';
+                        }
+                        else if (data == "Batal Validasi")
+                        {
+                            result = '<span class="tag tag-pill tag-danger">' + data + '</span>';
+                        }
+                        else if (data == "Belum Validasi")
+                        {
+                            result = '<span class="tag tag-pill tag-info">' + data + '</span>';
+                        }
+                        else if (data == "Batal Koreksi")
+                        {
+                            result = '<span class="tag tag-pill tag-warning">' + data + '</span>';
+                        }
+                        return result;
+                    }
+                },
+            ]
+        });
+        tblMPensiunNf.on( 'order.dt search.dt', function () {
+            tblMPensiunNf.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+                cell.innerHTML = i+1;
+            } );
+        } ).draw();
+
+    });
+
+
+    $(document).ready(function() {
+        var dataHer = dkppDataTable($('#tb-her'), '{{contextPath}}{{tbl_her_registrasi_nf}}', {
+
+            'columns': [
+                {
+                    "data": "tahunHer"
+                },
+                {
+                    "data": "statusHer"
+                },
+                {
+                    "data": "totalHer"
+                },
+
+            ],
+            "columnDefs": [
+                {
+                    "render": function ( data, type, row ) {
+                        if("Buka" == data){
+                            return `<span class="tag tag-pill tag-warning">BUKA</span>`;
+                        }else {
+                            return `<span class="tag tag-pill tag-info">TUTUP</span>`;
+                        }
+
+                    },
+                    "targets": 1
+                },
+                {
+                    "render": function ( data, type, row ) {
+                        return `<a class='btn btn-info btn-sm btn-icon btn-edit' href='{{contextPath}}{{tbl_her_registrasi_detail_nf}}/` + row.tahunHer + `'><i class='material-icons'>edit</i>Edit</a>`;
+                    },
+                    "targets": 3
+                }
+            ]
+        });
+
+
+        $.ajax({
+            url: '{{contextPath}}/api/setupparameter/get_periode',
+            dataType: 'json',
+            method: 'GET',
+            success: function (data) {
+                param :{
+                    $('#user-stamp').val(data.postModeUserStamp);
+                    $('#periodeMutasi').val(data.periodeMutasi);
+                    $('#compName').val(data.compName);
+                    $('#userName').val(data.userName);
+                }
+            }
+        });
+
+        $(document).ready(function () {
+            $("#btnProses").click(function () {
+                var parTahunHer = $("#parTahunHer").val();
+                var parCompName = $('#compName').val();
+                var parUserName = $('#userName').val();
+
+                if(parTahunHer == null || parTahunHer == ""){
+                    $("#parTahunHer").focus();
+                    swal("","Tahun Her Registrasi tidak boleh kosong","error");
+                    return;
+                }
+                let paramsend = {
+                    _csrf: "{{_csrf.token}}",
+                    parCompName: parCompName,
+                    parUserName: parUserName,
+                    parTahunHer: parTahunHer,
+                    parStatusHer: 'Buka',
+                    parAction: 'C'
+                };
+
+                $.ajax({
+                    url: "{{contextPath}}/api/penerima-manfaat/post-her-registrasi",
+                    method: 'POST',
+                    data: paramsend,
+                    success: function (data) {
+                        if (data.status = "success"){
+                            swal({title:"Berhasil",text:data.message, icon:"success", button:"OK"});
+                        }
+                        else{
+                            swal({title: "Gagal", text: "Terjadi kegagalan.", icon: "error", button: "OK"});
+                        }
+                        $('#tb-her').DataTable().ajax.reload();
+                    }
+
+                })
+            });
+        });
+    });
+    $(document).ready(function() {
+        var dataHutang = dkppDataTable($('#hutang-data'), '{{contextPath}}{{tb_hutang_nf}}', {
+
+            'columns': [
+                {
+                    "data": "periodeMutasi"
+                },
+                {
+                    "data": "nip"
+                },
+                {
+                    "data": "namaPeserta"
+                },
+                {
+                    "data": "namaPenerimaMp"
+                },
+                {
+                    "data": "saldoHutang"
+                }
+            ],
+            "columnDefs": [
+                {
+                    "targets": [4],
+                    "render": function (data, type, row, meta) {
+                        return data && numeral(data).format("0,0.00");
+                    }
+                },
+            ]
+        });
+
+
+        $.ajax({
+            url: '{{contextPath}}/api/setupparameter/get_periode',
+            dataType: 'json',
+            method: 'GET',
+            success: function (data) {
+                param :{
+                    $('#user-stamp').val(data.postModeUserStamp);
+                    $('#periodeMutasi').val(data.periodeMutasi);
+                    $('#compName').val(data.compName);
+                    $('#userName').val(data.userName);
+                }
+            }
+        });
+    });
+
+
+    $(document).ready(function() {
+        var dataPembayaranHutang = dkppDataTable($('#pembayaran-hutang-nf'), '{{contextPath}}{{tb_pembayaran_hutang}}', {
+
+            'columns': [
+                {
+                    "data": "tglBayar"
+                },
+                {
+                    "data": "periodeBayar"
+                },
+                {
+                    "data": "nip"
+                },
+                {
+                    "data": "namaPeserta"
+                },
+                {
+                    "data": "namaPenerimaMp"
+                },
+                {
+                    "data": "nominalPembayaran"
+                },
+                {
+                    "data": "isSentToPtr"
+                }
+            ],
+            "columnDefs": [
+                {
+                    "targets": [5],
+                    "render": function (data, type, row, meta) {
+                        return data && numeral(data).format("0,0.00");
+                    }
+                },
+                {
+                    "targets": [0],
+                    "render": function (data, type, row, meta) {
+                        return data && moment(data).format("DD/MM/YYYY");
+                    }
+                },
+                {
+                    "render": function (data, type, row) {
+                        if ("0" == data) {
+                            return `<span class="tag tag-pill tag-warning">Belum Dikirim Ke PTR</span>`;
+                        } else {
+                            return `<span class="tag tag-pill tag-info">Sudah Dikirim Ke PTR</span>`;
+                        }
+
+                    },
+                    "targets": 6
+                },
+                {
+                    "targets": 7,
+                    "data": "id",
+                    "className": "action-box",
+                    "render": function (data, type, row, meta) {
+                        let param = JSON.stringify(row);
+                        let btnSendPtr = ``;
+                        if(row.isSentToPtr == 0)
+                            btnSendPtr = `<a class='btn btn-info btn-sm btn-icon btn-edit' onclick='kirimPtr(` + param + `)'><i class='material-icons'>send</i> Kirim Ke PTR</a>`;
+                        return `<a class='btn btn-info btn-sm btn-icon btn-edit' onclick='displayEditHutangNf(` + param + `)'><i class='material-icons'>edit</i> Edit</a>` + btnSendPtr;
+                    }
+                }
+            ]
+        });
+
+
+        $.ajax({
+            url: '{{contextPath}}/api/setupparameter/get_periode',
+            dataType: 'json',
+            method: 'GET',
+            success: function (data) {
+                param :{
+                    $('#user-stamp').val(data.postModeUserStamp);
+                    $('#periodeMutasi').val(data.periodeMutasi);
+                    $('#compName').val(data.compName);
+                    $('#userName').val(data.userName);
+                }
+            }
+        });
+
+        $('#btnUpdate').click(() => {
+
+            var herParam = {
+                parCompName: $('#compName').val(),
+                parUserName: $('#userName').val(),
+                parNip: $('#nip-peserta').val(),
+                parNamaPeserta: $('#nama-peserta').val(),
+                parIdPenerimaMp: $('#id-penerima-mp').val(),
+                parNamaPenerimaMp: $('#nama-penerima-mp').val(),
+                parPeriodeBayar: $('#periodeBayar').val(),
+                parTglBayar: $('#TglBayar').val(),
+                parNominalPembayaran: $('#nominalPembayaran').val(),
+                parIdBayarNf: $('#idBayarHutNf').val(),
+                parRoleId: '43',
+                parKeterangan: $('#keterangan').val(),
+                _csrf: '{{_csrf.token}}'
+            }
+            console.log(herParam);
+            $.ajax({
+                url: '{{contextPath}}/api/penerima-manfaat/post-pembayaran-hutang-update',
+                method: 'POST',
+                data: herParam,
+                success: function (response) {
+                    if (response.status == "success") {
+                        swal({title: "Berhasil", text: response.message, icon: "success", button: "OK"})
+                            .then(() => {
+                                $('#pembayaran-hutang-nf').DataTable().ajax.reload();
+                                $('#modalHutang').modal('hide');
+                            });
+                    }
+                },
+                error: function (response) {
+                    if (response.message != undefined)
+                        swal({title: "Gagal", text: response.message, icon: "error", button: "OK"});
+                    else
+                        swal({
+                            title: "Gagal",
+                            text: "Mohon periksa kembali nilai yang Anda masukkan.",
+                            icon: "error",
+                            button: "OK"
+                        });
+                }
+            });
+
+        });
+    });
+
+
+    $(document).ready(function() {
+        $('#btn-add').unbind().on('click', function (data) {
+            $('#tambahHutang').trigger("reset");
+
+            $.ajax({
+                url: '{{contextPath}}/api/setupparameter/get_periode',
+                dataType: 'json',
+                method: 'GET',
+                success: function (data) {
+                    param :{
+                        $('#hut-user-stamp').val(data.postModeUserStamp);
+                        $('#hutPeriodeBayar').val(data.periodeMutasi);
+                        $('#hut-compName').val(data.compName);
+                        $('#hut-userName').val(data.userName);
+                    }
+                }
+            });
+
+
+            $.ajax({
+                url: '{{linkHutangPenerimaMpNf}}',
+                dataType: 'json',
+                method: 'GET',
+                data: {
+                    valueColumn: 'nip',
+                    textColumn: "${nip} - ${namaPeserta}",
+                    searchColumn: [
+                        'namaPeserta'
+                    ],
+                    includeObject: true
+                },
+                success: function (data) {
+                    $('#id-peserta-mp').select2(
+                        {
+                            data: data,
+                            width: "100%",
+                            placeholder: 'Pilih Peserta'
+                        }
+                    );
+
+                    $('#id-peserta-mp').on('change', (e) => {
+                        if ($(e.target).select2('data')) {
+                            const data = $(e.target).select2('data')[0];
+                            if ($('#id-peserta-mp').val() != '' && $('#id-peserta-mp').val() != null) {
+                                $("#id-peserta-mp").val(data.dataProperties.nip);
+                                $('#hut-nama-peserta').val(data.dataProperties.namaPeserta);
+                                $('#hutang-penerima').val(data.dataProperties.idPenerimaMp + " - " + data.dataProperties.namaPenerimaMp);
+                                $('#hut-idPenerimaMp').val(data.dataProperties.idPenerimaMp);
+                                $('#hut-namaPenerimaMp').val(data.dataProperties.namaPenerimaMp);
+                                $('#hutIdBayar').val(data.dataProperties.idBayarHutNf);
+                                console.log(data.dataProperties);
+                            }
+                        }
+                    });
+                }
+            });
+            var modal = $('#addHutang');
+            modal.modal('show');
+            RESTFulMode = 'POST';
+        });
+
+        $('#btn-addHutang').click(() => {
+
+            var herParam = {
+                parCompName: $('#hut-compName').val(),
+                parUserName: $('#hut-userName').val(),
+                parNip: $('#id-peserta-mp').val(),
+                parNamaPeserta: $('#hut-nama-peserta').val(),
+                parIdPenerimaMp: $('#hut-idPenerimaMp').val(),
+                parNamaPenerimaMp: $('#hut-namaPenerimaMp').val(),
+                parPeriodeBayar: $('#hutPeriodeBayar').val(),
+                parTglBayar: $('#hutTglBayar').val(),
+                parNominalPembayaran: $('#hut-nominalPembayaran').val(),
+                parIdBayarNf: $('#hutIdBayar').val(),
+                parRoleId: '43',
+                parKeterangan: $('#hut-keterangan').val(),
+                _csrf: '{{_csrf.token}}'
+            }
+
+            $.ajax({
+                url: '{{contextPath}}/api/penerima-manfaat/post-pembayaran-hutang-update',
+                method: 'POST',
+                data: herParam,
+                success: function (response) {
+                    if (response.status == "success") {
+                        swal({title: "Berhasil", text: response.message, icon: "success", button: "OK"})
+                            .then(() => {
+                                $('#pembayaran-hutang-nf').DataTable().ajax.reload();
+                                $('#addHutang').modal('hide');
+                            });
+                    }
+                },
+                error: function (response) {
+                    if (response.message != undefined)
+                        swal({title: "Gagal", text: response.message, icon: "error", button: "OK"});
+                    else
+                        swal({
+                            title: "Gagal",
+                            text: "Mohon periksa kembali nilai yang Anda masukkan.",
+                            icon: "error",
+                            button: "OK"
+                        });
+                }
+            });
+
+        });
+    });
+
+
+    function displayEditHutangNf(param) {
+
+        $('#tglBayar').val(param.tglBayar ? moment(param.tglBayar).format('DD/MM/YYYY') : '');
+        $('#periodeBayar').val(param.periodeBayar);
+        $('#nip-peserta').val(param.nip);
+        $('#nama-peserta').val(param.namaPeserta);
+        $('#id-nama-penerima-mp').val(param.idPenerimaMp+' - '+param.namaPenerimaMp);
+        $('#id-penerima-mp').val(param.idPenerimaMp);
+        $('#nama-penerima-mp').val(param.namaPenerimaMp);
+        $('#nominalPembayaran').val(param.nominalPembayaran);
+        $('#keterangan').val(param.keterangan);
+        $('#idBayarHutNf').val(param.idBayarHutNf);
+        if(param.isSentToPtr == 1)
+            $('#btnUpdate').hide();
+        else
+            $('#btnUpdate').show();
+
+        $('#modalHutang').modal('show');
+    }
+
+    function kirimPtr(param) {
+
+        $('#tglBayar').val(param.tglBayar ? moment(param.tglBayar).format('DD/MM/YYYY') : '');
+        $('#periodeBayar').val(param.periodeBayar);
+        $('#nip-peserta').val(param.nip);
+        $('#nama-peserta').val(param.namaPeserta);
+        $('#id-nama-penerima-mp').val(param.idPenerimaMp+' - '+param.namaPenerimaMp);
+        $('#id-penerima-mp').val(param.idPenerimaMp);
+        $('#nama-penerima-mp').val(param.namaPenerimaMp);
+        $('#nominalPembayaran').val(param.nominalPembayaran);
+        $('#keterangan').val(param.keterangan);
+        $('#idBayarHutNf').val(param.idBayarHutNf);
+
+        var herParam = {
+            parCompName: $('#compName').val(),
+            parUserName: $('#userName').val(),
+            parNip: $('#nip-peserta').val(),
+            parNamaPeserta: $('#nama-peserta').val(),
+            parIdPenerimaMp: $('#id-penerima-mp').val(),
+            parNamaPenerimaMp: $('#nama-penerima-mp').val(),
+            parMutasiBayar: $('#periodeBayar').val(),
+            parTglBayar: $('#TglBayar').val(),
+            parNominal: $('#nominalPembayaran').val(),
+            parIdBayarHutangNf: $('#idBayarHutNf').val(),
+            parRoleId: '43',
+            parKeterangan: $('#keterangan').val(),
+            _csrf: '{{_csrf.token}}'
+        }
+
+        $.ajax({
+            url: '{{contextPath}}/api/penerima-manfaat/sent-to-ptr-nf',
+            method: 'POST',
+            data: herParam,
+            success: function (response) {
+                if (response.status == "success") {
+                    swal({title: "Berhasil", text: response.message, icon: "success", button: "OK"})
+                        .then(() => {
+                            $('#pembayaran-hutang-nf').DataTable().ajax.reload();
+                            $('#modalHutang').modal('hide');
+                        });
+                }
+            },
+            error: function (response) {
+                if (response.message != undefined)
+                    swal({title: "Gagal", text: response.message, icon: "error", button: "OK"});
+                else
+                    swal({
+                        title: "Gagal",
+                        text: "Mohon periksa kembali nilai yang Anda masukkan.",
+                        icon: "error",
+                        button: "OK"
+                    });
+            }
+
+        });
+
+    }
+</script>
+{{/scripts}}
+
+{{/layout}}

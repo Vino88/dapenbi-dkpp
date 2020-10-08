@@ -1,0 +1,324 @@
+{{#layout}}
+
+{{#styles}}
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/datatables/media/css/dataTables.bootstrap4.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/googleapis/css/component.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/googleapis/css/googleapis.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/select2/css/select2.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css">
+<style>
+    .modal-dialog{
+        overflow-y: initial !important
+    }
+    .modal-body{
+        height: 75vh;
+        overflow-y: auto;
+    }
+</style>
+{{/styles}}
+
+{{#title}}
+Her Registrasi Manfaat Pensiun NF - DKPP
+{{/title}}
+<div class="main-content">
+    <div class="content-view">
+        <!-- Nav tabs -->
+        <div class="tab-content">
+                <div class="card">
+                    <div class="card-block">
+                        <div class="row">
+                            <label for="parTahunHer" class="col-xs-2">Tahun Her Registrasi</label>
+                            <div class="col-xs-1">
+                                <input class="form-control form-control-sm" type="text" value="{{tahunHer}}" id="parTahunHer">
+                                <input class="form-control form-control-sm" type="hidden" value="{{userName}}" id="userName">
+                                <input class="form-control form-control-sm" type="hidden" value="{{compName}}" id="compName">
+                            </div>
+                            <div class="col-xs-2"></div>
+                            <div class="col-xs-4">
+                                <label class="form-control-sm">Status Her Registrasi</label>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <input name="pilradio" type="radio" value="Buka" id="pilRadioBuka"> Buka
+                                </input>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <input name="pilradio" type="radio" value="Tutup" id="pilRadioTutup"> Tutup
+                                </input>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <button class="btn btn-primary btn-sm btn-icon btn-save" id="btnProses"><i class="fa fa-save"></i> <span>Save</span></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-block">
+                        <table class="table table-bordered" id="tb-her-detail">
+                            <thead>
+                            <tr>
+                                <th>
+                                    NIP
+                                </th>
+                                <th>
+                                    NAMA PESERTA
+                                </th>
+                                <th>
+                                    NAMA PENERIMA MP
+                                </th>
+                                <th>
+                                    STATUS HER REGISTRASI
+                                </th>
+                                <th>
+                                    Action
+                                </th>
+                            </tr>
+                            </thead>
+                        </table>
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>
+{{#modal}}
+<!-- Modal Edit Her -->
+<div class="modal fade " tabindex="1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="modalHer">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title small bold" id="modalKursLabel">Form Update Her Registrasi MP NF</h4>
+            </div>
+            <div class="modal-body" style="height: 50%; !important;">
+                <div class="row">
+                    <form id="formHer">
+                        <div class="col-lg-12">
+                            <div class="row">
+                                <label for="tglHerRegis" class="col-sm-3 bold">Tanggal Her Registrasi</label>
+                                <div class="col-xs-3">
+                                    <input placeholder="dd-mm-yyyy" class="form-control form-control-sm text-sm" type="text" name="tglHerRegis" id="tglHerRegis" data-provide="datepicker" data-date-format="dd/mm/yyyy">
+                                </div>
+
+                            </div>
+                            <br>
+                            <div class="row">
+                                <label for="tahunHer" class="col-sm-3 bold">Tahun Her Registrasi</label>
+                                <div class="col-xs-3">
+                                    <input class="form-control form-control-sm text-sm" type="text" name="tahunHer" id="tahunHer" disabled>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <label for="nip_namaPeserta" class="col-sm-3 bold">NIP - Nama Peserta</label>
+                                <div class="col-xs-6">
+                                    <input class="form-control form-control-sm text-sm" type="text" id="nip_namaPeserta" value="" name="nip" disabled>
+                                    <input class="form-control-sm" type="hidden" id="namaPeserta" name="namaPeserta">
+                                    <input class="form-control-sm" type="hidden" id="nip" value="{{nip}}" name="nip">
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <label class="col-sm-3 bold">Status Her Registrasi</label>
+                                <input name="optradio" type="radio" value="Belum Her Registrasi" id="sudahHerDesc"> Belum Her Registrasi
+                                </input>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <input name="optradio" type="radio" value="Sudah Her Registrasi" id="sudahHerDesc"> Sudah Her Registrasi
+                                </input>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <label for="user-stamp" class="col-xs-3">User Stamp</label>
+                                <div class="col-xs-7">
+                                    <input class="form-control form-control-sm" type="text" value="" name="userStamp" id="user-stamp" disabled>
+                                    <input type="hidden" name="compName" id="compName">
+                                    <input type="hidden" name="userName" id="userName">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary btn-sm" id="btnSaveUpdateHer"><i class="fa fa-save"></i> Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <!-- /Modal demos -->
+    {{/modal}}
+
+    {{#scripts}}
+    <script src="{{contextPath}}/assets/vendor/datatables/media/js/jquery.dataTables.js"></script>
+    <script src="{{contextPath}}/assets/vendor/datatables/media/js/dataTables.bootstrap4.js"></script>
+    <script src="{{contextPath}}/assets/vendor/select2/js/select2.js"></script>
+    <script src="{{contextPath}}/assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+    <script src="{{contextPath}}/assets/vendor/jquery-validation/dist/jquery.validate.js"></script>
+    <script src="{{contextPath}}/assets/vendor/numeral/numeral.min.js"></script>
+    <script src="{{contextPath}}/assets/vendor/sweetalert/sweetalert.min.js"></script>
+    <script type="text/javascript">
+        function displayEdit(param){
+            console.log(param);
+            $('#btnSaveupdateHer').show();
+            $('#tglHerRegis').val(param.tglHerRegis ? moment(param.tglHerRegis).format('DD/MM/YYYY') : '');
+            $('#tahunHer').val(param.tahunHer);
+            $('#nip_namaPeserta').val(param.nip+' - '+param.namaPeserta);
+            $('#nip').val(param.nip);
+            $("#sudahHerDesc").prop("checked", param.sudahHerDesc);
+            if(param.isSudahHer == 1){
+                $('#btnSaveUpdateHer').hide();
+            }
+            $('#modalHer').modal('show');
+
+
+        }
+
+        $(document).ready(function() {
+            $.ajax({
+                url: '{{contextPath}}{{dataHeaderHer}}/{{tahunHer}}',
+                statusCode: {
+                    200: function(response){
+                        console.log(response);
+                        $('#pilRadio' + response.statusHer).prop('checked', 'checked');
+                    }
+                }
+            });
+
+
+            let dataHerDetail = $('#tb-her-detail').DataTable({
+                'ajax': {
+                    url: '{{contextPath}}{{tbl_her_registrasi_detail_nf}}/{{tahunHer}}',
+                    data: function(data){
+                        return {data: data}
+                    }
+                },
+                destroy: true,
+                'columns': [
+                    {data: 'nip'},
+                    {data: 'namaPeserta'},
+                    {data: 'namaPenerimaMp'},
+                    {data: 'sudahHerDesc'},
+                    {data: 'tahunHer'}
+                ],
+                'columnDefs': [
+                    {
+                        "render": function ( data, type, row ) {
+                            var sudahHerDesc = data;
+                            if(sudahHerDesc == "Belum Her Registrasi"){
+                                return `<span class="tag tag-pill tag-warning">BELUM HERREGISTRASI</span>`;
+                            }else {
+                                return `<span class="tag tag-pill tag-info">SUDAH HERREGISTRASI</span>`;
+                            }
+
+                        },
+                        "targets": 3
+                    },
+                    {
+                        "targets": -1,
+                        "data": "id",
+                        "className": "action-box",
+                        "render": function(data, type, row, meta){
+                            let param = JSON.stringify(row);
+                            return "<a class='btn btn-info btn-sm btn-icon btn-edit' onclick='displayEdit(" + param + ")'><i class='material-icons'>edit</i> Edit</a>";
+                        }
+                    }
+                ]
+            });
+
+
+            $('#btnSaveUpdateHer').click(() => {
+
+                var herParam={
+                    parCompName: $('#compName').val(),
+                    parUserName: $('#userName').val(),
+                    parNip: $('#nip').val(),
+                    parTglHer: $('#tglHerRegis').val(),
+                    parIsSudahHer: '1',
+                    parSudahHer: $("input[name='optradio']:checked").val(),
+                    _csrf: '{{_csrf.token}}'
+                }
+
+
+                $.ajax({
+                    url: '{{contextPath}}/api/penerima-manfaat/post-registrasi-update',
+                    method: 'POST',
+                    data: herParam,
+                    success: function(response){
+                        if(response.status == "success") {
+                            swal({title: "Berhasil", text: response.message, icon: "success", button: "OK"})
+                                .then(()=>{
+                                    $('#tb-her-detail').DataTable().ajax.reload();
+                                    $('#modalHer').modal('hide');
+                                });
+                        }
+                    },
+                    error: function(response){
+                        if(response.message != undefined )
+                            swal({title: "Gagal", text: response.message, icon: "error", button: "OK"});
+                        else
+                            swal({title: "Gagal", text: "Mohon periksa kembali nilai yang Anda masukkan.", icon: "error", button: "OK"});
+                    }
+                });
+            });
+
+
+
+
+            $.ajax({
+                url: '{{contextPath}}/api/setupparameter/get_periode',
+                dataType: 'json',
+                method: 'GET',
+                success: function (data) {
+                    param :{
+                        $('#user-stamp').val(data.postModeUserStamp);
+                        $('#periodeMutasi').val(data.periodeMutasi);
+                        $('#compName').val(data.compName);
+                        $('#userName').val(data.userName);
+                    }
+                }
+            });
+
+
+                $(document).ready(function () {
+                $("#btnProses").click(function () {
+                    var parTahunHer = $("#parTahunHer").val();
+                    var parCompName = $('#compName').val();
+                    var parUserName = $('#userName').val();
+                    var parStatusHer = $("input[name='pilradio']:checked").val();
+
+                    if(parTahunHer == null || parTahunHer == ""){
+                        $("#parTahunHer").focus();
+                        swal("","Tahun Her Registrasi tidak boleh kosong","error");
+                        return;
+                    }
+                    let paramsend = {
+                        _csrf: "{{_csrf.token}}",
+                        parCompName: parCompName,
+                        parUserName: parUserName,
+                        parTahunHer: parTahunHer,
+                        parStatusHer: parStatusHer,
+                        parAction: 'U'
+                    };
+
+                    $.ajax({
+                        url: "{{contextPath}}/api/penerima-manfaat/post-her-registrasi",
+                        method: 'POST',
+                        data: paramsend,
+                        success: function (data) {
+                            if (data.status = "success"){
+                                swal({title:"Berhasil",text:data.message, icon:"success", button:"OK"});
+                            }
+                            else{
+                                swal({title: "Gagal", text: "Gagal proses.", icon: "error", button: "OK"});
+                            }
+                            $('#tb-her-detail').DataTable().ajax.reload();
+                        }
+
+                    })
+                });
+            });
+        });
+
+    </script>
+    {{/scripts}}
+
+    {{/layout}}

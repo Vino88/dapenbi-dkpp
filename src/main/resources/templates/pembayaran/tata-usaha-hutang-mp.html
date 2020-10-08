@@ -1,0 +1,618 @@
+{{#layout}}
+
+{{#styles}}
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/datatables/media/css/dataTables.bootstrap4.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/googleapis/css/component.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/googleapis/css/googleapis.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/select2/css/select2.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css">
+{{/styles}}
+
+{{#title}}
+Tata Usaha Hutang Mp - DKPP
+{{/title}}
+<!-- main area -->
+<div class="main-content">
+    <div class="content-view">
+
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#one" role="tab">Hutang MP</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#two" role="tab">Pembayaran Hutang MP</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#three" role="tab">Hutang Uang Pembinaan</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#four" role="tab">Pembayaran Hutang Uang Pembinaan</a>
+            </li>
+        </ul>
+
+        <div class="tab-content">
+            <div class="tab-pane active" id="one" role="tabpanel">
+
+                <div class="card">
+                    <div class="card-block">
+                        <hr/>
+                        <table class="table table-bordered datatable respo" id="tblHutang">
+                            <thead>
+                            <tr>
+                                <th>
+                                    Periode Mutasi
+                                </th>
+                                <th>
+                                    NIP-Nama Peserta
+                                </th>
+                                <th>
+                                    ID-Nama Penerima
+                                </th>
+                                <th>
+                                    Golongan/Jabatan/Satker
+                                </th>
+                                <th>
+                                    ID-Kantor Bayar
+                                </th>
+                                <th>
+                                    No. Rekening
+                                </th>
+                                <th>
+                                    Jumlah Hutang (Rp.)
+                                </th>
+                                <th>
+                                    Action
+                                </th>
+                            </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="tab-pane" id="two" role="tabpanel">
+
+                <div class="card">
+                    <div class="card-block">
+                        <hr/>
+                        <table class="table table-bordered datatable2 respo" id="tblPembayaranHutangMp">
+                            <thead>
+                            <tr>
+                                <th>
+                                    #
+                                </th>
+                                <th>
+                                    NIP-Nama Peserta
+                                </th>
+                                <th>
+                                    ID-Nama Penerima
+                                </th>
+                                <th>
+                                    Golongan/Jabatan/Satker
+                                </th>
+                                <th>
+                                    ID-Kantor Bayar
+                                </th>
+                                <th>
+                                    No. Rekening
+                                </th>
+                                <th>
+                                    Jumlah Hutang (Rp.)
+                                </th>
+                                <th>
+                                    Periode
+                                </th>
+                                <th>
+                                    Action
+                                </th>
+                            </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-pane" id="three" role="tabpanel">
+
+                <div class="card">
+                    <div class="card-block">
+                        <hr/>
+                        <table class="table table-bordered datatable3 respo" id="tblHutangPembinaan">
+                            <thead>
+                            <tr>
+                                <th>
+                                    #
+                                </th>
+                                <th>
+                                    NIP-Nama Peserta
+                                </th>
+                                <th>
+                                    ID-Nama Penerima
+                                </th>
+                                <th>
+                                    Golongan/Jabatan/Satker
+                                </th>
+                                <th>
+                                    ID-Kantor Bayar
+                                </th>
+                                <th>
+                                    No. Rekening
+                                </th>
+                                <th>
+                                    Jumlah Hutang (Rp.)
+                                </th>
+                                <th>
+                                    Periode Mutasi
+                                </th>
+                                <th>
+                                    Action
+                                </th>
+                            </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-pane" id="four" role="tabpanel">
+
+                <div class="card">
+                    <div class="card-block">
+                        <hr/>
+                        <table class="table table-bordered datatable4 respo" id="tblPembayaranHutangPembinaan">
+                            <thead>
+                            <tr>
+                                <th>
+                                    NIP-Nama Peserta
+                                </th>
+                                <th>
+                                    ID-Nama Penerima
+                                </th>
+                                <th>
+                                    Golongan/Jabatan/Satker
+                                </th>
+                                <th>
+                                    ID-Kantor Bayar
+                                </th>
+                                <th>
+                                    No. Rekening
+                                </th>
+                                <th>
+                                    Jumlah Hutang (Rp.)
+                                </th>
+                                <th>
+                                    Tanggal Pembayaran
+                                </th>
+                                <th>
+                                    Status Validasi
+                                </th>
+                                <th>
+                                    Action
+                                </th>
+                            </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+
+
+    </div>
+    <!-- bottom footer -->
+
+    <!-- /bottom footer -->
+</div>
+<!-- /main area -->
+{{#modal}}
+
+{{/modal}}
+
+{{#scripts}}
+<script src="{{contextPath}}/assets/vendor/datatables/media/js/jquery.dataTables.js"></script>
+<script src="{{contextPath}}/assets/vendor/datatables/media/js/dataTables.bootstrap4.js"></script>
+<script src="{{contextPath}}/assets/vendor/select2/js/select2.js"></script>
+<script src="{{contextPath}}/assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+<script src="{{contextPath}}/assets/vendor/jquery-validation/dist/jquery.validate.js"></script>
+<script src="{{contextPath}}/assets/vendor/numeral/numeral.min.js"></script>
+<script src="{{contextPath}}/assets/vendor/sweetalert/sweetalert.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        var tblHutang = dkppDataTable($('#tblHutang'),'{{linkDataHutang}}',{
+            'columns':[
+                {"data":"periodeMutasi"},
+                {"data":"nip"},
+                {"data":"idPenerimaMp"},
+                {"data":"idGolongan"},
+                {"data":"idKantorBayar"},
+                {"data": "rekeningPenerimaMp"},
+                {"data":"totalHutang"},
+                {"data":"nip"}
+
+            ],
+            'columnDefs':[
+                {
+                    "targets": 1,
+                    "render": function(data, type, row, meta){
+                        return row.nip + " - " + row.namaPeserta;
+                    }
+                },
+                {
+                    "targets": 2,
+                    render: function(data, type, row, meta){
+                        return row.idPenerimaMp + " - " + row.namaPenerimaMp;
+                    }
+                },
+                {
+                    "targets": 3,
+                    render: function(data, type, row, meta){
+                        return row.namaGolongan + " / " + row.namaJabatan;
+                    }
+                },
+                {
+                    "targets": 4,
+                    render: function(data, type, row, meta){
+                        return row.idKantorBayar + " - " + row.namaKantorBayar;
+                    }
+                },
+                {
+                    "targets": 5,
+                    "render": function(data, type, row, meta){
+                        return (row.rekeningPenerimaMp == null)?'':row.rekeningPenerimaMp.nomorRekening;
+                    }
+                },
+                {
+                    "targets": 6,
+                    "render": function(data, type, row, meta){
+                        return row.totalHutang.toLocaleString("id");
+                    }
+                },
+                {
+                    "targets": -1,
+                    "data": 'id',
+                    "render": function(data, type, row, meta){
+                        let rowData = JSON.stringify(row);
+                        let btnProses = (row.isProses == "1") ? '' : "<button onclick='prosesBayar(" + rowData + ")' class=\"btn btn-primary btn-sm\" data-toggle=\"modal\" data-target=\".bd-example-modal\">" + "<i class=\"fa fa-edit\"></i> <span>Proses</span></button>";
+                        return "<a href='{{contextPath}}/pembayaran/tata-usaha-hutang/detail/" + row.idHutang + "'><button class=\"btn btn-primary btn-sm\" data-toggle=\"modal\" data-target=\".bd-example-modal\">" + "<i class=\"fa fa-eye\"></i> <span>Lihat</span></button></a>"
+                            + btnProses;
+
+                    }
+                }
+            ],
+            "order": [[ 1, 'asc' ]],
+        });
+
+        tblHutang.on( 'order.dt search.dt draw.dt', function () {
+            tblHutang.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+                cell.innerHTML = i+1;
+            } );
+        } ).draw();
+
+        var tblHutangPembinaan = dkppDataTable($('#tblHutangPembinaan'),'{{linkDataHutangPembinaan}}',{
+            'columns':[
+                {"data":"nip"},
+                {"data":"nip"},
+                {"data":"idPenerimaMp"},
+                {"data":"idGolongan"},
+                {"data":"idKantorBayar"},
+                {"data": "rekeningPenerimaMp"},
+                {"data":"totalHutang"},
+                {"data":"periodeMutasi"},
+                {"data":"nip"}
+
+            ],
+            'columnDefs':[
+                {
+                    "searchable": false,
+                    "orderable": false,
+                    "targets": 0
+                },
+                {
+                    "targets": 1,
+                    "render": function(data, type, row, meta){
+                        console.log(row);
+                        return row.nip + " - " + row.namaPeserta;
+                    }
+                },
+                {
+                    "targets": 2,
+                    render: function(data, type, row, meta){
+                        return row.idPenerimaMp + " - " + row.namaPenerimaMp;
+                    }
+                },
+                {
+                    "targets": 3,
+                    render: function(data, type, row, meta){
+                        return row.namaGolongan + " / " + row.namaJabatan;
+                    }
+                },
+                {
+                    "targets": 4,
+                    render: function(data, type, row, meta){
+                        return row.idKantorBayar + " - " + row.namaKantorBayar;
+                    }
+                },
+                {
+                    "targets": 5,
+                    "render": function(data, type, row, meta){
+                        return (row.rekeningPenerimaMp == null)?'':row.rekeningPenerimaMp.nomorRekening;
+                    }
+                },
+                {
+                    "targets": 6,
+                    "render": function(data, type, row, meta){
+                        return row.totalHutang.toLocaleString();
+                    }
+                },
+                {
+                    "targets": -1,
+                    "data": 'id',
+                    "render": function(data, type, row, meta){
+                        let rowData = JSON.stringify(row);
+                        let btnProses = (row.isProses == "1")?'':"<button onclick='prosesBayar(" + rowData + ")' class=\"btn btn-primary btn-sm\" data-toggle=\"modal\" data-target=\".bd-example-modal\">" + "<i class=\"fa fa-edit\"></i> <span>Proses</span></button>";
+                        return "<a href='{{contextPath}}/pembayaran/tata-usaha-hutang/detail-pembinaan/" + row.idHutang +"'><button class=\"btn btn-primary btn-sm\" data-toggle=\"modal\" data-target=\".bd-example-modal\">" + "<i class=\"fa fa-eye\"></i> <span>Lihat</span></button></a>"
+                            + btnProses;
+                    }
+                }
+            ],
+            "order": [[ 1, 'asc' ]],
+        });
+
+        tblHutangPembinaan.on('draw.dt', function(){
+            let pageInfo = $('#tblHutangPembinaan').DataTable().page.info();
+            tblHutangPembinaan.column(0, {page: 'current'}).nodes().each(function(cell, i){
+                cell.innerHTML = i + 1 + pageInfo.start;
+            });
+        });
+
+        var tblPembayaranHutang = dkppDataTable($('#tblPembayaranHutangMp'),'{{linkDataPembayaranHutang}}',{
+            'columns':[
+                {"data":"nip"},
+                {"data":"nip"},
+                {"data":"idPenerimaMp"},
+                {"data":"idGolongan"},
+                {"data":"idKantorBayar"},
+                {"data": "rekeningPenerimaMp"},
+                {"data":"totalHutang"},
+                {"data":"periodeBayar"},
+                {"data":"nip"}
+
+            ],
+            'columnDefs':[
+                {
+                    "targets": 1,
+                    "render": function(data, type, row, meta){
+                        console.log(row);
+                        return row.nip + " - " + row.namaPeserta;
+                    }
+                },
+                {
+                    "targets": 2,
+                    render: function(data, type, row, meta){
+                        return row.idPenerimaMp + " - " + row.namaPenerimaMp;
+                    }
+                },
+                {
+                    "targets": 3,
+                    render: function(data, type, row, meta){
+                        return row.namaGolongan + " / " + row.namaJabatan;
+                    }
+                },
+                {
+                    "targets": 4,
+                    render: function(data, type, row, meta){
+                        return row.idKantorBayar + " - " + row.namaKantorBayar;
+                    }
+                },
+                {
+                    "targets": 5,
+                    "render": function(data, type, row, meta){
+                        return (row.rekeningPenerimaMp == null)?'':row.rekeningPenerimaMp.nomorRekening;
+                    }
+                },
+                {
+                    "targets": 6,
+                    "render": function(data, type, row, meta){
+                        return row.totalHutang.toLocaleString("id");
+                    }
+                },
+                {
+                    "targets": -1,
+                    "data": 'id',
+                    "render": function(data, type, row, meta){
+                        let rowData = JSON.stringify(row);
+                        let btnProses = (row.isSentToPtr == "1")?"":"<button onclick='prosesBayarPtr(" + rowData + ")' class=\"btn btn-primary btn-sm\" data-toggle=\"modal\" data-target=\".bd-example-modal\">" + "<i class=\"fa fa-edit\"></i> <span>Send to PTR</span></button>";
+                        return "<a href='{{contextPath}}/pembayaran/tata-usaha-hutang/detail-pembayaran-mp/" + row.idBayar + "'><button class=\"btn btn-primary btn-sm\" data-toggle=\"modal\" data-target=\".bd-example-modal\">" + "<i class=\"fa fa-eye\"></i> <span>Lihat</span></button></a>"
+                            + btnProses;
+
+                    }
+                },
+                {
+                    "targets":-1,
+                    "data":"id",
+                    "render": function(data, type, row, meta){
+
+                    }
+                }
+            ],
+            "order": [[ 1, 'asc' ]],
+        });
+
+        tblPembayaranHutang.on( 'draw.dt order.dt search.dt', function () {
+            tblPembayaranHutang.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+                cell.innerHTML = i+1;
+            } );
+        } ).draw();
+
+
+        var tblPembayaranHutangPembinaan = dkppDataTable($('#tblPembayaranHutangPembinaan'),'{{linkDataPembayaranHutangPembinaan}}',{
+            'columns':[
+                {"data":"nip"},
+                {"data":"nip"},
+                {"data":"idPenerimaMp"},
+                {"data":"idGolongan"},
+                {"data":"idKantorBayar"},
+                {"data": "rekeningPenerimaMp"},
+                {"data":"totalHutang"},
+                {"data":"periodeBayar"},
+                {"data":"nip"}
+
+            ],
+            'columnDefs':[
+                {
+                    "searchable": false,
+                    "orderable": false,
+                    "targets": 0
+                },
+                {
+                    "targets": 1,
+                    "render": function(data, type, row, meta){
+                        return row.nip + " - " + row.namaPeserta;
+                    }
+                },
+                {
+                    "targets": 2,
+                    render: function(data, type, row, meta){
+                        return row.idPenerimaMp + " - " + row.namaPenerimaMp;
+                    }
+                },
+                {
+                    "targets": 3,
+                    render: function(data, type, row, meta){
+                        return row.namaGolongan + " / " + row.namaJabatan;
+                    }
+                },
+                {
+                    "targets": 4,
+                    render: function(data, type, row, meta){
+                        return row.idKantorBayar + " - " + row.namaKantorBayar;
+                    }
+                },
+                {
+                    "targets": 5,
+                    "render": function(data, type, row, meta){
+                        return (row.rekeningPenerimaMp == null)?'':row.rekeningPenerimaMp.nomorRekening;
+                    }
+                },
+                {
+                    "targets": 6,
+                    "render": function(data, type, row, meta){
+                        return row.totalHutang.toLocaleString();
+                    }
+                },
+                {
+                    "targets": -1,
+                    "data": 'id',
+                    "render": function(data, type, row, meta){
+                        let rowData = JSON.stringify(row);
+                        btnProses = (row.isSentToPtr == "1")?'' : "<button onclick='prosesBayarPtr(" + rowData + ")' class=\"btn btn-primary btn-sm\" data-toggle=\"modal\" data-target=\".bd-example-modal\">" + "<i class=\"fa fa-edit\"></i> <span>Proses</span></button>";
+                        return "<a href='{{contextPath}}/pembayaran/tata-usaha-hutang/detail-pembayaran-pembinaan/" + row.idBayar + "'><button class=\"btn btn-primary btn-sm\" data-toggle=\"modal\" data-target=\".bd-example-modal\">" + "<i class=\"fa fa-eye\"></i> <span>Lihat</span></button></a>"
+                            + btnProses;
+
+                    }
+                },
+                {
+                    "targets":-1,
+                    "data":"id",
+                    "render": function(data, type, row, meta){
+
+                    }
+                }
+            ],
+            "order": [[ 1, 'asc' ]],
+        });
+
+        tblPembayaranHutangPembinaan.on( 'draw.dt order.dt search.dt', function () {
+            tblPembayaranHutangPembinaan.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+                cell.innerHTML = i+1;
+            } );
+        } ).draw();
+
+        tblPembayaranHutangPembinaan.on('draw.dt', function(){
+            let pageInfo = $('#tblPembayaranHutangPembinaan').DataTable().page.info();
+            tblPembayaranHutangPembinaan.column(0, {page: 'current'}).nodes().each(function(cell, i){
+                cell.innerHTML = i + 1 + pageInfo.start;
+            });
+        });
+    });
+
+    const prosesBayar = (row) => {
+        let params={
+            parCompName: '',
+            parUserName: '',
+            parNip: row.nip,
+            parPeriodeHutang: row.periodeMutasi,
+            parType: row.type,
+            _csrf: '{{_csrf.token}}'
+        }
+
+        $.ajax({
+            url: '{{linkCallSpPembayaran}}',
+            data: params,
+            method: 'POST',
+            success: (response) => {
+                if(response.status == "success") {
+                    swal({title: "Berhasil", text: response.message, icon: "success", button: "OK"})
+                        .then(()=>{
+                            setTimeout(function(){
+                                $('#tblHutang').DataTable().ajax.reload();
+                                $('#tblHutangPembinaan').DataTable().ajax.reload();
+                                $('#tblPembayaranHutangMp').DataTable().ajax.reload();
+                                $('#tblPembayaranHutangPembinaan').DataTable().ajax.reload();
+                            }, 500);
+                        });
+                }
+            },
+            statusCode: {
+                500: function(xhr){
+                    swal({title: 'Gagal', text: xhr.responseJSON.message, button: 'OK'});
+                },
+                403: function(xhr){
+                    swal({title: 'Unauthoreized', text: 'Perlu refresh (F5) halaman untuk mendapatkan hak akses halaman ini kembali.'})
+                }
+            }
+        });
+    };
+
+    const prosesBayarPtr = (row) => {
+        let params={
+            parCompName: '',
+            parUserName: '',
+            parIdBayar: row.idBayar,
+            parPeriodeBayar: row.periodeBayar,
+            parNominal: row.totalBayar,
+            parType: row.type,
+            _csrf: '{{_csrf.token}}'
+        }
+
+        $.ajax({
+            url: '{{linkCallSpPembayaranPtr}}',
+            data: params,
+            method: 'POST',
+            success: (response) => {
+                if(response.status == "success") {
+                    swal({title: "Berhasil", text: response.message, icon: "success", button: "OK"})
+                        .then(()=>{
+                            setTimeout(function(){
+                                //window.location.href='{{linkBack}}';
+                                $('#tblPembayaranHutangMp').DataTable().ajax.reload();
+                                $('#tblPembayaranHutangPembinaan').DataTable().ajax.reload();
+                            }, 500);
+                        });
+                }
+            },
+            failed: (response) => {
+
+            }
+        });
+    };
+
+</script>
+{{/scripts}}
+
+{{/layout}}

@@ -1,0 +1,269 @@
+{{#layout}}
+
+{{#styles}}
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/datatables/media/css/dataTables.bootstrap4.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/googleapis/css/component.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/googleapis/css/googleapis.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/select2/css/select2.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css">
+{{/styles}}
+
+{{#title}}
+Pembayaran - DKPP
+{{/title}}
+<!-- main area -->
+<div class="main-content">
+    <div class="content-view">
+
+        <div class="card card-block">
+            <div class="col-lg-12">
+                <div class="row">
+                    <div class="col-lg-5">
+                        <label for="example-text-input" class="col-sm-5 bold">Periode Mutasi</label>
+
+                        <div class="col-xs-4">
+                            <input class="form-control form-control-sm" disabled type="text" value="" id="periodeMutasi">
+                        </div>
+                    </div>
+                    <div class="col-lg-5">
+                        <label for="example-text-input" class="col-sm-5 bold" >Tanggal Mutasi Terakhir</label>
+
+                        <div class="col-xs-4">
+                            <input class="form-control form-control-sm" disabled type="text" value="" id="tglMutasiTerakhir">
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <hr/>
+                </div>
+
+            </div>
+
+            <div class="col-lg-12">
+
+                <h6 class="card-title small bold">Data Peserta dan Penerima MP</h6>
+                <div class="col-lg-8">
+                    <div class="row">
+                        <label for="nipNamaPeserta" class="col-sm-3">NIP - Nama Peserta</label>
+
+                        <div class="col-xs-6">
+                            <input class="form-control form-control-sm" disabled type="text"  value="" id="nipNamaPeserta">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label for="idNamaPenerimaMp" class="col-sm-3"> <b>ID - Nama Penerima</b> </label>
+
+                        <div class="col-xs-6">
+                            <input class="form-control form-control-sm" disabled type="text"  value="" id="idNamaPenerimaMp">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label for="golonganJabatan" class="col-sm-3">Golongan/Jabatan/Satker</label>
+                        <div class="col-xs-6">
+                            <input class="form-control form-control-sm" disabled type="text" value="" id="golonganJabatan">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label for="idNamaKantorBayar" class="col-sm-3">ID - Kantor Bayar</label>
+                        <div class="col-xs-6">
+                            <input class="form-control form-control-sm" disabled type="text" value="" id="idNamaKantorBayar">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label for="noRekening" class="col-sm-3">Nomor Rekening</label>
+                        <div class="col-xs-6">
+                            <input class="form-control form-control-sm" disabled type="text" value="" id="noRekening">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label for="idStatusBayar" class="col-sm-3">Status Bayar</label>
+                        <div class="col-xs-6">
+                            <label class="radio-inline">
+                                <input type="radio"  name="inlineRadioOptions" checked id="idStatusbayar1" data-value="1"/>
+                                Dibayar
+                            </label>
+
+                            <label class="radio-inline">
+                                <input type="radio"  name="inlineRadioOptions" disabled  id="idStatusBayar0" data-value="0"/>
+                                Berakhir
+                            </label>
+                        </div>
+                    </div>
+                    <br><br>
+                    <div class="row">
+                        <label for="totalHutang" class="col-sm-3">Total Hutang</label>
+                        <div class="col-xs-6">
+                            <input class="form-control form-control-sm" disabled type="text" value="" id="totalHutang">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label for="saldoHutang" class="col-sm-3">Saldo Hutang</label>
+                        <div class="col-xs-6">
+                            <input class="form-control form-control-sm" disabled type="text" value="" id="saldoHutang">
+
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <label for="totalBayar" class="col-sm-3">Total Pembayaran</label>
+                        <div class="col-xs-6">
+                            <input class="form-control form-control-sm" disabled type="text" value="" id="totalBayar">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label for="keterangan" class="col-sm-3">Keterangan</label>
+                        <div class="col-xs-6">
+                            <textarea class="form-control  form-control-sm" disabled  id="keterangan" rows="4"></textarea><br><br>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row"></div>
+
+                <div class="card card-block">
+                    <div class="card-title small bold">
+                        Rincian Hutang
+                        <div class="row">
+                            <button class="btn btn-primary btn-sm pull-right" data-toggle="modal" data-target=".bd-example-modal" ><i class="fa fa-plus"></i> <span>Tambah</span></button>
+                        </div>
+                    </div>
+
+                    <div class="scroll-y scroll">
+                        <div class="table-responsive">
+                            <table class="table table-sm small" id="tblPembayaranHutangPembinaan">
+                                <thead>
+                                <th>
+                                    #
+                                </th>
+                                <th>
+                                    Tanggal Mutasi
+                                </th>
+                                <th>
+                                    Tanggal Pembayaran
+                                </th>
+                                <th>
+                                    Jumlah yang Dibayarkan (Rp. )
+                                </th>
+                                <th>
+                                    Keterangan
+                                </th>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="col-lg-12">
+                <div class="col-lg-3">
+                    <div class="row">
+                        <label for="userStamp" class="col-xs-4">User Stamp</label>
+
+                        <div class="col-xs-7">
+                            <input class="form-control form-control-sm" type="text" value="" id="userStamp" disabled>
+
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-lg-3">
+                    <div class="row">
+                        <label for="userValidasi" class="col-xs-4">User Validasi</label>
+
+                        <div class="col-xs-7">
+                            <input class="form-control form-control-sm" type="text" value="" id="userValidasi" disabled>
+
+                        </div>
+                    </div>
+                    <div class="row"><br/></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!-- /main area -->
+
+
+{{#modal}}
+
+{{/modal}}
+
+{{#scripts}}
+        <script src="{{contextPath}}/assets/vendor/datatables/media/js/jquery.dataTables.js"></script>
+        <script src="{{contextPath}}/assets/vendor/datatables/media/js/dataTables.bootstrap4.js"></script>
+        <script src="{{contextPath}}/assets/vendor/select2/js/select2.js"></script>
+        <script src="{{contextPath}}/assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+        <script src="{{contextPath}}/assets/vendor/jquery-validation/dist/jquery.validate.js"></script>
+        <script src="{{contextPath}}/assets/vendor/numeral/numeral.min.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function() {
+                const getHeaderData = function(){
+                    $.ajax({
+                        url: '{{linkHeaderPembayaranHutangPembinaan}}',
+                        success: function(response){
+                            $('#nip').val(response.nip);
+                            $('#periodeMutasi').val(response.periodeMutasi);
+                            $('#periodeMutas').val(response.periodeMutasi);
+                            $('#nipNamaPeserta').val(response.nip + " - " + response.namaPeserta);
+                            $('#idNamaPenerimaMp').val(response.idPenerimaMp + " - " + response.namaPenerimaMp);
+                            $('#golonganJabatan').val(response.namaGolongan + " / " + response.namaJabatan);
+                            $('#idNamaKantorBayar').val(response.idKantorBayar + " - " + response.namaKantorBayar);
+                            $('#noRekening').val((response.rekeningPenerimaMpDto != null)?response.rekeningPenerimaMpDto.nomorRekening:'-');
+                            $('#totalBayar').val(response.totalHutang.toLocaleString());
+                            $('#keterangan').val(response.keterangan);
+                            $('#periodeMutasi').val(response.periodeBayar);
+                            $('#totalHutang').val(response.totalHutang == null? '' : response.totalHutang.toLocaleString());
+                            $('#saldoHutang').val(response.saldoHutang == null? '' : response.saldoHutang.toLocaleString());
+                            $('#userStamp').val(response.userStamp);
+                            $('#userValidasi').val(response.userValidasi);
+                        }
+                    });
+                };
+
+                getHeaderData();
+
+                var pembayaranMpTabel = dkppDataTable($('#tblPembayaranHutangPembinaan'),'{{linkDetailPembayaranHutangPembinaan}}',{
+                    'columns':[
+                        {"data":"idBayarD"},
+                        {"data":"periodeBayar"},
+                        {"data":"tglTransaksi"},
+                        {"data":"nominal"},
+                        {"data":"keterangan"}
+                    ],
+                    'columnDefs':[
+                        {
+                            "targets": 2,
+                            "render": function(data, type, row, meta){
+                                return (row.tglTransaksi == null || row.tglTransaksi == undefined)? '' : fillDateField(row.tglTransaksi);
+                            }
+                        },
+                        {
+                            "targets": 3,
+                            render: function(data, type, row, meta){
+                                return (row.nominal.toLocaleString())
+                            }
+                        },
+                        {
+                            "searchable": false,
+                            "orderable": false,
+                            "targets": 0
+                        }
+                    ],
+                    "order": [[ 1, 'asc' ]],
+
+                });
+                pembayaranMpTabel.on( 'order.dt search.dt', function () {
+                    pembayaranMpTabel.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+                        cell.innerHTML = i+1;
+                    } );
+                } ).draw();
+            });
+
+        </script>
+        {{/scripts}}
+
+        {{/layout}}

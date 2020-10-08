@@ -1,0 +1,472 @@
+{{#layout}}
+{{#styles}}
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/datatables/media/css/dataTables.bootstrap4.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/googleapis/css/component.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/googleapis/css/googleapis.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/select2/css/select2.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css">
+{{/styles}}
+
+{{#title}}
+Pembayaran - DKPP
+{{/title}}
+<div class="main-content">
+    <div class="content-view">
+        <!--<ol class="breadcrumb" style="margin-bottom: 5px;">-->
+            <!--<li class="breadcrumb-item">-->
+                <!--<a href="pembayaran.html">-->
+                    <!--Pembayaran-->
+                <!--</a>-->
+            <!--</li>-->
+            <!--<li class="breadcrumb-item active">-->
+                <!--<a href="pembayaran-pembayaran-mp-bulanan-generate.html">-->
+                    <!--Pembayaran MP Bulanan-->
+                <!--</a>-->
+            <!--</li>-->
+        <!--</ol>-->
+        <div class="tab-content">
+            <div class="tab-pane active" id="one" role="tabpanel">
+                <div class="card">
+                    <div class="card-block">
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <form id="formSp">
+                                <label for="example-text-input" class="col-lg-5">Periode Pembayaran MP : </label>
+                                <div class="col-lg-5">
+                                    <input class="form-control form-control-sm" name="parPeriodePembayaran" type="text" value="" id="periode">
+                                    <input type="hidden" name="parCompName" id="comp-name-proses">
+                                    <input type="hidden" name="parUserName" id="user-name-proses">
+                                    <input type="hidden" name="parDiprosesOleh" id="user-name-diproses">
+                                    <input type="hidden" name="parTglDiproses" id="tgl-proses">
+                                    <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
+                                </div>
+                                <div class="col-lg-1">
+                                    <a class="btn btn-primary btn-sm" data-toggle="modal" id="btn-proses" ><i class="fa fa-edit"></i> <span>Proses</span></a>
+                                </div>
+                                </form>
+                            </div>
+                        </div>
+                        <hr/>
+                        <table class="table table-bordered datatable responsive" id="tabelPembayaran">
+                            <thead>
+                            <tr>
+                                <th>
+                                    No.
+                                </th>
+                                <th>
+                                    Periode
+                                </th>
+                                <th>
+                                    Tanggal Diproses
+                                </th>
+                                <th>
+                                    Diproses Oleh
+                                </th>
+                                <th>
+                                    Status
+                                </th>
+                                <th>
+                                    Keterangan
+                                </th>
+                                <th>
+                                    Sent To PTR
+                                </th>
+                                <th>
+                                    Action
+                                </th>
+                            </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{{#modal}}
+<div class="modal fade bd-example-modal3" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title small bold" id="myModalLabel">Validasi Mutasi Pensiun</h4>
+            </div>
+            <div class="modal-body">
+                <div class="col-lg-12">
+                    <div class="row">
+                        <label for="example-text-input" class="col-sm-1">Periode Mutasi</label>
+                        <div class="col-xs-2">
+                            <input class="form-control form-control-sm" disabled type="text" value="092018" id="example-text-input">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12"><br></div>
+                <table class="table table-bordered datatablekurs ">
+                    <thead>
+                    <tr>
+                        <th>
+                            No. Mutasi
+                        </th>
+                        <th>
+                            Jenis Mutasi
+                        </th>
+                        <th>
+                            Jumlah Data Mutasi
+                        </th>
+                        <th>
+                            Belum Validasi
+                        </th>
+                        <th>
+                            Sudah Validasi
+                        </th>
+                        <th>
+                            Batal Koreksi
+                        </th>
+                        <th>
+                            Batal Validasi
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>
+                            1
+                        </td>
+                        <td>
+                            Mutasi Pensiun Baru
+                        </td>
+                        <td>
+                            <button class="btn btn-primary btn-sm" data-toggle="modal" data-target=".bd-example-modal"><span>20</span></button>
+                        </td>
+                        <td>
+                            <button class="btn btn-info btn-sm" data-toggle="modal" data-target=".bd-example-modal-belum-validasi"><span>5</span></button>
+                        </td>
+                        <td>
+                            <button class="btn btn-warning btn-sm" data-toggle="modal" data-target=".bd-example-modal"><span>15</span></button></td>
+                        <td>
+                            <button class="btn btn-danger btn-sm" data-toggle="modal" data-target=".bd-example-modal"><span>0</span></button>
+                        </td>
+                        <td>
+                            <button class="btn btn-primary btn-sm" data-toggle="modal" data-target=".bd-example-modal"><span>0</span></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            2
+                        </td>
+                        <td>
+                            Mutasi Pensiun Tunda
+                        </td>
+                        <td>
+                            <button class="btn btn-primary btn-sm" data-toggle="modal" data-target=".bd-example-modal"><span>20</span></button>
+                        </td>
+                        <td>
+                            <button class="btn btn-info btn-sm" data-toggle="modal" data-target=".bd-example-modal"><span>5</span></button>
+                        </td>
+                        <td>
+                            <button class="btn btn-warning btn-sm" data-toggle="modal" data-target=".bd-example-modal"><span>15</span></button>
+                        </td>
+                        <td>
+                            <button class="btn btn-danger btn-sm" data-toggle="modal" data-target=".bd-example-modal"><span>0</span></button>
+                        </td>
+                        <td>
+                            <button class="btn btn-primary btn-sm" data-toggle="modal" data-target=".bd-example-modal"><span>0</span></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            3
+                        </td>
+                        <td>
+                            Mutasi Perubahan PhDP/Merit Increase
+                        </td>
+                        <td>
+                            <button class="btn btn-primary btn-sm" data-toggle="modal" data-target=".bd-example-modal"><span>20</span></button>
+                        </td>
+                        <td>
+                            <button class="btn btn-info btn-sm" data-toggle="modal" data-target=".bd-example-modal"><span>5</span></button>
+                        </td>
+                        <td>
+                            <button class="btn btn-warning btn-sm" data-toggle="modal" data-target=".bd-example-modal"><span>15</span></button></td>
+                        <td>
+                            <button class="btn btn-danger btn-sm" data-toggle="modal" data-target=".bd-example-modal"><span>0</span></button>
+                        </td>
+                        <td>
+                            <button class="btn btn-primary btn-sm" data-toggle="modal" data-target=".bd-example-modal"><span>0</span></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            4
+                        </td>
+                        <td>
+                            Mutasi Kurang Bayar MP
+                        </td>
+                        <td>
+                            <button class="btn btn-primary btn-sm" data-toggle="modal" data-target=".bd-example-modal"><span>20</span></button>
+                        </td>
+                        <td>
+                            <button class="btn btn-info btn-sm" data-toggle="modal" data-target=".bd-example-modal"><span>5</span></button>
+                        </td>
+                        <td>
+                            <button class="btn btn-warning btn-sm" data-toggle="modal" data-target=".bd-example-modal"><span>15</span></button>
+                        </td>
+                        <td>
+                            <button class="btn btn-danger btn-sm" data-toggle="modal" data-target=".bd-example-modal"><span>0</span></button>
+                        </td>
+                        <td>
+                            <button class="btn btn-primary btn-sm" data-toggle="modal" data-target=".bd-example-modal"><span>0</span></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            5
+                        </td>
+                        <td>
+                            Mutasi Lebih Bayar MP
+                        </td>
+                        <td>
+                            <button class="btn btn-primary btn-sm" data-toggle="modal" data-target=".bd-example-modal"><span>20</span></button>
+                        </td>
+                        <td>
+                            <button class="btn btn-info btn-sm" data-toggle="modal" data-target=".bd-example-modal"><span>5</span></button>
+                        </td>
+                        <td>
+                            <button class="btn btn-warning btn-sm" data-toggle="modal" data-target=".bd-example-modal"><span>15</span></button></td>
+                        <td>
+                            <button class="btn btn-danger btn-sm" data-toggle="modal" data-target=".bd-example-modal"><span>0</span></button> </td>
+                        <td>
+                            <button class="btn btn-primary btn-sm" data-toggle="modal" data-target=".bd-example-modal"><span>0</span></button> </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            6
+                        </td>
+                        <td>
+                            dst...
+                        </td>
+                        <td>
+                            <button class="btn btn-primary btn-sm" data-toggle="modal" data-target=".bd-example-modal"><span>20</span></button>
+                        </td>
+                        <td>
+                            <button class="btn btn-info btn-sm" data-toggle="modal" data-target=".bd-example-modal"><span>5</span></button>
+                        </td>
+                        <td>
+                            <button class="btn btn-warning btn-sm" data-toggle="modal" data-target=".bd-example-modal"><span>15</span></button></td>
+                        <td>
+                            <button class="btn btn-danger btn-sm" data-toggle="modal" data-target=".bd-example-modal"><span>0</span></button> </td>
+                        <td>
+                            <button class="btn btn-primary btn-sm" data-toggle="modal" data-target=".bd-example-modal"><span>0</span></button> </td>
+                    </tr>
+                    <tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{{/modal}}
+
+{{#scripts}}
+            <script src="{{contextPath}}/assets/vendor/datatables/media/js/jquery.dataTables.js"></script>
+            <script src="{{contextPath}}/assets/vendor/datatables/media/js/dataTables.bootstrap4.js"></script>
+            <script src="{{contextPath}}/assets/vendor/select2/js/select2.js"></script>
+            <script src="{{contextPath}}/assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+            <script src="{{contextPath}}/assets/vendor/jquery-validation/dist/jquery.validate.js"></script>
+            <script src="{{contextPath}}/assets/vendor/numeral/numeral.min.js"></script>
+<script src="{{contextPath}}/assets/vendor/sweetalert/sweetalert.min.js"></script>
+            <script type="text/javascript">
+                $(document).ready(function() {
+                    $('input[name=parPeriodePembayaran]').keyup(function(){
+                        $(this).val($(this).val().replace(/[^\d]/,''));
+                    });
+                    window.DkppGlobal2 = {};
+                    window.DkppGlobal2.isPejabat = {{isPejabat}};
+                    window.DkppGlobal2.isAdmin = {{isAdmin}};
+                    window.DkppGlobal2.isStaff = {{isStaff}};
+                    var pembayaranMpTabel = dkppDataTable($('#tabelPembayaran'),'{{contextPath}}/api/pembayaran-bulanan',{
+
+                        'columns':[
+                            {"data":"id"},
+                            {"data":"periodePembayaran"},
+                            {"data":"tglDiproses"},
+                            {"data":"diprosesOleh"},
+                            {"data":"namaStatusBerhasil"},
+                            {"data":"keterangan"},
+                            {"data":"isSendToPtr"},
+                            {"data":"id"},
+
+                        ],
+                        'columnDefs':[
+                            {
+                                "targets": [2],
+                                "render": function(data, type, row, meta) {
+                                    return data && moment(data).format("DD/MM/YYYY");
+                                }
+                            },
+                            {
+                                "targets": -2,
+                                "render": function(data, type, row, meta) {
+                                    strOut = "";
+                                    if (row.isSendToPtr == 1){
+                                        strOut = `<span>Sudah</span>`;
+                                    } else{
+                                        strOut = `<span>Belum</span>`;
+                                    }
+                                    return strOut;
+                                }
+                            },
+                            {
+                                "targets": -1,
+                                "data": 'id',
+                                "render": function(data, type, row, meta){
+                                    let param = JSON.stringify(row);
+                                    strOut = "";
+                                    if (row.namaStatusBerhasil == "Gagal") {
+                                     strOut = `-`
+                                    }else{
+                                    if (row.isSendToPtr == 1){
+                                        strOut = `<a href='{{detailMp}}?id_pembayaran=`+row.id+`'><button class="btn btn-primary btn-sm" data-toggle="modal" data-target=".bd-example-modal">` + `<i class="fa fa-eye"></i> <span>Lihat Rincian Rekapitulasi MP Bulanan</span></button></a> &nbsp;&nbsp;` +
+                                            `<a href='{{detailMps}}?id_pembayaran=`+row.id+`'><button class="btn btn-primary btn-sm" data-toggle="modal" data-target=".bd-example-modal">` + `<i class="fa fa-eye"></i> <span>Lihat Rincian Rekapitulasi MP Sekaligus</span></button></a></center>&nbsp;&nbsp;`;
+                                    } else{
+                                            if (window.DkppGlobal2.isPejabat == true){
+                                                strOut = `<a href='{{detailMp}}?id_pembayaran=`+row.id+`'><button class="btn btn-primary btn-sm" data-toggle="modal" data-target=".bd-example-modal">` + `<i class="fa fa-eye"></i> <span>Lihat Rincian Rekapitulasi MP Bulanan</span></button></a> &nbsp;&nbsp;` +
+                                                `<a href='{{detailMps}}?id_pembayaran=`+row.id+`'><button class="btn btn-primary btn-sm" data-toggle="modal" data-target=".bd-example-modal">` + `<i class="fa fa-eye"></i> <span>Lihat Rincian Rekapitulasi MP Sekaligus</span></button></a></center>&nbsp;&nbsp;`+
+                                                `<a class="btn btn-primary btn-sm" data-toggle="modal" onclick='prosesSendPtr(`+ param +`)'><i class="fa fa-edit"></i> <span>Send To Ptr</span></a>`
+                                            }else{
+                                                strOut = `<a href='{{detailMp}}?id_pembayaran=`+row.id+`'><button class="btn btn-primary btn-sm" data-toggle="modal" data-target=".bd-example-modal">` + `<i class="fa fa-eye"></i> <span>Lihat Rincian Rekapitulasi MP Bulanan</span></button></a> &nbsp;&nbsp;` +
+                                                    `<a href='{{detailMps}}?id_pembayaran=`+row.id+`'><button class="btn btn-primary btn-sm" data-toggle="modal" data-target=".bd-example-modal">` + `<i class="fa fa-eye"></i> <span>Lihat Rincian Rekapitulasi MP Sekaligus</span></button></a></center>&nbsp;&nbsp;`;
+                                            }
+                                    }
+                                    }
+                                    return strOut;
+
+                                }
+                            },
+                            {
+                                "targets":-1,
+                                "data":"id",
+                                "render": function(data, type, row, meta){
+
+                                }
+                            }
+                        ],
+                        "order": [[ 1, 'asc' ]],
+
+                    });
+                    pembayaranMpTabel.on('draw.dt', function(){
+                        let pageInfo = $('#tabelPembayaran').DataTable().page.info();
+                        pembayaranMpTabel.column(0, {page: 'current'}).nodes().each(function(cell, i){
+                            cell.innerHTML = i + 1 + pageInfo.start;
+                        });
+                    });
+
+                    $.ajax({
+                        url: '{{contextPath}}/api/setupparameter/get_periode_tutup',
+                        dataType:'json',
+                        method:'GET',
+                        success:function (data) {
+                            console.log(data);
+                            dataPeriode = data;
+                            $('#tgl-proses').val(data.tglMutasi);
+                            $('#user-name-proses').val(data.userName);
+                            $('#comp-name-proses').val(data.compName);
+                            $('#user-name-diproses').val(data.realName);
+
+                        }
+                    });
+
+
+                });
+
+                $('#btn-proses').on('click', ()=>{
+                    $('#formSp').validate();
+                    $('#periode').rules("add", {
+                        required: true,
+                        messages: {
+                            required: 'masukan periode mutasi.'
+                        }
+                    });
+                    let validForm = $('#periode').valid();
+                    loader($("body"), true);
+                    if(validForm){
+
+                        $.ajax({
+                            url: "{{contextPath}}/api/pembayaran-bulanan/sp-pembayaran",
+                            method: 'POST',
+                            data: formToJSON($("form#formSp")[0].elements)
+                        }).success(function(data) {
+                            loader($("body"), false);
+                            console.log("berhasil");
+                            if(data.status == "success") {
+                                swal({title: "Berhasil", text: data.message, icon: "success", button: "OK"});
+                            }else if(data.status == "failed") {
+                                swal({title: "Gagal", text: data.message, icon: "error", button: "OK"});
+                            }
+                            $('#tabelPembayaran').DataTable().ajax.reload();
+
+                        }).error(function(data){
+                            loader($("body"), false);
+                            console.log("gagal",data);
+                            swal({title: "Gagal", text: data.responseJSON.message, icon: "error", button: "OK"});
+                            // if(data.message != undefined )
+                            //     swal({title: "Gagal", text: data.message, icon: "error", button: "OK"});
+                            // else
+                            //     swal({title: "Gagal", text: "Terjadi Kesalahan", icon: "error", button: "OK"});
+                            $('#tabelPembayaran').DataTable().ajax.reload();
+                        });
+                    }
+
+                });
+
+                function prosesSendPtr(param) {
+                    console.log('sendPtr',param);
+                    $.ajax({
+                        url: '{{contextPath}}/api/setupparameter/get_periode',
+                        dataType:'json',
+                        method:'GET',
+                        success:function (data) {
+                            console.log(data);
+                            dataPeriode = data;
+
+                            let params={
+                                parCompName: data.compName,
+                                parUserName: data.userName,
+                                parPeriode: data.periodeMutasi,
+                                parTglDiproses:data.tglMutasi,
+                                parIdPembayaran: param.id,
+                                _csrf: "{{_csrf.token}}",
+                            };
+
+                            console.log('data send', params);
+
+                            $.ajax({
+                                url: "{{contextPath}}/api/pembayaran-bulanan/send-to-ptr",
+                                method: "POST",
+                                data: params
+                            }).success(function (data) {
+                                console.log("berhasil");
+                                if (data.status = "success") {
+                                    swal({title: "Berhasil", text: data.message, icon: "success", button: "OK"});
+                                }
+                                $('#tabelPembayaran').DataTable().ajax.reload();
+                                // pembinaanTabel.ajax.reload();
+                            }).error(function (data) {
+                                console.log("gagal");
+                                if (data.message = undefined)
+                                    swal({title: "Gagal", text: data.message, icon: "error", button: "OK"});
+                                else
+                                    swal({title: "Gagal", text: "Terjadi kegagalan.", icon: "error", button: "OK"});
+
+                            });
+                        }
+
+
+                    });
+                }
+
+            </script>
+{{/scripts}}
+
+{{/layout}}

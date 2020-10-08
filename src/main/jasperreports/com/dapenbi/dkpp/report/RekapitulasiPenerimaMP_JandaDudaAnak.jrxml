@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RekapitulasiPenerimaMP_JandaDudaAnak" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="2907a436-eca9-4c38-bbca-2872016e6b0c">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DKPP_LOCAL"/>
+	<subDataset name="Dataset1" uuid="2736a779-ad56-4041-aa65-03111b3ce47f">
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="dbserver"/>
+		<queryString language="SQL">
+			<![CDATA[select nama_kantor_bayar
+    ,periode_mutasi
+    ,(select COUNT(id_kategori_penerima_mp) from tbl_t_mutasi_pensiun where periode_mutasi between '112017' AND '112018' AND  jenis_kelamin_penerima_mp = 'W' AND id_kategori_penerima_mp='2') as janda
+    ,(select COUNT(id_kategori_penerima_mp) from tbl_t_mutasi_pensiun where periode_mutasi between '112017' AND '112018' AND jenis_kelamin_penerima_mp = 'P' AND id_kategori_penerima_mp = '2') as duda
+    ,(select COUNT(id_kategori_penerima_mp) from tbl_t_mutasi_pensiun where periode_mutasi between '112017' AND '112018' AND id_kategori_penerima_mp not in ('1','2'))as anak
+from tbl_t_mutasi_pensiun
+where (periode_mutasi between '112017' AND '112018')AND id_kantor_bayar LIKE '%'
+group by periode_mutasi, nama_kantor_bayar ORDER BY periode_mutasi]]>
+		</queryString>
+		<field name="NAMA_KANTOR_BAYAR" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="NAMA_KANTOR_BAYAR"/>
+		</field>
+		<field name="PERIODE_MUTASI" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="PERIODE_MUTASI"/>
+		</field>
+		<field name="JANDA" class="java.math.BigDecimal">
+			<property name="com.jaspersoft.studio.field.label" value="JANDA"/>
+		</field>
+		<field name="DUDA" class="java.math.BigDecimal">
+			<property name="com.jaspersoft.studio.field.label" value="DUDA"/>
+		</field>
+		<field name="ANAK" class="java.math.BigDecimal">
+			<property name="com.jaspersoft.studio.field.label" value="ANAK"/>
+		</field>
+		<group name="NAMA_KANTOR_BAYAR">
+			<groupExpression><![CDATA[$F{NAMA_KANTOR_BAYAR}]]></groupExpression>
+		</group>
+		<group name="PERIODE_MUTASI">
+			<groupExpression><![CDATA[$F{PERIODE_MUTASI}]]></groupExpression>
+		</group>
+	</subDataset>
+	<parameter name="periode_x" class="java.lang.String"/>
+	<parameter name="periode_y" class="java.lang.String"/>
+	<parameter name="id_kantor_bayar" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[select DISTINCT
+	periode_mutasi,
+	nama_kantor_bayar
+,COUNT(CASE WHEN id_kategori_penerima_mp = '2' AND jenis_kelamin_penerima_mp = 'W' then 'W' END) as JANDA
+,COUNT(CASE WHEN id_kategori_penerima_mp = '2' AND jenis_kelamin_penerima_mp = 'P' then 'P' END) as DUDA
+,COUNT(CASE WHEN id_kategori_penerima_mp NOT IN('1','2') then 'anak' END) as ANAK
+,(select count(id_kategori_penerima_mp) from tbl_t_mutasi_pensiun where id_kategori_penerima_mp = '2' AND jenis_kelamin_penerima_mp = 'W') as total_janda
+,(select count(id_kategori_penerima_mp) from tbl_t_mutasi_pensiun where id_kategori_penerima_mp = '2' AND jenis_kelamin_penerima_mp = 'P') as total_duda
+,(select count(id_kategori_penerima_mp) from tbl_t_mutasi_pensiun where id_kategori_penerima_mp NOT IN('1','2')) as total_anak
+    ,to_char(to_date($P{periode_x},'MM yyyy'),'Month','nls_date_language = INDONESIAN') as periode_x
+    ,to_char(to_date($P{periode_y},'MM yyyy'),'Month yyyy','nls_date_language = INDONESIAN') as periode_y
+    ,to_char(SYSDATE,'dd Month yyyy') as sign_date
+from tbl_t_mutasi_pensiun 
+where to_date(periode_mutasi,'MMyyyy') BETWEEN to_date($P{periode_x},'MMyyyy') AND to_date($P{periode_y},'MMyyyy') AND (id_kantor_bayar LIKE '%$P!{id_kantor_bayar}%' OR $P{id_kantor_bayar} = '00')
+group by periode_mutasi, nama_kantor_bayar ORDER BY periode_mutasi]]>
+	</queryString>
+	<field name="PERIODE_MUTASI" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="PERIODE_MUTASI"/>
+	</field>
+	<field name="NAMA_KANTOR_BAYAR" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NAMA_KANTOR_BAYAR"/>
+	</field>
+	<field name="JANDA" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="JANDA"/>
+	</field>
+	<field name="DUDA" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="DUDA"/>
+	</field>
+	<field name="ANAK" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="ANAK"/>
+	</field>
+	<field name="TOTAL_JANDA" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="TOTAL_JANDA"/>
+	</field>
+	<field name="TOTAL_DUDA" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="TOTAL_DUDA"/>
+	</field>
+	<field name="TOTAL_ANAK" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="TOTAL_ANAK"/>
+	</field>
+	<field name="PERIODE_X" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="PERIODE_X"/>
+	</field>
+	<field name="PERIODE_Y" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="PERIODE_Y"/>
+	</field>
+	<field name="SIGN_DATE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="SIGN_DATE"/>
+	</field>
+	<variable name="Total_janda" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{JANDA}]]></variableExpression>
+	</variable>
+	<variable name="Total_duda" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{DUDA}]]></variableExpression>
+	</variable>
+	<variable name="Total_anak" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{ANAK}]]></variableExpression>
+	</variable>
+	<group name="PERIODE_MUTASI">
+		<groupExpression><![CDATA[$F{PERIODE_MUTASI}]]></groupExpression>
+		<groupHeader>
+			<band height="24">
+				<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
+				<textField>
+					<reportElement x="0" y="0" width="130" height="20" uuid="ea4ef596-6123-4597-bc84-285acb7c5b74"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{PERIODE_MUTASI} == null ? "-" : $F{PERIODE_MUTASI}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
+	<group name="NAMA_KANTOR_BAYAR">
+		<groupExpression><![CDATA[$F{NAMA_KANTOR_BAYAR}]]></groupExpression>
+		<groupHeader>
+			<band height="69">
+				<textField evaluationTime="Group" evaluationGroup="NAMA_KANTOR_BAYAR">
+					<reportElement x="130" y="1" width="140" height="19" uuid="ba2ce9bb-8ce9-41f9-95ff-e2330d2a6a87"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{NAMA_KANTOR_BAYAR} == null ? "-" : $F{NAMA_KANTOR_BAYAR}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Group" evaluationGroup="NAMA_KANTOR_BAYAR">
+					<reportElement x="400" y="0" width="150" height="20" uuid="b45b0b0a-9cbd-48dd-9f8c-d35137d67755"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{JANDA} == null ? "-" : $F{JANDA}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="270" y="2" width="130" height="18" uuid="5b0aa02d-d17c-4a5e-b132-831dd7b462b6"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="12"/>
+					</textElement>
+					<text><![CDATA[Janda]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="270" y="20" width="130" height="20" uuid="46cea98c-4f48-4360-a398-d176822c0ae9"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="12"/>
+					</textElement>
+					<text><![CDATA[Duda]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="270" y="40" width="130" height="23" uuid="4187cc2d-4a1b-47d7-b448-3a1bcc7b5013"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="12"/>
+					</textElement>
+					<text><![CDATA[Anak]]></text>
+				</staticText>
+				<textField evaluationTime="Group" evaluationGroup="NAMA_KANTOR_BAYAR">
+					<reportElement x="400" y="20" width="150" height="20" uuid="0d80d65f-8f95-48c0-926b-a257af46bcb1"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{DUDA} == null ? "-" : $F{DUDA}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Group" evaluationGroup="NAMA_KANTOR_BAYAR">
+					<reportElement x="400" y="40" width="150" height="23" uuid="bace0d34-0ed8-4fcc-a985-b970788c3568"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{ANAK} == null ? "-" : $F{ANAK}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement x="-10" y="67" width="570" height="1" uuid="60a199af-e1ad-4c2f-a731-0ad638313540"/>
+				</line>
+			</band>
+		</groupHeader>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="89" splitType="Stretch">
+			<staticText>
+				<reportElement x="-20" y="20" width="595" height="39" uuid="1fd175be-e586-4739-bc96-8d488d5d5b60"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[REKAPITULASI DAFTAR PENERIMA MP JANDA/DUDA/ANAK]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="-20" y="59" width="595" height="30" uuid="f1210594-d625-4bc6-bec2-d2ccdc4d385e"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Periode Bulan : "+$F{PERIODE_X}.trim()+" s.d "+$F{PERIODE_Y}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="36" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="3" width="130" height="30" backcolor="#FFFFFF" uuid="d7129ee5-3c8c-493e-9d6f-9fd4eb6f76cb"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Bulan]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="130" y="3" width="140" height="30" backcolor="#FFFFFF" uuid="35454d6f-6550-45dd-bda5-5c7930d61969"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Kantor Bayar]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="270" y="3" width="130" height="30" backcolor="#FFFFFF" uuid="4dfb2840-7a69-46d8-b495-18609210ef19"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Penerima MP]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="400" y="3" width="150" height="30" backcolor="#FFFFFF" uuid="f8996a9c-2e31-4e8d-88e7-076713016fda"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Jumlah Orang]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<summary>
+		<band height="89">
+			<staticText>
+				<reportElement x="0" y="27" width="130" height="30" uuid="41370354-f063-4973-82bf-a54e0ea04f21"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total Penerima MP ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="130" y="27" width="60" height="18" uuid="bb3ab641-f320-4057-98b9-67659223f72d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Janda]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="130" y="45" width="60" height="20" uuid="ff7ae00f-d0fd-4857-b138-b9cecc6ede46"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Duda]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="130" y="65" width="60" height="23" uuid="83f38196-a8d7-4ad3-afe0-0aa58f23919f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Anak]]></text>
+			</staticText>
+			<textField isBlankWhenNull="false">
+				<reportElement x="190" y="27" width="90" height="19" uuid="8b0e504c-6402-439b-8a7d-620d1c46b671"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{Total_janda} == null ? "0" : $V{Total_janda}+" Orang"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement x="190" y="46" width="90" height="18" uuid="ad0a97bc-38a9-48f0-a0b7-e9ca0bd90002"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{Total_duda} == null ? "0" : $V{Total_duda}+" Orang"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement x="190" y="64" width="90" height="24" uuid="5d47e2c1-dc9f-4bf3-90d3-845536c935f8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{Total_anak} == null ? "0" : $V{Total_anak}+" Orang"]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

@@ -1,0 +1,395 @@
+<script type="text/javascript">
+    function saveUpdateTab3(){
+        let params = {
+            parCompName:$('#tab3CompName').val(),
+            parUserName:$('#tab3UserName').val() ,
+            parPeriodeMutasi: $('#tab3PeriodeMutasi').val(),
+            parIdMutasi: $('#tab3IdMutasiPensiun').val(),
+            parNip: $('#tab3Nip').val(),
+            parMpydBaru: $('#tab3MpydBaru').val(),
+            parIdKategoriCatatan: $('#tab3IdKategoriCatatan').val(),
+            parNamaKategoriCatatan: $('#tab3NamaKategoriCatatan').val(),
+            parKeterangan: $('#tab3Keterangan').val(),
+            parIdValidasi: $("[name = 'idValidasi']:checked").val(),
+            parNamaValidasi: $("[name = 'idValidasi']:checked").data('name'),
+            _csrf: $('#_csrf').val()
+        };
+
+        $.ajax({
+            url: "{{contextPath}}{{apiLink}}/mutasi-otomatis-anak-sp",
+            method: 'PUT',
+            data: params,
+            success: function(data){
+
+                if(data.status == "success") {
+                    swal({title: "Berhasil", text: data.message, icon: "success", button: "OK"});
+                    $('#tabel-mutasi-anak-tab3').DataTable().ajax.reload();
+                    $('#tab3ModalEdit').modal('hide');
+                }
+            },
+            error: function(data){
+                if(data.message != undefined )
+                    swal({title: "Gagal", text: data.message, icon: "error", button: "OK"});
+                else
+                    swal({title: "Gagal", text: "Terjadi kesalahan.", icon: "error", button: "OK"});
+            }
+        });
+    }
+
+    $(document).ready(function(){
+        var mutasiAnakTable = dkppDataTable($('#tabel-mutasi-anak-tab3'),'{{contextPath}}/api/mutasi-penerima-anak/data-mutasi-otomatis-janda-duda-anak-bulan-13',{
+            'columns':[
+                {"data":"tglMutasi"},
+                {"data":"periodeMutasi"},
+                {"data":"nip"},
+                {"data":"namaPeserta"},
+                {"data":"namaPenerimaMp"},
+                {"data":"namaKategoriPenerimaMp"},
+                {"data":"namaPenerimaMpBaru"},
+                {"data":"namaKategoriPenerimaMpBaru"},
+                {"data":"mpPerbulanRumusBaru"},
+                {"data":"mpBulan13Baru"},
+                {"data":"tglMpBulanKe13"},
+                {"data":"idStatusBayar"},
+                {"data":"nomorHer"},
+                {"data":"idValidasi"},
+                {"data":"id"}
+            ],
+            'columnDefs':[
+                {
+                    "targets": -1,
+                    "data": "id",
+                    "render": function(data, type, row, meta){
+                        let param = JSON.stringify(row).replace(/'/g, "&#39;");
+                        let htmlTag = "<a class='btn btn-info btn-sm btn-icon btn-edit' onclick='displayEditModalTab3(" + param + ")'><i class='material-icons'>edit</i> Edit</a>";
+                        if (row.namaValidasi === "Sudah Validasi") {
+                            htmlTag = "<a class='btn btn-info btn-sm btn-icon btn-edit' onclick='displayEditModalTab3(" + param + ")'><i class='material-icons'>zoom_in</i> Show</a>";
+                        }
+                        return htmlTag;
+                    }
+                },
+                {
+                    targets: 0,
+                    render: function(data, type, row, meta){
+                        return fillDateField(row.tglMutasi);
+                    }
+                },
+                {
+                    targets: 10,
+                    render: function(data, type, row, meta){
+                        return fillDateField(row.tglMpBulanKe13);
+                    }
+                },
+                {
+                    "targets": -2,
+                    "data": "statusValidasi.id",
+                    "render": function(data, type, row, meta){
+                        console.log("data status",data);
+                        switch(data){
+                            case 1:
+                                return` <span class="tag tag-pill tag-info">Belum Validasi</span>`;
+                                break;
+                            case 2:
+                                return `<span class="tag tag-pill tag-success">Sudah Validasi</span>`;
+                                break;
+                            case 3:
+                                return `<span class="tag tag-pill tag-warning">Batal Koreksi</span>`;
+                                break;
+                            case 4:
+                                return `<span class="tag tag-pill tag-danger">Batal Data</span>`;
+                                break;
+                            case 5:
+                                return `<span class="tag tag-pill tag-warning">Belum Diproses</span>`;
+                                break;
+                            case 6:
+                                return `<span class="tag tag-pill tag-warning">Otomatis Validasi</span>`;
+                                break;
+                            case 7:
+                                return `<span class="tag tag-pill tag-danger">Batal Validasi</span>`;
+                                break;
+                            default :
+                                return `<span class="tag tag-pill tag-default"> - </span>`;
+                                break;
+                        }
+                    }
+                },
+                {
+                    targets: -4,
+                    data:"statusBayar.id",
+                    render:function (data, type, row, meta) {
+                        switch (data) {
+                            case 1:
+                                return` <span class="">Dibayar</span>`;
+                                break;
+                            case 4:
+                                return `<span class="">Ditunda</span>`;
+                                break;
+                            case 6:
+                                return `<span class="tag tag-pill tag-danger">Berhenti</span>`;
+                                break;
+                            default :
+                                return `<span class="tag tag-pill tag-default"> - </span>`;
+                                break;
+                        }
+                    }
+                },
+                {
+                    targets: 8,
+                    render: function (data, type, row, meta) {
+                        return (row.mpPerbulanRumusBaru == null && row.mpPerbulanRumusLama == null)? '-' : ( (row.mpPerbulanRumusBaru == null)? parseFloat(row.mpPerbulanRumusLama).toLocaleString('id',{minimumFractionDigits:2}) : parseFloat(row.mpPerbulanRumusBaru).toLocaleString('id',{minimumFractionDigits:2}) );
+
+                    }
+                },
+                {
+                    targets: 9,
+                    render: function (data, type, row, meta) {
+                        return (row.mpBulan13Baru == null && row.mpBulan13 == null)? '-' : ( (row.mpBulan13Baru == null)? parseFloat(row.mpBulan13).toLocaleString('id',{minimumFractionDigits:2}) : parseFloat(row.mpBulan13Baru).toLocaleString('id',{minimumFractionDigits:2}) );
+                    }
+                }
+
+            ],
+            "order": [[ 1, 'asc' ]]
+        })
+
+
+    });
+
+    function displayEditModalTab3(param) {
+        const rowhead = param;
+        if (rowhead.idValidasi == 2 || rowhead.idValidasi == 4){
+            $('#btn-update-tab3').hide();
+            // $(':input').prop('disabled', 'disabled');
+            $('#tab3IdKategoriCatatan').prop('disabled', 'true');
+            $('#tab3Keterangan').prop('disabled', 'true');
+            $("input[name='tab2IdValidasi']:checked").attr('disabled', true);
+            $('#tab3NamaSuskel').prop('disabled', 'true');
+        }else{
+            $('#btn-update-tab3').show();
+            $('#tab3IdKategoriCatatan').removeAttr('disabled');
+            $('#tab3Keterangan').removeAttr('disabled');
+            $('#tab3NamaSuskel').removeAttr('disabled');
+        }
+        window.DkppGlobal2 = {};
+        window.DkppGlobal2.isPejabat = {{isPejabat}};
+        window.DkppGlobal2.isAdmin = {{isAdmin}};
+        window.DkppGlobal2.isStaff = {{isStaff}};
+
+        const detailModal = $('#tab3ModalEdit');
+        detailModal.modal('show');
+        $('#tab3Form').trigger('reset');
+        console.log(rowhead);
+        $('#tab3TglMutasi').val(fillDateField(rowhead.tglMutasi));
+        $('#tab3PeriodeMutasi').val(rowhead.periodeMutasi);
+        $('#showNipNamaPeserta').val(rowhead.nip+" - "+rowhead.namaPeserta);
+        $('#tab3Nip').val(rowhead.nip);
+        $('#tab3NamaPeserta').val(rowhead.namaPeserta);
+        $('#showIdNamaPenerima').val(rowhead.namaPenerimaMp);
+        $('#tab3IdPenerimaMp').val(rowhead.idPenerimaMp);
+        $('#tab3NamaPenerimaMp').val(rowhead.namaPenerimaMp);
+        $('#tab3NamaAgama').val(rowhead.namaAgama);
+        $('#tab3IdAgama').val(rowhead.idAgama);
+        $('#tab3NamaKategoriPenerimaMp').val(rowhead.namaKategoriPenerimaMp);
+        $('#tab3IdKategoriPenerimaMp').val(rowhead.idKategoriPenerimaMp);
+        $('#tab3JenisKelaminPeserta').val(rowhead.jenisKelaminPeserta == "P"? "Pria":"Wanita");
+        $('#showIdNamaPenerimaBaru').val(rowhead.idPenerimaMpBaru ==null || rowhead.namaPenerimaMpBaru==null? '':rowhead.idPenerimaMpBaru+" - "+rowhead.namaPenerimaMpBaru);
+        $('#tab3IdPenerimaMpBaru').val(rowhead.idPenerimaMpBaru);
+        $('#tab3NamaPenerimaMpBaru').val(rowhead.namaPenerimaMpBaru);
+        $('#tab3GolonganPangkat').val(rowhead.golonganPangkat);
+        $('#tab3IdGolongan').val(rowhead.idGolongan);
+        $('#tab3NamaKategoriPenerimaMpBaru').val(rowhead.namaKategoriPenerimaMpBaru == null? '':rowhead.namaKategoriPenerimaMpBaru);
+        $('#tab3IdKategoriPenerimaMpBaru').val(rowhead.idKategoriPenerimaMpBaru);
+        $('#tab3TglMeninggalPeserta').val(fillDateField(rowhead.tglMeninggalPeserta));
+        $('#tab3NamaSuskel').val(rowhead.namaSuskel == null? '':rowhead.namaSuskel);
+        $('#tab3IdSuskel').val(rowhead.idSuskel);
+        $('#tab3NamaKantorBayar').val(rowhead.namaKantorBayar);
+        $('#tab3IdKantorBayar').val(rowhead.idKantorBayar);
+        $('#tab3NamaSuskelBaru').val(rowhead.namaSuskelBaru == null? '':rowhead.namaSuskelBaru);
+        $('#tab3IdSuskelBaru').val(rowhead.idSuskelBaru);
+        $('#tab3UserStamp').val(rowhead.userStamp);
+        $('#tab3Keterangan').val(rowhead.keterangan);
+        $('#tab3IdMutasiPensiun').val(rowhead.idMutasiPensiun);
+        $('#tab3NamaValidasi').val(rowhead.namaValidasi);
+        $('#tabelTglMutasi').text(fillDateField(rowhead.tglMutasi));
+        $('#tabelPeriodeMutasi').text(rowhead.periodeMutasi);
+        $('#tabelMp100').text((rowhead.mpPerbulanRumusBaru == null && rowhead.mpPerbulanRumusLama == null)? '-' : ( (rowhead.mpPerbulanRumusBaru == null)? parseFloat(rowhead.mpPerbulanRumusLama).toLocaleString('id',{minimumFractionDigits:2}) : parseFloat(rowhead.mpPerbulanRumusBaru).toLocaleString('id',{minimumFractionDigits:2}) ));
+        $('#tabelMp80').text((rowhead.mpBulan13Baru == null && rowhead.mpBulan13 == null)? '-' : ( (rowhead.mpBulan13Baru == null)? parseFloat(rowhead.mpBulan13).toLocaleString('id',{minimumFractionDigits:2}) : parseFloat(rowhead.mpBulan13Baru).toLocaleString('id',{minimumFractionDigits:2}) ));
+        $('#tabelTglMp80').text(fillDateField(rowhead.tglMpBulanKe13));
+        $('#tab3MpydBaru').val(rowhead.mpBulan13Baru == null? rowhead.mpBulan13:rowhead.mpBulan13Baru);
+        console.log("data idvalidasi",rowhead.idValidasi)
+        switch(rowhead.idValidasi){
+            case 1:
+                $('#tab3IdValidasi1').attr('checked', 'checked');
+                $('#tab3IdValidasi2').removeAttr('checked');
+                $('#tab3IdValidasi3').removeAttr('checked');
+                $('#tab3IdValidasi4').removeAttr('checked');
+                $('#tab3IdValidasi5').removeAttr('checked');
+                $('#tab3IdValidasi6').removeAttr('checked');
+                $('#tab3IdValidasi7').removeAttr('checked');
+                $('#label-status-validasi').html(`<span class="tag tag-pill tag-info pull-right">Belum Validasi</span>`);
+                break;
+            case 2:
+                $('#tab3IdValidasi1').removeAttr('checked');
+                $('#tab3IdValidasi2').attr('checked', 'checked');
+                $('#tab3IdValidasi3').removeAttr('checked');
+                $('#tab3IdValidasi4').removeAttr('checked');
+                $('#tab3IdValidasi5').removeAttr('checked');
+                $('#tab3IdValidasi6').removeAttr('checked');
+                $('#tab3IdValidasi7').removeAttr('checked');
+
+                $('#label-status-validasi').html(`<span class="tag tag-pill tag-success pull-right">Sudah Validasi</span>`);
+                break;
+            case 3:
+                $('#tab3IdValidasi1').removeAttr('checked');
+                $('#tab3IdValidasi2').removeAttr('checked');
+                $('#tab3IdValidasi3').attr('checked', 'checked');
+                $('#tab3IdValidasi4').removeAttr('checked');
+                $('#tab3IdValidasi5').removeAttr('checked');
+                $('#tab3IdValidasi6').removeAttr('checked');
+                $('#tab3IdValidasi7').removeAttr('checked');
+                $('#label-status-validasi').html(`<span class="tag tag-pill tag-warning pull-right">Batal Koreksi</span>`);
+                break;
+            case 4:
+                $('#tab3IdValidasi1').removeAttr('checked');
+                $('#tab3IdValidasi2').removeAttr('checked');
+                $('#tab3IdValidasi3').removeAttr('checked');
+                $('#tab3IdValidasi4').attr('checked', 'checked');
+                $('#tab3IdValidasi5').removeAttr('checked');
+                $('#tab3IdValidasi6').removeAttr('checked');
+                $('#tab3IdValidasi7').removeAttr('checked');
+                $('#label-status-validasi').html(`<span class="tag tag-pill tag-danger pull-right">Batal Data</span>`);
+                break;
+            case 5:
+
+                $('#tab3IdValidasi1').removeAttr('checked');
+                $('#tab3IdValidasi2').removeAttr('checked');
+                $('#tab3IdValidasi3').removeAttr('checked');
+                $('#tab3IdValidasi4').removeAttr('checked');
+                $('#tab3IdValidasi5').attr('checked', 'checked');
+                $('#tab3IdValidasi6').removeAttr('checked');
+                $('#tab3IdValidasi7').removeAttr('checked');
+                $('#label-status-validasi').html(`<span class="tag tag-pill tag-info pull-right">Belum Diproses</span>`);
+                break;
+            case 6:
+                $('#tab3IdValidasi1').removeAttr('checked');
+                $('#tab3IdValidasi2').removeAttr('checked');
+                $('#tab3IdValidasi3').removeAttr('checked');
+                $('#tab3IdValidasi4').removeAttr('checked');
+                $('#tab3IdValidasi5').removeAttr('checked');
+                $('#tab3IdValidasi6').attr('checked', 'checked');
+                $('#tab3IdValidasi7').removeAttr('checked');
+                $('#label-status-validasi').html(`<span class="tag tag-pill tag-success pull-right">Otomatis Validasi</span>`);
+                break;
+            case 7:
+                $('#tab3IdValidasi1').removeAttr('checked');
+                $('#tab3IdValidasi2').removeAttr('checked');
+                $('#tab3IdValidasi3').removeAttr('checked');
+                $('#tab3IdValidasi4').removeAttr('checked');
+                $('#tab3IdValidasi5').removeAttr('checked');
+                $('#tab3IdValidasi6').removeAttr('checked');
+                $('#tab3IdValidasi7').attr('checked', 'checked');
+                $('#label-status-validasi').html(`<span class="tag tag-pill tag-danger pull-right">Batal Validasi</span>`);
+                break;
+        }
+        $('[name="idValidasi"]').attr('disabled', 'disabled');
+
+        if(window.DkppGlobal2.isPejabat == true) {
+            $('#tab3IdValidasi1').removeAttr('disabled');
+            $('#tab3IdValidasi2').removeAttr('disabled');
+            $('#tab3IdValidasi3').removeAttr('disabled');
+            $('#tab3IdValidasi4').removeAttr('disabled');
+            $('#tab3IdValidasi5').removeAttr('disabled');
+            $('#tab3IdValidasi6').removeAttr('disabled');
+            $('#tab3IdValidasi7').removeAttr('disabled');
+
+        } else if (window.DkppGlobal2.isStaff == true) {
+            $('#tab3IdValidasi1').attr('disabled');
+            $('#tab3IdValidasi3').attr('disabled');
+
+        }
+
+        $('#tab3IdValidasi1').unbind().on('change', function(){
+            $('#tab3NamaValidasi').val('Belum Validasi');
+        });
+
+        $('#tab3IdValidasi2').unbind().on('change', function(){
+            $('#tab3NamaValidasi').val('Sudah Validasi');
+        });
+
+        $('#tab3IdValidasi3').unbind().on('change', function(){
+            $('#tab3NamaValidasi').val('Batal Koreksi');
+        });
+
+        $('#tab3IdValidasi4').unbind().on('change', function(){
+            $('#tab3NamaValidasi').val('Batal Data');
+        });
+
+        $('#tab3IdValidasi5').unbind().on('change', function(){
+            $('#tab3NamaValidasi').val('Belum Diproses');
+        });
+
+        $('#tab3IdValidasi6').unbind().on('change', function(){
+            $('#tab3NamaValidasi').val('Otomatis Validasi');
+        });
+
+        $('#tab3IdValidasi7').unbind().on('change', function(){
+            $('#tab3NamaValidasi').val('Batal Validasi');
+        });
+
+
+
+        $.ajax({
+            url: '{{contextPath}}{{listPeriodeSetupParameter}}',
+            dataType:'json',
+            method:'GET',
+            success:function (data) {
+                console.log(data)
+                $('#tab3CompName').val(data.compName);
+                $('#tab3UserName').val(data.userName);
+
+            }
+        });
+
+        $.ajax({
+            url:  '{{contextPath}}{{listKategoriCatatanCombo}}',
+            method: 'GET',
+            data: {
+                valueColumn: 'id',
+                textColumn: "${id} - ${namaKategoriCatatan}",
+                searchColumn: [
+                    'namaKategoriCatatan'
+                ],
+                referenceValue: [
+                    {
+                        column: "id",
+                        table: "kategoriMutasi",
+                        value: 11
+                    }
+                ],
+                includeObject: true
+            },
+            success: function(data){
+                console.log("data catatan");
+                console.log(data);
+                $('#tab3IdKategoriCatatan').select2(
+                    {
+                        data: data,
+                        width: "100%",
+                        placeholder: 'Pilih Kategori Catatan'
+                    }
+                );
+                $('#tab3IdKategoriCatatan').on('change', (e)=>{
+                    if ($(e.target).select2('data')){
+                        const data = $(e.target).select2('data')[0];
+                        if ($('#tab3IdKategoriCatatan').val() != '' && $('#tab3IdKategoriCatatan').val() != null) {
+                            $('#tab3NamaKategoriCatatan').val(data.dataProperties.namaKategoriCatatan)
+                        }
+                    }
+                });
+                $('#tab3IdKategoriCatatan').val(rowhead.idKategoriCatatan).trigger('change');
+            }
+        });
+
+    }
+
+
+</script>

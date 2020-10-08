@@ -1,0 +1,316 @@
+<div class="tsf-step step-1 active">
+    <fieldset>
+        <div class="col-lg-8">
+            <div class="card card-block">
+                <label for="periodeMutasi" class="col-sm-3">Periode Mutasi</label>
+                <div class="col-xs-3">
+                    <input type="hidden" value="{{mutasiId}}" name="mutasiId" id="mutasiId" />
+                    <input type="hidden" value="{{isJatuhTempoBayar}}" name="isJatuhTempoBayar" id="isJatuhTempoBayar" />
+                    <input class="form-control form-control-sm" disabled type="text" value="{{periodeMutasi}}" name="periodeMutasi" id="periodeMutasi" />
+                </div>
+                <label for="tanggalInput" class="col-sm-3">Tanggal Input</label>
+                <div class="col-xs-3">
+                    <input class="form-control form-control-sm" disabled type="text" value="{{tglMutasi}}" name="tanggalInput" id="tanggalInput" data-provide="datepicker" data-date-format="dd/mm/yyyy"/>
+                </div>
+                <div class="col-lg-12 segment-title">
+                    <h4 class="card-title bold">Data Peserta</h4>
+                </div>
+                <div class="col-lg-12">
+                    <div class="form-group row">
+                        <label for="nip" class="col-sm-3">NIP</label>
+                        <div class="col-xs-3">
+                            <input class="form-control form-control-sm" disabled type="text" value="{{nip}}" name="nip" id="nip" />
+                        </div>
+                        <label for="statusKawin" class="col-xs-3">Status Kawin</label>
+                        <div class="col-xs-3">
+                            <select class="custom-select form-control-sm" value="{{statusKawin}}" name="statusKawin" id="statusKawin" required></select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="nama" class="col-sm-3">Nama</label>
+                        <div class="col-xs-3">
+                            <input class="form-control form-control-sm" type="text" value="{{nama}}" name="nama" id="nama" style="text-transform:uppercase" required />
+                        </div>
+                        <label for="gajiPokokTerakhir" class="col-xs-3">Gaji Pokok Terakhir</label>
+                        <div class="col-xs-3">
+                            <input class="form-control form-control-sm" type="text" value="{{gajiPokokTerakhir}}" name="gajiPokokTerakhir" id="gajiPokokTerakhir" required />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="agama" class="col-xs-3">Agama</label>
+                        <div class="col-xs-3">
+                            <select class="form-control form-control-sm" value="{{agama}}" name="agama" id="agama" required></select>
+                        </div>
+                        <label for="upahVeteran" class="col-xs-3">Tunjangan Veteran</label>
+                        <div class="col-xs-3">
+                            <input class="form-control form-control-sm" type="text" value="{{upahVeteran}}" name="upahVeteran" id="upahVeteran" required />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="jenisKelamin" class="col-xs-3">Jenis Kelamin</label>
+                        <div class="col-xs-3">
+                            <select class="form-control form-control-sm" name="jenisKelamin" id="jenisKelamin" required>
+                                {{#gender}}
+                                <option value="{{id}}">{{text}}</option>
+                                {{/gender}}
+                            </select>
+                        </div>
+                        <label for="cabangKpwBI" class="col-xs-3">Cabang KPW-BI</label>
+                        <div class="col-xs-3">
+                            <select class="form-control form-control-sm" value="{{cabangKpwBI}}" name="cabangKpwBI" id="cabangKpwBI" required></select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="golongan" class="col-xs-3">Gol./Jabatan</label>
+                        <div class="col-xs-9">
+                            <select class="form-control form-control-sm" value="{{golongan}}" name="golongan" id="golongan" required></select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12 segment-title"><h4 class="card-title bold">Data Keluarga</h4></div>
+                <div class="col-lg-12 dataKeluargaTableWrapper">
+                    <div class="form-group row">
+                        {{#isStaff}}
+                            <div class="pull-right">
+                                <button type="button" class="btn btn-sm btn-primary btn-icon loading-demo m-r-xs m-b-xs btn-add" id="addPeserta">
+                                    <i class="material-icons">add_box</i><span>Tambah</span>
+                                </button>
+                            </div>
+                        {{/isStaff}}
+                        {{^isStaff}}
+                            {{#isBelumValidasi}}
+                            <div class="pull-right">
+                                <button type="button" class="btn btn-sm btn-primary btn-icon loading-demo m-r-xs m-b-xs btn-add" id="addPeserta">
+                                    <i class="material-icons">add_box</i><span>Tambah</span>
+                                </button>
+                            </div>
+                            {{/isBelumValidasi}}
+                        {{/isStaff}}
+                    </div>
+                    <table class="table table-bordered table-striped m-b-0 dataTable no-footer display" id="data_keluarga_table" role="grid" style="width:100%">
+                        <thead>
+                        <tr role="row">
+                        <tr role="row">
+                            <th>
+                                No.
+                            </th>
+                            <th>
+                                Nama Lengkap
+                            </th>
+                            <th>
+                                Jenis Kelamin
+                            </th>
+
+                            <th>
+                                Hubungan Keluarga
+                            </th>
+                            <th>
+                                Tgl Lahir
+                            </th>
+                            <th>
+                                Tgl Menikah
+                            </th>
+                            <th>
+                                Tgl Cerai
+                            </th>
+                            <th>
+                                Tgl Meninggal
+                            </th>
+                            <th>
+                                Tgl Usia 25 Tahun
+                            </th>
+                            <th>
+                                Status Kawin
+                            </th>
+                            <th>
+                                Action
+                            </th>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+                <div class="col-lg-12 segment-title"><h4 class="card-title bold">Surat Keputusan</h4></div>
+                <div class="col-lg-12">
+                    <div class="col-lg-12 form-group">
+                        <label for="tanggalSuratPengantarBI" class="col-xs-5">Nomor Surat Pengantar BI dan Tanggal Surat Pengantar BI</label>
+                        <div class="col-xs-1">
+                            <label class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" name="isSPBI" id="isSPBI" {{#nomorSuratPengantarBI}}checked="checked"{{/nomorSuratPengantarBI}} />
+                                <span class="custom-control-indicator"></span>
+                            </label>
+                        </div>
+                        <div class="col-xs-3">
+                            <input class="form-control form-control-sm" type="text" value="{{nomorSuratPengantarBI}}" name="nomorSuratPengantarBI" id="nomorSuratPengantarBI" readonly />
+                        </div>
+                        <div class="col-xs-3">
+                            <input autocomplete="off" placeholder="dd/mm/yyyy" class="form-control form-control-sm text-sm" type="text" value="{{tanggalSuratPengantarBI}}" name="tanggalSuratPengantarBI" id="tanggalSuratPengantarBI" data-provide="datepicker" data-date-format="dd/mm/yyyy" disabled />
+                        </div>
+                    </div>
+                    <div class="col-lg-12 form-group">
+                        <label for="tanggalSKBI" class="col-xs-5">Nomor SK Bank Indonesia dan Tanggal SK Bank Indonesia</label>
+                        <div class="col-xs-1">
+                            <label class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" name="isSKBI" id="isSKBI" {{#nomorSKBI}}checked="checked"{{/nomorSKBI}} />
+                                <span class="custom-control-indicator"></span>
+                            </label>
+                        </div>
+                        <div class="col-xs-3">
+                            <input class="form-control form-control-sm" type="text" value="{{nomorSKBI}}" name="nomorSKBI" id="nomorSKBI" readonly />
+                        </div>
+                        <div class="col-xs-3">
+                            <input autocomplete="off" placeholder="dd/mm/yyyy" class="form-control form-control-sm text-sm" type="text" value="{{tanggalSKBI}}" name="tanggalSKBI" id="tanggalSKBI" data-provide="datepicker" data-date-format="dd/mm/yyyy" disabled />
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="card card-block">
+                <div class="col-lg-12">
+                    <div class="form-group row">
+                        <label for="userStamp" class="col-xs-2">User Stamp</label>
+                        <div class="col-xs-7">
+                            <input class="form-control form-control-sm" type="text" value="{{userStamp}}" name="userStamp" id="userStamp" disabled />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="userValidasi" class="col-xs-2">User Validasi</label>
+                        <div class="col-xs-7">
+                            <input class="form-control form-control-sm" type="text" value="{{userValidasi}}" name="userValidasi" id="userValidasi" disabled />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="card card-block">
+                <div class="row">
+                    <h5 class="card-title bold col-xs-12">Status Tanggal</h5>
+                </div>
+                <div class="row form-group">
+                    <label for="tglLahir" class="col-xs-6">Tgl. Lahir</label>
+                    <div class="col-xs-6">
+                        <input autocomplete="off" placeholder="dd/mm/yyyy" class="form-control form-control-sm text-sm" type="text" value="{{tglLahir}}" name="tglLahir" id="tglLahir" data-provide="datepicker" data-date-format="dd/mm/yyyy" required />
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <label for="tglDicatatSebagaiPesertaDPHT" class="col-xs-6">Dicatat sebagai peserta DPTHT</label>
+                    <div class="col-xs-6">
+                        <input autocomplete="off" placeholder="dd/mm/yyyy" class="form-control form-control-sm text-sm" type="text" value="{{tglDicatatSebagaiPesertaDPHT}}" name="tglDicatatSebagaiPesertaDPHT" id="tglDicatatSebagaiPesertaDPHT" data-provide="datepicker" data-date-format="dd/mm/yyyy" required />
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <label for="tglBekerjaDiBI" class="col-xs-6">Mulai Bekerja di BI</label>
+                    <div class="col-xs-6">
+                        <input autocomplete="off" placeholder="dd/mm/yyyy" class="form-control form-control-sm text-sm" type="text" value="{{tglBekerjaDiBI}}" name="tglBekerjaDiBI" id="tglBekerjaDiBI" data-provide="datepicker" data-date-format="dd/mm/yyyy" required />
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <label for="tglBerhentiBekerjaDiBI" class="col-xs-6">Tgl. Berhenti</label>
+                    <div class="col-xs-6">
+                        <input autocomplete="off" placeholder="dd/mm/yyyy" class="form-control form-control-sm text-sm" type="text" value="{{tglBerhentiBekerjaDiBI}}" name="tglBerhentiBekerjaDiBI" id="tglBerhentiBekerjaDiBI" data-provide="datepicker" data-date-format="dd/mm/yyyy" required />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="card card-block informasi-pemberhentian">
+                <div class="row">
+                    <h5 class="card-title bold col-xs-12">Informasi Pemberhentian</h5>
+                </div>
+                <div class="row form-group">
+                    <label for="predikatPemberhentian" class="col-xs-6">Predikat Pemberhentian</label>
+                    <div class="col-xs-6">
+                        <select class="form-control form-control-sm" value="{{predikatPemberhentian}}" name="predikatPemberhentian" id="predikatPemberhentian" required></select>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <label for="alasanHenti" class="col-xs-6">Alasan Berhenti Bekerja</label>
+                    <div class="col-xs-6">
+                        <select class="form-control form-control-sm" value="{{alasanHenti}}" name="alasanHenti" id="alasanHenti" ></select>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <label for="tglMeninggal" class="col-xs-6">Tgl. Meninggal Dunia</label>
+                    <div class="col-xs-6">
+                        <input autocomplete="off" placeholder="dd/mm/yyyy" class="form-control form-control-sm text-sm" type="text" value="{{tglMeninggal}}" name="tglMeninggal" id="tglMeninggal" data-provide="datepicker" data-date-format="dd/mm/yyyy" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="card card-block pengambilan-mps-1">
+                <div class="row">
+                    <h5 class="card-title bold col-xs-12">Status Pengambilan MPS</h5>
+                </div>
+                <div class="row">
+                    <div class="custom-controls-stacked col-xs-12">
+                        {{#jenisMPSRadio}}
+                        <label class="custom-control custom-radio">
+                            <input id="statusPengembalianMPS{{id}}" name="statusPengembalianMPS" type="radio" class="custom-control-input" value="{{id}}" required />
+                            <span class="custom-control-indicator"></span>
+                            <span class="custom-control-description">{{namamps}}</span>
+                        </label>
+                        {{/jenisMPSRadio}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+        <div class="card card-block pengambilan-mps-2">
+            <div class="row">
+                <h5 class="card-title bold col-xs-12">Status Pengambilan MPS</h5>
+            </div>
+            <div class="row form-group">
+                <label for="jenisMP" class="col-xs-6">Jenis MP</label>
+                <div class="col-xs-6">
+                    <select class="form-control form-control-sm" value="{{jenisMP}}" name="jenisMP" id="jenisMP" required></select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-6">
+                    <label class="">Status Bayar MP</label>
+                </div>
+                <div class=" custom-controls-stacked col-xs-6">
+                    {{#statusBayarMPRadio}}
+                    <label class="custom-control custom-radio">
+                        <input id="statusBayarMP{{id}}" name="statusBayarMP" type="radio" class="custom-control-input" value="{{id}}" required />
+                        <span class="custom-control-indicator"></span>
+                        <span class="custom-control-description">{{statusBayar}}</span>
+                    </label>
+                    {{/statusBayarMPRadio}}
+                </div>
+            </div>
+            <div class="row form-group">
+                <label for="pilihanUsiaBayarMP" class="col-xs-6">Pilihan Usia Bayar MP</label>
+                <div class="col-xs-6">
+                    <select class="form-control form-control-sm" value="{{pilihanUsiaBayarMP}}" name="pilihanUsiaBayarMP" id="pilihanUsiaBayarMP" required ></select>
+                </div>
+            </div>
+            <div class="row form-group">
+                <label for="tglTundaJatuhTempo" class="col-xs-6">Tgl. Tunda Jatuh Tempo</label>
+                <div class="col-xs-6">
+                    <input autocomplete="off" placeholder="dd/mm/yyyy" class="form-control form-control-sm text-sm" type="text" value="{{tglTundaJatuhTempo}}" name="tglTundaJatuhTempo" id="tglTundaJatuhTempo" readonly>
+                </div>
+            </div>
+            <div class="row form-group">
+                <label for="tglAwalBayarMP" class="col-xs-6">Tgl. Awal Bayar MP</label>
+                <div class="col-xs-6">
+                    <input autocomplete="off" placeholder="dd/mm/yyyy" class="form-control form-control-sm text-sm" type="text" value="{{tglAwalBayarMP}}" name="tglAwalBayarMP" id="tglAwalBayarMP" readonly>
+                </div>
+            </div>
+            <div class="row form-group">
+                <label for="tglMPBulan13" class="col-xs-6">Tgl. MP Bulan ke-13</label>
+                <div class="col-xs-6">
+                    <input autocomplete="off" placeholder="dd/mm/yyyy" class="form-control form-control-sm text-sm" type="text" value="{{tglMPBulan13}}" name="tglMPBulan13" id="tglMPBulan13" readonly>
+                </div>
+            </div>
+            <div class="row form-group">
+                <label for="tglMPBulan13" class="col-xs-6">Tgl. Henti Bayar</label>
+                <div class="col-xs-6">
+                    <input autocomplete="off" placeholder="dd/mm/yyyy" class="form-control form-control-sm text-sm" type="text" value="{{tglHentiBayar}}" name="tglHentiBayar" id="tglHentiBayar" data-provide="datepicker" data-date-format="dd/mm/yyyy" readonly>
+                </div>
+            </div>
+        </div>
+    </div>
+    </fieldset>
+</div>

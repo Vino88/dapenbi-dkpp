@@ -1,0 +1,1667 @@
+{{#layout}} {{#styles}}
+<link rel="stylesheet"
+	href="{{contextPath}}/assets/vendor/googleapis/css/component.css">
+<link rel="stylesheet"
+	href="{{contextPath}}/assets/vendor/googleapis/css/googleapis.css">
+{{/styles}} {{#title}} Registrasi Ulang Pensiun - DKPP {{/title}}
+
+<!-- Nav tabs -->
+<ul class="nav nav-tabs" role="tablist">
+	<li class="nav-item"><a class="nav-link active" data-toggle="tab"
+		href="#one" role="tab">Master Registrasi Ulang</a></li>
+	<li class="nav-item"><a class="nav-link" data-toggle="tab"
+		href="#two" role="tab">Tahun HER</a></li>
+</ul>
+
+<div class="tab-content">
+	<div class="tab-pane active" id="one" role="tabpanel">
+		<div class="card">
+			<div class="card-block">
+				<div class="row">
+					<div class="col-lg-4">
+						<label for="periode" class="col-sm-7">Peserta
+							yang terdaftar pada periode</label>
+
+						<div class="col-sm-5">
+							<input class="form-control form-control-sm" type="text"
+								id="periode" name="periode">
+						</div>
+					</div>
+					<div class="col-lg-8">
+						<div class="col-xs-8">
+							<label class="radio-inline"> <input type="radio"
+								name="inlineRadioOptions" id="inlineRadio1" value="1" />
+								Seluruh Penerima
+							</label> <label class="radio-inline"> <input type="radio"
+								name="inlineRadioOptions" id="inlineRadio2" value="2" />
+								Penerima Janda/Duda/Anak
+							</label>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-lg-4">
+						<label for="tahunHerRegistrasi" class="col-sm-7">Tahun Her
+							Registrasi</label>
+						<div class="col-sm-5">
+							<input class="form-control form-control-sm" type="text"
+								id="tahunHerRegistrasi" name="tahunHerRegistrasi">
+						</div>
+					</div>
+					<div class="col-lg-8">
+						<div class="col-lg-1">
+							<button class="btn btn-primary btn-sm" id="btnProcess"
+								name="btnProcess">
+								<i class="fa fa-edit"></i> <span>Proses</span>
+							</button>
+						</div>
+					</div>
+				</div>
+				<hr />
+				<table class="table table-bordered datatable responsive">
+					<thead>
+						<tr>
+							<th>Tahun Her Registrasi</th>
+							<th>Jenis Her Registrasi</th>
+							<th>Status Her Registrasi</th>
+							<th>Peserta yang terdaftar pada</th> `
+							<th>Total Kantor Pusat (Jakarta)</th>
+							<th>Total KBI (Cabang)</th>
+							<th>Action</th>
+						</tr>
+					</thead>
+				</table>
+			</div>
+		</div>
+	</div>
+	<div class="tab-pane" id="two" role="tabpanel">
+		<div class="card">
+			<div class="card-block">
+				<table class="table table-bordered table-tab-2">
+					<thead>
+						<tr>
+							<th>Tahun Her Registrasi</th>
+							<th>Jenis Her Registrasi</th>
+							<th>NIP</th>
+							<th>Nama Peserta</th>
+							<th>Nama Penerima MP</th> `
+							<th>Cabang KPW-BI</th>
+							<th>Status Registrasi</th>
+							<th>Status Validasi</th>
+							<th>Nomor Her Registrasi</th>
+							<th>Action</th>
+						</tr>
+					</thead>
+					<tbody>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	<iframe style="width:100%;height:100%;display: none" id="cetakCatatan" name="cetakCatatan" src=""></iframe>
+</div>
+{{#modal}}
+<div class="modal fade modal-tab-1" tabindex="-1" role="dialog"
+	aria-labelledby="myLargeModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title small bold" id="myModalLabel">Daftar
+					Peserta Her Registrasi</h4>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-lg-12" id="validasiModal"></div>
+					<br>
+				</div>
+				<div class="row">
+					<div class="col-lg-6">
+						<label for="tahunHerModal" class="col-sm-6">Tahun Her
+							Registrasi</label>
+
+						<div class="col-sm-6">
+							<input class="form-control form-control-sm" disabled type="text"
+								id="tahunHerModal" id="tahunHerModal">
+						</div>
+					</div>
+					<div class="col-lg-6">
+						<label for="pesertaYangTerdaftarPadaModal" class="col-sm-7">Peserta
+							yang terdaftar pada</label>
+
+						<div class="col-sm-5">
+							<input class="form-control form-control-sm" disabled type="text"
+								id="pesertaYangTerdaftarPadaModal"
+								id="pesertaYangTerdaftarPadaModal">
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-lg-6">
+						<label for="jenisHerRegistrasiModal" class="col-sm-6">Jenis Her
+							Registrasi</label>
+
+						<div class="col-sm-6">
+							<input class="form-control form-control-sm" disabled type="text"
+								id="jenisHerRegistrasiModal" name="jenisHerRegistrasiModal">
+						</div>
+					</div>
+					<div class="col-lg-6">
+						<label for="statusHerRegistrasiModal" class="col-sm-7">Status
+							Her Registrasi</label>
+						<div class="col-sm-5">
+							<input class="form-control form-control-sm" disabled type="text"
+								id="statusHerRegistrasiModal" name="statusHerRegistrasiModal">
+						</div>
+					</div>
+				</div>
+				<br>
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="card">
+							<div class="card-block">
+								<div class="scroll-y" style="height: 200px;">
+									<table class="table table-bordered datatable2">
+										<thead>
+											<tr>
+												<th>NIP</th>
+												<th>Nama Peserta</th>
+												<th>Nama Penerima MP</th> `
+												<th>Cabang KPW-BI</th>
+												<th>Status Registrasi</th>
+											</tr>
+										</thead>
+										<tbody>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-6"></div>
+					<div class="col-lg-6"></div>
+
+					<div class="row"></div>
+					<div class="col-lg-12">
+						<div class="row">
+							<label for="example-date-input" class="col-xs-3">Total
+								Kantor Pusat (Jakarta)</label>
+
+							<div class="col-xs-3">
+								<input class="form-control form-control-sm" type="text"
+									id="kantorPusatModal" name="kantorPusatModal" disabled>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-12">
+						<div class="row">
+							<label for="example-date-input" class="col-xs-3">Total
+								KBI (Cabang)</label>
+							<div class="col-xs-3">
+								<input class="form-control form-control-sm" type="text"
+									value="300" id="kantorCabangModal" name="kantorCabangModal"
+									disabled>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-12">
+						<div class="row">
+							<label for="example-date-input" class="col-xs-3">User
+								Stamp</label>
+							<div class="col-xs-3">
+								<input class="form-control form-control-sm" type="text"
+									id="userStampModal" name="userStampModal" disabled>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-12">
+						<div class="row">
+							<label for="example-date-input" class="col-xs-3">User
+								Validasi</label>
+							<div class="col-xs-3">
+								<input class="form-control form-control-sm" type="text"
+									id="userValidasiModal" name="userValidasiModal" disabled>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary btn-sm"
+					data-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div class="modal fade bd-example-modal2" id="modal-edit-peserta-her" tabindex="-1" role="dialog"
+	aria-labelledby="myLargeModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title small bold" id="myModalLabel">Daftar
+					Peserta Her Registrasi</h4>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-lg-12" id="validasiModalEdit"></div>
+					<br>
+				</div>
+				<div class="row">
+					<div class="col-lg-6">
+						<label for="example-text-input" class="col-sm-3">Tahun Her
+							Registrasi</label>
+
+						<div class="col-sm-6">
+							<input class="form-control form-control-sm" type="text"
+								id="tahunHerEdit" name="tahunHerEdit" readonly>
+						</div>
+					</div>
+					<div class="col-lg-6">
+						<label for="example-text-input" class="col-sm-3">Peserta
+							yang terdaftar pada</label>
+
+						<div class="col-sm-5">
+							<input class="form-control form-control-sm" type="text"
+								id="pesertaYangTerdaftarPadaEdit"
+								name="pesertaYangTerdaftarPadaEdit" readonly>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-lg-6">
+						<label for="example-text-input" class="col-sm-3">Jenis Her
+							Registrasi</label>
+						<div class="col-lg-6">
+							<div class="col-xs-9">
+								<label class="radio-inline"> <input type="radio"
+									name="inlineRadioOptionsEdit" id="inlineRadioEdit1" value="1" disabled/>
+									Seluruh Penerima
+								</label> <label class="radio-inline"> <input type="radio"
+									name="inlineRadioOptionsEdit" id="inlineRadioEdit2" value="2" disabled/>
+									Penerima Janda/Duda/Anak
+								</label>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-6">
+						<label for="example-text-input" class="col-lg-3">Status
+							Her Registrasi</label>
+						<div class="col-lg-3">
+							<label class="radio-inline"> <input type="radio"
+								name="inlineHerOptionsEdit" id="inlineHerRadio1Edit" value="1" />
+								Buka
+							</label> <label class="radio-inline"> <input type="radio"
+								name="inlineHerOptionsEdit" id="inlineHerRadio2Edit" value="0" />
+								Tutup
+							</label>
+						</div>
+					</div>
+				</div>
+				<br>
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="card">
+							<div class="card-block">
+								<div class="scroll-y" style="height: 200px;">
+									<table class="table table-bordered datatable3">
+										<thead>
+											<tr>
+												<th>NIP</th>
+												<th>Nama Peserta</th>
+												<th>Nama Penerima MP</th> `
+												<th>Cabang KPW-BI</th>
+												<th>Status Registrasi</th>
+											</tr>
+										</thead>
+										<tbody>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-6"></div>
+					<div class="col-lg-6"></div>
+					<div class="row"></div>
+					<div class="col-lg-12">
+						<label class="radio-inline">
+							<input type="radio" name="idValidasi" id="id-validasi-1" value="1" />
+							Belum Validasi
+						</label>
+						<label class="radio-inline">
+							<input type="radio" name="idValidasi" id="id-validasi-2" value="2"/>
+							Sudah Validasi
+						</label>
+						<label class="radio-inline">
+							<input type="radio" name="idValidasi" id="id-validasi-3" value="3"/>
+							Batal Koreksi
+						</label>
+						<label class="radio-inline">
+							<input type="radio" name="idValidasi" id="id-validasi-7" value="7"/>
+							Batal Validasi
+						</label>
+						<input type="hidden" name="namaValidasi" id="nama-validasi"/>
+					</div>
+					<div class="col-lg-12">
+						<div class="row">
+							<label for="example-date-input" class="col-xs-3">Total
+								Kantor Pusat (Jakarta)</label>
+							<div class="col-xs-3">
+								<input class="form-control form-control-sm" type="text"
+									value="200" id="totalPusatEdit" name="totalPusatEdit" disabled>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-12">
+						<div class="row">
+							<label for="example-date-input" class="col-xs-3">Total
+								KBI (Cabang)</label>
+
+							<div class="col-xs-3">
+								<input class="form-control form-control-sm" type="text"
+									value="300" id="totalCabangEdit" name="totalCabangEdit"
+									disabled>
+
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-12">
+						<div class="row">
+							<label for="example-date-input" class="col-xs-3">User
+								Stamp</label>
+							<div class="col-xs-3">
+								<input class="form-control form-control-sm" type="text"
+									id="userStampEdit" name="userStampEdit" disabled>
+
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-12">
+						<div class="row">
+							<label for="example-date-input" class="col-xs-3">User
+								Validasi</label>
+
+							<div class="col-xs-3">
+								<input class="form-control form-control-sm" type="text"
+									id="user-validasi" name="userValidasiEdit" disabled>
+								<input type="hidden" name="compName" id="comp-name-update">
+
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary btn-sm"
+					data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary btn-sm" id="btnSave"
+					name="btnSave">Save</button>
+			</div>
+		</div>
+	</div>
+</diV>
+
+
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="overflow:auto;">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+				<h4 class="modal-title">Input Her Registrasi</h4>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="card card-block">
+							<div class="col-xs-6">
+								<label for="noHerRegistrasi" class="col-xs-4">Nomor Her Registrasi</label>
+								<div class="col-xs-8">
+									<input class="form-control form-control-sm" type="text" id="noHerRegistrasi" name="noHerRegistrasi" placeholder="Nomor Her Registrasi" disabled>
+								</div>
+							</div>
+							<div class="col-xs-6">
+								<label for="nipHerRegistrasi" class="col-xs-4">NIP - Nama Peserta</label>
+								<div class="col-xs-3">
+									<input class="form-control form-control-sm" type="text" id="nipHerRegistrasi" name="nipHerRegistrasi" placeholder="NIP" disabled>
+								</div>
+								<div class="col-xs-5">
+									<input class="form-control form-control-sm" type="text" id="namaPesertaHerRegistrasi" name="namaPesertaHerRegistrasi" placeholder="Nama Peserta" disabled>
+								</div>
+							</div>
+							<div class="col-xs-12"><hr></div>
+
+							<div class="col-xs-4">
+								<label for="thnHer" class="col-xs-4">Tahun Her</label>
+								<div class="col-xs-8">
+									<input class="form-control form-control-sm" type="text" id="thnHer" name="thnHer" placeholder="Tahun Her" disabled>
+								</div>
+							</div>
+							<div class="col-xs-4">
+								<label for="golonganHer" class="col-xs-4">Golongan</label>
+								<div class="col-xs-8">
+									<input class="form-control form-control-sm" type="text" id="golonganHer" name="golonganHer" placeholder="Golongan" disabled>
+								</div>
+							</div>
+							<div class="col-xs-4">
+								<label for="tglHer" class="col-xs-4">Tgl Her</label>
+								<div class="col-xs-8">
+									<input class="form-control form-control-sm dtp" type="text" id="tglHer" name="tglHer" placeholder="Tanggal Her">
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12">
+						<div class="card">
+							<div class="card-header">
+								<div class="col-xs-5">
+									<strong>Data Penerima</strong>
+								</div>
+								<div class="col-xs-2"></div>
+								<div class="col-xs-5">
+									<strong>Data Her Registrasi</strong>
+								</div>
+							</div>
+							<div class="card-block">
+								<div class="col-xs-12">
+									<div class="col-xs-12">
+										<label for="example-text-input" class="col-xs-3">NIP Pasangan 1</label>
+										<div class="col-xs-3">
+											<input class="form-control form-control-sm"  type="text" value="" id="nipPasangan">
+										</div>
+
+										<label for="example-text-input" class="col-xs-1">Sex</label>
+										<div class="col-xs-2	">
+											<input class="form-control form-control-sm"  type="text" value="P" id="jkPasangan">
+
+										</div>
+										<div class="col-xs-3">
+											(P=Pria, W=Wanita)
+										</div>
+									</div>
+								</div>
+								<div class="col-xs-12">
+									<div class="col-xs-12">
+										<label for="nipPasangan2" class="col-xs-3">NIP Pasangan 2</label>
+										<div class="col-xs-3">
+											<input class="form-control form-control-sm"  type="text" id="nipPasangan2">
+										</div>
+
+										<label for="jkPasangan2" class="col-xs-1">Sex</label>
+										<div class="col-xs-2	">
+											<input class="form-control form-control-sm"  type="text" value="P" id="jkPasangan2">
+
+										</div>
+										<div class="col-xs-3">
+											(P=Pria, W=Wanita)
+										</div>
+									</div>
+								</div>
+								<div class="row"></div>
+								<div class="col-xs-12">
+									<div class="col-xs-5">
+										<label for="namaPenerimaMp_" class="col-xs-4">Nama Penerima</label>
+										<div class="col-xs-8">
+											<input type="hidden" id="idPenerimaMp_" name="idPenerimaMp_" >
+											<input class="form-control form-control-sm" type="text" id="namaPenerimaMp_" name="namaPenerimaMp_" placeholder="Nama Penerima" disabled>
+										</div>
+									</div>
+									<div class="col-xs-2">
+										<label class="radio-inline bg-info">
+											<input type="radio" name="isPenerimaSama_" id="isPenerimaSama_1" value="1">
+											Sama
+										</label>
+										<label class="radio-inline bg-warning">
+											<input type="radio" name="isPenerimaSama_" id="isPenerimaSama_2" value="0">
+											Tidak Sama
+										</label>
+									</div>
+									<div class="col-xs-5">
+										<label for="namaPenerimaMpHer_" class="col-xs-4">Nama Penerima</label>
+										<div class="col-xs-8">
+											<input class="form-control form-control-sm" type="text" id="namaPenerimaMpHer_" name="namaPenerimaMpHer_" placeholder="Nama Penerima" >
+										</div>
+									</div>
+								</div>
+
+								<div class="col-xs-12">
+									<div class="col-xs-5">
+										<label for="tglLahirPenerimaMp_" class="col-xs-4">Tanggal Lahir</label>
+										<div class="col-xs-8">
+											<input class="form-control form-control-sm dtp" type="text" id="tglLahirPenerimaMp_" name="tglLahirPenerimaMp_" placeholder="Tgl Lahir Penerima Mp" disabled>
+										</div>
+									</div>
+									<div class="col-xs-2"></div>
+									<div class="col-xs-5">
+										<label for="tglLahirPenerimaMpHer_" class="col-xs-4">Tanggal Lahir</label>
+										<div class="col-xs-8">
+											<input class="form-control form-control-sm dtp" type="text" id="tglLahirPenerimaMpHer_" name="tglLahirPenerimaMpHer_" placeholder="Tgl Lahir Penerima Mp" >
+										</div>
+									</div>
+								</div>
+
+								<div class="col-xs-12">
+									<div class="col-xs-5">
+										<label for="idSuskel_" class="col-xs-4">Suskel</label>
+										<div class="col-xs-8">
+											<input type="hidden" id="idSuskel_" name="idSuskel_">
+											<input class="form-control form-control-sm" type="text" id="Suskel_" name="Suskel_" placeholder="Data Suskel" disabled>
+										</div>
+									</div>
+									<div class="col-xs-2">
+										<label class="radio-inline bg-info">
+											<input type="radio" name="isSuskelSama_" id="isSuskelSama_1" value="1">
+											Sama
+										</label>
+										<label class="radio-inline bg-warning">
+											<input type="radio" name="isSuskelSama_" id="isSuskelSama_2" value="0">
+											Tidak Sama
+										</label>
+									</div>
+									<div class="col-xs-5">
+										<label for="idSuskelHer_" class="col-xs-4">Suskel</label>
+										<div class="col-xs-8">
+											<input class="form-control form-control-sm" type="text" id="idSuskelHer_" name="idSuskelHer_" placeholder="Suskel" >
+										</div>
+									</div>
+								</div>
+
+								<div class="col-xs-12">
+									<div class="col-xs-5">
+										<label for="idKantorBayar_" class="col-xs-4">Kantor Bayar</label>
+										<div class="col-xs-8">
+											<input type="hidden" id="idKantorBayar_" name="idKantorBayar_">
+											<input class="form-control form-control-sm" type="text" id="kantorBayar_" name="kantorBayar_" placeholder="Kantor Bayar" disabled>
+										</div>
+									</div>
+									<div class="col-xs-2">
+										<label class="radio-inline bg-info">
+											<input type="radio" name="isKantorBayarSama_" id="isKantorBayarSama_1" value="1">
+											Sama
+										</label>
+										<label class="radio-inline bg-warning">
+											<input type="radio" name="isKantorBayarSama_" id="isKantorBayarSama_2" value="0">
+											Tidak Sama
+										</label>
+									</div>
+									<div class="col-xs-5">
+										<label for="idKantorBayarHer_" class="col-xs-4">Kantor Bayar</label>
+										<div class="col-xs-8">
+											<input class="form-control form-control-sm" type="text" id="idKantorBayarHer_" name="idKantorBayarHer_" placeholder="Kantor Bayar" >
+										</div>
+									</div>
+								</div>
+
+								<div class="col-xs-12">
+									<div class="col-xs-5">
+										<label for="alamat1_" class="col-xs-4">Alamat</label>
+										<div class="col-xs-8">
+											<textarea class="form-control form-control-sm" rows="5"  name="alamat1_" id="alamat1_" disabled></textarea>
+										</div>
+									</div>
+									<div class="col-xs-2">
+										<label class="radio-inline bg-info">
+											<input type="radio" name="isAlamatSama_" id="isAlamatSama_1" value="1">
+											Sama
+										</label>
+										<label class="radio-inline bg-warning">
+											<input type="radio" name="isAlamatSama_" id="isAlamatSama_2" value="0">
+											Tidak Sama
+										</label>
+									</div>
+									<div class="col-xs-5">
+										<label for="alamat1Her_" class="col-xs-4">Alamat</label>
+										<div class="col-xs-8">
+											<textarea class="form-control form-control-sm" rows="5"  name="alamat1Her_" id="alamat1Her_"></textarea>
+										</div>
+									</div>
+								</div>
+
+								<div class="col-xs-12">
+									<div class="col-xs-5">
+										<label for="rt_" class="col-xs-4">RT</label>
+										<div class="col-xs-3">
+											<input class="form-control form-control-sm" type="text" id="rt_" name="rt_" placeholder="RT" disabled>
+										</div>
+										<label for="rw_" class="col-xs-2">RW</label>
+										<div class="col-xs-3">
+											<input class="form-control form-control-sm" type="text" id="rw_" name="rw_" placeholder="RW" disabled>
+										</div>
+									</div>
+									<div class="col-xs-2"></div>
+									<div class="col-xs-5">
+										<label for="rtHer_" class="col-xs-4">RT</label>
+										<div class="col-xs-3">
+											<input class="form-control form-control-sm" type="text" id="rtHer_" name="rtHer_" placeholder="RT">
+										</div>
+										<label for="rwHer_" class="col-xs-2">RW</label>
+										<div class="col-xs-3">
+											<input class="form-control form-control-sm" type="text" id="rwHer_" name="rwHer_" placeholder="RW">
+										</div>
+									</div>
+								</div>
+
+								<div class="col-xs-12">
+									<div class="col-xs-5">
+										<label for="kelurahan_" class="col-xs-4">Kelurahan</label>
+										<div class="col-xs-8">
+											<input type="hidden" id="idkelurahan_" name="idkelurahan_">
+											<input class="form-control form-control-sm" type="text" id="kelurahan_" name="kelurahan_" placeholder="Kelurahan" disabled>
+										</div>
+									</div>
+									<div class="col-xs-2"></div>
+									<div class="col-xs-5">
+										<label for="kelurahanHer_" class="col-xs-4">Kelurahan</label>
+										<div class="col-xs-8">
+											<input class="form-control form-control-sm" type="text" id="kelurahanHer_" name="kelurahanHer_" placeholder="Pilih Kelurahan" >
+										</div>
+									</div>
+								</div>
+
+								<div class="col-xs-12">
+									<div class="col-xs-5">
+										<label for="kecamatan_" class="col-xs-4">Kecamatan</label>
+										<div class="col-xs-8">
+											<input type="hidden" id="idkecamatan_" name="idkecamatan_">
+											<input class="form-control form-control-sm" type="text" id="kecamatan_" name="kecamatan_" placeholder="Kecamatan" disabled>
+										</div>
+									</div>
+									<div class="col-xs-2"></div>
+									<div class="col-xs-5">
+										<label for="kecamatanHer_" class="col-xs-4">Kecamatan</label>
+										<div class="col-xs-8">
+											<input class="form-control form-control-sm" type="text" id="kecamatanHer_" name="kecamatanHer_" placeholder="Pilih Kecamatan" >
+										</div>
+									</div>
+								</div>
+
+								<div class="col-xs-12">
+									<div class="col-xs-5">
+										<label for="kota_" class="col-xs-4">Kota</label>
+										<div class="col-xs-8">
+											<input type="hidden" id="idkota_" name="idkota_">
+											<input class="form-control form-control-sm" type="text" id="kota_" name="kota_" placeholder="Kota" disabled>
+										</div>
+									</div>
+									<div class="col-xs-2"></div>
+									<div class="col-xs-5">
+										<label for="kotaHer_" class="col-xs-4">Kota</label>
+										<div class="col-xs-8">
+											<input class="form-control form-control-sm" type="text" id="kotaHer_" name="kotaHer_" placeholder="Pilih Kota" >
+										</div>
+									</div>
+								</div>
+
+								<div class="col-xs-12">
+									<div class="col-xs-5">
+										<label for="provinsi_" class="col-xs-4">Provinsi</label>
+										<div class="col-xs-8">
+											<input type="hidden" id="idprovinsi_" name="idprovinsi_">
+											<input class="form-control form-control-sm" type="text" id="provinsi_" name="provinsi_" placeholder="Provinsi" disabled>
+										</div>
+									</div>
+									<div class="col-xs-2"></div>
+									<div class="col-xs-5">
+										<label for="provinsiHer_" class="col-xs-4">Provinsi</label>
+										<div class="col-xs-8">
+											<input class="form-control form-control-sm" type="text" id="provinsiHer_" name="provinsiHer_" placeholder="Pilih Provinsi" >
+										</div>
+									</div>
+								</div>
+
+								<div class="col-xs-12">
+									<div class="col-xs-5">
+										<label for="kodepos_" class="col-xs-4">Kode Pos</label>
+										<div class="col-xs-8">
+											<input type="hidden" id="idkodepos_" name="idkodepos_">
+											<input class="form-control form-control-sm" type="text" id="kodepos_" name="kodepos_" placeholder="Kode Pos" disabled>
+										</div>
+									</div>
+									<div class="col-xs-2"></div>
+									<div class="col-xs-5">
+										<label for="kodeposHer_" class="col-xs-4">Kode Pos</label>
+										<div class="col-xs-8">
+											<input class="form-control form-control-sm" type="text" id="kodeposHer_" name="kodeposHer_" placeholder="Pilih Kode Pos" >
+										</div>
+									</div>
+								</div>
+
+								<div class="col-xs-12">
+									<div class="col-xs-5">
+										<label for="telpRumah_" class="col-xs-4">Telp Rumah</label>
+										<div class="col-xs-8">
+											<input class="form-control form-control-sm" type="text" id="telpRumah_" name="telpRumah_" placeholder="Telp Rumah" disabled>
+										</div>
+									</div>
+									<div class="col-xs-2"></div>
+									<div class="col-xs-5">
+										<label for="telpRumahHer_" class="col-xs-4">Telp Rumah</label>
+										<div class="col-xs-8">
+											<input class="form-control form-control-sm" type="text" id="telpRumahHer_" name="telpRumahHer_" placeholder="Telp Rumah" >
+										</div>
+									</div>
+								</div>
+
+								<div class="col-xs-12">
+									<div class="col-xs-5">
+										<label for="noHp_" class="col-xs-4">No Handphone</label>
+										<div class="col-xs-8">
+											<input class="form-control form-control-sm" type="text" id="noHp_" name="noHp_" placeholder="No Handphone" disabled>
+										</div>
+									</div>
+									<div class="col-xs-2"></div>
+									<div class="col-xs-5">
+										<label for="noHpHer_" class="col-xs-4">No Handphone</label>
+										<div class="col-xs-8">
+											<input class="form-control form-control-sm" type="text" id="noHpHer_" name="noHpHer_" placeholder="No Handphone" >
+										</div>
+									</div>
+								</div>
+
+								<div class="col-xs-12">
+									<div class="col-xs-5">
+										<label for="email_" class="col-xs-4">Email</label>
+										<div class="col-xs-8">
+											<input class="form-control form-control-sm" type="text" id="email_" name="email_" placeholder="Email" disabled>
+										</div>
+									</div>
+									<div class="col-xs-2"></div>
+									<div class="col-xs-5">
+										<label for="emailHer_" class="col-xs-4">Email</label>
+										<div class="col-xs-8">
+											<input class="form-control form-control-sm" type="text" id="emailHer_" name="emailHer_" placeholder="Email" >
+										</div>
+									</div>
+								</div>
+								<div class="col-xs-12">
+									<div class="col-xs-5">
+
+									</div>
+									<div class="col-xs-2"></div>
+									<div class="col-xs-5">
+										<label for="tglMeninggalPenerimaMp" class="col-xs-4">Tanggal Meninggal</label>
+										<div class="col-xs-8">
+											<input class="form-control form-control-sm" type="text" id="tglMeninggalPenerimaMp" name="tglMeninggalPenerimaMp" placeholder="Email" >
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-md-12">
+						<div class="card">
+							<div class="card-header">
+								<strong>Kelengkapan Data</strong>
+							</div>
+							<div class="card-block">
+								<div class="col-xs-12">
+									<div class="col-xs-5">
+										<label for="kelengkapanData_" class="col-xs-4">Kelengkapan Data</label>
+										<div class="col-xs-4">
+											<label class="radio-inline bg-info">
+												<input type="radio" name="kelengkapanData_" id="kelengkapanData_" value="1">
+												Lengkap
+											</label>
+										</div>
+										<div class="col-xs-4">
+											<label class="radio-inline bg-warning">
+												<input type="radio" name="kelengkapanData_" id="kelengkapanData2_" value="0">
+												Tidak Lengkap
+											</label>
+										</div>
+									</div>
+									<div class="col-xs-7">
+										<label for="isAdaPhoto_" class="col-xs-5">(Form Her + FC KTP + FC KK) Kekurangan Kelengkapan</label>
+										<div class="col-xs-3">
+											<label class="radio-inline bg-info">
+												<input type="checkbox" name="isAdaPhoto_" id="isAdaPhoto_" value="1">
+												Pas Photo
+											</label>
+										</div>
+										<div class="col-xs-2">
+											<label class="radio-inline bg-warning">
+												<input type="checkbox" name="isAdaKtp_" id="isAdaKtp_" value="1">
+												KTP
+											</label>
+										</div>
+										<div class="col-xs-2">
+											<label class="radio-inline bg-warning">
+												<input type="checkbox" name="isAdaKk_" id="isAdaKk_" value="1">
+												KK
+											</label>
+										</div>
+									</div>
+								</div>
+
+								<div class="col-xs-12">
+									<div class="col-xs-5">
+										<label for="kelengkapanData_" class="col-xs-4">Penerima Menikah Lagi</label>
+										<div class="col-xs-2">
+											<label class="radio-inline bg-info">
+												<input type="radio" name="penerimaMenikah_" id="penerimaMenikah_1" value="1">
+												Ya
+											</label>
+										</div>
+										<div class="col-xs-3">
+											<label class="radio-inline bg-warning">
+												<input type="radio" name="penerimaMenikah_" id="penerimaMenikah_0" value="0">
+												Tidak
+											</label>
+										</div>
+										<div class="col-xs-3">
+											<label class="radio-inline bg-warning">
+												<input type="radio" name="penerimaMenikah_" id="penerimaMenikah_2" value="2">
+												Dicurigai
+											</label>
+										</div>
+									</div>
+									<div class="col-xs-7">
+										<label for="isAdaPhoto_" class="col-xs-5">Tempat dan Tgl Menikah</label>
+										<div class="col-xs-4">
+											<input class="form-control form-control-sm" type="text" id="tempatMenikah_" name="tempatMenikah_" placeholder="Isi Tempat Menikah" >
+										</div>
+										<div class="col-xs-3">
+											<input class="form-control form-control-sm dtp" type="text" id="tglMenikah_" name="tglMenikah_" placeholder="Pilih Tanggal" >
+										</div>
+									</div>
+								</div>
+
+								<div class="col-xs-12">
+									<div class="col-xs-5">
+										<label for="isAdaPhoto_" class="col-xs-4">Diserahkan Oleh</label>
+										<div class="col-xs-8">
+											<input class="form-control form-control-sm" type="text" id="namaSerah_" name="namaSerah_" placeholder="Diserahkan Oleh">
+										</div>
+									</div>
+									<div class="col-xs-7">
+										<label for="keterangan_" class="col-xs-5">Keterangan</label>
+										<div class="col-xs-7">
+											<input class="form-control form-control-sm" type="text" id="keterangan_" name="keterangan_" placeholder="Keterangan">
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-md-12">
+						<div class="card">
+							<div class="card-header">
+								<strong>Validasi</strong>
+							</div>
+							<div class="card-block">
+								<div class="col-xs-12">
+									<label class="radio-inline">
+										<input type="radio" name="Validasi" id="validasi1" value="1">
+										Belum Validasi
+									</label>
+									<label class="radio-inline">
+										<input type="radio" name="Validasi" id="validasi2" value="2">
+										Sudah Validasi
+									</label>
+									<label class="radio-inline">
+										<input type="radio" name="Validasi" id="validasi3" value="3">
+										Batal Koreksi
+									</label>
+									<label class="radio-inline">
+										<input type="radio" name="Validasi" id="validasi7" value="7">
+										Batal Validasi
+									</label>
+								</div>
+
+								<div class="col-xs-6">
+									Kategori Catatan
+									<select class="form-control select2" id="kategoriCatatan" name="kategoriCatatan">
+										{{#kcList}}
+										<option value="{{id}}">{{namaKategoriCatatan}}</option>
+										{{/kcList}}
+									</select>
+								</div>
+								<div class="col-xs-6">
+									Catatan
+									<textarea class="form-control " id="catatan" name="catatan" rows="3" >{{dto.catatan}}</textarea>
+								</div>
+								<div class="col-xs-12">
+									<br>
+								</div>
+								<div class="col-xs-12">
+									<label for="userStamp" class="col-xs-5">User Stamp</label>
+									<div class="col-xs-7">
+										<input class="form-control form-control-sm" type="text" id="userStamp" name="userStamp" value="{{dto.userStamp}}" disabled>
+									</div>
+								</div>
+								<div class="col-xs-12">
+									<label for="userValidasi" class="col-xs-5">User Validasi</label>
+									<div class="col-xs-7">
+										<input class="form-control form-control-sm" type="text" id="userValidasi" name="userValidasi" value="{{dto.userValidasi}}" disabled>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal" onclick="clearForm()">Close</button>
+				<button type="button" class="btn btn-primary btn-sm" id="btnSaveUpdateHer">Save</button>
+				<button type="button" class="btn btn-primary btn-sm" onclick="cetakReport()"><i class="fa fa-print"></i> Cetak</button>
+			</div>
+		</div>
+	</div>
+</div>
+{{/modal}} {{#scripts}}
+<script src="{{contextPath}}/assets/vendor/datatables/media/js/jquery.dataTables.js"></script>
+<script src="{{contextPath}}/assets/vendor/datatables/media/js/dataTables.bootstrap4.js"></script>
+<script src="{{contextPath}}/assets/vendor/select2/js/select2.js"></script>
+<script src="{{contextPath}}/assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+<script src="{{contextPath}}/assets/vendor/jquery-validation/dist/jquery.validate.js"></script>
+<script src="{{contextPath}}/assets/scripts/helpers/tsf/js/tsf-wizard-plugin.js"></script>
+<script src="{{contextPath}}/assets/vendor/parsley/parsley.min.js"></script>
+<script src="{{contextPath}}/assets/vendor/sweetalert/sweetalert.min.js"></script>
+<script type="text/javascript">
+
+    var namaValidasi = "";
+
+    $(".dtp").datepicker({
+        format: 'yyyy-mm-dd',
+        autoclose : true
+    });
+
+	var table1 = dkppDataTable($('.datatable'), '{{contextPath}}{{her_header_path_api}}', {
+        'columns': [
+            {"data": "tahunHer"},
+            {"data": "jenisHerDesc"},
+            {"data": "statusHer"},
+            {"data": "periodeTerdaftarPeserta"},
+            {"data": "totalPusat"},
+            {"data": "totalCabang"},
+            {"data": "totalCabang"},
+        ],
+        "columnDefs": [
+        	 {
+                 "render": function ( data, type, row ) {
+               	  if("1" == data){
+               		  return `<span class="tag tag-pill tag-warning">BUKA</span>`;
+               	  }else {
+               		  return `<span class="tag tag-pill tag-info">TUTUP</span>`;
+               	  }
+
+                 },
+                 "targets": 2
+              },
+              /*{
+                  "render": function ( data, type, row ) {
+                	  if("Belum Diproses" == data){
+                		  return `<span class="tag tag-pill tag-warning">Belum Diproses</span>`;
+                	  }else if("Belum Validasi" == data){
+                		  return `<span class="tag tag-pill tag-info">Belum Validasi</span>`;
+                	  }else if("Batal Validasi" == data){
+                		  return `<span class="tag tag-pill tag-danger">Batal Validasi</span>`;
+                	  }else if("Sudah Validasi" == data){
+                		  return `<span class="tag tag-pill tag-success">Sudah Validasi</span>`;
+                	  } else {
+                		  return `<span class="tag tag-pill tag-info">`+data+`</span>`;
+                	  }
+                  },
+                  "targets": 6
+               },*/
+             {
+                "render": function ( data, type, row ) {
+                	var periode = row["tahunHer"];
+                	var jenisHer = row["jenisHer"];
+
+                	var statusValidasi = row["statusValidasi.id"];
+
+                	return '<button type="button" class="btn btn-primary btn-sm" onclick="javascript:doDetail(`'+periode+'`, 0)"><i class="fa fa-edit"></i> <span>Edit</span></button><button type="button" class="btn btn-success btn-sm" onclick="javascript:doDetail(`'+periode+'`, 1)"><i class="fa fa-eye"></i> <span>Lihat Daftar Peserta Her Registrasi</span></button>';
+
+                	/*if(jenisHer == 0){
+                		return '<button type="button" class="btn btn-success btn-sm" onclick="javascript:doDetail(`'+periode+'`, 1)"><i class="fa fa-eye"></i> <span>Lihat Daftar Peserta Her Registrasi</span></button>';
+                	}else if(jenisHer == 1 && (statusValidasi == 1 || statusValidasi == 3)){
+                		return '<button type="button" class="btn btn-primary btn-sm" onclick="javascript:doDetail(`'+periode+'`, 0)"><i class="fa fa-edit"></i> <span>Edit</span></button><button type="button" class="btn btn-success btn-sm" onclick="javascript:doDetail(`'+periode+'`, 1)"><i class="fa fa-eye"></i> <span>Lihat Daftar Peserta Her Registrasi</span></button>';
+                	}else if(jenisHer == 1 && statusValidasi == 4){
+                		return '<button type="button" class="btn btn-success btn-sm" onclick="javascript:doDetail(`'+periode+'`, 1)"><i class="fa fa-eye"></i> <span>Lihat Daftar Peserta Her Registrasi</span></button>';
+                	}else if(jenisHer == 1 && statusValidasi == 2){
+                		return '<button type="button" class="btn btn-success btn-sm" onclick="javascript:doDetail(`'+periode+'`, 1)"><i class="fa fa-eye"></i> <span>Lihat Daftar Peserta Her Registrasi</span></button>';
+                	}
+                	else{
+                		return '<button type="button" class="btn btn-success btn-sm" onclick="javascript:doDetail(`'+periode+'`, 1)"><i class="fa fa-eye"></i> <span>Lihat Daftar Peserta Her Registrasi</span></button>';
+                	}*/
+                },
+                "targets": 6
+             }
+        ]
+    });
+
+
+    var table = dkppDataTable($('.table-tab-2'), '{{contextPath}}{{her_detail_path_api}}', {
+        'columns': [
+            {"data": "tahunHer"},
+            {"data": "jenisHerDesc"},
+            {"data": "nip"},
+            {"data": "namaPeserta"},
+            {"data": "namaPenerima"},
+            {"data": "namaKantorBayar"},
+            {"data": "statusHerDesc"},
+            {"data": "idValidasi"},
+            {"data": "nomorHer"},
+            {"data": "namaValidasi"},
+        ],
+        "columnDefs": [
+            {
+                "render": function ( data, type, row ) {
+                    if("1" == data){
+                        return `<span class="tag tag-pill tag-warning">BUKA</span>`;
+                    }else {
+                        return `<span class="tag tag-pill tag-info">TUTUP</span>`;
+                    }
+
+                },
+                "targets": 6
+            },
+            {
+                "render": function ( data, type, row ) {
+                    if(row.idValidasi === 5){
+                        return `<span class="tag tag-pill tag-warning">Belum Diproses</span>`;
+                    }else if(row.idValidasi === 1){
+                        return `<span class="tag tag-pill tag-info">Belum Validasi</span>`;
+                    }else if("Batal Validasi" == data){
+                        return `<span class="tag tag-pill tag-danger">Batal Validasi</span>`;
+                    }else if(row.idValidasi === 2){
+                        return `<span class="tag tag-pill tag-success">Sudah Validasi</span>`;
+                    } else {
+                        return `<span class="tag tag-pill tag-info">`+data+`</span>`;
+                    }
+                },
+                "targets": 7
+            },
+            {
+                "render": function ( data, type, row ) {
+                    var periode = row["tahunHer"];
+                    var nip = row["nip"];
+                    var jenisHer = row["jenisHer"];
+
+                    var statusValidasi = row["statusValidasi.id"];
+
+                    return '<button type="button" class="btn btn-primary btn-sm" onclick="javascript:openHerDetail(`'+periode+'`, `'+nip+'`)"><i class="fa fa-edit"></i> <span>Proses</span></button>';
+
+                    /*if(jenisHer == 0){
+                        return '<button type="button" class="btn btn-success btn-sm" onclick="javascript:doDetail(`'+periode+'`, 1)"><i class="fa fa-eye"></i> <span>Lihat Daftar Peserta Her Registrasi</span></button>';
+                    }else if(jenisHer == 1 && (statusValidasi == 1 || statusValidasi == 3)){
+                        return '<button type="button" class="btn btn-primary btn-sm" onclick="javascript:doDetail(`'+periode+'`, 0)"><i class="fa fa-edit"></i> <span>Edit</span></button><button type="button" class="btn btn-success btn-sm" onclick="javascript:doDetail(`'+periode+'`, 1)"><i class="fa fa-eye"></i> <span>Lihat Daftar Peserta Her Registrasi</span></button>';
+                    }else if(jenisHer == 1 && statusValidasi == 4){
+                        return '<button type="button" class="btn btn-success btn-sm" onclick="javascript:doDetail(`'+periode+'`, 1)"><i class="fa fa-eye"></i> <span>Lihat Daftar Peserta Her Registrasi</span></button>';
+                    }else if(jenisHer == 1 && statusValidasi == 2){
+                        return '<button type="button" class="btn btn-success btn-sm" onclick="javascript:doDetail(`'+periode+'`, 1)"><i class="fa fa-eye"></i> <span>Lihat Daftar Peserta Her Registrasi</span></button>';
+                    }
+                    else{
+                        return '<button type="button" class="btn btn-success btn-sm" onclick="javascript:doDetail(`'+periode+'`, 1)"><i class="fa fa-eye"></i> <span>Lihat Daftar Peserta Her Registrasi</span></button>';
+                    }*/
+                },
+                "targets": 9
+            }
+        ]
+    });
+	
+    $(document).ready(function () {
+
+        const radioPenerima = $("input[name='isPenerimaSama_']");
+        const radioSuskel = $("input[name='isSuskelSama_']");
+        const radioKantorBayar = $("input[name='isKantorBayarSama_']");
+        const radioAlamat = $("input[name='isAlamatSama_']");
+
+        $("#telpRumahHer_").mask("999999999999");
+        $("#noHpHer_").mask("999999999999");
+
+        $('#isPenerimaSama_1').click(function(){
+            radioPenerima.val("1");
+            if (radioPenerima.val() == "1"){
+                $('#namaPenerimaMpHer_').val($('#namaPenerimaMp_').val());
+                $('#tglLahirPenerimaMpHer_').val($('#tglLahirPenerimaMp_').val());
+                $('#namaPenerimaMpHer_').attr("disabled","disabled");
+                $('#tglLahirPenerimaMpHer_').attr("disabled","disabled");
+            }
+		});
+
+        $('#isPenerimaSama_2').click(function(){
+            radioPenerima.val("0");
+            if (radioPenerima.val() == "0"){
+                $('#namaPenerimaMpHer_').removeAttr("disabled");
+                $('#tglLahirPenerimaMpHer_').removeAttr("disabled");
+                $('#namaPenerimaMpHer_').focus();
+            }
+        });
+
+        $('#isSuskelSama_1').click(function(){
+            radioSuskel.val("1");
+            if (radioSuskel.val() == "1"){
+                $('#idSuskelHer_').val($('#Suskel_').val());
+                $('#idSuskelHer_').attr("disabled","disabled");
+            }
+        });
+
+        $('#isSuskelSama_2').click(function(){
+            radioSuskel.val("0");
+            if (radioSuskel.val() == "0"){
+                $('#idSuskelHer_').removeAttr("disabled");
+                $('#idSuskelHer_').focus();
+            }
+        });
+
+        $('#isKantorBayarSama_1').click(function(){
+        	radioKantorBayar.val("1");
+			$('#idKantorBayarHer_').val($('#kantorBayar_').val());
+			$('#idKantorBayarHer_').attr("disabled","disabled");
+		});
+
+		$('#isKantorBayarSama_2').click(function(){
+			radioKantorBayar.val("0");
+			$('#idKantorBayarHer_').removeAttr("disabled");
+			$('#idKantorBayarHer_').focus();
+		});
+
+		$('#isAlamatSama_1').click(function(){
+			radioAlamat.val("1");
+			$('#alamat1Her_').val($('#alamat1_').val());
+			$('#rtHer_').val($('#rt_').val());
+			$('#rwHer_').val($('#rw_').val());
+			$('#kelurahanHer_').val($('#kelurahan_').val());
+			$('#kecamatanHer_').val($('#kecamatan_').val());
+			$('#kotaHer_').val($('#kota_').val());
+			$('#provinsiHer_').val($('#provinsi_').val());
+			$('#kelurahanHer_').val($('#kelurahan_').val());
+			$('#kodeposHer_').val($('#kodepos_').val());
+			$('#telpRumahHer_').val($('#telpRumah_').val());
+			$('#noHpHer_').val($('#noHp_').val());
+			$('#emailHer_').val($('#email_').val());
+		});
+
+        $.ajax({
+            url: '{{contextPath}}/api/setupparameter/get_periode',
+            dataType:'json',
+            method:'GET',
+            success:function (data) {
+                console.log(data)
+                $('#comp-name-update').val(data.compName);
+                $('#user-validasi').val(data.userName);
+            }
+        });
+
+
+    })
+
+    function setNamaValidasi(strValue){
+        namaValidasi = strValue;
+    }
+
+    fillParam = function(strElementId){
+        if($('#' + strElementId).val() === undefined)
+            return "";
+        else if ($('#' + strElementId).val() == "null")
+            return "";
+        else
+            return $('#' + strElementId).val()
+    }
+
+	$("#btnSaveUpdateHer").click(function(){
+	    var idPenerimaMp = null;
+	    var idSuskel = null;
+	    var idKantorBayar = null;
+	    var idKelurahan = null;
+	    var idKota = null;
+	    var idKecamatan = null;
+	    var idProvinsi = null;
+		if ($("#input[name='isPenerimaSama_']:checked").val() == "1"){
+			idPenerimaMp = $("#idPenerimaMp_").val();
+		}
+
+        if ($("#input[name='isSuskelSama_']:checked").val() == "1"){
+            idSuskel = $("#Suskel_").val();
+        }
+
+        if ($("#input[name='isKantorBayarSama_']:checked").val() == "1"){
+			idKantorBayar = $("$idKantorBayar_").val();
+		}
+
+        if ($("#input[name='isAlamatSama_']:checked").val() == "1"){
+            idKelurahan = $("idkelurahan_").val();
+            idKecamatan = $("idkecamatan_").val();
+            idKota = $("idkota_").val();
+            idProvinsi = $("idprovinsi_").val();
+        }
+		
+		SPParam = {
+            roleId : null,
+            compName : null,
+            userName : null,
+            parTahunHer : $("#thnHer").val(),
+            parNip : $("#nipHerRegistrasi").val(),
+            parIdPenerimaHer : idPenerimaMp,
+            parNomorHer : $("#noHerRegistrasi").val(),
+            parTglHer : $("#tglHer").val(),
+            parNipPas1Her : $("#nipPasangan").val(),
+            parJenisKelaminPas1Her : $("#jkPasangan").val(),
+            parNipPas2Her : $("#nipPasangan2").val(),
+            parJenisKelaminPas2Her : $("#jkPasangan2").val(),
+            parNamaPenerimaMpHer : $("#namaPenerimaMpHer_").val(),
+            parTglMeninggalPenerimaHer : $("#tglMeninggalPenerimaMp").val() ,
+            parIdKantorBayarHer :idKantorBayar ,
+            parNamaKantorBayarHer :$("#idKantorBayarHer_").val() ,
+            parAlamatIsDalamNegeriHer : "1",
+            parAlamatLengkapHer : $("#alamat1Her_").val(),
+            parRtHer : $("#rtHer_").val(),
+            parRwHer : $("#rwHer_").val(),
+            parIdKelurahanHer : idKelurahan,
+            parNamaKelurahanHer : $("#kelurahanHer_").val(),
+            parIdKecamatanHer : idKecamatan,
+            parNamaKecamatanHer : $("#kecamatanHer_").val(),
+            parIdKotaKabHer : idKota,
+            parNamaKotaKabHer : $("#kotaHer_").val(),
+            parIdProvinsiHer : idProvinsi,
+            parNamaProvinsiHer : $("#provinsiHer_").val(),
+            parKodePosHer : $("#kodeposHer_").val(),
+            parIdNegaraHer : null,
+            parNamaNegaraHer : null,
+            parNoHpHer : $("#noHpHer_").val(),
+            parEmailHer : $("#emailHer_").val(),
+            parIsNamaPenerimaSama : $("#input[name='isPenerimaSama_']:checked").val(),
+            parIsTglLahirSama : "1",
+            parIsSuskelSama : $("#input[name='isSuskelSama_']:checked").val(),
+            parIsKantorBayarSama : $("#input[name='isKantorBayarSama_']:checked").val(),
+            parIsAlamatSama : $("#input[name='isAlamatSama_']:checked").val(),
+            parIsAdaPhoto : $("#input[name='isAdaPhoto_']:checked").val(),
+            parIsAdaKk : $("#input[name='isAdaKk_']:checked").val(),
+            parIsAdaKtp : $("#input[name='isAdaKtp_']:checked").val(),
+            parIsDataLengkap : $("#input[name='kelengkapanData_']:checked").val(),
+            parIsPenerimaMenikahLagi : $("#input[name='penerimaMenikah_']:checked").val(),
+            parTempatMenikah : $("#tempatMenikah_").val(),
+            parTglMenikah : $("#tglMenikah_").val(),
+            parIdSerah : "1",
+            parNamaSerah : $("#namaSerah_").val(),
+            parKeteranganSerah : $("#keterangan_").val(),
+            parIdCatatan : $("kategoriCatatan").val(),
+            parNamaCatatan : "",
+            parCatatan : $("#catatan").val(),
+            parIdValidasi : $("#input[name='Validasi']:checked").val(),
+            parNamaValidasi : namaValidasi,
+			_csrf: '{{_csrf.token}}'
+		}
+
+        $.ajax({
+            url: "{{contextPath}}/api/her-registrasi/cusp_update_her_registrasi",
+            method: "POST",
+            data: SPParam,
+            success: function(data){
+                if(data.status == "success") {
+                    swal({title: "Berhasil", text: data.message, icon: "success", button: "OK"})
+                        .then(()=>{
+                        setTimeout(function(){window.location.href = "{{gridPath}}";}, 2000);
+                });
+                }
+            },
+            error: function(data){
+                if(data.message != undefined )
+                    swal({title: "Gagal", text: data.message, icon: "error", button: "OK"});
+                else
+                    swal({title: "Gagal", text: "Terjadi kesalahan.", icon: "error", button: "OK"});
+            }
+        });
+	});
+
+    $("#btnSave").click(function(){
+    	var periode = $("#pesertaYangTerdaftarPadaEdit").val();
+    	var tahun = $("#tahunHerEdit").val();
+    	var jenis = $("input[name='inlineRadioOptionsEdit']:checked").val();
+    	var status = $("input[name='inlineHerOptionsEdit']:checked").val();
+    	var validasi = $("input[name='idValidasi']:checked").val();
+        var namaValidasi = $("input[name='namaValidasi']").val();
+    	var compName = $("input[name='compName']").val();
+    	var userValidasi = $("input[name='userValidasiEdit']").val();
+
+    	if(tahun == null || tahun == ""){
+    		$("#tahunHerEdit").focus();
+    		swal("","Tahun Her Registrasi tidak boleh kosong","error");
+    		return;
+    	}
+
+    	if(periode == null || periode == ""){
+    		$("#pesertaYangTerdaftarPadaEdit").focus();
+    		swal("","Peserta yang terdaftar pada periode tidak boleh kosong","error");
+    		return;
+    	}
+
+    	jenisHerDesc = "Penerima Janda/Duda/Anak";
+    	if("1" == jenis){
+    		jenisHerDesc = "Seluruh Penerima";
+    	}
+
+    	$.ajax({
+            url: "{{contextPath}}{{her_path_api}}/cusp_update_master_her_regis",
+            method: "GET",
+            data: {
+            		parTahun : tahun,
+            		parStatusHer : status,
+            		parPeriodeTerdaftarPeserta : periode,
+					compName: compName,
+                	userName : userValidasi,
+                	parIdValidasi : validasi,
+                	parNamaValidasi : namaValidasi,
+            	  }
+        }).done((response) => {
+        	var status = response.status;
+        	if(status){
+        		setTimeout(function(){
+        			table1.ajax.reload();
+        		}, 1000);
+
+        		swal("","Proses Her Registrasi berhasil dilakukan","success");
+        		$(".bd-example-modal2").modal("toggle");
+        	}else{
+        		swal("","Terjadi kesalahan pada proses Her Registrasi","success");
+        	}
+
+    	}).error(() => {
+        	swal({title:"Gagal",text: "Terjadi kesalahan", icon:"error", button:"OK"});
+    	});
+
+    });
+
+    $("#btnProcess").click(function(){
+    	var periode = $("#periode").val();
+    	var tahun = $("#tahunHerRegistrasi").val();
+    	var jenis = $("input[name='inlineRadioOptions']:checked").val();
+
+    	if(periode == null || periode == ""){
+    		$("#periode").focus();
+    		swal("","Peserta yang terdaftar pada periode tidak boleh kosong","error");
+    		return;
+    	}
+
+    	if(tahun == null || tahun == ""){
+    		$("#tahunHerRegistrasi").focus();
+    		swal("","Tahun Her Registrasi tidak boleh kosong","error");
+    		return;
+    	}
+
+    	if(jenis == null || jenis == ""){
+    		swal("","Jenis Her tidak boleh kosong","error");
+    		return;
+    	}
+
+    	jenisHerDesc = "Penerima Janda/Duda/Anak";
+    	if("1" == jenis){
+    		jenisHerDesc = "Seluruh Penerima";
+    	}
+
+    	$.ajax({
+            url: "{{contextPath}}{{her_path_api}}/cusp_create_master_her_regis",
+            method: "GET",
+            data: {
+            		parTahun : tahun,
+            		parJenisHer : jenis,
+            		parJenisHerDesc : jenisHerDesc,
+            		parPeriodeTerdaftarPeserta : periode
+            	  }
+        }).done((response) => {
+        	var status = response.status;
+        	if(status){
+        		setTimeout(function(){
+        			table.ajax.reload();
+        		}, 1000);
+
+                swal({
+                    title: "Berhasil",
+                    text: "Proses Her Registrasi berhasil dilakukan",
+                    icon: "success",
+                    button: "OK"
+                }).then(() => {
+                    window.location = "{{contextPath}}/her-registrasi/registrasi-ulang-pensiun"
+            	});
+
+        	}else{
+        		swal("","Terjadi kesalahan pada proses Her Registrasi","success");
+        	}
+
+    	}).error(() => {
+        	swal({title:"Gagal",text: "Terjadi kesalahan", icon:"error", button:"OK"});
+    	});
+
+    });
+
+
+    function openHerDetail(periode,nip){
+        $.ajax({
+            url: "{{contextPath}}{{her_path_api}}/entry",
+            method: "GET",
+            data: {
+                periode: periode,
+				nip: nip,
+            }
+        }).done((response) => {
+            $(".bd-example-modal-lg").modal("show");
+            var data = response;
+			$("#noHerRegistrasi").val(data.nomorHer);
+			$("#nipHerRegistrasi").val(data.nip);
+			$("#namaPesertaHerRegistrasi").val(data.namaPeserta);
+			$("#thnHer").val(data.tahunHer);
+			$("#golonganHer").val(data.namaKategoriPenerimaMP);
+			$("#tglHer").val(fillDateField(data.tglHer));
+			$("#namaPenerimaMp_").val(data.namaPenerima);
+			$("#idPenerimaMp_").val(data.idPenerima);
+			$("#tglLahirPenerimaMp_").val(fillDateField(data.tglLahir));
+			$("#idSuskel_").val(data.idSuskel);
+			$("#Suskel_").val(data.namaSuskel);
+			$("#idKantorBayar_").val(data.idKantorBayar);
+			$("#kantorBayar_").val(data.namaKantorBayar);
+			$("#alamat1_").val(data.alamatLengkap);
+			$("#rt_").val(data.rt);
+			$("#rw_").val(data.rw);
+			$("#idkelurahan_").val(data.idKelurahan);
+			$("#kelurahan_").val(data.namaKelurahan);
+			$("#idkecamatan_").val(data.idKecamatan);
+			$("#kecamatan_").val(data.namaKecamatan);
+			$("#idkota_").val(data.idKotaKabNumber);
+			$("#kota_").val(data.namaKotaKab);
+			$("#idprovinsi_").val(data.idProvinsiNumber);
+			$("#provinsi_").val(data.namaProvinsi);
+			$("#kodepos_").val(data.kodePos);
+			$("#telpRumah_").val(data.noTlpRumah);
+			$("#noHp_").val(data.noHp);
+			$("#email_").val(data.email);
+			$("#tglHer").val(fillDateField(new Date()));
+    });
+    }
+
+    function doDetail(periode, view){
+    	$.ajax({
+            url: "{{contextPath}}{{her_path_api}}/view",
+            method: "GET",
+            data: {
+                tahun : periode,
+            }
+        }).done((response) => {
+            console.log(response);
+        	var status = response;
+        	var data = response;
+        	if(status){
+        			$("#tahunHerModal").val(data.tahunHer);
+        			$("#tahunHerEdit").val(data.tahunHer);
+
+        			$("#pesertaYangTerdaftarPadaModal").val(data.periodeTerdaftarPeserta);
+        			$("#pesertaYangTerdaftarPadaEdit").val(data.periodeTerdaftarPeserta);
+
+        			$("#jenisHerRegistrasiModal").val(data.jenisHerDesc);
+
+        			if("1" == data.jenisHer){
+        				$("#inlineRadioEdit1").prop("checked", true);
+        			}else{
+        				$("#inlineRadioEdit2").prop("checked", true);
+        			}
+
+        			if("1" == data.statusHer){
+        				$("#inlineHerRadio1Edit").prop("checked", true);
+        				$("#statusHerRegistrasiModal").val("Buka");
+        			}else{
+        				$("#statusHerRegistrasiModal").val("Tutup");
+        				$("#inlineHerRadio2Edit").prop("checked", true);
+        			}
+
+        			$("#kantorPusatModal").val(data.totalPusat);
+        			$("#kantorCabangModal").val(data.totalCabang);
+        			$("#userStampModal").val(data.userStamp);
+        			$("#userValidasiModal").val(data.userValidasi);
+
+        			$("#kantorPusatEdit").val(data.totalPusat);
+        			$("#kantorCabangEdit").val(data.totalCabang);
+        			$("#userStampEdit").val(data.userStamp);
+        			$("#userValidasiEdit").val(data.userValidasi);
+
+        			var detail = data.herRegistrasiDetail;
+        			if(detail != null && detail.length > 0){
+        				$(".datatable2 tbody").empty();
+        				for(var i=0; i < detail.length; i++){
+        					$(".datatable2 tbody").append("<tr>"+
+        							"<td>" + toBlank(detail[i].nip)+ "</td>"+
+        							"<td>" + toBlank(detail[i].namaPeserta)+ "</td>"+
+        							"<td>" + toBlank(detail[i].namaPenerima)+ "</td>"+
+        							"<td>" + toBlank(detail[i].namaKantorBayar)+ "</td>"+
+        							"<td>" + statusValidasi(detail[i].statusHerDesc)+ "</td>"+
+        							"</tr>"
+        					);
+        				}
+                        $(".datatable3 tbody").empty();
+        				for(var i=0; i < detail.length; i++){
+        					$(".datatable3 tbody").append("<tr>"+
+        							"<td>" + toBlank(detail[i].nip)+ "</td>"+
+        							"<td>" + toBlank(detail[i].namaPeserta)+ "</td>"+
+        							"<td>" + toBlank(detail[i].namaPenerima)+ "</td>"+
+        							"<td>" + toBlank(detail[i].namaKantorBayar)+ "</td>"+
+        							"<td>" + statusValidasi(detail[i].statusHerDesc)+ "</td>"+
+        							"</tr>"
+        					);
+        				}
+        			}
+
+        			if(data.namaValidasi == "Belum Validasi"){
+        				$("#validasiModal").html(`<span class="tag tag-pill tag-info pull-right">Belum Validasi</span>`);
+        			}else if(data.namaValidasi == "Belum Diproses"){
+        				$("#validasiModal").html(`<span class="tag tag-pill tag-warning pull-right">Belum Diproses</span>`);
+        			}else if(data.namaValidasi == "Batal Validasi"){
+        				$("#validasiModal").html(`<span class="tag tag-pill tag-danger pull-right">Batal Validasi</span>`);
+        			}else if(data.namaValidasi == "Sudah Validasi"){
+        				$("#validasiModal").html(`<span class="tag tag-pill tag-success pull-right">Sudah Validasi</span>`);
+        			}else{
+        				$("#validasiModal").html(`<span class="tag tag-pill tag-danger pull-right">`+data.namaValidasi+`</span>`);
+        			}
+
+        			$(".datatable2").DataTable();
+        			$(".datatable3").DataTable();
+
+                switch(data.statusValidasi.id){
+                    case 1:
+                        $('#id-validasi-1').prop('checked', true);
+                        $('#label-status-validasi').html(`<span class="tag tag-pill tag-info pull-right">Belum Validasi</span>`);
+                        break;
+                    case 2:
+                        $('#id-validasi-2').prop('checked', true);
+                        $('#label-status-validasi').html(`<span class="tag tag-pill tag-info pull-right">Sudah Validasi</span>`);
+                        break;
+                    case 3:
+                        $('#id-validasi-2').prop('checked', true);
+                        $('#label-status-validasi').html(`<span class="tag tag-pill tag-info pull-right">Batal Koreksi</span>`);
+                        break;
+                    case 7:
+                        $('#id-validasi-7').prop('checked', true);
+                        $('#label-status-validasi').html(`<span class="tag tag-pill tag-info pull-right">Batal Validasi</span>`);
+                        break;
+                }
+
+                $('#id-validasi-1').unbind().on('change', function(){
+                    $('#nama-validasi').val('Belum Validasi');
+                });
+
+                $('#id-validasi-2').unbind().on('change', function(){
+                    $('#nama-validasi').val('Sudah Validasi');
+                });
+
+                $('#id-validasi-3').unbind().on('change', function(){
+                    $('#nama-validasi').val('Batal Koreksi');
+                });
+
+                $('#id-validasi-7').unbind().on('change', function(){
+                    $('#nama-validasi').val('Batal Validasi');
+                });
+
+
+        	}else{
+        		swal({title:"Informasi",text: "Data tidak ditemukan", icon:"error", button:"OK"});
+        	}
+
+    	}).error(() => {
+        	swal({title:"Gagal",text: "Terjadi kesalahan", icon:"error", button:"OK"});
+    	});
+
+    	if(view == "1"){
+    		$(".modal-tab-1").modal('show');
+    	}else{
+    		$(".bd-example-modal2").modal("show");
+    	}
+
+    }
+
+    function statusValidasi(status){
+    	if(status == "Belum Validasi"){
+			return 	`<span class="tag tag-pill tag-info pull-right">Belum Validasi</span>`;
+		}else if(status == "Belum Diproses"){
+			return `<span class="tag tag-pill tag-warning pull-right">Belum Diproses</span>`;
+		}else if(status == "Batal Validasi"){
+			return `<span class="tag tag-pill tag-danger pull-right">Batal Validasi</span>`;
+		}else if(status == "Sudah Validasi"){
+			return `<span class="tag tag-pill tag-success pull-right">Sudah Validasi</span>`;
+		}else{
+			return `<span class="tag tag-pill tag-danger pull-right">`+status+`</span>`;
+		}
+    }
+
+    function toBlank(data){
+    	if(data == null){
+    		return "";
+    	}else{
+    		return data;
+    	}
+    }
+
+    function clearForm(){
+        $("input[type=text]").val('');
+    }
+
+    function cetakReport(){
+        data = {
+            tipeReport: 'Resi_Her_Registrasi',
+            nip: $('#nipHerRegistrasi').val(),
+			tahunHer: $('#thnHer').val()
+
+        };
+        const param = $.param(data);
+        console.log(param);
+        const reportFrame = $("#cetakCatatan");
+        const res = encodeURI(('src', `{{contextPath}}/api/her-registrasi/report-her?${param}`));
+        window.open(res, '_blank');
+    }
+</script>
+{{/scripts}} {{/layout}}

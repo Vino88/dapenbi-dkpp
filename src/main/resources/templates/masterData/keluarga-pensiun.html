@@ -1,0 +1,424 @@
+{{#layout}}
+
+{{#styles}}
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/googleapis/css/component.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/googleapis/css/googleapis.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/select2/css/select2.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css">
+{{/styles}}
+
+{{#title}}
+Master Keluarga Pensiun - DKPP
+{{/title}}
+
+
+<div class="card">
+    <div class="card-header">
+        <div class="col-md-12">
+            <div class="row pull-right">
+                <a class="btn btn-primary btn-icon btn-sm" id="btn-add"><i class="material-icons">add</i> Add</a>
+            </div>
+        </div>
+    </div>
+    <div class="card-block">
+        <div class="table-responsive">
+            <table class="table table-bordered datatable dataTable no-footer" id="keluarga_table"
+                   role="grid">
+                <thead>
+                <tr role="row">
+                    <th>
+                        Nama Keluarga
+                    </th>
+                    <th>
+                        NIP
+                    </th>
+                    <th>
+                        Jenis Kelamin
+                    </th>
+                    <th>
+                        Kategori Penerima
+                    </th>
+                    <th>
+                        Tempat / Tanggal <br/> Lahir
+                    </th>
+                    <th>
+                        Tanggal Usia 25
+                    </th>
+                    <th>
+                        Tanggal Menikah
+                    </th>
+                    <th>
+                        Tanggal Wafat
+                    </th>
+                    <th>
+                        Tanggal Cerai
+                    </th>
+                    <th>
+                        Active
+                    </th>
+                    <th>
+                        Action
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{{#modal}}
+<div class="modal fade kategori-penerima-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title small bold" id="myModalLabel">Form Keluarga Pensiun</h4>
+            </div>
+            <div class="modal-body">
+                <form id="keluargaPensiunForm">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="row">
+                                <div class="form-group row">
+                                    <label for="nip" class="col-sm-3 bold">NIP</label>
+                                    <div class="col-xs-6">
+                                        <input class="form-control form-control-sm" type="text" name="nip" id="nip">
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="nama-keluarga" class="col-sm-3 bold">Nama Keluarga</label>
+                                    <div class="col-xs-6">
+                                        <input class="form-control form-control-sm" type="text" name="namaKeluarga"
+                                               id="nama-keluarga">
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="jenis-kelamin" class="col-sm-3 bold">Jenis Kelamin</label>
+                                    <div class="col-xs-6">
+                                        <select class="form-control form-control-sm" name="jenisKelamin"
+                                                id="jenis-kelamin">
+                                            <option></option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="id-kategori-penerima" class="col-sm-3 bold">ID Kategori Penerima</label>
+                                    <div class="col-xs-6">
+                                        <input type="hidden" name="id" id="id">
+                                        <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
+                                        <select class="form-control form-control-sm" name="idKategoriPenerima"
+                                                id="id-kategori-penerima">
+                                            <option></option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="tempat-lahir" class="col-sm-3 bold">Tempat Lahir</label>
+                                    <div class="col-xs-6">
+                                        <input class="form-control form-control-sm" type="text" name="tempatLahir"
+                                               id="tempat-lahir">
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="tgl-lahir" class="col-sm-3 bold">Tanggal Lahir</label>
+                                    <div class="col-xs-3">
+                                        <input placeholder="dd/mm/yyyy" class="form-control form-control-sm text-sm"
+                                               type="text" name="tglLahir" id="tgl-lahir" data-provide="datepicker"
+                                               data-date-format="dd/mm/yyyy">
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="tgl-usia25" class="col-sm-3 bold">Tanggal Usia 25</label>
+                                    <div class="col-xs-3">
+                                        <input placeholder="dd/mm/yyyy" class="form-control form-control-sm text-sm"
+                                               type="text" name="tglUsia25" id="tgl-usia25" data-provide="datepicker"
+                                               data-date-format="dd/mm/yyyy">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <div class="row">
+                                <div class="form-group row">
+                                    <label for="tgl-menikah" class="col-sm-3 bold">Tanggal Menikah</label>
+                                    <div class="col-xs-3">
+                                        <input placeholder="dd/mm/yyyy" class="form-control form-control-sm text-sm"
+                                               type="text" name="tglMenikah" id="tgl-menikah" data-provide="datepicker"
+                                               data-date-format="dd/mm/yyyy">
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="tgl-cerai" class="col-sm-3 bold">Tanggal Cerai</label>
+                                    <div class="col-xs-3">
+                                        <input placeholder="dd/mm/yyyy" class="form-control form-control-sm text-sm"
+                                               type="text" name="tglCerai" id="tgl-cerai" data-provide="datepicker"
+                                               data-date-format="dd/mm/yyyy">
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="tempat-wafat" class="col-sm-3 bold">Tempat Wafat</label>
+                                    <div class="col-xs-6">
+                                        <input class="form-control form-control-sm" type="text" name="tempatWafat"
+                                               id="tempat-wafat">
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="tgl-wafat" class="col-sm-3 bold">Tanggal Wafat</label>
+                                    <div class="col-xs-3">
+                                        <input placeholder="dd/mm/yyyy" class="form-control form-control-sm text-sm"
+                                               type="text" name="tglWafat" id="tgl-wafat" data-provide="datepicker"
+                                               data-date-format="dd/mm/yyyy">
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="checkbox-is-penerima-mp" class="col-sm-3 bold">Penerima MP</label>
+                                    <div class="col-xs-6">
+                                        <label class="custom-control custom-checkbox m-b-1">
+                                            <input type="checkbox" class="custom-control-input" name="isPenerimaMp"
+                                                   id="checkbox-is-penerima-mp">
+                                            <span class="custom-control-indicator"></span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row checkbox-show-hide">
+                                    <label for="checkbox-active" class="col-sm-3 bold">Active</label>
+                                    <div class="col-xs-6">
+                                        <label class="custom-control custom-checkbox m-b-1">
+                                            <input type="checkbox" class="custom-control-input" name="active"
+                                                   id="checkbox-active">
+                                            <span class="custom-control-indicator"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="saveForm()">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+{{/modal}}
+
+{{#scripts}}
+<script src="{{contextPath}}/assets/vendor/datatables/media/js/jquery.dataTables.js"></script>
+<script src="{{contextPath}}/assets/vendor/datatables/media/js/dataTables.bootstrap4.js"></script>
+<script src="{{contextPath}}/assets/vendor/select2/js/select2.js"></script>
+<script src="{{contextPath}}/assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+<script src="{{contextPath}}/assets/vendor/sweetalert/sweetalert.min.js"></script>
+
+<script type="text/javascript">
+    window.RESTFulMode = "";
+    var selected = 0;
+
+    function showPrintOptions() {
+        $('#printOptionsModal').modal('show');
+    }
+
+    $('#btn_ok_print').unbind().on('click', function () {
+        $('#printOptionsModal').modal('hide');
+        $('#pdfReportModal').modal('show');
+    });
+
+    $('#filter_form').hide();
+
+    var keluargaPensiunTable = dkppDataTable($('.datatable'), '{{contextPath}}/api/keluarga-pensiun', {
+        'columns': [
+            {"data": "namaKeluarga"},
+            {"data": "nip"},
+            {"data": "jenisKelamin"},
+            {"data": "kategoriPenerima"},
+            {"data": "tglLahir"},
+            {"data": "tglUsia25"},
+            {"data": "tglMenikah"},
+            {"data": "tglWafat"},
+            {"data": "tglCerai"},
+            {"data": "active", "ordering": false},
+            {"data": "id"}
+        ],
+        'columnDefs': [
+            {
+                "targets": -1,
+                "data": "id",
+                "render": function (data, type, row, meta) {
+                    return "<a class='btn btn-info btn-sm btn-icon btn-edit' onclick='displayEditModal(" + row.id + ")'><i class='material-icons'>edit</i> Edit</a>";
+                }
+            },
+            {
+                "targets": 2,
+                "render": function (data, type, row) {
+                    return data && data.namaKategoriPenerima;
+                }
+            },,
+            {
+                "targets": 3,
+                "render": function (data, type, row) {
+                    return genderText(data);
+                }
+            },
+            {
+                "targets": [4, 5, 6, 7, 8],
+                "render": function (data, type, row, meta) {
+                    return data && moment(data).format("DD/MM/YYYY");
+                }
+            },
+            {
+                "targets": -2,
+                "data": "active",
+                "render": function (data, type, row, meta) {
+                    if (data == true)
+                        return '<span class="tag tag-pill tag-success">active</span>';
+                    else
+                        return '<span class="tag tag-pill tag-danger">not active</span>';
+                }
+            }
+        ]
+    });
+
+    function displayEditModal(id) {
+        $('.checkbox-show-hide').show();
+        const keluargaPensiun = keluargaPensiunTable.rows().data().filter((data) => {
+            return data.id === id
+        })[0];
+        const keluargaPensiunForm = $("form#keluargaPensiunForm");
+
+        $.ajax({
+            url: '{{contextPath}}/data/kategori-penerima',
+            method: 'GET',
+            success: function (data) {
+                $('#id-kategori-penerima').select2(
+                    {
+                        data: data,
+                        width: "50%",
+                        placeholder: 'Pilih Kategori Penerima'
+                    }
+                )
+                    .val(keluargaPensiun.idKategoriPenerima)
+                    .trigger('change');
+
+            }
+
+        });
+
+        $("#id").val(keluargaPensiun.id);
+        $("#jenis-kelamin").val(keluargaPensiun.jenisKelamin);
+        $("#jenis-kelamin").trigger("change");
+        $("#nama-keluarga").val(keluargaPensiun.namaKeluarga);
+        $("#nip").val(keluargaPensiun.nip);
+        $("#tgl-cerai").val(fillDateField(keluargaPensiun.tglCerai));
+        $("#tgl-lahir").val(fillDateField(keluargaPensiun.tglLahir));
+        $("#tgl-usia25").val(fillDateField(keluargaPensiun.tglUsia25));
+        $("#tgl-menikah").val(fillDateField(keluargaPensiun.tglMenikah));
+        $("#tempat-wafat").val(keluargaPensiun.tempatWafat);
+        $("#tgl-wafat").val(fillDateField(keluargaPensiun.tglWafat));
+        $("#tempat-lahir").val(keluargaPensiun.tempatLahir);
+        $("#id-kategori-penerima").val(fillDateField(keluargaPensiun.idKategoriPenerima));
+        $("#id-kategori-penerima").trigger("change");
+        $('.kategori-penerima-modal').modal({backdrop: 'static', keyboard: false}).modal('show');
+        $("#checkbox-is-penerima-mp")[0].checked = (keluargaPensiun.isPenerimaMp == "1") ? true : false;
+        $("#checkbox-active")[0].checked = keluargaPensiun.active;
+        window.RESTFulMode = "PUT";
+    }
+
+    function saveForm() {
+        $.ajax({
+            url: "{{contextPath}}/api/keluarga-pensiun",
+            method: window.RESTFulMode,
+            data: formToJSON($("form#keluargaPensiunForm")[0].elements)
+        }).success(function (data) {
+            $('.kategori-penerima-modal').modal('hide');
+            if (data.status == "success") {
+                swal({title: "Berhasil", text: data.message, icon: "success", button: "OK"});
+            }
+            keluargaPensiunTable.ajax.reload();
+        }).error(function (data) {
+            if (data.message != undefined)
+                swal({title: "Gagal", text: data.message, icon: "error", button: "OK"});
+            else
+                swal({title: "Gagal", text: "Terjadi kegagalan.", icon: "error", button: "OK"});
+        });
+    }
+
+    $(document).ready(function () {
+        $('#btn-add').unbind().on('click', function () {
+            $("#id").val("");
+            $("#jenis-kelamin").val("");
+            $("#jenis-kelamin").trigger("change");
+            $("#nama-keluarga").val("");
+            $("#nip").val("");
+            $("#tgl-cerai").val("");
+            $("#tgl-lahir").val("");
+            $("#tgl-usia25").val("");
+            $("#tgl-menikah").val("");
+            $("#tgl-wafat").val("");
+            $("#tempat-lahir").val("");
+            $("#id-kategori-penerima").val("");
+            $("#id-kategori-penerima").trigger("change");
+            $("#checkbox-active")[0].checked = true;
+            $("#checkbox-is-penerima-mp")[0].checked = true;
+            var modal = $('.kategori-penerima-modal');
+            $('.checkbox-show-hide').hide();
+            modal.modal('show');
+            window.RESTFulMode = 'POST';
+        });
+
+        //select2 init
+        $('#id-kategori-penerima').select2({
+            ajax: {
+                url: '{{contextPath}}/data/kategori-penerima',
+                dataType: 'json',
+                delay: 250,
+                processResults: function (data) {
+                    return {
+                        results: data
+                    };
+                }
+            },
+            width: "50%",
+            placeholder: 'Pilih Kategori Penerima'
+        });
+        var gender = [];
+        {
+            {
+                #gender
+            }
+        }
+        gender.push({
+            id: "{{id}}",
+            text: "{{text}}"
+        });
+        {
+            {
+                /gender}}
+                $('#jenis-kelamin').select2({placeholder: "Pilih Jenis Kelamin", data: gender, width: "50%"});
+                $('#jenis-kelamin').select2('val', '');
+            }
+        );
+</script>
+{{/scripts}}
+
+{{/layout}}

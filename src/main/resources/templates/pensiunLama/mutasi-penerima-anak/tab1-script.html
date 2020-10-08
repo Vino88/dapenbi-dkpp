@@ -1,0 +1,52 @@
+<script type="text/javascript">
+    $(document).ready(function(){
+        var tab1ListMutasiLink = "{{contextPath}}/list-mutasi-otomatis-25mp80";
+
+        var dataTableTab2 = dkppDataTable($('#mutasiOtomTable'), '{{contextPath}}{{apiLink}}/list-mutasi-otomatis-25mp80', {
+            'columns': [
+                {"data" : "tglProses"},
+                {"data" : "periodeMutasi"},
+                {"data" : "namaKategoriMutasi"},
+                {"data" : "totalData"},
+                {"data" : "belumValidasi"},
+                {"data" : "sudahValidasi"},
+                {"data" : "batalValidasi"}
+            ],
+            'columnDefs': [
+                {
+                    targets: 0,
+                    render: function(data, type, row, meta){
+                        return fillDateField(row.tglProses);
+                    }
+                }
+            ],
+            "order": [[ 1, 'asc' ]]
+        });
+
+        $('#tab1BtnProses').on('click', function(){
+            $.ajax({
+                url: '{{contextPath}}{{apiLink}}/data-mutasi-otomatis-25mp80',
+                method: 'POST',
+                data: {
+                    parPeriodeMutasi: $('#periodeMutasiTab1').val(),
+                    _csrf: $('#_csrf').val()
+                },
+                success: function(data){
+                    if(data.status == "success") {
+
+                        swal({title: "Berhasil", text: data.message, icon: "success", button: "OK"});
+                    }
+                    $('#mutasiOtomTable').DataTable().ajax.reload();
+                    $('#dataTableTab2').DataTable().ajax.reload();
+                    $('#tabel-mutasi-anak-tab3').DataTable().ajax.reload();
+                },
+                error: function(data){
+                    console.log(data.responseText);
+                    data = JSON.parse(data.responseText);
+                    swal({title: "Gagal", text: data.message, icon: "error", button: "OK"});
+                }
+            });
+        });
+
+    });
+</script>

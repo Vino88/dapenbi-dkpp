@@ -1,0 +1,625 @@
+{{#layout}}
+
+{{#styles}}
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/datatables/media/css/dataTables.bootstrap4.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/googleapis/css/component.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/googleapis/css/googleapis.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/select2/css/select2.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css">
+<style>
+    #peserta_table {
+        min-width: 3350px;
+    }
+</style>
+{{/styles}}
+
+{{#title}}
+Master Peserta - DKPP
+{{/title}}
+
+
+<div class="card">
+    <div class="card-header">
+        <div class="col-md-12">
+            <div class="row pull-right">
+                <a class="btn btn-primary btn-icon btn-sm" id="btn-add"><i class="material-icons">add</i> Add</a>
+            </div>
+        </div>
+    </div>
+    <div class="card-block">
+        <table class="table table-bordered table-striped m-b-0 dataTable no-footer display" id="peserta_table"
+               role="grid">
+            <thead>
+            <tr role="row">
+                <th>
+                    NIP
+                </th>
+                <th>
+                    Nama Peserta
+                </th>
+                <th>
+                    Agama
+                </th>
+                <th>
+                    Golongan
+                </th>
+                <th>
+                    NPWP
+                </th>
+                <th>
+                    Gapok
+                </th>
+                <th>
+                    Tunjangan Veteran
+                </th>
+                <th>
+                    MK Veteran
+                </th>
+                <th>
+                    Jenis Kelamin
+                </th>
+                <th>
+                    Tanggal Lahir
+                </th>
+                <th>
+                    Tanggal Bekerja
+                </th>
+                <th>
+                    Tanggal Peserta
+                </th>
+                <th>
+                    Tanggal Henti
+                </th>
+                <th>
+                    Tanggal Wafat
+                </th>
+                <th>
+                    Alasan Henti
+                </th>
+                <th>
+                    Predikat Pemberhentian
+                </th>
+                <th>
+                    No SK BI
+                </th>
+                <th>
+                    Tanggal SK BI
+                </th>
+                <th>
+                    Alamat
+                </th>
+                <th>
+                    Status
+                </th>
+                <th>
+                    Actions
+                </th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+
+{{#modal}}
+<div class="modal fade peserta-modal" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title small bold" id="myModalLabel">Form Master Peserta</h4>
+            </div>
+            <div class="modal-body">
+                <form id="pesertaForm">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group row">
+                                <label for="nip" class="col-sm-3 bold">NIP</label>
+                                <div class="col-xs-9">
+                                    <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
+                                    <input class="form-control form-control-sm" type="text" name="nip" id="nip">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="namaPeserta" class="col-sm-3 bold">Nama Peserta</label>
+                                <div class="col-xs-9">
+                                    <input class="form-control form-control-sm" type="text" name="namaPeserta" id="namaPeserta">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="jenisKelamin" class="col-sm-3 bold">Jenis Kelamin</label>
+                                <div class="col-xs-9">
+                                    <select class="form-control form-control-sm" name="jenisKelamin" id="jenisKelamin"></select>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="tglLahir" class="col-sm-3 bold">Tanggal Lahir</label>
+                                <div class="col-xs-9">
+                                    <input placeholder="dd/mm/yyyy" class="form-control form-control-sm text-sm" type="text" name="tglLahir" id="tglLahir" data-provide="datepicker" data-date-format="dd/mm/yyyy">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="tglKerja" class="col-sm-3 bold">Tanggal Kerja</label>
+                                <div class="col-xs-9">
+                                    <input placeholder="dd/mm/yyyy" class="form-control form-control-sm text-sm" type="text" name="tglKerja" id="tglKerja" data-provide="datepicker" data-date-format="dd/mm/yyyy">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="tglPeserta" class="col-sm-3 bold">Tanggal Peserta</label>
+                                <div class="col-xs-9">
+                                    <input placeholder="dd/mm/yyyy" class="form-control form-control-sm text-sm" type="text" name="tglPeserta" id="tglPeserta" data-provide="datepicker" data-date-format="dd/mm/yyyy">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="tglHenti" class="col-sm-3 bold">Tanggal Henti</label>
+                                <div class="col-xs-9">
+                                    <input placeholder="dd/mm/yyyy" class="form-control form-control-sm text-sm" type="text" name="tglHenti" id="tglHenti" data-provide="datepicker" data-date-format="dd/mm/yyyy">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="golongan" class="col-sm-3 bold">Golongan</label>
+                                <div class="col-xs-9">
+                                    <select class="form-control form-control-sm" name="golongan" id="golongan"></select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="alamat" class="col-sm-3 bold">Alamat</label>
+                                <div class="col-xs-9">
+                                    <textarea class="form-control form-control-sm" type="text" name="alamat" id="alamat">
+                                    </textarea>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="checkbox-active" class="col-sm-3 bold">Active</label>
+                                <div class="col-xs-9">
+                                    <label class="custom-control custom-checkbox m-b-1">
+                                        <input type="checkbox" class="custom-control-input" name="active" id="checkbox-active">
+                                        <span class="custom-control-indicator"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group row">
+                                <label for="agama" class="col-sm-3 bold">Agama</label>
+                                <div class="col-xs-9">
+                                    <select class="form-control form-control-sm" name="agama" id="agama"></select>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="npwp" class="col-sm-3 bold">NPWP</label>
+                                <div class="col-xs-9">
+                                    <input class="form-control form-control-sm" type="text" name="npwp" id="npwp">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="gapok" class="col-sm-3 bold">Gapok</label>
+                                <div class="col-xs-9">
+                                    <input class="form-control form-control-sm" type="number" name="gapok" id="gapok">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="upahVeteran" class="col-sm-3 bold">Tunjangan Veteran</label>
+                                <div class="col-xs-9">
+                                    <input class="form-control form-control-sm" type="number" name="upahVeteran" id="upahVeteran">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="mkVeteran" class="col-sm-3 bold">MK Veteran</label>
+                                <div class="col-xs-9">
+                                    <input class="form-control form-control-sm" type="number" name="mkVeteran" id="mkVeteran">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="tglWafat" class="col-sm-3 bold">Tanggal Wafat</label>
+                                <div class="col-xs-9">
+                                    <input placeholder="dd/mm/yyyy" class="form-control form-control-sm text-sm" type="text" name="tglWafat" id="tglWafat" data-provide="datepicker" data-date-format="dd/mm/yyyy">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="alasanHenti" class="col-sm-3 bold">Alasan Henti</label>
+                                <div class="col-xs-9">
+                                    <select class="form-control form-control-sm" name="alasanHenti" id="alasanHenti"></select>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="predikatPemberhentian" class="col-sm-3 bold">Predikat Pemberhentian</label>
+                                <div class="col-xs-9">
+                                    <select class="form-control form-control-sm" name="predikatPemberhentian" id="predikatPemberhentian"></select>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="noSKBI" class="col-sm-3 bold">No SK BI</label>
+                                <div class="col-xs-9">
+                                    <input class="form-control form-control-sm" type="text" name="noSKBI" id="noSKBI">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="tglSKBI" class="col-sm-3 bold">Tanggal SK BI</label>
+                                <div class="col-xs-9">
+                                    <input placeholder="dd/mm/yyyy" class="form-control form-control-sm text-sm" type="text" name="tglSKBI" id="tglSKBI" data-provide="datepicker" data-date-format="dd/mm/yyyy">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="saveForm()">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+{{/modal}}
+
+{{#scripts}}
+<script src="{{contextPath}}/assets/vendor/datatables/media/js/jquery.dataTables.js"></script>
+<script src="{{contextPath}}/assets/vendor/datatables/media/js/dataTables.bootstrap4.js"></script>
+<script src="{{contextPath}}/assets/vendor/select2/js/select2.js"></script>
+<script src="{{contextPath}}/assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+<script src="{{contextPath}}/assets/vendor/sweetalert/sweetalert.min.js"></script>
+
+<script type="text/javascript">
+    let RESTFulMode = "";
+    const golonganSelectTemplate = "${namaGolongan}";
+    const agamaSelectTemplate = "${namaAgama}";
+    const alasanHentiSelectTemplate = "${keterangan}";
+    const predikatPemberhentianSelectTemplate = "${namaPemberhentian}";
+
+    var pesertaTable = dkppDataTable($('.dataTable'),
+        '{{contextPath}}/api/peserta', {
+            'columns': [
+                {
+                    "data": "nip",
+                    "width": "50px"
+                },
+                {
+                    "data": "namaPeserta",
+                    "width": "250px"
+                },
+                {
+                    "data": "agama"
+                },
+                {
+                    "data": "golongan",
+                    "width": "100px"
+                },
+                {
+                    "data": "npwp",
+                    "width": "100px"
+                },
+                {
+                    "data": "gapok",
+                    "width": "100px"
+                },
+                {
+                    "data": "upahVeteran",
+                    "width": "100px"
+                },
+                {
+                    "data": "mkVeteran",
+                    "width": "100px"
+                },
+                {
+                    "data": "jenisKelamin",
+                    "width": "70px"
+                },
+                {
+                    "data": "tglLahir",
+                    "width": "100px"
+                },
+                {
+                    "data": "tglKerja",
+                    "width": "100px"
+                },
+                {
+                    "data": "tglPeserta",
+                    "width": "100px"
+                },
+                {
+                    "data": "tglHenti",
+                    "width": "100px"
+                },
+                {
+                    "data": "tglWafat",
+                    "width": "100px"
+                },
+                {
+                    "data": "alasanHenti",
+                    "width": "150px"
+                },
+                {
+                    "data": "predikatPemberhentian"
+                },
+                {
+                    "data": "noSKBI",
+                    "width": "100px"
+                },
+                {
+                    "data": "tglSKBI",
+                    "width": "100px"
+                },
+                {
+                    "data": "alamat",
+                    "width": "200px"
+                },
+                {
+                    "data": "active",
+                    "ordering": false
+                },
+                {
+                    "data": "id"
+                }
+
+            ],
+            'columnDefs': [
+                {
+                    "targets": 8,
+                    "render": function(data, type, row, meta) {
+                        return data && genderText(data);
+                    }
+                },
+                {
+                    "targets": [9, 10, 11, 12, 13, 17],
+                    "render": function(data, type, row, meta) {
+                        return data && moment(data).format("DD/MM/YYYY");
+                    }
+                },
+                {
+                    "targets": 3,
+                    "render": function(data, type, row, meta) {
+                        return data && data.namaGolongan;
+                    }
+                },
+                {
+                    "targets": 2,
+                    "render": function(data, type, row, meta) {
+                        return data && data.namaAgama;
+                    }
+                },
+                {
+                    "targets": 14,
+                    "render": function(data, type, row, meta) {
+                        return data && data.keterangan;
+                    }
+                },
+                {
+                    "targets": 15,
+                    "render": function(data, type, row, meta) {
+                        return data && data.namaPemberhentian;
+                    }
+                },
+                {
+                    "targets": -2,
+                    "data": "active",
+                    "render": function(data, type, row, meta) {
+                        const text = (data ? '' : 'Non ') + 'Active';
+                        const tag = data ? 'success' : 'danger';
+
+                        return `<span class="tag tag-pill tag-${tag}">${text}</span>`;
+                    }
+                },
+                {
+                    "targets": -1,
+                    "data": "nip",
+                    "className": "action-box",
+                    "render": function(data, type, row, meta){
+                        let param = JSON.stringify(row);
+
+                        return "<a class='btn btn-info btn-sm btn-icon btn-edit' onclick='displayEditModal(" + param + ")'><i class='material-icons'>edit</i> Edit</a>";
+                    }
+                }
+            ]
+        });
+
+    function displayEditModal(param) {
+        // const peserta = pesertaTable.rows().data().filter((data) => {return data.nip === nip})[0];
+        console.log("data",param);
+        let peserta = param;
+        $("#nip").val(peserta.nip);
+        $("#namaPeserta").val(peserta.namaPeserta);
+        $("#jenisKelamin").select2('val', peserta.jenisKelamin);
+        $("#tglLahir").val(peserta.tglLahir ? moment(peserta.tglLahir).format('DD/MM/YYYY') : '');
+        $("#tglKerja").val(peserta.tglKerja ? moment(peserta.tglKerja).format('DD/MM/YYYY') : '');
+        $("#tglPeserta").val(peserta.tglPeserta ? moment(peserta.tglPeserta).format('DD/MM/YYYY') : '');
+        $("#tglHenti").val(peserta.tglHenti ? moment(peserta.tglHenti).format('DD/MM/YYYY') : '');
+        setSelectValue($("#golongan"), peserta.golongan, "id", golonganSelectTemplate);
+        setSelectValue($("#agama"), peserta.agama, "id", agamaSelectTemplate);
+        $("#npwp").val(peserta.npwp);
+        $("#gapok").val(peserta.gapok);
+        $("#upahVeteran").val(peserta.upahVeteran);
+        $("#mkVeteran").val(peserta.mkVeteran);
+        $("#tglWafat").val(peserta.tglWafat ? moment(peserta.tglWafat).format('DD/MM/YYYY') : '');
+        setSelectValue($("#alasanHenti"), peserta.alasanHenti, "id", alasanHentiSelectTemplate);
+        setSelectValue($("#predikatPemberhentian"), peserta.predikatPemberhentian, "id", predikatPemberhentianSelectTemplate);
+        $("#noSKBI").val(peserta.noSKBI);
+        $("#tglSKBI").val(peserta.tglSKBI ? moment(peserta.tglSKBI).format('DD/MM/YYYY') : '');
+        $("#alamat").val(peserta.alamat);
+        $("#checkbox-active").prop("checked", peserta.active);
+        $('.peserta-modal').modal('show');
+        RESTFulMode = "PUT";
+    }
+
+    function saveForm() {
+        $.ajax({
+            url: "{{contextPath}}/api/peserta",
+            method: RESTFulMode,
+            data: formToJSON($("form#pesertaForm")[0].elements)
+        }).success(function(data) {
+            $('.peserta-modal').modal('hide');
+            if (data.status == "success") {
+                swal({title: "Berhasil", text: data.message, icon: "success", button: "OK"});
+            }
+            pesertaTable.ajax.reload();
+        }).error(function(data){
+            if(data.message != undefined )
+                swal({title: "Gagal", text: data.message, icon: "error", button: "OK"});
+            else
+                swal({title: "Gagal", text: "Terjadi Kesalahan.", icon: "error", button: "OK"});
+        });
+    }
+
+    $(document).ready(function(){
+        $('#btn-add').unbind().on('click', function(){
+            var modal = $('.peserta-modal');
+            modal.modal('show');
+            RESTFulMode = 'POST';
+
+            $("#nip").val("");
+            $("#namaPeserta").val("");
+            $("#jenisKelamin").select2('val', "");
+            $("#tglLahir").val("");
+            $("#tglKerja").val("");
+            $("#tglPeserta").val("");
+            $("#tglHenti").val("");
+            $("#golongan").select2('val', "");
+            $("#agama").select2('val', "");
+            $("#npwp").val("");
+            $("#gapok").val("");
+            $("#upahVeteran").val("");
+            $("#mkVeteran").val("");
+            $("#tglWafat").val("");
+            $("#alasanHenti").select2('val', "");
+            $("#predikatPemberhentian").select2('val', "");
+            $("#noSKBI").val("");
+            $("#tglSKBI").val("");
+            $("#alamat").val("");
+            $("#checkbox-active").prop("checked", false);
+        });
+
+        //select2 init
+        $('#agama').select2({
+            ajax: {
+                url: '{{contextPath}}{{masterAgamaPathApi}}/dropdown',
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    return {
+                        searchParam: params.term, // search term
+                        valueColumn: "id",
+                        textColumn: agamaSelectTemplate,
+                        searchColumn: [
+                            "namaAgama"
+                        ]
+                    };
+                },
+                processResults: function(data){
+                    return {
+                        results: data
+                    };
+                }
+            },
+            width: "70%",
+            placeholder: 'Pilih Agama'
+        });
+
+        $('#golongan').select2({
+            ajax: {
+                url: '{{contextPath}}{{golonganPathApi}}/dropdown',
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    return {
+                        searchParam: params.term, // search term
+                        valueColumn: "id",
+                        textColumn: golonganSelectTemplate,
+                        searchColumn: [
+                            "namaGolongan"
+                        ]
+                    };
+                },
+                processResults: function(data){
+                    return {
+                        results: data
+                    };
+                }
+            },
+            cache: true,
+            width: "70%",
+            placeholder: 'Pilih Golongan'
+        });
+
+        $('#alasanHenti').select2({
+            ajax: {
+                url: '{{contextPath}}{{alasanHentiPathApi}}/dropdown',
+                dataType: 'json',
+                delay: 250,
+                cache: true,
+                data: function (params) {
+                    return {
+                        searchParam: params.term, // search term
+                        valueColumn: "id",
+                        textColumn: alasanHentiSelectTemplate,
+                        searchColumn: [
+                            "keterangan"
+                        ]
+                    };
+                },
+                processResults: function(data){
+                    return {
+                        results: data
+                    };
+                }
+            },
+            width: "70%",
+            placeholder: 'Pilih Alasan Henti'
+        });
+
+        $('#predikatPemberhentian').select2({
+            ajax: {
+                url: '{{contextPath}}{{predikatPemberhentianPathApi}}/dropdown',
+                dataType: 'json',
+                delay: 250,
+                cache: true,
+                data: function (params) {
+                    return {
+                        searchParam: params.term, // search term
+                        valueColumn: "id",
+                        textColumn: predikatPemberhentianSelectTemplate,
+                        searchColumn: [
+                            "namaPemberhentian"
+                        ]
+                    };
+                },
+                processResults: function(data){
+                    return {
+                        results: data
+                    };
+                }
+            },
+            width: "70%",
+            placeholder: 'Pilih Predikat Pemberhentian'
+        });
+
+        let gender = [];
+        {{#gender}}
+        gender.push({
+            id: "{{id}}",
+            text: "{{text}}"
+        });
+        {{/gender}}
+            $('#jenisKelamin').select2({placeholder: "Pilih Jenis Kelamin", data: gender, width: "70%"});
+            $('#jenisKelamin').select2('val', '');
+        });
+</script>
+{{/scripts}}
+
+{{/layout}}

@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RekapitulasiPembayaranManfaatPensiunBulananSeluruhCabang" pageWidth="612" pageHeight="792" whenNoDataType="AllSectionsNoDetail" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="94edd2ab-811a-4160-9740-9373727afcd0">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DKPP_INTERNAL2"/>
+	<parameter name="periode_pembayaran" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT 
+(select SUM(a.mpyd) FROM tbl_t_pembayaran_detail_mp a LEFT JOIN tbl_t_pembayaran_header b ON a.id_pembayaran = b.id_pembayaran
+WHERE periode_pembayaran = $P{periode_pembayaran} AND id_status_bayar = '1' AND id_kantor_bayar = '003') as jml_mpyd
+,(select COUNT(nip) FROM tbl_t_pembayaran_detail_mp a LEFT JOIN tbl_t_pembayaran_header b ON a.id_pembayaran = b.id_pembayaran
+WHERE periode_pembayaran = $P{periode_pembayaran} AND id_status_bayar = '1' AND id_kantor_bayar = '003') as jml_orang,
+
+(select SUM(a.mpyd) FROM tbl_t_pembayaran_detail_mp a LEFT JOIN tbl_t_pembayaran_header b ON a.id_pembayaran = b.id_pembayaran
+WHERE periode_pembayaran = $P{periode_pembayaran} AND id_status_bayar = '1' AND id_kantor_bayar NOT IN ('003')) as jml_mpyd1
+,(select COUNT(nip) FROM tbl_t_pembayaran_detail_mp a LEFT JOIN tbl_t_pembayaran_header b ON a.id_pembayaran = b.id_pembayaran
+WHERE periode_pembayaran = $P{periode_pembayaran} AND id_status_bayar = '1' AND id_kantor_bayar NOT IN ('003')) as jml_orang1
+
+,to_char(to_date(b.periode_pembayaran,'MMyyyy'),'Month yyyy','nls_date_language = INDONESIAN') as periode_pembayaran
+,to_char(SYSDATE, 'dd Month yyyy','nls_date_language = INDONESIAN') as sign_date
+FROM tbl_t_pembayaran_detail_mp a LEFT JOIN tbl_t_pembayaran_header b ON a.id_pembayaran = b.id_pembayaran
+WHERE periode_pembayaran = $P{periode_pembayaran} AND id_status_bayar = '1'
+GROUP BY periode_pembayaran
+]]>
+	</queryString>
+	<field name="JML_MPYD" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="JML_MPYD"/>
+	</field>
+	<field name="JML_ORANG" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="JML_ORANG"/>
+	</field>
+	<field name="JML_MPYD1" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="JML_MPYD1"/>
+	</field>
+	<field name="JML_ORANG1" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="JML_ORANG1"/>
+	</field>
+	<field name="PERIODE_PEMBAYARAN" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="PERIODE_PEMBAYARAN"/>
+	</field>
+	<field name="SIGN_DATE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="SIGN_DATE"/>
+	</field>
+	<variable name="Total_orang" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{JML_ORANG}.add($F{JML_ORANG1})]]></variableExpression>
+	</variable>
+	<variable name="Total_MPYD" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{JML_MPYD}.add($F{JML_MPYD1})]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="68" splitType="Stretch">
+			<staticText>
+				<reportElement x="-20" y="3" width="595" height="30" uuid="2becf824-1bd8-4f41-bdae-05ceb501bce3"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Rekapitulasi Pembayaran Manfaat Pensiun bulanan Seluruh Cabang]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="-20" y="32" width="595" height="30" uuid="70609310-dc37-427e-84ec-60417a32fce8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="html">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PERIODE_PEMBAYARAN} == null ? "-" : $F{PERIODE_PEMBAYARAN}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="86" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="0" width="80" height="30" backcolor="#FFFFFF" uuid="ba9a6e71-7180-4746-9f96-0ad7c65a99a1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="styled">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[No.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="80" y="0" width="150" height="30" backcolor="#FFFFFF" uuid="f5cae754-8c64-430a-9806-2f4e5e4e05ca"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="styled">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Cabang]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="230" y="0" width="140" height="30" backcolor="#FFFFFF" uuid="27f5f7be-c216-4a6d-b448-0ed869903877"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="styled">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Jumlah Orang]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="370" y="0" width="190" height="30" backcolor="#FFFFFF" uuid="f0e22064-6e8d-4926-8c4f-726100fb7a17"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle" markup="styled">
+					<font size="12"/>
+					<paragraph lineSpacing="AtLeast" rightIndent="5"/>
+				</textElement>
+				<text><![CDATA[Jumlah Manfaat Pensiun]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="80" y="31" width="150" height="19" uuid="42f00bbc-6e63-42bc-9116-a76739d7d7b6"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Kantor Pusat"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="31" width="80" height="19" uuid="ee2a6f90-e17e-4a86-8c9f-930d4af9f075"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["1."]]></textFieldExpression>
+			</textField>
+			<textField pattern="&apos;Rp. &apos;#,000.00#;¤(#,000.00#-)">
+				<reportElement x="370" y="31" width="190" height="19" uuid="da63e1b9-67f3-417a-a69b-48cfa29fd98d"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="12"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{JML_MPYD} == null ? "-" : $F{JML_MPYD}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="230" y="31" width="140" height="19" uuid="f7e991d9-ff59-4da8-8608-eb4652ec30b0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+					<paragraph lineSpacing="Fixed"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{JML_ORANG} == null ? "-" : $F{JML_ORANG}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="50" width="80" height="19" uuid="3a2eda34-0d7d-469f-9994-bbcfa0f39fe4"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["2."]]></textFieldExpression>
+			</textField>
+			<textField pattern="&apos;Rp. &apos;#,000.00#;¤(#,000.00#-)">
+				<reportElement x="370" y="50" width="190" height="19" uuid="36af9471-d665-462f-bf55-5e6eb2252fac"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="12"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{JML_MPYD1} == null ? "-" : $F{JML_MPYD1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="230" y="50" width="140" height="19" uuid="ffcad746-8bf7-474c-896d-d6ee818e5871"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{JML_ORANG1} == null ? "-" : $F{JML_ORANG1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="80" y="50" width="150" height="19" uuid="60f6e70c-9dff-4de8-a798-1d0510bd0cdc"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["KPWBI"]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<summary>
+		<band height="196" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="230" height="30" uuid="be2138a7-f8b5-44a2-975a-931261781984"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="230" y="0" width="140" height="30" uuid="4901e431-c396-4ec8-8699-5d7fb752bb5e"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{Total_orang} == null ? "0.00" : $V{Total_orang}]]></textFieldExpression>
+			</textField>
+			<textField pattern="&apos;Rp. &apos;#,000.00#;¤(#,000.00#-)">
+				<reportElement x="371" y="0" width="189" height="30" uuid="b619fda3-6a17-452f-8b04-8cd41d0ce28a"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{Total_MPYD} == null ? "0.00" : $V{Total_MPYD}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="302" y="62" width="250" height="22" uuid="40005c30-72bb-4566-9185-5dce77e711d3"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="html">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{SIGN_DATE} == null ? "Jakarta, " : "Jakarta, "+$F{SIGN_DATE}.trim()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="302" y="85" width="250" height="22" uuid="947e6aa2-762b-4158-9825-e79d5416f6c5"/>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Divisi Kepeesertaan dan Pelayanan Pensiun]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="302" y="160" width="110" height="20" uuid="30c7f029-1244-4dab-8498-502d38167b5c"/>
+				<textElement textAlignment="Center">
+					<font size="12" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Achmad Mufit"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="422" y="161" width="130" height="20" uuid="37779218-95c8-47cd-9fae-62e6d829ffab"/>
+				<textElement textAlignment="Center">
+					<font size="12" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Rosalind Permatasari"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="302" y="176" width="110" height="20" uuid="0ae9422b-a15c-4486-a4b5-d5eddb2bdea6"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Kepala Divisi"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="422" y="175" width="130" height="20" uuid="f1f05331-bc89-445e-afbd-670c7c499670"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Kepala Seksi"]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

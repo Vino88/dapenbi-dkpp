@@ -1,0 +1,196 @@
+{{#layout}}
+
+{{#styles}}
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/googleapis/css/component.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/googleapis/css/googleapis.css">
+{{/styles}}
+
+{{#title}}
+Master Kategori Pensiun - DKPP
+{{/title}}
+
+
+<div class="card">
+    <div class="card-header">
+        <div class="col-md-12">
+            <div class="row pull-right">
+                <a class="btn btn-success btn-icon" id="btn-add"><i class="material-icons">add</i> Add</a>
+            </div>
+        </div>
+    </div>
+    <div class="card-block">
+        <div class="table-responsive">
+            <table class="table table-bordered datatable dataTable no-footer" id="user_table"
+                   role="grid">
+                <thead>
+                <tr role="row">
+                    <th>
+                        ID
+                    </th>
+                    <th>
+                        Nama Kategori Pensiun
+                    </th>
+                    <th>
+                        Is Active
+                    </th>
+                    <th>
+                        Action
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{{#modal}}
+<div class="modal fade kategori-pensiun-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title small bold" id="myModalLabel">Form Status Bayar</h4>
+            </div>
+            <div class="modal-body">
+                <form id="kategoriPensiunForm">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="form-group row">
+                                <label for="kategori-pensiun" class="col-sm-3 bold">ID Kategori Pensiun</label>
+                                <div class="col-xs-9">
+                                    <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
+                                    <input class="form-control form-control-sm" type="text" name="id" id="id-kategori-pensiun">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="kategori-pensiun" class="col-sm-3 bold">Nama Kategori Pensiun</label>
+                                <div class="col-xs-9">
+                                    <input type="hidden" name="id" id="kategori-id">
+                                    <input class="form-control form-control-sm" type="text" name="namaKategoriPensiun" id="kategori-pensiun">
+                                </div>
+                            </div>
+
+                            <div class="form-group row checkbox-show-hide">
+                                <label for="kategori-active" class="col-sm-3 bold">Active</label>
+                                <div class="col-xs-9">
+                                    <label class="custom-control custom-checkbox m-b-1">
+                                        <input type="checkbox" class="custom-control-input" name="active" id="kategori-active">
+                                        <span class="custom-control-indicator"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="saveForm()">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+{{/modal}}
+
+{{#scripts}}
+<script src="{{contextPath}}/assets/vendor/datatables/media/js/jquery.dataTables.js"></script>
+<script src="{{contextPath}}/assets/vendor/datatables/media/js/dataTables.bootstrap4.js"></script>
+<script src="{{contextPath}}/assets/vendor/sweetalert/sweetalert.min.js"></script>
+
+
+<script type="text/javascript">
+    window.RESTFulMode = "";
+    function showPrintOptions(){
+        $('#printOptionsModal').modal('show');
+    }
+
+    $('#btn_ok_print').unbind().on('click', function(){
+        $('#printOptionsModal').modal('hide');
+        $('#pdfReportModal').modal('show');
+    });
+
+    $('#filter_form').hide();
+
+    var kategoriPensiunTable = dkppDataTable($('.datatable'), '{{contextPath}}/api/kategori-pensiun', {
+        'columns': [
+            { "data": "id" },
+            { "data": "namaKategoriPensiun" },
+            { "data": "active", "ordering": false }
+        ],
+        'columnDefs': [
+            {
+                "targets": 2,
+                "data": "active",
+                "render": function(data, type, row, meta){
+                    console.log(data);
+                    if(data == true)
+                        return '<span class="tag tag-pill tag-success">active</span>';
+                    else
+                        return '<span class="tag tag-pill tag-danger">not active</span>';
+                }
+            },
+            {
+                "render": function(data, type, row, meta){
+                    let param = JSON.stringify(row);
+                    return "<a class='btn btn-info btn-sm btn-icon btn-edit' onclick='displayEditModal(" + param + ")'><i class='material-icons'>edit</i> Edit</a>";
+                },
+
+                "targets": 3
+            }
+        ]
+    });
+
+    function displayEditModal(param) {
+        $('.checkbox-show-hide').show();
+        // const kategoriPensiun = kategoriPensiunTable.rows().data().filter((data) => {return data.id === id})[0];
+        const kategoriPensiun = param;
+        const kategoriPensiunForm = $("form#kategoriPensiunForm");
+        console.log('wkwkwkwkwkw');
+        console.log({iniData: kategoriPensiun.active});
+        console.log(kategoriPensiunForm);
+        $("#id-kategori-pensiun", kategoriPensiunForm).val(kategoriPensiun.id);
+        $("#kategori-pensiun", kategoriPensiunForm).val(kategoriPensiun.namaKategoriPensiun);
+        $("#kategori-active", kategoriPensiunForm)[0].checked = kategoriPensiun.active;
+
+        $('.kategori-pensiun-modal').modal('show');
+        RESTFulMode = "PUT";
+    }
+
+    function saveForm() {
+        $.ajax({
+            url: "{{contextPath}}/api/kategori-pensiun",
+            method: window.RESTFulMode,
+            data: formToJSON($("form#kategoriPensiunForm")[0].elements)
+        }).success(function(data) {
+            $('.kategori-pensiun-modal').modal('hide');
+            if (data.status = "success"){
+                swal({title:"Berhasil",text:data.message, icon:"success", button:"OK"});
+            }
+            kategoriPensiunTable.ajax.reload();
+        }).error(function (data) {
+            if (data.message = undefined)
+                swal({title: "Gagal", text: data.message, icon: "error", button: "OK"});
+            else
+                swal({title: "Gagal", text: "Terjadi kegagalan.", icon: "error", button: "OK"});
+        });
+    }
+
+    $(document).ready(function(){
+        $('#btn-add').unbind().on('click', function(){
+            $('.checkbox-show-hide').hide();
+            var modal = $('.kategori-pensiun-modal');
+            modal.modal('show');
+            RESTFulMode = 'POST';
+        });
+
+
+    });
+</script>
+{{/scripts}}
+
+{{/layout}}

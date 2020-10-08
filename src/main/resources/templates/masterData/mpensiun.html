@@ -1,0 +1,1156 @@
+{{#layout}}
+
+{{#styles}}
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/datatables/media/css/dataTables.bootstrap4.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/googleapis/css/component.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/googleapis/css/googleapis.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/select2/css/select2.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css">
+<style>
+    #pensiun_table {
+        min-width: 3350px;
+    }
+</style>
+{{/styles}}
+
+{{#title}}
+Master MPensiun - DKPP
+{{/title}}
+
+
+<div class="card">
+    <div class="card-header">
+        <div class="col-md-12">
+            <div class="row pull-right">
+                <!--<a class="btn btn-primary btn-icon btn-sm" id="btn-add"><i class="material-icons">add</i> Add</a>-->
+            </div>
+        </div>
+    </div>
+    <div class="card-block">
+        <table class="table table-bordered table-striped m-b-0 dataTable no-footer display" id="pensiun_table"
+               role="grid">
+            <thead>
+            <tr role="row">
+                <th>
+                    NIP
+                </th>
+                <th>
+                    Nama Peserta
+                </th>
+                <th>
+                    Jenis Kelamin
+                </th>
+                <th>
+                    Tanggal Lahir
+                </th>
+                <th>
+                    Tanggal Kerja
+                </th>
+                <th>
+                    Tanggal DPHT Peserta
+                </th>
+                <th>
+                    Tanggal Henti
+                </th>
+                <th>
+                    Tempat Meninggal Peserta
+                </th>
+                <th>
+                    Tanggal Meninggal Peserta
+                </th>
+                <th>
+                    Tempat Lahir Peserta
+                </th>
+                <th>
+                    Golongan/Pangkat
+                </th>
+                <th>
+                    Agama
+                </th>
+                <th>
+                    Nama Kantor Bayar
+                </th>
+                <th>
+                    Nama Predikat
+                </th>
+                <th>
+                    Keterangan Henti
+                </th>
+                <th>
+                    Tanggal SP BI
+                </th>
+                <th>
+                    No SP BI
+                </th>
+                <th>
+                    No SK BI
+                </th>
+                <th>
+                    Tanggal SK BI
+                </th>
+                <th>
+                    PHDP
+                </th>
+                <th>
+                    Tunjangan Veteran
+                </th>
+                <th>
+                    Nama MPS
+                </th>
+                <th>
+                    Kategori Pensiun
+                </th>
+                <th>
+                    Usia Bayar
+                </th>
+                <th>
+                    Status Bayar
+                </th>
+                <th>
+                    Tanggal Tunda Jatuh Tempo
+                </th>
+                <th>
+                    Tanggal Awal Bayar
+                </th>
+                <th>
+                    Tanggal Mp Bulan Ke 13
+                </th>
+                <th>
+                    Tanggal Henti bayar
+                </th>
+                <th>
+                    Nama Penerima MP
+                </th>
+                <th>
+                    Tanggal Lahir Penerima MP
+                </th>
+                <th>
+                    Jenis Kelamin Penerima MP
+                </th>
+
+                <th>
+                    Nama Kategori Penerima MP
+                </th>
+                <th>
+                    Tanggal SK DAPENBI
+                </th>
+                <th>
+                    No SK DAPENBI
+                </th>
+                <th>
+                    Alamat Dalam Negeri
+                </th>
+
+                <th>
+                    Nama Negara
+                </th>
+                <th>
+                    Nama Provinsi
+                </th>
+                <th>
+                    Nama Kota/Kab
+                </th>
+                <th>
+                    Nama Kecamatan
+                </th>
+                <th>
+                    Nama Kelurahan
+                </th>
+                <th>
+                    Alamat Lengkap
+                </th>
+                <th>
+                    Rt
+                </th>
+                <th>
+                    Rw
+                </th>
+                <th>
+                    Kode Pos
+                </th>
+                <th>
+                    Usia Saat Henti
+                </th>
+                <th>
+                    Usia Saat Henti Bulat
+                </th>
+                <th>
+                    Usia Penerima Bayar
+                </th>
+                <th>
+                    Usia Penerima Bayar Bulat
+                </th>
+                <th>
+                    Masa Kerja Tambahan
+                </th>
+                <th>
+                    Masa Kerja Tambahan Bulat
+                </th>
+                <th>
+                    Masa Kerja Veteran
+                </th>
+                <th>
+                    Masa Kerja Veteran Bulat
+                </th>
+                <th>
+                    Total Masa Kerja
+                </th>
+                <th>
+                    Total Masa Kerja Bulat
+                </th>
+                <th>
+                     Masa Kerja MP
+                </th>
+                <th>
+                    Nama Faktor FPR
+                </th>
+                <th>
+                    Nilai FPR
+                </th>
+                <th>
+                    Nama Faktor FS
+                </th>
+                <th>
+                    Nilai Faktor FS
+                </th>
+                <th>
+                    MPS 20 Persen
+                </th>
+                <th>
+                    MPS 10 Juta
+                </th>
+                <th>
+                    MPS 100 Persen
+                </th>
+                <th>
+                    MP Perbulan Rumus
+                </th>
+                <th>
+                    MP Perbulan 20 Persen
+                </th>
+                <th>
+                    MP Perbulan 10 Juta
+                </th>
+                <th>
+                    MPYD
+                </th>
+                <th>
+                    MP Bulan 13
+                </th>
+                <th>
+                    Total Masa Kerja ADJ
+                </th>
+                <th>
+                    Total Masa Kerja ADJ Bulat
+                </th>
+                <th>
+                    Nama Suskel
+                </th>
+                <th>
+                    Status Kawin Penerima MP
+                </th>
+                <th>
+                    No Hp
+                </th>
+                <th>
+                    No Telp
+                </th>
+                <th>
+                    Email
+                </th>
+                <th>
+                    Keterangan Otomatis
+                </th>
+                <th>
+                    Masa Kerja Henti
+                </th>
+                <th>
+                    Masa Kerja Henti Bulat
+                </th>
+                <th>
+                    Ref ID Mutasi
+                </th>
+                <th>
+                    Tanggal Usia 25t Penerima MP
+                </th>
+                <th>
+                    MPS 100 Persen Bulat
+                </th>
+                <th>
+                    Faktor FS
+                </th>
+                <th>
+                    Is Active
+                </th>
+                <th>
+                    Actions
+                </th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+
+{{#modal}}
+<div class="modal fade pensiun-modal" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form id="pensiunForm">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title small bold" id="myModalLabel">Form Master Pensiun</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group row">
+                                <label for="nip" class="col-sm-3 bold">NIP</label>
+                                <div class="col-xs-9">
+                                    <input type="hidden" name="id" id="id">
+                                    <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
+                                    <input class="form-control form-control-sm" type="text" name="nip" id="nip" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="namaPeserta" class="col-sm-3 bold">Nama Peserta</label>
+                                <div class="col-xs-9">
+                                    <input class="form-control form-control-sm" type="text" name="namaPeserta" id="namaPeserta" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="jenisKelamin" class="col-sm-3 bold">Jenis Kelamin</label>
+                                <div class="col-xs-9">
+                                    <select class="form-control form-control-sm" name="jenisKelamin" id="jenisKelamin" required></select>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="tglLahir" class="col-sm-3 bold">Tanggal Lahir</label>
+                                <div class="col-xs-9">
+                                    <input placeholder="dd/mm/yyyy" class="form-control form-control-sm text-sm" type="text" name="tglLahir" id="tglLahir" data-provide="datepicker" data-date-format="dd/mm/yyyy" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="tglKerja" class="col-sm-3 bold">Tanggal Kerja</label>
+                                <div class="col-xs-9">
+                                    <input placeholder="dd/mm/yyyy" class="form-control form-control-sm text-sm" type="text" name="tglKerja" id="tglKerja" data-provide="datepicker" data-date-format="dd/mm/yyyy" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="tglDPHTPeserta" class="col-sm-3 bold">Tanggal DPHT Peserta</label>
+                                <div class="col-xs-9">
+                                    <input placeholder="dd/mm/yyyy" class="form-control form-control-sm text-sm" type="text" name="tglDPHTPeserta" id="tglDPHTPeserta" data-provide="datepicker" data-date-format="dd/mm/yyyy" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="tglHenti" class="col-sm-3 bold">Tanggal Henti</label>
+                                <div class="col-xs-9">
+                                    <input placeholder="dd/mm/yyyy" class="form-control form-control-sm text-sm" type="text" name="tglHenti" id="tglHenti" data-provide="datepicker" data-date-format="dd/mm/yyyy" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="tempatMeninggal" class="col-sm-3 bold">Tempat Meninggal</label>
+                                <div class="col-xs-9">
+                                    <input class="form-control form-control-sm" type="text" name="tempatMeninggal" id="tempatMeninggal">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="tglMeninggal" class="col-sm-3 bold">Tanggal Meninggal</label>
+                                <div class="col-xs-9">
+                                    <input placeholder="dd/mm/yyyy" class="form-control form-control-sm text-sm" type="text" name="tglMeninggal" id="tglMeninggal" data-provide="datepicker" data-date-format="dd/mm/yyyy">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="golongan" class="col-sm-3 bold">Golongan</label>
+                                <div class="col-xs-9">
+                                    <select class="form-control form-control-sm" name="golongan" id="golongan" required></select>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="checkbox-active" class="col-sm-3 bold">Active</label>
+                                <div class="col-xs-9">
+                                    <label class="custom-control custom-checkbox m-b-1">
+                                        <input type="checkbox" class="custom-control-input" name="active" id="checkbox-active">
+                                        <span class="custom-control-indicator"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group row">
+                                <label for="agama" class="col-sm-3 bold">Agama</label>
+                                <div class="col-xs-9">
+                                    <select class="form-control form-control-sm" name="agama" id="agama" required></select>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="npwp" class="col-sm-3 bold">NPWP</label>
+                                <div class="col-xs-9">
+                                    <input class="form-control form-control-sm" type="text" name="npwp" id="npwp" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="gapok" class="col-sm-3 bold">Gapok</label>
+                                <div class="col-xs-9">
+                                    <input class="form-control form-control-sm" type="number" name="gapok" id="gapok" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="upahVeteran" class="col-sm-3 bold">Tunjangan Veteran</label>
+                                <div class="col-xs-9">
+                                    <input class="form-control form-control-sm" type="number" name="upahVeteran" id="upahVeteran" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="mkVeteran" class="col-sm-3 bold">MK Veteran</label>
+                                <div class="col-xs-9">
+                                    <input class="form-control form-control-sm" type="number" name="mkVeteran" id="mkVeteran" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="tglWafat" class="col-sm-3 bold">Tanggal Wafat</label>
+                                <div class="col-xs-9">
+                                    <input placeholder="dd/mm/yyyy" class="form-control form-control-sm text-sm" type="text" name="tglWafat" id="tglWafat" data-provide="datepicker" data-date-format="dd/mm/yyyy">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="alasanHenti" class="col-sm-3 bold">Alasan Henti</label>
+                                <div class="col-xs-9">
+                                    <select class="form-control form-control-sm" name="alasanHenti" id="alasanHenti" required></select>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="predikatPemberhentian" class="col-sm-3 bold">Predikat Pemberhentian</label>
+                                <div class="col-xs-9">
+                                    <select class="form-control form-control-sm" name="predikatPemberhentian" id="predikatPemberhentian" required></select>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="noSKBI" class="col-sm-3 bold">No SK BI</label>
+                                <div class="col-xs-9">
+                                    <input class="form-control form-control-sm" type="text" name="noSKBI" id="noSKBI" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="tglSKBI" class="col-sm-3 bold">Tanggal SK BI</label>
+                                <div class="col-xs-9">
+                                    <input placeholder="dd/mm/yyyy" class="form-control form-control-sm text-sm" type="text" name="tglSKBI" id="tglSKBI" data-provide="datepicker" data-date-format="dd/mm/yyyy" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="alamat" class="col-sm-3 bold">Alamat</label>
+                                <div class="col-xs-9">
+                                    <input class="form-control form-control-sm" type="text" name="alamat" id="alamat" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary btn-sm">Save</button>
+                </div>
+        </div>
+        </form>
+    </div>
+</div>
+{{/modal}}
+
+{{#scripts}}
+<script src="{{contextPath}}/assets/vendor/datatables/media/js/jquery.dataTables.js"></script>
+<script src="{{contextPath}}/assets/vendor/datatables/media/js/dataTables.bootstrap4.js"></script>
+<script src="{{contextPath}}/assets/vendor/select2/js/select2.js"></script>
+<script src="{{contextPath}}/assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+<script src="{{contextPath}}/assets/vendor/jquery-validation/dist/jquery.validate.js"></script>
+<script src="{{contextPath}}/assets/vendor/sweetalert/sweetalert.min.js"></script>
+
+<script type="text/javascript">
+
+    let RESTFulMode = "";
+    const golonganSelectTemplate = "${namaGolongan}/${pangkat}";
+    const agamaSelectTemplate = "${namaAgama}";
+    const alasanHentiSelectTemplate = "${keterangan}";
+    const predikatPemberhentianSelectTemplate = "${namaPemberhentian}";
+
+    let form = $("#pensiunForm").validate({
+        submitHandler: function() {
+            saveForm();
+        },
+        errorPlacement: function (error, element) {
+            let elem = $(element);
+            if (element.is("[aria-hidden]")) {
+                elem = element.siblings()
+            }
+            error.insertAfter(elem);
+        }
+    });
+
+    let pensiunTable = dkppDataTable($('.dataTable'),
+        '{{contextPath}}/api/mpensiun', {
+            'columns': [
+                {
+                    "data": "nip",
+                    "width": "50px"
+                    //0
+                },
+                {
+                    "data": "namaPeserta",
+                    "width": "250px"
+                    //1
+                },
+                {
+                    "data": "jenisKelaminPeserta",
+                    "width": "70px"
+                    //2
+                },
+                {
+                    "data": "tglLahirPeserta",
+                    "width": "100px"
+                    //3
+                },
+                {
+                    "data": "tglKerjaPeserta",
+                    "width": "100px"
+                    //4
+                },
+                {
+                    "data": "tglDhptPeserta",
+                    "width": "100px"
+                    //5
+                },
+                {
+                    "data": "tglHentiKerjaPeserta",
+                    "width": "100px"
+                    //6
+                },
+                {
+                    "data": "tempatMeninggalPeserta",
+                    "width": "100px"
+                    //7
+                },
+                {
+                    "data": "tglMeninggalPeserta",
+                    "width": "100px"
+                    //8
+                },
+                {
+                    "data": "tempatLahirPeserta",
+                    "width": "100px"
+                    //9
+                },
+                {
+                    "data": "golonganPangkat",
+                    "width": "100px"
+                    //10
+                },
+                {
+                    "data": "namaAgama",
+                    "width": "200px"
+                    //11
+                },
+                {
+                    "data": "namaKantorBayar",
+                    "width": "100px"
+                    //12
+                },
+                {
+                    "data": "namaPredikat",
+                    "width": "100px"
+                    //13
+                },
+                {
+                    "data": "keteranganHenti",
+                    "width": "100px"
+                    //14
+                },
+                {
+                    "data": "tglSpBi",
+                    "width": "100px"
+                    //15
+                },
+                {
+                    "data": "noSpBi",
+                    "width": "100px"
+                    //16
+                },
+                {
+                    "data": "noSkBi",
+                    "width": "150px"
+                    //17
+                },
+                {
+                    "data": "tglSkBi",
+                    "width": "100px"
+                    //18
+                },
+                {
+                    "data": "phdp",
+                    "width": "100px"
+                    //19
+                },
+                {
+                    "data": "upahVeteran",
+                    "width": "100px"
+                    //20
+                },
+                {
+                    "data": "namaMps",
+                    "width": "200px"
+                    //21
+                },
+                {
+                    "data": "namaKategoriPensiun",
+                    "width": "200px"
+                    //22
+                },
+                {
+                    "data": "namaUsiaBayar",
+                    "width": "100px"
+                    //23
+                },
+                {
+                    "data": "statusBayar",
+                    "width": "100px"
+                    //24
+                },
+                {
+                    "data": "tglTundaJatuhTempo",
+                    "width": "100px"
+                    //25
+                },
+                {
+                    "data": "tglAwalBayar",
+                    "width": "100px"
+                    //26
+                },
+                {
+                    "data": "tglMpBulananKe13",
+                    "width": "100px"
+                    //27
+                },
+                {
+                    "data": "tglHentiBayar",
+                    "width": "100px"
+                    //28
+                },
+                {
+                    "data": "namaPenerimaMp",
+                    "width": "200px"
+                    //29
+                },
+                {
+                    "data": "tglLahirPenerimaMp",
+                    "width": "100px"
+                    //30
+                },
+                {
+                    "data": "jenisKelaminPenerimaMp",
+                    "width": "100px"
+                    //31
+                },
+                {
+                    "data": "namaKategoriPenerimaMp",
+                    "width": "200px"
+                    //32
+                },
+                {
+                    "data": "tglSkDapenbi",
+                    "width": "100px"
+                    //33
+                },
+                {
+                    "data": "noSkDapenbi",
+                    "width": "100px"
+                    //34
+                },
+                {
+                    "data": "alamatIsDalamNegeri"
+                    //35
+                },
+                {
+                    "data": "namaNegara",
+                    "width": "200px"
+                    //36
+                },
+                {
+                    "data": "namaProvinsi",
+                    "width": "200px"
+                    //37
+                },
+                {
+                    "data": "namaKota",
+                    "width": "200px"
+                    //38
+                },
+                {
+                    "data": "namaKecamatan",
+                    "width": "200px"
+                    //39
+                },
+                {
+                    "data": "namaKelurahan",
+                    "width": "200px"
+                    //40
+                },
+                {
+                    "data": "alamatLengkap",
+                    "width": "200px"
+                    //41
+                },
+                {
+                    "data": "rt",
+                    "width": "100px"
+                    //42
+                },
+                {
+                    "data": "rw",
+                    "width": "100px"
+                    //43
+                },
+                {
+                    "data": "kodePos",
+                    "width": "100px"
+                    //44
+                },
+                {
+                    "data": "usiaSaatHenti",
+                    "width": "100px"
+                    //45
+                },
+                {
+                    "data": "usiaSaatHentiBulat",
+                    "width": "100px"
+                    //46
+                },
+                {
+                    "data": "usiaPenerimaBayar",
+                    "width": "100px"
+                    //47
+                },
+                {
+                    "data": "usiaPenerimaBayarBulat",
+                    "width": "100px"
+                    //48
+                },
+                {
+                    "data": "masaKerjaTambahan",
+                    "width": "100px"
+                    //49
+                },
+                {
+                    "data": "masaKerjaTambahanBulat",
+                    "width": "100px"
+                    //50
+                },
+                {
+                    "data": "masaKerjaVeteran",
+                    "width": "100px"
+                    //51
+                },
+                {
+                    "data": "masaKerjaVeteranBulat",
+                    "width": "100px"
+                    //52
+                },
+                {
+                    "data": "totalMasaKerja",
+                    "width": "100px"
+                    //53
+                },
+                {
+                    "data": "totalMasaKerjaBulat",
+                    "width": "100px"
+                    //54
+                },
+                {
+                    "data": "masaKerjaMp",
+                    "width": "100px"
+                    //55
+                },
+                {
+                    "data": "namaFaktorFpr",
+                    "width": "200px"
+                    //56
+                },
+                {
+                    "data": "nilaiFpr",
+                    "width": "100px"
+                    //57
+                },
+                {
+                    "data": "namaFaktorFs",
+                    "width": "200px"
+                    //58
+                },
+                {
+                    "data": "nilaiFs",
+                    "width": "100px"
+                    //59
+                },
+                {
+                    "data": "mps20persen",
+                    "width": "100px"
+                    //60
+                },
+                {
+                    "data": "mps10juta",
+                    "width": "100px"
+                    //61
+                },
+                {
+                    "data": "mps100persen",
+                    "width": "100px"
+                    //62
+                },
+                {
+                    "data": "mpPerbulanRumus",
+                    "width": "100px"
+                    //63
+                },
+                {
+                    "data": "mpPerbulan20persen",
+                    "width": "100px"
+                    //64
+                },
+                {
+                    "data": "mpPerbulan10juta",
+                    "width": "100px"
+                    //65
+                },
+                {
+                    "data": "mpyd",
+                    "width": "100px"
+                    //66
+                },
+                {
+                    "data": "mpBulan13",
+                    "width": "100px"
+                    //67
+                },
+                {
+                    "data": "totalMasaKerjaAdj",
+                    "width": "100px"
+                    //68
+                },
+                {
+                    "data": "totalMasaKerjaAdjBulat",
+                    "width": "100px"
+                    //69
+                },
+                {
+                    "data": "namaSuskel",
+                    "width": "100px"
+                    //70
+                },
+                {
+                    "data": "namaStatusKawinPenerimaMp",
+                    "width": "100px"
+                    //71
+                },
+                {
+                    "data": "noHp",
+                    "width": "100px"
+                    //72
+                },
+                {
+                    "data": "noTelp",
+                    "width": "100px"
+                    //73
+                },
+                {
+                    "data": "email",
+                    "width": "100px"
+                    //74
+                },
+                {
+                    "data": "keteranganOtomatis",
+                    "width": "100px"
+                    //75
+                },
+                {
+                    "data": "masaKerjaHenti",
+                    "width": "100px"
+                    //76
+                },
+                {
+                    "data": "masaKerjaHentiBulat",
+                    "width": "100px"
+                    //77
+                },
+                {
+                    "data": "refIdMutasi",
+                    "width": "100px"
+                    //78
+                },
+                {
+                    "data": "tglUsia25tPenerimaMp",
+                    "width": "100px"
+                    //79
+                },
+                {
+                    "data": "mps100persenBulat",
+                    "width": "100px"
+                    //80
+                },
+                {
+                    "data": "faktorFs",
+                    "width": "100px"
+                    //81
+                },
+                {
+                    "data": "active", "ordering": false
+                    //82
+                }
+
+            ],
+            'columnDefs': [
+                {
+                    "targets": [2,31],
+                    "render": function(data, type, row, meta) {
+                        return data && (data === "P" ? "Pria" : "Wanita");
+                    }
+                },
+                {
+                    "targets": [3, 4, 5, 6, 8, 15, 18,25,26,27,28,30,33,79],
+                    "render": function(data, type, row, meta) {
+                        return data && moment(data).format("DD/MM/YYYY");
+                    }
+                },
+
+                {
+                    "targets": 35,
+                    "data": "bukaPeriode",
+                    "render": function(data, type, row, meta){
+                        console.log(data);
+                        if(data == true)
+                            return '<span class="tag tag-pill tag-success">Ya</span>';
+                        else
+                            return '<span class="tag tag-pill tag-danger">Tidak</span>';
+                    }
+                },
+                {
+                    "targets": 82,
+                    "data": "active",
+                    "render": function(data, type, row, meta) {
+                        const text = (data ? '' : 'Non ') + 'Active';
+                        const tag = data ? 'success' : 'danger';
+
+                        return `<span class="tag tag-pill tag-${tag}">${text}</span>`;
+                    }
+                },
+                {
+                    "targets": 83,
+                    "data": "id",
+                    "className": "action-box",
+                    "render": function(data, type, row, meta){
+                        return "<a class='btn btn-info btn-sm btn-icon btn-edit' onclick='displayEditModal(\"" + row.nip + "\")'><i class='material-icons'>visibility</i> View</a>";
+                    }
+                }
+            ]
+        });
+
+
+
+    function displayEditModal(id) {
+        window.location.href = "{{contextPath}}/master-data/mpensiun/detail/" + id + "";
+
+    }
+
+    function saveForm() {
+        $.ajax({
+            url: "{{contextPath}}{{pensiunPathApi}}",
+            method: RESTFulMode,
+            data: formToJSON($("form#pensiunForm")[0].elements)
+        }).success((data) => {
+            $('.pensiun-modal').modal('hide');
+        swal({title:"Berhasil",text:data.message, icon:"success", button:"OK"});
+        pensiunTable.ajax.reload();
+    }).error(response => {
+            swal({title: "Gagal", text: response.message ? response.message : "Terjadi kesalahan.", icon: "error", button: "OK"});
+    });
+    }
+
+    $(document).ready(function() {
+        $(".pensiun-modal").on("hide.bs.modal", () => {
+            form.resetForm();
+    });
+
+        $('#btn-add').unbind().on('click', function(){
+            var modal = $('.pensiun-modal');
+            modal.modal('show');
+            RESTFulMode = 'POST';
+
+            $("#nip").val("");
+            $("#namaPeserta").val("");
+            $("#jenisKelamin").select2('val', "");
+            $("#tglLahir").val("");
+            $("#tglKerja").val("");
+            $("#tglDPHTPeserta").val("");
+            $("#tglHenti").val("");
+            $("#tempatMeninggal").val("");
+            $("#tglMeninggal").val("");
+            $("#golongan").select2('val', "");
+            $("#agama").select2('val', "");
+            $("#npwp").val("");
+            $("#gapok").val("");
+            $("#upahVeteran").val("");
+            $("#mkVeteran").val("");
+            $("#tglWafat").val("");
+            $("#alasanHenti").select2('val', "");
+            $("#predikatPemberhentian").select2('val', "");
+            $("#noSKBI").val("");
+            $("#tglSKBI").val("");
+            $("#alamat").val("");
+            $("#checkbox-active").prop("checked", false);
+        });
+
+        //select2 init
+        $('#agama').select2({
+            ajax: {
+                url: '{{contextPath}}{{masterAgamaPathApi}}/dropdown',
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    return {
+                        searchParam: params.term, // search term
+                        valueColumn: "id",
+                        textColumn: agamaSelectTemplate,
+                        searchColumn: [
+                            "namaAgama"
+                        ]
+                    };
+                },
+                processResults: function(data){
+                    return {
+                        results: data
+                    };
+                }
+            },
+            width: "70%",
+            placeholder: 'Pilih Agama'
+        });
+
+        $('#golongan').select2({
+            ajax: {
+                url: '{{contextPath}}{{golonganPathApi}}/dropdown',
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    return {
+                        searchParam: params.term, // search term
+                        valueColumn: "id",
+                        textColumn: golonganSelectTemplate,
+                        searchColumn: [
+                            "namaGolongan",
+                            "namaGolonganLama",
+                            "pangkat",
+                            "jabatan",
+                            "eselon"
+                        ]
+                    };
+                },
+                processResults: function(data){
+                    return {
+                        results: data
+                    };
+                }
+            },
+            cache: true,
+            width: "100%",
+            placeholder: 'Pilih Golongan'
+        });
+
+        $('#alasanHenti').select2({
+            ajax: {
+                url: '{{contextPath}}{{alasanHentiPathApi}}/dropdown',
+                dataType: 'json',
+                delay: 250,
+                cache: true,
+                data: function (params) {
+                    return {
+                        searchParam: params.term, // search term
+                        valueColumn: "id",
+                        textColumn: alasanHentiSelectTemplate,
+                        searchColumn: [
+                            "keterangan"
+                        ]
+                    };
+                },
+                processResults: function(data){
+                    return {
+                        results: data
+                    };
+                }
+            },
+            width: "70%",
+            placeholder: 'Pilih Alasan Henti'
+        });
+
+        $('#predikatPemberhentian').select2({
+            ajax: {
+                url: '{{contextPath}}{{predikatPemberhentianPathApi}}/dropdown',
+                dataType: 'json',
+                delay: 250,
+                cache: true,
+                data: function (params) {
+                    return {
+                        searchParam: params.term, // search term
+                        valueColumn: "id",
+                        textColumn: predikatPemberhentianSelectTemplate,
+                        searchColumn: [
+                            "namaPemberhentian"
+                        ]
+                    };
+                },
+                processResults: function(data){
+                    return {
+                        results: data
+                    };
+                }
+            },
+            width: "70%",
+            placeholder: 'Pilih Predikat Pemberhentian',
+            onChange: function() {
+                this.valid();
+            }
+        });
+
+        let gender = [];
+        {{#gender}}
+        gender.push({
+            id: "{{id}}",
+            text: "{{text}}"
+        });
+        {{/gender}}
+            $('#jenisKelamin').select2({placeholder: "Pilih Jenis Kelamin", data: gender, width: "70%"});
+            $('#jenisKelamin').select2('val', '');
+
+            $("select[class*=select2]").on('change', function() {
+                $(this).valid()
+            });
+        });
+</script>
+{{/scripts}}
+
+{{/layout}}

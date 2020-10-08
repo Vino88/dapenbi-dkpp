@@ -1,0 +1,445 @@
+{{#layout}}
+
+{{#styles}}
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/datatables/media/css/dataTables.bootstrap4.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/googleapis/css/component.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/googleapis/css/googleapis.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/select2/css/select2.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css">
+<style>
+    #mutasi_table {
+        min-width: 2100px;
+    }
+</style>
+{{/styles}}
+
+{{#title}}
+Pensiun Lama - Mutasi Penerima MP Janda Duda Menikah Kembali
+{{/title}}
+
+<div class="card">
+    <div class="card-block">
+        <div class="col-md-12">
+            {{#role}}
+            <a class='btn btn-primary btn-sm btn-icon btn-add' href='{{contextPath}}{{new_mutasi_path}}' ><i class='material-icons'>add</i> Tambah Mutasi</a>
+            <hr />
+            {{/role}}
+            <div class="row">
+                <label for="example-text-input" class="col-sm-1">Periode Mutasi</label>
+                <div class="col-xs-2">
+                    <input class="form-control form-control-sm" disabled type="text" value="{{periodeMutasi}}" id="example-text-input">
+                </div></div>
+        </div>
+
+        <table class="table table-bordered table-striped m-b-0 dataTable no-footer display" id="mutasi_table"
+               role="grid">
+            <thead>
+            <tr role="row">
+                <th>
+                    Tanggal Mutasi
+                </th>
+                <th>
+                    Periode Mutasi
+                </th>
+                <th>
+                    NIP Peserta
+                </th>
+                <th>
+                    Nama Peserta
+                </th>
+                <th>
+                    Jenis Kelamin
+                </th>
+                <th>
+                    Golongan/Jabatan/Satker
+                </th>
+                <th>
+                    Nama Penerima MP Lama
+                </th>
+                <th>
+                    Jenis Penerima MP Lama
+                </th>
+                <th>
+                    Tgl Menikah Kembali Penerima MP Lama
+                </th>
+                <th>
+                    Tgl Lapor
+                </th>
+                <th>
+                    Nama Penerima MP Baru
+                </th>
+                <th>
+                    Jenis Penerima MP Baru
+                </th>
+                <th>
+                    Status Dibayar
+                </th>
+                <th>
+                    No. HER Registrasi
+                </th>
+                <th>
+                    Status Validasi
+                </th>
+                <th>
+                    Action
+                </th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+
+    <iframe style="display: none" id="report" name="report" src=""></iframe>
+</div>
+{{#modal}}
+<div class="modal fade report-modal" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title small bold" id="myModalLabel">Form Cetak Laporan Mutasi Pensiun Janda / Duda Menikah Lagi</h4>
+            </div>
+            <div class="modal-body">
+                <form id="pesertaForm">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <div class="radio" id="radio_formulir">
+                                    <label>
+                                        <input checked="" name="optradio" type="radio" value="formulir_entry_mutasi"> Formulir Entry Mutasi
+                                    </label>
+                                </div>
+                                <div class="radio" id="radio_catatan">
+                                    <label>
+                                        <input name="optradio" type="radio"  value="catatan_perhitungan_manfaat_pensiun"> Catatan Perhitungan Manfaat Pensiun
+                                        </input>
+                                    </label>
+                                </div>
+                                <div class="radio_kartu">
+                                    <label>
+                                        <input name="optradio" type="radio"  value="kartu"> Kartu Peserta Manfaat Pensiun
+                                        </input>
+                                    </label>
+                                </div>
+                                <div class="radio" id="surat_keputusan">
+                                    <label>
+                                        <input name="optradio" type="radio" value="sk"> Surat Keputusan Hak Atas Manfaat Pensiun
+                                        </input>
+                                    </label>
+                                </div>
+                                <div class="radio" id="surat_pemberitahuan">
+                                    <label>
+                                        <input name="optradio" type="radio" value="surat_pemberitahuan"> Surat Pemberitahuan Hak Atas Manfaat Pensiun untuk Penerima MP Janda/ Duda/ Anak Langsung
+                                        </input>
+                                    </label>
+                                </div>
+                                <div class="radio" id="surat_pengantar">
+                                    <label>
+                                        <input name="optradio" type="radio" value="surat_pengantar_mp"> Surat Pengantar Hak Atas Manfaat Pensiun Janda / Duda / Anak
+                                        </input>
+                                    </label>
+                                </div>
+                                <div class="radio" id="surat_perubahan_domisili">
+                                    <label>
+                                        <input name="optradio" type="radio" value="surat_perubahan_domisili_penerima_mp"> Surat Perubahan Domisili Penerima MP
+                                        </input>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="cetakReport()">Cetak</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade invisible-modal" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title small bold" id="myModalLabel">Form Cetak Laporan Mutasi Pensiun Janda / Duda Menikah Lagi</h4>
+            </div>
+            <div class="modal-body">
+                <form id="infoForm">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <div class="radio">
+                                    <label>
+                                        <input checked="" name="optradio" type="radio" value="formulir_entry_mutasi"> Formulir Entry Mutasi
+                                    </label>
+                                </div>
+                                <div class="radio">
+                                    <label>
+                                        <input name="optradio" type="radio"  value="catatan_perhitungan_manfaat_pensiun"> Catatan Perhitungan Manfaat Pensiun
+                                        </input>
+                                    </label>
+                                </div>
+                                <div class="radio_kartu">
+                                    <label>
+                                        <input name="optradio" type="radio"  value="kartu"> Kartu Peserta Manfaat Pensiun
+                                        </input>
+                                    </label>
+                                </div>
+                                <div class="radio" id="surat_keputusan">
+                                    <label>
+                                        <input name="optradio" type="radio" value="sk"> Surat Keputusan Hak Atas Manfaat Pensiun
+                                        </input>
+                                    </label>
+                                </div>
+                                <div class="radio">
+                                    <label>
+                                        <input name="optradio" type="radio" value="surat_pemberitahuan"> Surat Pemberitahuan Hak Atas Manfaat Pensiun untuk Penerima MP Janda/ Duda/ Anak Langsung
+                                        </input>
+                                    </label>
+                                </div>
+                                <div class="radio">
+                                    <label>
+                                        <input name="optradio" type="radio" value="surat_pengantar_mp"> Surat Pengantar Hak Atas Manfaat Pensiun Janda / Duda / Anak
+                                        </input>
+                                    </label>
+                                </div>
+                                <div class="radio">
+                                    <label>
+                                        <input name="optradio" type="radio" value="surat_perubahan_domisili_penerima_mp"> Surat Perubahan Domisili Penerima MP
+                                        </input>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary btn-sm" id="cetakInfo" onclick="cetakInfo()">Cetak</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade pop-modal" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title small bold" id="myModalLabel">Form Cetak Laporan Janda Duda Menikah Lagi</h4>
+            </div>
+            <div class="modal-body">
+                <form id="popUpForm">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <h2>Status Pensiun Hapus / Berhenti !</h2>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{{/modal}}
+{{#scripts}}
+<script src="{{contextPath}}/assets/vendor/datatables/media/js/jquery.dataTables.js"></script>
+<script src="{{contextPath}}/assets/vendor/datatables/media/js/dataTables.bootstrap4.js"></script>
+<script src="{{contextPath}}/assets/vendor/select2/js/select2.js"></script>
+<script src="{{contextPath}}/assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+<script src="{{contextPath}}/assets/vendor/jquery-validation/dist/jquery.validate.js"></script>
+<script src="{{contextPath}}/assets/vendor/numeral/numeral.min.js"></script>
+<script src="{{contextPath}}/assets/vendor/sweetalert/sweetalert.min.js"></script>
+
+<script type="text/javascript">
+    window.DkppReportParam = {};
+    let mutasiTable = dkppDataTable($('#mutasi_table'),
+        '{{contextPath}}{{mutasi_path_api}}', {
+            'columns': [
+                {
+                    "data": "tglMutasi",
+                    "width": "50px"
+                },
+                {
+                    "data": "periodeMutasi",
+                    "width": "50px"
+                },
+                {
+                    "data": "nip",
+                    "width": "50px",
+                    searchable: true
+                },
+                {
+                    "data": "namaPeserta"
+                },
+                {
+                    "data": "jenisKelaminPeserta",
+                    "width": "70px"
+                },
+                {
+                    "data": "golonganPangkat",
+                    "width": "100px"
+                },
+                {
+                    "data": "namaPenerimaMp"
+                },
+                {
+                    "data": "namaKategoriPenerimaMp",
+                    "width": "100px"
+                },
+                {
+                    "data": "tglMenikahlagiPenerimaMp",
+                    "width": "100px"
+                },
+                {
+                    "data": "tglInfNikahPenerimampLama",
+                    "width": "100px"
+                },
+                {
+                    "data": "namaPenerimaMpBaru"
+                },
+                {
+                    "data": "namaKategoriPenerimaMpBaru",
+                    "width": "100px"
+                },
+                {
+                    "data" : "statusBayar"
+                },
+                {
+                    "data" : "nomorHer"
+                },
+                {
+                    "data": "namaValidasi",
+                    "width": "100px"
+                },
+                {
+                    "data": "nip",
+                    "width": "50px"
+                }
+            ],
+            'columnDefs': [
+                {
+                    "targets": 4,
+                    "render": function(data, type, row, meta) {
+                        return data && genderText(data);
+                    }
+                },
+                {
+                    "targets": [0, 8, 9],
+                    "render": function(data, type, row, meta) {
+                        return data && moment(data).format("DD/MM/YYYY");
+                    }
+                },
+                {
+                    "targets": 14,
+                    "render": function(data, type, row, meta) {
+                        var result="";
+                        if (data == "Sudah Validasi")
+                        {
+                            result = '<span class="tag tag-pill tag-success">' + data + '</span>';
+                        }
+                        else if (data == "Batal Validasi")
+                        {
+                            result = '<span class="tag tag-pill tag-danger">' + data + '</span>';
+                        }
+                        else if (data == "Belum Validasi")
+                        {
+                            result = '<span class="tag tag-pill tag-info">' + data + '</span>';
+                        }
+                        else if (data == "Batal Koreksi")
+                        {
+                            result = '<span class="tag tag-pill tag-warning">' + data + '</span>';
+                        }
+                        else if (data == "Batal Data")
+                        {
+                            result = '<span class="tag tag-pill tag-danger">' + data + '</span>';
+                        }
+                        return result;
+                    }
+                },
+                {
+                    "targets": 15,
+                    "className": "action-box",
+                    "render": function(data, type, row, meta){
+                     let htmlTag = `<a class='btn btn-info btn-sm btn-icon btn-edit' href='{{contextPath}}${objectToText(row, "{{entry_mutasi_path}}")}' ><i class='material-icons'>edit</i> Process</a>`;
+                      if(row.namaValidasi === "Sudah Validasi" && row.statusBayar === "Dibayar" || row.namaValidasi === "Batal Data"){
+                          param = JSON.stringify(
+                              {
+                                  nip: row.nip,
+                                  periodeMutasi: row.periodeMutasi,
+                                  idKategoriMutasi: row.idKategoriMutasi,
+                                  idKategoriPenerimaMpBaru: row.idKategoriPenerimaMpBaru,
+                                  idMutasiPensiun : row.idMutasiPensiun
+                              }
+                          );
+                          htmlTag = `<a class='btn btn-info btn-sm btn-icon btn-edit' href='{{contextPath}}${objectToText(row, "{{entry_mutasi_path}}")}' ><i class='material-icons'>search</i> View</a>`+`<br><a class=\'btn btn-info btn-sm btn-icon btn-printer\' onclick=\'displayCetak(` + param + `);\'><i class=\'material-icons\'>printer</i> Cetak</a>`;
+
+                      }else if (row.namaValidasi === "Sudah Validasi" && row.statusBayar === "Berhenti" || row.namaValidasi === "Batal Data") {
+                          htmlTag = `<a class='btn btn-info btn-sm btn-icon btn-edit' href='{{contextPath}}${objectToText(row, "{{entry_mutasi_path}}")}' ><i class='material-icons'>search</i> View</a>`+`<br><a class=\'btn btn-info btn-sm btn-icon btn-printer\' onclick=\'displayInfo();\'><i class=\'material-icons\'>printer</i> Cetak</a>`;
+                      }else {
+                          htmlTag = `<a class='btn btn-info btn-sm btn-icon btn-edit' href='{{contextPath}}${objectToText(row, "{{entry_mutasi_path}}")}' ><i class='material-icons'>edit</i> Process</a>`;
+                        }
+                      return htmlTag;
+                    }
+                }
+            ],
+            "order": [[ 1, 'asc' ]]
+        });
+
+    $(document).ready(function() {
+
+    });
+
+    function displayInfo() {
+        $('.invisible-modal').modal('show');
+    }
+
+    $('#cetakInfo').click(function() {
+        cetakInfo();
+    });
+
+    function cetakInfo() {
+        swal({title: "Warning", text: "Status Pembayaran Sudah Hapus", icon: "warning", button: "OK"});
+        $('.invisible-modal').modal('hide');
+    }
+
+    function displayCetak(param) {
+        window.DkppReportParam = param;
+        $('.report-modal').modal('show');
+        console.log(param);
+    }
+
+    function cetakReport() {
+        let radioReport = $("input[name='optradio']:checked").val();
+        data = {
+            tipeReport: radioReport,
+            nip: window.DkppReportParam.nip,
+            idKategoriMutasi: window.DkppReportParam.idKategoriMutasi,
+            periodeMutasi: window.DkppReportParam.periodeMutasi,
+            idKategoriPenerimaMpBaru: window.DkppReportParam.idKategoriPenerimaMpBaru,
+            idMutasiPensiun: window.DkppReportParam.idMutasiPensiun
+
+        };
+        const param = $.param(data);
+        const reportFrame = $("#report");
+        const res = encodeURI(('src', `{{contextPath}}/api/mutasi-penerima-menikah/report?${param}`));
+        window.open(res, '_blank');
+    }
+</script>
+{{/scripts}}
+
+{{/layout}}

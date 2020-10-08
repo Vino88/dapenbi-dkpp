@@ -1,0 +1,1081 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RekapMutasiBulanan_A4" pageWidth="612" pageHeight="792" whenNoDataType="AllSectionsNoDetail" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4db2ed62-893f-41da-b57d-f1cdfd1cf2e4">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DKPP_LOCAL"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="268"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="726"/>
+	<parameter name="periode_mutasi" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[select
+	(select sum(d.pembulatan) from tbl_t_pembayaran_detail_mp d inner join tbl_t_pembayaran_header h on h.id_pembayaran = d.id_pembayaran where h.periode_pembayaran = to_char(add_months(TRUNC(to_date($P{periode_mutasi},'MMYYYY'),'MM'), -1),'MMYYYY')) as bln_lalu_bulat
+	,(select sum(d.pembulatan) from tbl_t_pembayaran_detail_mp d inner join tbl_t_pembayaran_header h on h.id_pembayaran = d.id_pembayaran where h.periode_pembayaran = $P{periode_mutasi} AND id_status_bayar = '1' ) as bln_skrg_bulat
+   ,(select sum(dmp.mp_bulanan)+SUM(dmp.kurang_bayar_mp_bulanan)+SUM(dmp.pembulatan) from tbl_t_pembayaran_detail_mp dmp inner join tbl_t_pembayaran_header h on h.id_pembayaran = dmp.id_pembayaran where h.periode_pembayaran = to_char(add_months(TRUNC(to_date($P{periode_mutasi},'MMYYYY'),'MM'), -1),'MMYYYY')) as mp_bulan_lalu
+    ,(select COUNT(*) from tbl_t_pembayaran_detail_mp d inner join tbl_t_pembayaran_header h on h.id_pembayaran = d.id_pembayaran where h.periode_pembayaran = $P{periode_mutasi} AND id_status_bayar = '1') as jml_mutasi_bulan_skrg
+    ,(select COUNT(*) from tbl_t_mutasi_pensiun a where id_kategori_mutasi = '01' and a.periode_mutasi = $P{periode_mutasi} AND id_status_bayar = '1') as jml_mutasi_pensiun_baru
+    ,(select COUNT(*) from tbl_t_mutasi_pensiun a where id_kategori_mutasi IN('08','09','10') AND periode_mutasi = $P{periode_mutasi} AND id_status_bayar = '1') as jml_mutasi_pensiun_tunda
+    ,(select COUNT(*) from tbl_t_mutasi_pensiun a where id_kategori_mutasi IN ('02') AND periode_mutasi = $P{periode_mutasi} AND id_status_bayar = '6') as jml_mutasi_meninggal_dunia
+    ,(select COUNT(*) from tbl_t_mutasi_pensiun a where id_kategori_mutasi IN ('12') AND periode_mutasi = $P{periode_mutasi} AND id_status_bayar = '1') as jml_mutasi_mps100
+    ,(select COUNT(*) from tbl_t_mutasi_pensiun a where id_kategori_mutasi IN('07','15') AND periode_mutasi = $P{periode_mutasi} AND id_status_bayar = '6') as jml_janda_duda_anak
+    ,(select COUNT(*) from tbl_t_pembayaran_detail_mp d inner join tbl_t_pembayaran_header h on h.id_pembayaran = d.id_pembayaran where h.periode_pembayaran = to_char(add_months(TRUNC(to_date($P{periode_mutasi},'MMYYYY'),'MM'), -1),'MMYYYY')) as jml_penerima_bulan_lalu
+    ,(select COUNT(*) from tbl_t_mutasi_pensiun a where id_kategori_pensiun = 'PT' AND a.periode_mutasi = to_char(add_months(TRUNC(to_date($P{periode_mutasi},'MMYYYY'),'MM'), -1),'MMYYYY')) as jml_pensiun_tunda_lalu
+    ,(select COUNT(*) from tbl_t_mutasi_pensiun a where id_kategori_pensiun = 'PT' AND id_status_bayar = '1' AND a.periode_mutasi = $P{periode_mutasi}) as jml_pensiun_tunda_dibayar
+   
+     ,(select sum(dmp.mp_bulanan) from tbl_t_pembayaran_detail_mp dmp inner join tbl_t_pembayaran_header h on h.id_pembayaran = dmp.id_pembayaran where h.periode_pembayaran = $P{periode_mutasi}) as jml_mp_bln_skrg
+    ,(select SUM(a.mpyd_lama)from tbl_t_mutasi_pensiun a where id_kategori_mutasi = '01' AND periode_mutasi = $P{periode_mutasi}) as jml_mpyd_pensiun_baru
+    ,(select sum(a.mp_perbulan_rumus_lama) from tbl_t_mutasi_pensiun a where id_kategori_mutasi IN('08','09','10') AND periode_mutasi = $P{periode_mutasi}) as jml_mpyd_pensiun_tunda
+    ,(select  sum(rapel_mpyd_kurang)- sum(nvl(kurang_bayar_mps20persen,0))- sum(nvl(kurang_bayar_mps10juta,0)) as kurang_bayar from  tbl_t_mutasi_pensiun where   id_kategori_mutasi  = '13' AND periode_mutasi = $P{periode_mutasi}) as jml_rapel_phdp
+    ,(select sum(a.mpyd_baru) - sum(a.mpyd_lama) from tbl_t_mutasi_pensiun a where a.id_kategori_mutasi IN('13') AND periode_mutasi = $P{periode_mutasi}) as jml_mpyd_merit
+    ,(select sum(a.mp_perbulan_rumus_lama) from tbl_t_mutasi_pensiun a where a.id_kategori_mutasi IN('02') AND periode_mutasi = $P{periode_mutasi} AND id_status_bayar = '6') as jml_mpyd_mutasi_hapus
+    ,(select sum(a.mpyd_lama) from tbl_t_mutasi_pensiun a where a.id_kategori_mutasi IN('12') AND periode_mutasi = $P{periode_mutasi} AND a.id_validasi = '2' ) as jml_mpyd_mps100
+    ,(select sum(a.mp_perbulan_rumus_lama) from tbl_t_mutasi_pensiun a where a.id_kategori_mutasi IN('07','15') AND periode_mutasi = $P{periode_mutasi} AND id_status_bayar = '6' AND id_validasi = '2') as jml_mpyd_janda_duda_anak
+    ,(select sum(mp_perbulan_rumus_lama) - sum(a.mp_bulan13) from tbl_t_mutasi_pensiun a where id_kategori_mutasi = '11' AND periode_mutasi = $P{periode_mutasi} and id_status_bayar = '1' and id_validasi = '2') as jml_mpyd_mp_bulan13
+    ,(select sum(a.lebih_bayar_mpyd) from tbl_t_mutasi_pensiun a where a.id_kategori_mutasi IN('21') AND periode_mutasi = $P{periode_mutasi}) as jml_kelebihan_mp_bulan_skrg
+    ,(select sum(fp.mp_perbulan_rumus) from tbl_t_mutasi_perubahan_fpr_fs fp where fp.periode_mutasi = $P{periode_mutasi}) as jml_fpr_fs
+    ,(select sum(up.MP_BULANAN_RAPEL) from tbl_t_mutasi_kenaikan_mp up where up.periode_mutasi = to_char(add_months(TRUNC(to_date($P{periode_mutasi},'MMYYYY'),'MM'), -1),'MMYYYY')) as jml_up_bln_lalu
+     ,to_char(to_date(a.periode_mutasi,'MM YYYY','nls_date_language = INDONESIAN'),'Month YYYY','nls_date_language = INDONESIAN') as periode_mutasi
+	,to_char(SYSDATE, 'dd Month yyyy','nls_date_language = INDONESIAN') as sign_date
+	,(SELECT sum(k.kurang_bayar_mp) FROM tbl_t_kurang_bayar_detail k WHERE k.periode_mutasi = $P{periode_mutasi} AND k.id_alasan_kuranglebih_bayar = '4') as keterlambatan_data
+	,(select sum(rapel_mpyd_kurang)- sum(nvl(kurang_bayar_mps20persen,0))- sum(nvl(kurang_bayar_mps10juta,0)) as kurang_bayar from tbl_t_mutasi_pensiun a where id_kategori_mutasi = '13' AND a.periode_mutasi = to_char(add_months(TRUNC(to_date($P{periode_mutasi},'MMYYYY'),'MM'), -1),'MMYYYY')) as jml_rapel_phdp_bln_lalu
+from tbl_t_mutasi_pensiun a where periode_mutasi = $P{periode_mutasi}
+GROUP BY a.periode_mutasi]]>
+	</queryString>
+	<field name="BLN_LALU_BULAT" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="BLN_LALU_BULAT"/>
+	</field>
+	<field name="BLN_SKRG_BULAT" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="BLN_SKRG_BULAT"/>
+	</field>
+	<field name="MP_BULAN_LALU" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="MP_BULAN_LALU"/>
+	</field>
+	<field name="JML_MUTASI_BULAN_SKRG" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="JML_MUTASI_BULAN_SKRG"/>
+	</field>
+	<field name="JML_MUTASI_PENSIUN_BARU" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="JML_MUTASI_PENSIUN_BARU"/>
+	</field>
+	<field name="JML_MUTASI_PENSIUN_TUNDA" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="JML_MUTASI_PENSIUN_TUNDA"/>
+	</field>
+	<field name="JML_MUTASI_MENINGGAL_DUNIA" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="JML_MUTASI_MENINGGAL_DUNIA"/>
+	</field>
+	<field name="JML_MUTASI_MPS100" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="JML_MUTASI_MPS100"/>
+	</field>
+	<field name="JML_JANDA_DUDA_ANAK" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="JML_JANDA_DUDA_ANAK"/>
+	</field>
+	<field name="JML_PENERIMA_BULAN_LALU" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="JML_PENERIMA_BULAN_LALU"/>
+	</field>
+	<field name="JML_PENSIUN_TUNDA_LALU" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="JML_PENSIUN_TUNDA_LALU"/>
+	</field>
+	<field name="JML_PENSIUN_TUNDA_DIBAYAR" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="JML_PENSIUN_TUNDA_DIBAYAR"/>
+	</field>
+	<field name="JML_MP_BLN_SKRG" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="JML_MP_BLN_SKRG"/>
+	</field>
+	<field name="JML_MPYD_PENSIUN_BARU" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="JML_MPYD_PENSIUN_BARU"/>
+	</field>
+	<field name="JML_MPYD_PENSIUN_TUNDA" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="JML_MPYD_PENSIUN_TUNDA"/>
+	</field>
+	<field name="JML_RAPEL_PHDP" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="JML_RAPEL_PHDP"/>
+	</field>
+	<field name="JML_MPYD_MERIT" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="JML_MPYD_MERIT"/>
+	</field>
+	<field name="JML_MPYD_MUTASI_HAPUS" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="JML_MPYD_MUTASI_HAPUS"/>
+	</field>
+	<field name="JML_MPYD_MPS100" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="JML_MPYD_MPS100"/>
+	</field>
+	<field name="JML_MPYD_JANDA_DUDA_ANAK" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="JML_MPYD_JANDA_DUDA_ANAK"/>
+	</field>
+	<field name="JML_MPYD_MP_BULAN13" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="JML_MPYD_MP_BULAN13"/>
+	</field>
+	<field name="JML_KELEBIHAN_MP_BULAN_SKRG" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="JML_KELEBIHAN_MP_BULAN_SKRG"/>
+	</field>
+	<field name="JML_FPR_FS" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="JML_FPR_FS"/>
+	</field>
+	<field name="JML_UP_BLN_LALU" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="JML_UP_BLN_LALU"/>
+	</field>
+	<field name="PERIODE_MUTASI" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="PERIODE_MUTASI"/>
+	</field>
+	<field name="SIGN_DATE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="SIGN_DATE"/>
+	</field>
+	<field name="KETERLAMBATAN_DATA" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="KETERLAMBATAN_DATA"/>
+	</field>
+	<field name="JML_RAPEL_PHDP_BLN_LALU" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="JML_RAPEL_PHDP_BLN_LALU"/>
+	</field>
+	<variable name="SelisihPembulatan" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[($F{BLN_SKRG_BULAT} == null ?  0 : $F{BLN_SKRG_BULAT}.doubleValue()) - ($F{BLN_LALU_BULAT} == null ?  0 : $F{BLN_LALU_BULAT}.doubleValue())]]></variableExpression>
+	</variable>
+	<variable name="Total_rumus_mp" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[($F{JML_MPYD_PENSIUN_BARU} == null ?  0: $F{JML_MPYD_PENSIUN_BARU}.doubleValue()) + ($F{JML_MPYD_PENSIUN_TUNDA} == null ?  0 : $F{JML_MPYD_PENSIUN_TUNDA}.doubleValue()) + ($F{JML_RAPEL_PHDP} == null ?  0 : $F{JML_RAPEL_PHDP}.doubleValue()) + ($F{JML_MPYD_MERIT} == null ?  0 : $F{JML_MPYD_MERIT}.doubleValue()) + ($F{JML_FPR_FS} == null ?  0 : $F{JML_FPR_FS}.doubleValue()) - ($F{JML_MPYD_MUTASI_HAPUS} == null ?  0 : $F{JML_MPYD_MUTASI_HAPUS}.doubleValue()) - ($F{JML_MPYD_MPS100} == null ?  0 : $F{JML_MPYD_MPS100}.doubleValue()) - ($F{JML_MPYD_JANDA_DUDA_ANAK} == null ?  0 : $F{JML_MPYD_JANDA_DUDA_ANAK}.doubleValue()) - ($F{JML_MPYD_MP_BULAN13} == null ?  0 : $F{JML_MPYD_MP_BULAN13}.doubleValue()) - ($F{JML_UP_BLN_LALU} == null ?  0 : $F{JML_UP_BLN_LALU}.doubleValue()) - ($F{JML_RAPEL_PHDP_BLN_LALU} == null ?  0 : $F{JML_RAPEL_PHDP_BLN_LALU}.doubleValue())]]></variableExpression>
+	</variable>
+	<variable name="Rumus+Selisih" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[($V{hasil} == null ? 0 : $V{hasil}.doubleValue())+($V{SelisihPembulatan} == null ? 0 : $V{SelisihPembulatan}.doubleValue())]]></variableExpression>
+	</variable>
+	<variable name="tambah_rumus" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[($F{MP_BULAN_LALU} == null ?0 : $F{MP_BULAN_LALU}.doubleValue()) + ($F{JML_MPYD_PENSIUN_BARU} == null ?  0: $F{JML_MPYD_PENSIUN_BARU}.doubleValue()) + ($F{JML_MPYD_PENSIUN_TUNDA} == null ?  0 : $F{JML_MPYD_PENSIUN_TUNDA}.doubleValue()) + ($F{JML_RAPEL_PHDP} == null ?  0 : $F{JML_RAPEL_PHDP}.doubleValue()) + ($F{JML_MPYD_MERIT} == null ?  0 : $F{JML_MPYD_MERIT}.doubleValue()) + ($F{JML_FPR_FS} == null ?  0 : $F{JML_FPR_FS}.doubleValue()) + ($F{KETERLAMBATAN_DATA} == null ? 0 : $F{KETERLAMBATAN_DATA}.doubleValue()) ]]></variableExpression>
+	</variable>
+	<variable name="kurang_rumus" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[($F{JML_MPYD_MUTASI_HAPUS} == null ?  0 : $F{JML_MPYD_MUTASI_HAPUS}.doubleValue()) + ($F{JML_MPYD_MPS100} == null ?  0 : $F{JML_MPYD_MPS100}.doubleValue()) + ($F{JML_MPYD_JANDA_DUDA_ANAK} == null ?  0 : $F{JML_MPYD_JANDA_DUDA_ANAK}.doubleValue()) + ($F{JML_MPYD_MP_BULAN13} == null ?  0 : $F{JML_MPYD_MP_BULAN13}.doubleValue()) + ($F{JML_UP_BLN_LALU} == null ?  0 : $F{JML_UP_BLN_LALU}.doubleValue()) + ($F{JML_RAPEL_PHDP_BLN_LALU} == null ?  0 : $F{JML_RAPEL_PHDP_BLN_LALU}.doubleValue())]]></variableExpression>
+	</variable>
+	<variable name="hasil" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$V{tambah_rumus}.subtract($V{kurang_rumus})]]></variableExpression>
+	</variable>
+	<variable name="hasil+selisih_pembulatan" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$V{hasil}.doubleValue() + $V{SelisihPembulatan}.doubleValue()]]></variableExpression>
+	</variable>
+	<variable name="TOTAL_SELISIH" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$V{hasil+selisih_pembulatan}.subtract($V{hasil+selisih_pembulatan})]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="39" splitType="Stretch">
+			<staticText>
+				<reportElement x="-20" y="1" width="612" height="21" uuid="76ade7ee-6410-4e8e-a91c-4bb9fb675dc2"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[REKAPITULASI MUTASI BULANAN]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="-20" y="22" width="612" height="17" uuid="49b73107-44b6-44f5-ace8-5fa6cc6b50c4"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="html">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PERIODE_MUTASI} == null ? "Mutasi Bulan : " : "Mutasi Bulan : "+$F{PERIODE_MUTASI}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<detail>
+		<band height="497">
+			<staticText>
+				<reportElement x="440" y="25" width="113" height="472" uuid="8382744d-2615-4f95-b6fe-f4217ddec97f"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="4" y="3" width="30" height="494" uuid="5fc6c3bc-19e8-43ee-a435-b97077e3d334"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="4" y="3" width="436" height="22" uuid="882bea9f-a9e1-47ad-8b53-a994ce3ab567"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[MUTASI RUPIAH]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="440" y="3" width="113" height="22" uuid="5b27e2e7-98ba-4917-a0e0-b26e89b36d86"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Jumlah (Rp.)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="11" y="26" width="14" height="20" uuid="02ae429d-c3ec-44c8-a185-319e2dfd2d65"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[a.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="41" y="26" width="100" height="20" uuid="33ae1610-b4eb-4b52-9185-83e9d0c2b476"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[MP BULAN LALU]]></text>
+			</staticText>
+			<textField pattern="#,000.00#;(#,000.00#-)" isBlankWhenNull="true">
+				<reportElement x="440" y="26" width="113" height="20" uuid="d870b211-9258-44f5-8b17-a8969d4a360d"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle" markup="html">
+					<font size="9"/>
+					<paragraph leftIndent="0" rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{MP_BULAN_LALU} == null ? "0.00" : new DecimalFormat("#,##0.00").format($F{MP_BULAN_LALU})]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="41" y="39" width="100" height="20" uuid="835fff5c-5df6-40db-a891-752b9eacc978"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PENAMBAHAN :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="11" y="51" width="14" height="20" uuid="85b8a81d-ff92-4a4e-b231-232d955e6e8f"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[b.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="41" y="51" width="120" height="20" uuid="6be4a20a-45ef-47ec-89d1-b99b0082c47d"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Mutasi bulan sekarang]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="70" y="64" width="121" height="20" uuid="a9fc996b-7a84-4697-acfa-5a8567f4944f"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[1). Mutasi Pensiun Baru]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="70" y="79" width="249" height="20" uuid="aec3b799-7280-4e9e-848b-e72b8b454971"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[2). Mutasi Pensiun Tunda Jatuh Tempo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="70" y="94" width="251" height="20" uuid="149a68b6-0b6b-47b6-989c-95c28be8f045"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[3). Mutasi Rapel MP krn keterlambatan data]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="70" y="109" width="311" height="20" uuid="0bbca8a7-d5da-4f2c-b5d5-bdcedb92515b"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[4). Mutasi Rapel MP krn lain-lain (IK,UPV,MK,Jenis pensiun, dsb)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="70" y="140" width="235" height="20" uuid="385e11b7-0ec7-4915-9d58-b1909ddb5bb1"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[6). Mutasi MP krn perubahan PhDP bulan sekarang]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="70" y="154" width="365" height="20" uuid="a0625890-6f6b-4545-a9b1-6816c27eccb6"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[7). Mutasi MP Karena Perubahan Tabel Faktor Pengurang (FPr) Bulan Sekarang]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="70" y="125" width="312" height="20" uuid="23b665ba-3724-495f-84a7-67c8454c111a"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[5). Mutasi Rapel MP krn perubahan PhDP (merit increase)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="11" y="170" width="14" height="20" uuid="7279e3f9-452d-4e87-8366-4ec018dad785"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[c.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="41" y="170" width="260" height="20" uuid="e33c9b22-a2c5-43a2-ad25-8e2cf7a5d2fb"/>
+				<textElement>
+					<font size="9" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Pelunasan Pengembalian Kelebihan MP (bulan lalu)]]></text>
+			</staticText>
+			<textField pattern="#,000.###;¤(#,000.###-)">
+				<reportElement x="440" y="64" width="113" height="14" uuid="52f59388-35c1-414a-84ca-b5b03f05f1f1"/>
+				<textElement textAlignment="Right" verticalAlignment="Top" markup="html">
+					<font size="9"/>
+					<paragraph leftIndent="0" rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{JML_MPYD_PENSIUN_BARU} == null ? "0.00" : new DecimalFormat("#,##0.00").format($F{JML_MPYD_PENSIUN_BARU})]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,000.00#;¤(#,000.00#-)">
+				<reportElement x="440" y="94" width="113" height="15" uuid="4d7739c1-7444-489c-ba83-409e2547d903"/>
+				<textElement textAlignment="Right" verticalAlignment="Top" markup="html">
+					<font size="9"/>
+					<paragraph leftIndent="0" rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{KETERLAMBATAN_DATA} == null ? "0.00" : new DecimalFormat("#,##0.00").format($F{KETERLAMBATAN_DATA})]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,000.00#;¤(#,000.00#-)">
+				<reportElement x="440" y="109" width="113" height="16" uuid="0ab3e002-5cd0-41b9-9602-5020c44f41d9"/>
+				<textElement textAlignment="Right" verticalAlignment="Top" markup="html">
+					<font size="9"/>
+					<paragraph leftIndent="0" rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA["0.00"]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,000.00#;¤(#,000.00#-)">
+				<reportElement x="440" y="125" width="113" height="15" uuid="82146412-e022-4b93-aace-ad3c68d63859"/>
+				<textElement textAlignment="Right" verticalAlignment="Top" markup="html">
+					<font size="9"/>
+					<paragraph leftIndent="0" rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{JML_RAPEL_PHDP} == null ? "0.00" : new DecimalFormat("#,##0.00").format($F{JML_RAPEL_PHDP})]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,000.00#;¤(#,000.00#-)">
+				<reportElement x="440" y="154" width="113" height="16" uuid="7f5600d1-f538-4922-bff0-8347c61d3910"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle" markup="html">
+					<font size="9"/>
+					<paragraph leftIndent="0" rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{JML_FPR_FS} == null ? "0.00" : new DecimalFormat("#,##0.00").format($F{JML_FPR_FS})]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,000.###;¤(#,000.###-)">
+				<reportElement x="440" y="140" width="113" height="14" uuid="db59e187-c54c-4acd-b33c-bd8cb3f6c746"/>
+				<textElement textAlignment="Right" verticalAlignment="Top" markup="html">
+					<font size="9"/>
+					<paragraph leftIndent="0" rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{JML_MPYD_MERIT} == null ? "0.00" : new DecimalFormat("#,##0.00").format($F{JML_MPYD_MERIT})]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,000.###;¤(#,000.###-)">
+				<reportElement x="440" y="170" width="113" height="19" uuid="4b42abe0-0c87-41ce-b285-fbae37e7e810"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle" markup="html">
+					<font size="9"/>
+					<paragraph leftIndent="0" rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA["0.00"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="41" y="184" width="100" height="20" uuid="8fec0c04-dd48-4f12-a94e-cfcf76722e47"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PENGURANGAN :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="34" y="25" width="406" height="472" uuid="91058f00-bfe7-42a3-8116-6e179a87544f"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="41" y="200" width="120" height="20" uuid="3449e832-3734-48b8-a149-9c61f9355b9e"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Mutasi bulan sekarang]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="41" y="214" width="120" height="20" uuid="8b11b815-b060-4356-b909-02a3e4650971"/>
+				<textElement>
+					<font size="9" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Mutasi Pensiun Hapus :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="11" y="200" width="14" height="20" uuid="55f50f72-bbe9-4446-b5dc-6b63c9e122cc"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[d.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="71" y="229" width="120" height="20" uuid="189e5bd1-51dd-42c3-9100-7255442f41ad"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[1). Meninggal Dunia]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="71" y="245" width="160" height="20" uuid="bf11b42f-92a4-4d39-b573-4de9fcf70047"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[2). MPS < Rp.1.500.00,00]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="71" y="259" width="279" height="20" uuid="da36c6ae-9fb7-4092-b56c-443807f88abd"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[3). Lain-lain (anak dewasa, J/D, menikah lagi, dsb)]]></text>
+			</staticText>
+			<textField pattern="#,000.00#;(#,000.00#-)">
+				<reportElement x="440" y="229" width="113" height="15" uuid="75991ad3-4d9a-4abe-9f88-2804e7fa6d2e"/>
+				<textElement textAlignment="Right" verticalAlignment="Top" markup="html">
+					<font size="9"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{JML_MPYD_MUTASI_HAPUS} == null ? "0.00" : new DecimalFormat("#,##0.00").format($F{JML_MPYD_MUTASI_HAPUS})]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,000.00#;(#,000.00#-)">
+				<reportElement x="440" y="245" width="113" height="13" uuid="e2632f6c-6d02-4782-be9d-f016ef614a02"/>
+				<textElement textAlignment="Right" verticalAlignment="Top" markup="html">
+					<font size="9"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{JML_MPYD_MPS100} == null ? "0.00" : new DecimalFormat("#,##0.00").format($F{JML_MPYD_MPS100})]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,000.00#;(#,000.00#-)">
+				<reportElement x="440" y="259" width="113" height="14" uuid="f72bd840-2985-40dd-9ff4-4591e4c434c9"/>
+				<textElement textAlignment="Right" verticalAlignment="Top" markup="html">
+					<font size="9"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{JML_MPYD_JANDA_DUDA_ANAK} == null ? "0.00" : new DecimalFormat("#,##0.00").format($F{JML_MPYD_JANDA_DUDA_ANAK})]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,000.00#;(#,000.00#-)">
+				<reportElement x="440" y="273" width="113" height="15" uuid="ae41ec42-ca46-4c85-99a2-04fbf83460b6"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle" markup="html">
+					<font size="9"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{JML_MPYD_MP_BULAN13} == null ? "0.00" : new DecimalFormat("#,##0.00").format($F{JML_MPYD_MP_BULAN13})]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,000.00#;(#,000.00#-)">
+				<reportElement x="440" y="288" width="113" height="16" uuid="6a69ea90-33fb-4af6-95ff-4c0e3223d55d"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle" markup="html">
+					<font size="9"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA["0.00"]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,000.00#;(#,000.00#-)">
+				<reportElement x="439" y="302" width="113" height="16" uuid="4c8117c2-dfaf-4331-9e9c-0254e03fefd6"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle" markup="html">
+					<font size="9"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA["0.00"]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,000.00#;(#,000.00#-)">
+				<reportElement x="439" y="317" width="113" height="13" uuid="439a5539-8913-4816-8111-fac3fc842c5c"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle" markup="html">
+					<font size="9"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA["0.00"]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,000.00#;(#,000.00#-)">
+				<reportElement x="441" y="330" width="111" height="18" uuid="1098e71b-c1e1-4bf4-b325-ef9899c8d578"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle" markup="html">
+					<font size="9"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{JML_UP_BLN_LALU} == null ? "0.00" : new DecimalFormat("#,##0.00").format($F{JML_UP_BLN_LALU})]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,000.00#;(#,000.00#-)">
+				<reportElement x="441" y="349" width="111" height="13" uuid="64b75330-6bee-4748-a013-1056f97b9aef"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle" markup="html">
+					<font size="9"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{JML_RAPEL_PHDP_BLN_LALU} == null ? "0.00" : new DecimalFormat("#,##0.00").format($F{JML_RAPEL_PHDP_BLN_LALU})]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="41" y="273" width="309" height="20" uuid="d6cc82e2-5e17-4807-841a-44da224b80ec"/>
+				<textElement>
+					<font size="9" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Mutasi Janda/Duda menjadi 80% (bl ke-13)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="41" y="302" width="398" height="18" uuid="8a7d68cd-08c4-48d6-8b1e-ce5cb68f6a6c"/>
+				<textElement>
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[Mutasi Penerima MP (Peserta, Janda/Duda) Karena Perubahan Tarif UPV, dsb]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="11" y="273" width="14" height="20" uuid="6dd1551e-453a-469f-be53-a385621afd13"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[e.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="11" y="288" width="14" height="20" uuid="879f0d12-0351-4909-9d64-1f10f6909454"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[f.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="11" y="302" width="14" height="18" uuid="ecaa4018-626a-4fa4-8205-61cad1214ee7"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[g.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="11" y="317" width="14" height="13" uuid="4e69c6e3-4459-4060-a1e8-7f66381386bf"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[h.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="41" y="288" width="279" height="16" uuid="659094eb-c966-4421-bc28-fc989ed377ce"/>
+				<textElement>
+					<font size="9" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Pengembalian Kelebihan MP bulan sekarang]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="41" y="317" width="279" height="13" uuid="90566aeb-d9e1-4c7b-b3de-214d41c5e5d6"/>
+				<textElement>
+					<font size="9" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Mutasi Rapel MP keterlambatan data bulan lalu]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="41" y="363" width="139" height="20" uuid="7efb8a10-e5d9-4663-b12c-8d983d415dc9"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[JUMLAH (a+b+c-d-e-f-g-h-i-j)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="41" y="378" width="160" height="17" uuid="13b0594a-9281-4b8a-9bf2-2dabf4dd2559"/>
+				<textElement>
+					<font size="9" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Pembulatan bulan lalu (a1)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="41" y="394" width="160" height="13" uuid="df9ee6a7-5ef3-4963-946e-8e24e9eb4af1"/>
+				<textElement>
+					<font size="9" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Pembulatan bulan sekarang (a2)]]></text>
+			</staticText>
+			<textField pattern="#,000.00#;(#,000.00#-)">
+				<reportElement x="301" y="382" width="130" height="20" uuid="539e8984-4ff2-455e-831b-5c8fbed6c9c2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{BLN_LALU_BULAT} == null ? "0.00" : new DecimalFormat("#,##0.00").format($F{BLN_LALU_BULAT})]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,000.00#;(#,000.00#-)">
+				<reportElement x="302" y="395" width="129" height="20" uuid="afca5447-a5ad-4e19-b0aa-7357dd5abd82"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{BLN_SKRG_BULAT} == null ? "0.00" : new DecimalFormat("#,##0.00").format($F{BLN_SKRG_BULAT})]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="301" y="423" width="130" height="20" uuid="e02581f2-f7e8-4a00-b09f-f2a8842d024a"/>
+				<textElement>
+					<font size="9" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Selisih Pembulatan (a2-a1)]]></text>
+			</staticText>
+			<line>
+				<reportElement x="301" y="415" width="129" height="1" uuid="77b3555b-1ab2-4278-af25-35ecfdd22e75"/>
+			</line>
+			<textField pattern="#,000.00#;(#,000.00#-)">
+				<reportElement x="439" y="417" width="114" height="20" uuid="4f6693ba-e5de-4020-8926-6ee8b195ded5"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{SelisihPembulatan} == null ? "0.00" : new DecimalFormat("#,##0.00").format($V{SelisihPembulatan})]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,000.00#;(#,000.00#-)">
+				<reportElement x="439" y="434" width="114" height="20" uuid="2d5b7e18-da49-41cd-aa5d-1c960617e5c7"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{hasil+selisih_pembulatan} == null ? "0.00" : new DecimalFormat("#,##0.00").format($V{hasil+selisih_pembulatan})]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="449" y="471" width="102" height="1" uuid="f3702b32-91a5-4f86-8c25-a7289d69cca9"/>
+			</line>
+			<textField pattern="#,000.00#;(#,000.00#-)">
+				<reportElement x="440" y="474" width="113" height="16" uuid="e147d9b6-6250-4f67-95e8-9c195d6919c7"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9"/>
+					<paragraph leftIndent="0" rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{TOTAL_SELISIH} == null ? "0.00" : new DecimalFormat("#,##0.00").format($V{TOTAL_SELISIH})]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,000.00#;(#,000.00#-)">
+				<reportElement x="439" y="451" width="114" height="20" uuid="72aed626-1aa2-45f7-8c1d-7c084700c278"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{hasil+selisih_pembulatan} == null ? "0.00" : new DecimalFormat("#,##0.00").format($V{hasil+selisih_pembulatan})]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="301" y="454" width="130" height="20" uuid="cbc37247-add8-4e7a-b3fb-916fe79703fc"/>
+				<textElement>
+					<font size="9" isBold="false"/>
+				</textElement>
+				<text><![CDATA[MP Bulanan Sekarang]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="302" y="475" width="130" height="20" uuid="7f772ed8-27fa-475b-bbbe-f386cd934440"/>
+				<textElement>
+					<font size="9" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Total Selisih]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="13" y="331" width="14" height="13" uuid="72fba3ce-a797-4213-a5a4-1b5b979fff28"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[i.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="40" y="331" width="360" height="13" uuid="dcb6276b-7d8c-4cf4-bfa4-fa3e2b54cf7f"/>
+				<textElement>
+					<font size="9" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Mutasi Rapel krn kenaikan lain-lain (IK,UPV,MK, Jenis Pensiun, dsb) bulan lalu]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="13" y="345" width="14" height="17" uuid="0eb5d326-4a3f-44f8-bba6-cfb14492a7c8"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[j.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="40" y="345" width="310" height="17" uuid="4721b598-3f3a-4f0b-8a9c-65ca189750be"/>
+				<textElement>
+					<font size="9" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Mutasi Rapel krn perubahan PhDP (merit increase) bulan lalu]]></text>
+			</staticText>
+			<textField pattern="#,000.00#;(#,000.00#-)">
+				<reportElement x="440" y="365" width="112" height="17" uuid="cca0f09f-ce45-40aa-ae48-04b887db5c3e"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle" markup="html">
+					<font size="9"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{hasil} == null ? "0.00" : new DecimalFormat("#,##0.00").format($V{hasil})]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,000.###;¤(#,000.###-)">
+				<reportElement x="440" y="79" width="113" height="19" uuid="878b663b-55ae-41c1-903e-a5b6bd78570b"/>
+				<textElement textAlignment="Right" verticalAlignment="Top" markup="html">
+					<font size="9"/>
+					<paragraph leftIndent="0" rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{JML_MPYD_PENSIUN_TUNDA} == null ? "0.00" : new DecimalFormat("#,##0.00").format($F{JML_MPYD_PENSIUN_TUNDA})]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="301" y="438" width="135" height="20" uuid="7f626bb7-b039-41b8-8d63-36b6e03b410b"/>
+				<textElement>
+					<font size="9" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Total]]></text>
+			</staticText>
+			<line>
+				<reportElement x="449" y="437" width="101" height="1" uuid="2f09b16a-b1c7-4a22-958d-169d037e953a"/>
+			</line>
+		</band>
+		<band height="170">
+			<staticText>
+				<reportElement x="3" y="10" width="31" height="18" uuid="9df3e7b6-1d97-4dcf-a03a-7d82eb90a1ce"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="34" y="10" width="406" height="18" uuid="8f750eb3-2a80-44ba-b270-fbb70a92521f"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[MUTASI JUMLAH PENERIMA MP]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="440" y="10" width="113" height="18" uuid="263bb42f-bad9-4918-b6fb-32f4738f883f"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Jumlah (Rp.)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="28" width="31" height="141" uuid="101afb19-6dcc-47a3-9522-335d89e24c92"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="34" y="28" width="406" height="141" uuid="9d9fa153-7077-4fdc-b656-4f1c0b4a975f"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="440" y="28" width="113" height="141" uuid="a7683558-c393-4af2-9fb5-f634e16ddcdd"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="40" y="29" width="100" height="20" uuid="f1950856-c1ce-4f39-ba57-c9c2a463b88e"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PENAMBAHAN :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="276" y="29" width="159" height="20" uuid="ad89ebae-8373-4f80-9a5f-5b796964b133"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Jumlah Penerima MP bulan lalu]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="40" y="49" width="160" height="12" uuid="baa6ff47-4ced-4518-91ff-b6a25fa18fe3"/>
+				<textElement>
+					<font size="9" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Mutasi Pensiun Baru]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="40" y="62" width="262" height="15" uuid="feaf4c09-f4db-4666-83b1-44e799b6fefe"/>
+				<textElement>
+					<font size="9" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Mutasi Pensiun Tunda Jatuh Tempo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="40" y="88" width="120" height="18" uuid="bd8b1e99-c252-4c0e-bab5-2cede4d3efcb"/>
+				<textElement>
+					<font size="9" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Mutasi Pensiun Hapus :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="70" y="114" width="160" height="13" uuid="09f44d3f-e808-423a-b260-5491ec3621ec"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[2). MPS < Rp.1.500.00,00]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="70" y="127" width="322" height="13" uuid="696b6924-e148-4e23-a288-cb9e0c57e249"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[3). Lain-lain (anak dewasa, J/D, menikah lagi, dsb)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="70" y="101" width="120" height="12" uuid="0cb01046-729a-4582-9c79-d4f4c3702d47"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[1). Meninggal Dunia]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="40" y="75" width="100" height="18" uuid="a9fba158-25ee-4f1a-91da-71acd79d969b"/>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PENGURANGAN :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="276" y="148" width="159" height="13" uuid="d1e495e2-5c3a-4ea4-975d-da091acf5db0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Jumlah Penerima MP bulan ini]]></text>
+			</staticText>
+			<textField pattern="#,000.###;(#,000.###-)">
+				<reportElement x="449" y="29" width="101" height="20" uuid="9ae8f3fd-6d16-4877-9cd0-8d59fa1348da"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{JML_PENERIMA_BULAN_LALU}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="449" y="49" width="103" height="13" uuid="dbdeeb94-ac5a-420f-ac1d-735f3d52d274"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{JML_MUTASI_PENSIUN_BARU}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="449" y="62" width="103" height="14" uuid="7fddc012-8c29-4626-93f3-7bbdacf41314"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{JML_MUTASI_PENSIUN_TUNDA}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="460" y="98" width="80" height="15" uuid="486fb55c-a3e5-4f1c-afc6-77f9d90720dd"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{JML_MUTASI_MENINGGAL_DUNIA}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="460" y="113" width="80" height="15" uuid="46b5c81a-146b-4b6f-9512-7be172c6091e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{JML_MUTASI_MPS100}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="460" y="128" width="80" height="20" uuid="d3183ef9-d2e2-486c-8e70-d83d41dda297"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{JML_JANDA_DUDA_ANAK}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,000.###;(#,000.###-)">
+				<reportElement x="449" y="148" width="102" height="14" uuid="6f8f3c69-0f8f-4935-b2cb-c9b70262940a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{JML_MUTASI_BULAN_SKRG}]]></textFieldExpression>
+			</textField>
+		</band>
+		<band height="373">
+			<staticText>
+				<reportElement x="3" y="84" width="30" height="96" uuid="8cbec3c8-c3a7-4de3-b538-1b337603c0b8"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="33" y="84" width="407" height="96" uuid="10170bb3-4c0b-4ba3-8e57-9bafff941c7f"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="440" y="84" width="112" height="96" uuid="c3565561-0666-4ade-a7a1-b908c1926575"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="40" y="110" width="215" height="20" uuid="d5fad5ab-fea8-436c-9076-1584d2ccd1da"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Penambahan bulan ini (Pensiun Tunda Baru)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="40" y="130" width="330" height="20" uuid="e9e05fb4-1c6a-459b-96a1-8218b54db980"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Pengurangan (Pensiun Tunda Jatuh Tempo / MP nya dibayar)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="40" y="90" width="120" height="20" uuid="a1989dc0-b3e8-494b-b65e-0a8be95c7542"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Pensiun Tunda Bulan Lalu]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="460" y="90" width="80" height="20" uuid="fbbbd283-dba0-49a8-9d73-0f38db5767d6"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{JML_PENSIUN_TUNDA_LALU}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="460" y="110" width="80" height="20" uuid="e0ca05f1-e020-48b4-9c4c-89356793e508"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{JML_MUTASI_PENSIUN_TUNDA}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="460" y="130" width="80" height="20" uuid="bfea453d-c35c-46f4-a949-bf7f941798ec"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{JML_PENSIUN_TUNDA_DIBAYAR}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.###;(#,##0.###-)">
+				<reportElement x="460" y="151" width="80" height="20" uuid="26465089-adb6-44eb-8a07-d2e68e5b89fa"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[""]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="3" y="54" width="30" height="30" uuid="ece2bbde-68a2-40c2-80fa-5647947ba820"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="33" y="54" width="407" height="30" uuid="78e1cbc1-084b-418d-b9fe-f126655203b0"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[PENSIUN DITUNDA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="440" y="54" width="112" height="30" uuid="e4b5c4ee-ece8-4876-af27-c8d02e08925d"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Jumlah (Rp.)]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="266" y="254" width="286" height="21" uuid="7bb5cc65-cbf6-49a7-8501-23a7e2b1cee6"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["Divisi Kepesertaan & Pelayanan Pensiun"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement stretchType="ElementGroupHeight" x="266" y="234" width="286" height="21" uuid="cd9826a8-36dd-4060-a059-838c10badb9e"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="html"/>
+				<textFieldExpression><![CDATA["Jakarta, "+$F{SIGN_DATE}.trim()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="416" y="284" width="136" height="89" uuid="78b520d5-1592-4a46-8394-ab995cc93b3f"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[""]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="422" y="338" width="123" height="14" uuid="b6de8da0-a4bd-4c6c-ab90-0d8f8a71c806"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Rosalind Permatasari]]></text>
+			</staticText>
+			<line>
+				<reportElement x="422" y="352" width="124" height="1" uuid="09c8f601-488d-45a5-9651-1b30cfc341b3"/>
+			</line>
+			<staticText>
+				<reportElement x="422" y="353" width="123" height="14" uuid="2a21d816-7c31-4113-8bcc-08ab6442a51f"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Kepala Seksi]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="266" y="284" width="136" height="89" uuid="8f36bb0b-2590-4211-8185-30c20b5b1176"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[""]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="272" y="338" width="123" height="14" uuid="9601c111-f7b0-4d33-96ef-baa3ecdd865b"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Achmad Mufit]]></text>
+			</staticText>
+			<line>
+				<reportElement x="272" y="352" width="124" height="1" uuid="cfcc0294-3103-492f-8898-e41a08b9e1ec"/>
+			</line>
+			<staticText>
+				<reportElement x="272" y="353" width="123" height="14" uuid="8fb298ac-b468-4f5a-b962-4240a7dbfd01"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Kepala Divisi]]></text>
+			</staticText>
+		</band>
+	</detail>
+</jasperReport>

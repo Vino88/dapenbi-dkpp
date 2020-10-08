@@ -1,0 +1,1797 @@
+{{#layout}}
+
+{{#styles}}
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/datatables/media/css/dataTables.bootstrap4.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/googleapis/css/component.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/googleapis/css/googleapis.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/select2/css/select2.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css">
+{{/styles}}
+
+{{#title}}
+Mutasi Perubahan FPR dan FS - DKPP
+{{/title}}
+<!-- main area -->
+<div class="main-content">
+
+    <div class="content-view">
+
+        <ul class="nav nav-tabs" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#one" role="tab">Upload Master FPr/FS</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#two" role="tab">Data Master FS</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#three" role="tab">Data Master FPr</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#four" role="tab">Mutasi Perubahan FPr/FS</a>
+            </li>
+        </ul>
+
+        <div class="tab-content">
+            <div class="tab-pane active" id="one" role="tabpanel">
+                <div class="card">
+                    <div class="card-block">
+                        <button class="btn btn-primary btn-sm" data-toggle="modal" onclick="showModalUpload()"><i class="fa fa-upload"></i> <span>Upload Data</span></button>
+                        <hr/>
+                        <div class="table-responsive">
+                            <table class="table table-bordered datatable" id="tabel-hasil-upload">
+                                <thead>
+                                <tr>
+                                    <th>
+                                        Tgl. Upload
+                                    </th>
+                                    <th>
+                                        Tgl. Mulai Berlaku
+                                    </th>
+                                    <th>
+                                        Mulai digunakan pada periode mutasi
+                                    </th>
+                                    <th>
+                                        Jenis Faktor
+                                    </th>
+                                    <th>
+                                        Total Data
+                                    </th>
+                                    <th>
+                                        Keterangan Faktor
+                                    </th>
+                                    <th>
+                                        User Stamp
+                                    </th>
+                                    <th>
+                                        Action
+                                    </th>
+
+                                </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane" id="two" role="tabpanel">
+                <div class="card">
+                    <div class="card-block">
+                        <div class="table-responsive" >
+                            <table class="table table-bordered datatable4 " id="tabel-aktuaria-fs">
+                                <thead>
+                                <tr>
+                                    <th>
+                                        Tanggal Mulai Berlaku
+                                    </th>
+                                    <th>
+                                        Usia
+                                    </th>
+                                    <th>
+                                        ID Faktor Fs
+                                    </th>
+
+                                    <th>
+                                        Pria Lajang
+                                    </th>
+                                    <th>
+                                        Pria Kawin
+                                    </th>
+                                    <th>
+                                        Wanita Lajang
+                                    </th>
+                                    <th>
+                                        Wanita Kawin
+                                    </th>
+                                    <th>
+                                        Anak Pria
+                                    </th>
+                                    <th>
+                                        Anak Wanita
+                                    </th>
+                                    <th>
+                                        User Stamp
+                                    </th>
+                                </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane" id="three" role="tabpanel">
+                <div class="card">
+                    <div class="card-block">
+                        <div class="table-responsive" >
+                            <table class="table table-bordered datatable5 " id="table-aktuaria-fpr">
+                                <thead>
+                                <tr>
+                                    <th>
+                                        Tanggal Mulai Berlaku
+                                    </th>
+                                    <th>
+                                        Usia
+                                    </th>
+                                     <th>
+                                    ID Faktor FPR
+                                </th>
+                                    <th>
+                                    Nilai FPR
+                                </th>
+                                    <th>
+                                        User Stamp
+                                    </th>
+                                </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane" id="four" role="tabpanel">
+                <div class="card">
+                    <div class="card-block">
+                        <div class="row">
+                            <form id="form-proses">
+                                <label for="example-tel-input" class="col-xs-1">Periode Mutasi</label>
+                                <div class="col-xs-1">
+                                    <input class="form-control form-control-sm" type="text" name="parPeriodeMutasi" id="periode-proses">
+                                    <input type="hidden" name="parCompName" id="comp-name-proses">
+                                    <input type="hidden" name="parUserName" id="user-name-proses">
+                                    <input type="hidden" name="parTglMutasi" id="tgl-mutasi-proses">
+                                    <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
+                                </div>
+                            </form>
+                            <div class="col-xs-1">
+                                <a class="btn btn-primary btn-sm" id="btn-proses" ><i class="fa fa-edit"></i> <span>Proses</span></a>
+                            </div>
+                        </div>
+                        <hr/>
+                        <div class="table-responsive" style="overflow-y:auto">
+                            <table class="table table-bordered datatable3" id="tabel-mutasi-perubahan-fprfs">
+                                <thead>
+                                <tr>
+                                    <th>
+                                        Tgl. Mutasi
+                                    </th>
+                                    <th>
+                                        Periode Mutasi
+                                    </th>
+                                    <th>
+                                        NIP Peserta
+                                    </th>
+                                    <th>
+                                        Nama Peserta
+                                    </th>
+                                    <th>
+                                        Nama Penerima MP
+                                    </th>
+                                    <th>
+                                        Jenis Penerima MP
+                                    </th>
+                                    <th>
+                                        Ambil MPS
+                                    </th>
+                                    <th>
+                                        FPr Lama
+                                    </th>
+                                    <th>
+                                        FPr Baru
+                                    </th>
+                                    <th>
+                                        FS Lama
+                                    </th>
+                                    <th>
+                                        FS Baru
+                                    </th>
+                                    <th>
+                                        Status Validasi
+                                    </th>
+                                    <th>
+                                        Action
+                                    </th>
+                                </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    <!-- bottom footer -->
+
+    <!-- /bottom footer -->
+</div>
+<!-- /main area -->
+{{#modal}}
+<!-- Modal1 -->
+<div class="modal fade" id="printOptionsModal" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close" data-dismiss="modal" type="button">
+                    ×
+                </button>
+                <h4 class="modal-title">
+                    Cetak Laporan
+                </h4>
+            </div>
+            <div class="modal-body">
+                <p>
+                <div class="radio">
+                    <label>
+                        <input checked="" name="optradio" type="radio"> Cetak Laporan Daftar Mutasi Master Pensiun
+                        </input>
+                    </label>
+                </div>
+                <div class="radio">
+                    <label>
+                        <input name="optradio" type="radio"> Cetak Daftar Mutasi Penerima Janda MP Janda/Duda
+                        </input>
+                    </label>
+                </div>
+                <div class="radio">
+                    <label>
+                        <input name="optradio" type="radio"> Cetak Daftar Rekapitulasi Janda/Duda/Anak berdasarkan Periode
+                        </input>
+                    </label>
+                </div>
+                </p>
+            </div>
+            <div class="modal-footer">
+                <div class="pull-left">
+                    <button class="btn btn-info" data-dismiss="modal" id="btn_ok_print" type="button">
+                        OK
+                    </button>
+                    <button class="btn btn-danger" data-dismiss="modal" type="button">
+                        Cancel
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Modal1 -->
+<!-- Modal2 -->
+<div class="modal fade" id="pdfReportModal" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close" data-dismiss="modal" type="button">
+                    ×
+                </button>
+            </div>
+            <div class="modal-body">
+                <object data="rpt/DAPENBI-DKPP.pdf" height="500" style="height: 85vh;" type="application/pdf" width="100%">
+                    No Support
+                </object>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Modal2 -->
+
+<div class="modal fade bd-example-modal" tabindex="-1" role="dialog" id="modal-upload" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title small bold" id="myModalLabel">Upload FPr/FS</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <form id="modal-upload-form">
+                    <div class="col-lg-5">
+                        <div class="row">
+                            <label for="example-date-input" class="col-sm-6 bold">Tanggal Upload</label>
+
+                            <div class="col-xs-6">
+                                <input class="form-control form-control-sm" disabled type="text" name="tglUpload" id="tgl-upload" disabled>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <label for="example-date-input" class="col-sm-6 bold">Tanggal Mulai Berlaku</label>
+
+                            <div class="col-xs-6">
+                                <input class="form-control form-control-sm" required placeholder="dd/mm/yyyy" type="text" name="tglMulaiBerlaku" id="tgl-mulai-input" data-provide="datepicker" data-date-format="dd/mm/yyyy">
+
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <label for="example-date-input" class="col-sm-6 bold">Mulai digunakan pada periode mutasi</label>
+
+                            <div class="col-xs-6">
+                                <input class="form-control form-control-sm" required type="text" name="periodeMulai" id="periode-mulai">
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <label for="example-date-input" class="col-sm-6 bold">Keterangan Faktor</label>
+
+                            <div class="col-xs-6">
+                                <textarea class="form-control  form-control-sm" name="keterangan" required id="keterangan-faktor-input" rows="3"></textarea>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+
+                        <div class="row">
+                            <label for="example-date-input" class="col-sm-4 bold">Nama Faktor</label>
+                            <div class="col-xs-6">
+                                <input class="form-control form-control-sm" required type="text" name="namaFaktor" id="nama-faktor">
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <label for="example-date-input" class="col-sm-4 bold">Jenis Faktor</label>
+
+                            <div class="col-xs-6">
+                                <select class="form-control form-control-sm" id="jenis-faktor" name="jenisFaktor">
+                                    <option value="fpr">
+                                        FPR
+                                    </option>
+                                    <option value="fs">
+                                        FS
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label for="example-date-input" class="col-sm-4 bold">Pilih File</label>
+
+                            <div class="col-xs-6">
+                                <input class="form-control form-control-sm" type="file" value="1" required id="pilih-file">
+                            </div>
+
+                        </div>
+
+                    </div>
+            </form>
+                    <div class="col-lg-5"></div>
+                    <div class="col-lg-6">
+                        <div class="row">
+                            <div class="col-sm-4"></div>
+                            <div class="col-sm-6">
+                                <a class="btn btn-primary btn-sm pull-right" data-toggle="modal" id="btn-upload"><i class="fa fa-upload"></i> <span>Upload Data</span></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 bold" small>Data Hasil Upload</div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-block">
+                                <div class="scroll-y" style="height: 250px;" id="show-temp-fs">
+                                    <table class="table table-bordered datatable2 " id="tabel-temp-fs">
+                                        <thead>
+                                        <tr>
+                                            <th>
+                                                Usia (Tahun)
+                                            </th>
+                                            <th>
+                                                Usia (Bulan)
+                                            </th>
+                                             <th>
+                                                 Pria Lajang
+                                            </th>
+                                            <th>
+                                                Pria Kawin
+                                            </th>
+                                            <th>
+                                                Wanita Lajang
+                                            </th>
+                                            <th>
+                                                Wanita Kawin
+                                            </th>
+                                            <th>
+                                                Anak Pria
+                                            </th>
+                                            <th>
+                                                Anak Wanita
+                                            </th>
+                                            <th>
+                                                User Stamp
+                                            </th>
+                                        </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+
+                                <div class="scroll-y" style="height: 250px;" id="show-temp-fpr">
+                                    <table class="table table-bordered datatable2 " id="tabel-temp-fpr">
+                                        <thead>
+                                        <tr>
+                                            <th>
+                                                Usia Fk
+                                            </th>
+                                            <th>
+                                                Faktor Kurang (Tahun)
+                                            </th>
+                                            <th>
+                                                User Stamp
+                                            </th>
+                                        </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                    </div>
+                    <div class="col-lg-6">
+                    </div>
+                    <div class="col-lg-6">
+
+                    </div>
+
+                    <div class="row"></div>
+                    <form id="modal-upload-form2">
+                    <div class="col-lg-5">
+                        <div class="row">
+                            <label for="example-date-input" class="col-xs-6">Total Data</label>
+
+                            <div class="col-xs-6">
+                                <input class="form-control form-control-sm" type="text" name="totalRow" id="total-data" required readonly>
+                                <input type="hidden" name="compName" id="comp-name">
+                                <input type="hidden" name="userName" id="user-name">
+                            </div>
+                        </div>
+                    </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="copyData()"><i class="fa fa-save"></i> Salin Data Ke Master FPr/FS</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bd-example-modal2" tabindex="-1" id="modal-show-fs" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title small bold" id="myModalLabel">Show Data</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+
+                    <div class="col-lg-4">
+                        <div class="row">
+                            <label for="example-date-input"  class="col-sm-6 bold">Tanggal Upload</label>
+
+                            <div class="col-xs-6">
+                                <input class="form-control form-control-sm" disabled type="text" value="" id="tgl-upload-show" disabled>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <label for="example-date-input"  class="col-sm-6 bold">Jenis Faktor</label>
+
+                            <div class="col-xs-6">
+                                <input class="form-control form-control-sm" disabled type="text" value="" id="jenis-faktor-show" disabled>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+
+                        <div class="row">
+                            <label for="example-date-input" class="col-sm-6 bold">Tanggal Mulai Berlaku</label>
+
+                            <div class="col-xs-6">
+                                <input class="form-control form-control-sm" disabled  type="text" value="" id="tgl-mulai-show" >
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label for="example-date-input" class="col-sm-6 bold">Periode Mulai Berlaku</label>
+
+                            <div class="col-xs-6">
+                                <input class="form-control form-control-sm" disabled  type="text" value="" id="periode-mulai-show" >
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-lg-12 bold" small>Detail Data</div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-block">
+                                <div class="scroll-y" style="height: 250px;">
+                                    <div id="div-copied-table-fs">
+                                    <table class="table table-bordered datatable2" id="tabel-show-fs">
+                                    </table>
+                                    </div>
+                                    <div id="div-copied-table-fpr">
+                                        <table class="table table-bordered datatable2 " id="tabel-show-fpr">
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                    </div>
+                    <div class="col-lg-6">
+                    </div>
+                    <div class="col-lg-6">
+
+                    </div>
+
+                    <div class="row"></div>
+                    <div class="col-lg-12">
+                        <div class="row">
+                            <label for="example-date-input" class="col-xs-3">Total Data</label>
+
+                            <div class="col-xs-3">
+                                <input class="form-control form-control-sm" type="text" id="total-data-show" disabled>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bd-example-modal3" tabindex="-1" id="modal-edit" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title small bold" id="myModalLabel">Data Mutasi Perubahan FPr/FS</h4>
+            </div>
+            <div class="modal-body">
+                <form id="form-edit">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="row">
+                            <label for="example-date-input"  class="col-sm-4 bold">Tanggal Mutasi</label>
+
+                            <div class="col-xs-6">
+                                <input class="form-control form-control-sm" disabled type="text" value="" name="parTglMutasi" id="tgl-mutasi-edit" disabled>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+
+                        <div class="row">
+                            <label for="example-date-input" class="col-sm-4 bold">Periode Mutasi</label>
+
+                            <div class="col-xs-6">
+                                <input class="form-control form-control-sm" disabled  type="text" name="parPeriodeMutasi" id="periode-mutasi-edit" >
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class="col-lg-4" id="label-status-validasi">
+                        ...
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <hr/>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-8">
+                        <small class="bold">Data Peserta</small>
+                    </div>
+                    <div class="col-lg-4">
+                        <small class="bold">Data Penerima MP</small>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="row">
+                            <label for="example-text-input" class="col-sm-6">NIP-Nama Peserta</label>
+
+                            <div class="col-xs-6">
+                                <input class="form-control form-control-sm" type="text" disabled value="Artisanal kale" id="nip-nama-peserta-edit">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label for="example-text-input" class="col-sm-6">Jenis Kelamin</label>
+
+                            <div class="col-xs-6">
+                                <input class="form-control form-control-sm" type="text" disabled value="Perempuan" id="jenis-kelamin-edit">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label for="example-search-input" class="col-xs-6">Tgl. Lahir Peserta</label>
+                            <div class="col-xs-6">
+                                <input class="form-control form-control-sm" disabled type="text" value="28/10/1986" id="tgl-lahir-peserta-edit">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label for="example-search-input" class="col-xs-6">Tgl. Mulai Bekerja</label>
+                            <div class="col-xs-6">
+                                <input class="form-control form-control-sm" disabled type="text" value="01/01/2000" id="tgl-mulai-bekerja-edit">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="row">
+                            <label for="example-search-input" class="col-xs-6" >Tgl. Berhenti Bekerja/Wafat</label>
+                            <div class="col-xs-6">
+                                <input class="form-control form-control-sm" disabled type="text" value="01/01/2014" id="tgl-henti-kerja-edit">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label for="example-text-input" class="col-sm-6" >Usia Peserta Saat Berhenti</label>
+
+                            <div class="col-xs-6">
+                                <input class="form-control form-control-sm" disabled type="text" value="48 00" id="usia-henti-edit">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label for="example-text-input" class="col-sm-6">Masa Kerja Total</label>
+
+                            <div class="col-xs-6">
+                                <input class="form-control form-control-sm" disabled type="text" value="32 01" id="masa-kerja-total-edit">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label for="example-text-input" class="col-sm-6">PhDP</label>
+
+                            <div class="col-xs-6">
+                                <input class="form-control form-control-sm" disabled type="text" value="" id="phdp-edit">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="row">
+                            <label for="example-search-input" class="col-xs-6">ID-Nama Penerima MP</label>
+                            <div class="col-xs-6">
+                                <input class="form-control form-control-sm" disabled type="text" value="" id="id-nama-penerima-edit">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label for="example-search-input" class="col-xs-6" >Jenis Penerima MP</label>
+                            <div class="col-xs-6">
+                                <input class="form-control form-control-sm" disabled type="text" value="" id="jenis-penerima-edit">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label for="example-text-input" class="col-sm-6" >Tanggal Lahir Penerima</label>
+
+                            <div class="col-xs-6">
+                                <input class="form-control form-control-sm" disabled type="text" value="48 00" id="tgl-lahir-penerima-edit">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label for="example-text-input" class="col-sm-6">Usia Penerima Saat Dibayar</label>
+
+                            <div class="col-xs-6">
+                                <input class="form-control form-control-sm" disabled type="text" value="32 01" id="usia-bayar-edit">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12"><br></div>
+                    <div class="col-lg-8">
+                        <small class="bold">Pembayaran MP Bulanan</small>
+                    </div>
+                    <div class="col-lg-4">
+                        <small class="bold">Informasi Perubahan Faktor</small>
+                    </div>
+
+
+                    <div class="col-lg-4">
+                        <div class="row">
+                            <label for="example-text-input" class="col-sm-6">MP Lama</label>
+
+                            <div class="col-xs-6">
+                                <input class="form-control form-control-sm" disabled type="text" value="" id="mp-lama-edit">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label for="example-text-input" class="col-sm-6">MP Baru</label>
+
+                            <div class="col-xs-6">
+                                <input class="form-control form-control-sm" type="text" disabled value="" id="mp-baru-edit">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+
+                        <div class="row">
+                            <label for="example-text-input" class="col-sm-6">MP Kurang Bayar</label>
+
+                            <div class="col-xs-6">
+                                <input class="form-control form-control-sm" disabled type="text" value="" id="mp-kurang-bayar-edit">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label for="example-text-input" class="col-sm-6">MP Lebih Bayar</label>
+
+                            <div class="col-xs-6">
+                                <input class="form-control form-control-sm" disabled type="text" value="" id="mp-lebih-bayar-edit">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+
+                        <div class="row">
+                            <label for="example-text-input" class="col-sm-6">NS Lama</label>
+
+                            <div class="col-xs-6">
+                                <input class="form-control form-control-sm" disabled type="text" value="" id="ns-lama-edit">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label for="example-text-input" class="col-sm-6">NS Baru</label>
+
+                            <div class="col-xs-6">
+                                <input class="form-control form-control-sm" disabled type="text" value="" id="ns-baru-edit">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-8">
+                        <hr/>
+                    </div>
+                    <div class="col-lg-4">
+                        <hr/>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="row">
+                            <label for="example-text-input" class="col-sm-6">MPS 20% Lama</label>
+
+                            <div class="col-xs-6">
+                                <input class="form-control form-control-sm" type="text" disabled value="" id="mps20-lama-edit">
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <label for="example-text-input" class="col-sm-6">MPS 20% Baru</label>
+
+                            <div class="col-xs-6">
+                                <input class="form-control form-control-sm" type="text" disabled value="" id="mps20-baru-edit">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+
+                        <div class="row">
+                            <label for="example-text-input" class="col-sm-6">Kurang Bayar MPS 20%</label>
+
+                            <div class="col-xs-6">
+                                <input class="form-control form-control-sm" type="text" disabled value="" id="kurang-bayar-mps20-edit">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label for="example-text-input" class="col-sm-6">Lebih Bayar MPS 20%</label>
+
+                            <div class="col-xs-6">
+                                <input class="form-control form-control-sm" type="text" disabled value="" id="lebih-bayar-mps20-edit">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+
+                        <div class="row">
+                            <label for="example-text-input" class="col-sm-6">FPr Lama</label>
+
+                            <div class="col-xs-6">
+                                <input class="form-control form-control-sm" disabled type="text" value="" id="fpr-lama-edit">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label for="example-text-input" class="col-sm-6">FPr Baru</label>
+
+                            <div class="col-xs-6">
+                                <input class="form-control form-control-sm" disabled type="text" value="" id="fpr-baru-edit">
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-lg-12">
+                        <hr/>
+                    </div>
+
+                    <div class="col-lg-4">
+                        <div class="row">
+                            <label for="example-text-input" class="col-sm-6">MPS 10 Juta Lama</label>
+
+                            <div class="col-xs-6">
+                                <input class="form-control form-control-sm" type="text" disabled value="" id="mps-10juta-lama-edit">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label for="example-text-input" class="col-sm-6">MPS 10 Juta Baru</label>
+
+                            <div class="col-xs-6">
+                                <input class="form-control form-control-sm" type="text" disabled value="" id="mps-10juta-baru-edit">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="row">
+                            <label for="example-text-input" class="col-sm-6">Kurang Bayar MPS 10 Juta</label>
+
+                            <div class="col-xs-6">
+                                <input class="form-control form-control-sm" type="text" disabled value="" id="kurang-bayar-mps10-juta-edit">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label for="example-text-input" class="col-sm-6">Lebih Bayar MPS 10 Juta</label>
+
+                            <div class="col-xs-6">
+                                <input class="form-control form-control-sm" type="text" disabled value="" id="lebih-bayar-mps10-juta-edit">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-8">
+                        <hr/>
+                    </div>
+                    <div class="col-lg-8">
+
+                        <div class="row">
+                            <label for="example-text-input" class="col-sm-3">MPS 100% Lama</label>
+
+                            <div class="col-xs-3">
+                                <input class="form-control form-control-sm" disabled type="text" value="" id="mps100-lama-edit">
+                            </div>
+
+                            <label for="example-text-input" class="col-sm-3">Kurang Bayar MPS 100%</label>
+
+                            <div class="col-xs-3">
+                                <input class="form-control form-control-sm" disabled type="text" value="" id="kurang-bayar-mps100-edit">
+                            </div>
+                        </div>
+
+
+                        <div class="row">
+                            <label for="example-text-input" class="col-sm-3">MPS 100% Baru</label>
+
+                            <div class="col-xs-3">
+                                <input class="form-control form-control-sm" disabled type="text" value="" id="mps100-baru-edit">
+                            </div>
+
+                            <label for="example-text-input" class="col-sm-3">Lebih Bayar MPS 100%</label>
+
+                            <div class="col-xs-3">
+                                <input class="form-control form-control-sm" disabled type="text" value="" id="lebih-bayar-mps100-edit">
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-lg-8">
+                        <hr/>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card card-block">
+
+                                <div class="col-lg-12">
+                                    <label class="radio-inline">
+                                        <input type="radio" name="parIdValidasi" id="id-validasi-1" value="1" />
+                                        Belum Validasi
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="parIdValidasi" id="id-validasi-2" value="2"/>
+                                        Sudah Validasi
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="parIdValidasi" id="id-validasi-3" value="3"/>
+                                        Batal Koreksi
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="parIdValidasi" id="id-validasi-7" value="7"/>
+                                        Batal Validasi
+                                    </label>
+                                    <input type="hidden" name="parNamaValidasi" id="nama-validasi-update">
+                                </div>
+
+                                <div class="col-lg-6">
+                                    Kategori Catatan
+                                    <select class="form-control form-control-sm" name="parIdKategoriCatatan" id="tab3IdKategoriCatatan">
+                                        <option></option>
+                                    </select>
+                                    <input type="hidden" name="parNamaKategoriCatatan" id="tab3NamaKategoriCatatan">
+                                </div>
+                                <div class="col-lg-6">
+                                    Catatan
+                                    <textarea class="form-control  form-control-sm" id="keterangan-edit" name="parKeterangan" rows="3" ></textarea>
+                                </div>
+                                <div class="col-lg-12"><br></div>
+                                <div class="col-lg-12">
+                                    <label for="example-date-input" class="col-xs-5">User Stamp</label>
+
+                                    <div class="col-xs-7">
+                                        <input class="form-control form-control-sm" type="text" value="" id="user-stamp-edit" name="parUserStamp" disabled>
+
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <label for="example-date-input" class="col-xs-5">User Validasi</label>
+
+                                    <div class="col-xs-7">
+                                        <input class="form-control form-control-sm" type="text" value="" name="parUserName" id="user-name-edit" disabled>
+                                        <input type="hidden" name="parCompName" id="comp-name-edit">
+                                        <input type="hidden" name="parIdMutasi" id="id-edit">
+                                        <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                <a type="button" class="btn btn-primary btn-sm" id="btn-save-edit">Save</a>
+            </div>
+        </div>
+    </div>
+</div>
+{{/modal}}
+
+{{#scripts}}
+<script src="{{contextPath}}/assets/vendor/datatables/media/js/jquery.dataTables.js"></script>
+<script src="{{contextPath}}/assets/vendor/datatables/media/js/dataTables.bootstrap4.js"></script>
+<script src="{{contextPath}}/assets/vendor/select2/js/select2.js"></script>
+<script src="{{contextPath}}/assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+<script src="{{contextPath}}/assets/vendor/jquery-validation/dist/jquery.validate.js"></script>
+<script src="{{contextPath}}/assets/vendor/numeral/numeral.min.js"></script>
+<script src="{{contextPath}}/assets/vendor/sweetalert/sweetalert.min.js"></script>
+<script type="text/javascript">
+    var globalFile;
+    var Upload = function (file) {
+        this.file = file;
+    };
+
+    Upload.prototype.getType = function() {
+        return this.file.type;
+    };
+    Upload.prototype.getSize = function() {
+        return this.file.size;
+    };
+    Upload.prototype.getName = function() {
+        return this.file.name;
+    };
+    Upload.prototype.doUpload = function () {
+        var that = this;
+        var formData = new FormData();
+
+        // add assoc key values, this will be posts values
+        formData.append("file", this.file, this.getName());
+        formData.append("upload_file", true);
+        formData.append("_csrf", "{{_csrf.token}}");
+        formData.append("jenisFaktor", $('#jenis-faktor').val());
+
+        $.ajax({
+            type: "POST",
+            url: "{{contextPath}}/api/mutasi-perubahan-fpr/upload",
+            xhr: function () {
+                var myXhr = $.ajaxSettings.xhr();
+                if (myXhr.upload) {
+
+                }
+                return myXhr;
+            },
+            success: function (data) {
+                loader($("body"), false);
+                swal("Upload berhasil.");
+                let jenisPotongan = $('#jenis-faktor').val();
+                showUploadedDataTable(jenisPotongan);
+                $('#total-data').val(data.data.totalRow);
+                $('#jumlah').val(data.data.jumlah);
+                $('#periode-mutasi').val(data.data.periodeMutasi);
+            },
+            error: function (error) {
+                loader($("body"), false);
+                swal("Upload gagal");
+            },
+            async: true,
+            data: formData,
+            cache: false,
+            contentType: false,
+            processData: false,
+            timeout: 0
+        });
+    };
+
+    $('#btn-upload').on('click', () => {
+        var jenisPotongan = $('#jenis-faktor').val();
+        var upload = new Upload(globalFile);
+
+        $.validator.addMethod('matchFileType', () => {
+            if(globalFile.type == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'){
+                return true;
+            } else
+                return false;
+        });
+
+        $.validator.addMethod('fileNameContain', () => {
+            let status = false;
+            let type = $('#jenis-faktor').val();
+            let fileName = globalFile.name.toLowerCase();
+            if (type == 'fs'){
+                status = (fileName.includes('fs')) || (fileName.includes('fs'));
+            } else {
+                status = fileName.includes(type);
+            }
+
+            return status;
+
+        });
+
+        $('#modal-upload-form').validate();
+        $('#pilih-file').rules("add", {
+            required: true,
+            matchFileType: true,
+            fileNameContain: true,
+            messages: {
+                required: 'File tidak boleh kosong.',
+                matchFileType: 'Tipe file yang diizinkan adalah .xlsx',
+                fileNameContain: 'Penamaan file yang diupload tidak sesuai dengan jenis faktor. Sorot di <a onmouseover="swal(\'Contoh untuk tipe FS, maka nama filenya harus mengandung kata fs. Misalnya, fs-sep-2019.xlsx.\');"><strong><u>sini</u></strong></a> untuk info lebih lanjut.'
+            }
+        });
+
+
+        let validForm = $('#modal-upload-form').valid();
+
+        if (validForm){
+           console.log('berhasil');
+            upload.doUpload();
+            loader($("body"), true);
+
+        }
+    });
+
+    $("#pilih-file").on("change", function (e) {
+        globalFile = $(this)[0].files[0];
+    });
+
+    function showUploadedDataTable(type) {
+
+        if (type == 'fs'){
+            $('#show-temp-fs').show();
+            $('#show-temp-fpr').hide();
+            let t = dkppDataTable($('#tabel-temp-fs'), "{{contextPath}}/api/mutasi-perubahan-fpr/temp_faktor_fs", {
+                "searching": true,
+                destroy: true,
+                ajax: {url: "", "dataSrc": "content"},
+                columns: [
+                    {
+                        title: "Usia(Tahun)",
+                        data: "tahun"
+                    },
+                    {
+                        title: "Usia(Bulan)",
+                        data: "bulan"
+                    },
+                    {
+                        title: "Pria Lajang",
+                        data: "priaL"
+                    },
+                    {
+                        title: "Pria Kawin",
+                        data: "priaK"
+                    },
+                    {
+                        title: "Wanita Lajang",
+                        data: "wanitaL"
+                    },
+                    {
+                        title: "Wanita Kawin",
+                        data: "wanitaK"
+                    },
+                    {
+                        title: "Anak Pria",
+                        data: "anakL"
+                    },
+                    {
+                        title: "Anak Wanita",
+                        data: "anakP"
+                    },
+                    {
+                        title: "User Stamp",
+                        data: "userStamp"
+                    },
+                ]
+            });
+
+        } else if (type == "fpr"){
+            $('#show-temp-fs').hide();
+            $('#show-temp-fpr').show();
+            let t = $('#tabel-temp-fpr').DataTable({
+                "searching": true,
+                destroy: true,
+                ajax: {url: "{{contextPath}}/api/mutasi-perubahan-fpr/temp_faktor_fpr", "dataSrc": "content"},
+                columns: [
+                    {
+                        title: "Usia Fk",
+                        data: "usiaFk"
+                    },
+                    {
+                        title: "Faktor Kurang",
+                        data: "fkurang"
+                    },
+                    {
+                        title: "User Stamp",
+                        data: "userStamp"
+                    }
+                ]
+            });
+        }
+    }
+
+    function showModalUpload() {
+        $('#modal-upload').modal('show');
+        $('#modal-upload-form').trigger("reset");
+        $('#form-summary').trigger("reset");
+        $('.hidden-on-init').hide();
+        $.ajax({
+            url: '{{contextPath}}{{listPeriodeSetupParameter}}',
+            dataType: 'json',
+            method: 'GET',
+            success: (data)=>{
+                $('#tgl-upload').val(data.tglMutasi);
+                $('#comp-name').val(data.compName);
+                $('#user-name').val(data.userName);
+            }
+        });
+
+    }
+
+    function copyData() {
+
+        $('#modal-upload-form2').validate();
+        $('#total-data').rules("add", {
+            required: true,
+            messages: {required: 'Tidak boleh kosong. Upload file yang benar untuk mengisi field ini.'}
+        });
+
+        let validForm = $('#modal-upload-form2').valid();
+
+        if (validForm)
+            loader($("body"), true);
+            $.ajax({
+                url: "{{contextPath}}/api/mutasi-perubahan-fpr/copy_data",
+                data: {
+                    jenisFaktor: $('#jenis-faktor').val(),
+                    tglUpload: $('#tgl-upload').val(),
+                    tglMulaiBerlaku:$('#tgl-mulai-input').val(),
+                    periodeMulai: $('#periode-mulai').val(),
+                    totalRow: $('#total-data').val(),
+                    namaFaktor: $('#nama-faktor').val(),
+                    keterangan: $('#keterangan-faktor-input').val(),
+                    compName: $('#comp-name').val(),
+                    userName: $('#user-name').val(),
+                },
+                success: (data)=>{
+                    loader($("body"), false);
+                    swal("Data Berhasil Ditambahkan.");
+
+                    $('#tabel-hasil-upload').DataTable().ajax.reload();
+
+                    $('#modal-upload').modal('hide');
+
+                    console.log("sukses",data);
+                },
+                failure: (data) => {
+                    loader($("body"), false);
+                    alert(data);
+                }
+            });
+    }
+
+    $(document).ready(function() {
+
+        $('#periode-mulai').on("keypress keyup blur",function (event) {
+            $(this).val($(this).val().replace(/[^\d].+/, ""));
+            if ((event.which < 48 || event.which > 57)) {
+                event.preventDefault();
+            }
+        });
+        $('#periode-proses').on("keypress keyup blur",function (event) {
+            $(this).val($(this).val().replace(/[^\d].+/, ""));
+            if ((event.which < 48 || event.which > 57)) {
+                event.preventDefault();
+            }
+        });
+        $('#show-temp-fs').hide();
+        $('#show-temp-fpr').hide();
+
+        var aktuariaFsTabel = dkppDataTable($('#tabel-aktuaria-fs'),'{{contextPath}}/api/aktuaria-fs',{
+            destroy: true,
+            'columns':[
+                {"data":"idFaktorFs.tglAwal"},
+                {"data":"usiaFs"},
+                {"data":"idFaktorFs.id"},
+                {"data":"fsPrialajang"},
+                {"data":"fsPriakawin"},
+                {"data":"fsWanitalajang"},
+                {"data":"fsWanitakawin"},
+                {"data":"fsPriaanak"},
+                {"data":"fsWanitaanak"},
+                {"data":"userStamp"},
+
+            ],
+            'columnDefs':[
+                {
+                    "targets": [0],
+                    "render": function(data, type, row, meta) {
+                        return data && moment(data).format("DD/MM/YYYY");
+                    }
+                },
+
+            ],
+            "order": [[ 1, 'asc' ]],
+
+        });
+
+
+        var pembayaranMpTabel = dkppDataTable($('#table-aktuaria-fpr'),'{{contextPath}}/api/aktuariafpr',{
+            'columns':[
+                {"data":"idfaktorfpr.tglawal"},
+                {"data":"usia"},
+                {"data":"idfaktorfpr.id"},
+                {"data":"nilaifpr"},
+                {"data":"userStamp"},
+
+            ],
+            'columnDefs':[
+                {
+                    "targets": [0],
+                    "render": function(data, type, row, meta) {
+                        return data && moment(data).format("DD/MM/YYYY");
+                    }
+                },
+
+            ],
+            "order": [[ 1, 'asc' ]],
+
+        });
+        pembayaranMpTabel.on( 'order.dt search.dt', function () {
+            pembayaranMpTabel.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+                cell.innerHTML = i+1;
+            } );
+        } ).draw();
+
+        var hasilUploadTabel = dkppDataTable($('#tabel-hasil-upload'),'{{contextPath}}/api/mutasi-perubahan-fpr/index',{
+            'columns':[
+                {"data":"tglUpload"},
+                {"data":"tglMulaiBerlaku"},
+                {"data":"periodeMulai"},
+                {"data":"jenisFaktor"},
+                {"data":"totalData"},
+                {"data":"keteranganFaktor"},
+                {"data":"userStamp"},
+                {"data":"id"},
+
+
+            ],
+            'columnDefs':[
+                {
+                    "targets": [0,1],
+                    "render": function(data, type, row, meta) {
+                        return data && moment(data).format("DD/MM/YYYY");
+                    }
+                },
+                {
+                    targets: -1,
+                    "render": function(data, type, row, meta){
+                        return `<button class="btn btn-primary btn-sm" onclick=showUploadedData("` + row.id + `") ><i class="fa fa-eye" ></i>Lihat Data</button>`;
+                    }
+                }
+
+            ],
+            "order": [[ 1, 'asc' ]],
+
+        });
+
+        var hasilUploadTabel = dkppDataTable($('#tabel-mutasi-perubahan-fprfs'),'{{contextPath}}/api/mutasi-perubahan-fpr/index-tab4',{
+            'columns':[
+                {"data":"tglMutasi"},
+                {"data":"periodeMutasi"},
+                {"data":"nip"},
+                {"data":"namaPeserta"},
+                {"data":"namaPenerimaMp"},
+                {"data":"namaKategoriPenerimaMp"},
+                {"data":"idJenisMps.id"},
+                {"data":"idFaktorFprLama.namafaktor"},
+                {"data":"idFaktorFprBaru.namafaktor"},
+                {"data":"idFaktorFsLama.namaFaktorFs"},
+                {"data":"idFaktorFsBaru.namaFaktorFs"},
+                {"data":"idValidasi.namaValidasi"},
+                {"data":"id"},
+
+            ],
+            'columnDefs':[
+                {
+                    "targets": [0],
+                    "render": function(data, type, row, meta) {
+                        return data && moment(data).format("DD/MM/YYYY");
+                    }
+                },
+                {
+                    "targets": [6],
+                    "data":"idJenisMps.id",
+                    "render": function(data, type, row, meta) {
+                        strOut = "";
+                        if (data !=5 ){
+                            strOut = `<span> ya </span>`;
+                        }else if (data ==5) {
+                            strOut = `<span> tidak </span>`;
+                        }else {
+                            strOut = `-`;
+                        }
+                        return strOut;
+                    }
+                },
+                {
+                    "targets": [7],
+                    "render": function(data, type, row, meta) {
+                        if (row.idFaktorFprLama != null){
+                            return row.idFaktorFprLama.namafaktor;
+                        }else {
+                            return `-`;
+                        }
+                    }
+                },
+                {
+                    "targets": [8],
+                    "render": function(data, type, row, meta) {
+                        if (row.idFaktorFprBaru != null){
+                            return row.idFaktorFprBaru.namafaktor;
+                        }else {
+                            return `-`;
+                        }
+                    }
+                },
+                {
+                    "targets": [9],
+                    "render": function(data, type, row, meta) {
+                        if (row.idFaktorFsLama != null){
+                            return row.idFaktorFsLama.namaFaktorFs;
+                        }else {
+                            return `-`;
+                        }
+                    }
+                },
+                {
+                    "targets": [10],
+                    "render": function(data, type, row, meta) {
+                        if (row.idFaktorFsBaru != null){
+                            return row.idFaktorFsBaru.namaFaktorFs;
+                        }else {
+                            return `-`;
+                        }
+                    }
+                },
+                {
+                    "targets": 11,
+                    "render": function(data, type, row, meta) {
+                        if("Belum Diproses" == data){
+                            return `<span class="tag tag-pill tag-warning">Belum Diproses</span>`;
+                        }else if("Belum Validasi" == data){
+                            return `<span class="tag tag-pill tag-info">Belum Validasi</span>`;
+                        }else if("Batal Validasi" == data){
+                            return `<span class="tag tag-pill tag-danger">Batal Validasi</span>`;
+                        }else if("Sudah Validasi" == data){
+                            return `<span class="tag tag-pill tag-success">Sudah Validasi</span>`;
+                        } else {
+                            return `<span class="tag tag-pill tag-info">`+data+`</span>`;
+                        }
+                    }
+                },
+                {
+                    "targets": -1,
+                    "data": 'id',
+                    "render": function(data, type, row, meta){
+                        let paramEdit = JSON.stringify(row);
+                        return `<a class="btn btn-primary btn-sm" data-toggle="modal" onclick='displayEditModal(`+ paramEdit +`)'><i class="fa fa-edit"></i> <span>Edit</span></a>`
+                    }
+                },
+            ],
+            "order": [[ 1, 'asc' ]],
+
+        });
+
+
+        $.ajax({
+            url: '{{contextPath}}/api/setupparameter/get_periode',
+            dataType:'json',
+            method:'GET',
+            success:function (data) {
+                console.log(data);
+                dataPeriode = data;
+                $('#tgl-mutasi-proses').val(data.tglMutasi);
+                $('#user-name-proses').val(data.userName);
+                $('#comp-name-proses').val(data.compName);
+                $('#user-name-diproses').val(data.userName);
+
+            }
+        });
+
+    });
+
+    function showUploadedData(id){
+        var mainTable = $('#tabel-hasil-upload').DataTable();
+        let uploadPotongan = mainTable.rows().data().filter((data) => {return data.id == id})[0];
+
+        console.log("data param",uploadPotongan);
+        $('#modal-show-fs').modal('show');
+        $('#tgl-upload-show').val(uploadPotongan.tglUpload && moment(uploadPotongan.tglUpload).format("DD/MM/YYYY"));
+        $('#jenis-faktor-show').val(uploadPotongan.jenisFaktor);
+        $('#tgl-mulai-show').val(uploadPotongan.tglMulaiBerlaku && moment(uploadPotongan.tglMulaiBerlaku).format("DD/MM/YYYY"));
+        $('#periode-mulai-show').val(uploadPotongan.periodeMulai);
+        $('#total-data-show').val(uploadPotongan.totalData);
+        showCopiedDataTable(uploadPotongan);
+
+
+    }
+
+    $('#btn-proses').on('click', ()=>{
+        $('#form-proses').validate();
+        $('#periode-proses').rules("add", {
+            required: true,
+            messages: {
+                required: 'masukan periode mutasi.'
+            }
+        });
+        let validForm = $('#periode-proses').valid();
+        if(validForm){
+
+            $.ajax({
+                url: "{{contextPath}}/api/mutasi-perubahan-fpr/sp-proses",
+                method: 'POST',
+                data: formToJSON($("form#form-proses")[0].elements)
+            }).success(function(data) {
+                console.log("berhasil");
+                if(data.status == "success") {
+                    swal({title: "Berhasil", text: data.message, icon: "success", button: "OK"});
+                }else if(data.status == "failed") {
+                    swal({title: "Gagal", text: data.message, icon: "error", button: "OK"});
+                }
+                $('#tabelPembayaran').dataTable.ajax.reload();
+
+            }).error(function(data){
+                console.log("gagal",data);
+                swal({title: "Gagal", text: data.responseJSON.message, icon: "error", button: "OK"});
+                // if(data.message != undefined )
+                //     swal({title: "Gagal", text: data.message, icon: "error", button: "OK"});
+                // else
+                //     swal({title: "Gagal", text: "Terjadi Kesalahan", icon: "error", button: "OK"});
+                $('#tabelPembayaran').DataTable().ajax.reload();
+            });
+        }
+
+    });
+
+    function showCopiedDataTable(param) {
+        console.log("data untuk tabel",param);
+        let type = param.jenisFaktor;
+        let data={
+            userStamp: param.idFs
+        };
+        if (type == 'fs'){
+            $('#div-copied-table-fs').show();
+            $('#div-copied-table-fpr').hide();
+
+            let t = dkppDataTable($('#tabel-show-fs'),'{{contextPath}}/api/mutasi-perubahan-fpr/copied_fs/'+param.idFs,{
+                destroy: true,
+                "searching": true,
+                columns: [
+                    {
+                        title: "Usia",
+                        data: "usiaFs"
+                    },
+                    {
+                        title: "Pria Lajang",
+                        data: "fsPrialajang"
+                    },
+                    {
+                        title: "Pria Kawin",
+                        data: "fsPriakawin"
+                    },
+                    {
+                        title: "Wanita Lajang",
+                        data: "fsWanitalajang"
+                    },
+                    {
+                        title: "Wanita Kawin",
+                        data: "fsWanitakawin"
+                    },
+                    {
+                        title: "Pria Anak",
+                        data: "fsPriaanak"
+                    },
+                    {
+                        title: "Wanita Anak",
+                        data: "fsWanitaanak"
+                    },
+
+                    {
+                        title: "User Stamp",
+                        data: "userStamp"
+                    },
+                ],
+                columnDefs: [
+                ],
+
+            },
+                'USIA_FS,ASC');
+        } else if (type == "fpr"){
+            $('#div-copied-table-fs').hide();
+            $('#div-copied-table-fpr').show();
+
+            let t = dkppDataTable($('#tabel-show-fpr'),'{{contextPath}}/api/mutasi-perubahan-fpr/copied_fpr/'+param.idFpr,{
+                "searching": true,
+                destroy: true,
+                columns: [
+                    {
+                        title: "Usia Fk",
+                        data: "usia"
+                    },
+                    {
+                        title: "Faktor Kurang",
+                        data: "nilaifpr"
+                    },
+                    {
+                        title: "User Stamp",
+                        data: "userStamp"
+                    }
+                ],
+                columnDefs: [
+
+                ]
+            },'USIA_FPR,ASC');
+        }
+    }
+
+    function displayEditModal(data) {
+        window.DkppGlobal2 = {};
+        window.DkppGlobal2.isPejabat = {{isPejabat}};
+        window.DkppGlobal2.isAdmin = {{isAdmin}};
+        window.DkppGlobal2.isStaff = {{isStaff}};
+        console.log("data edit", data);
+        $('#modal-edit').modal('show');
+        $('#tgl-mutasi-edit').val(data.tglMutasi && moment(data.tglMutasi).format("DD/MM/YYYY"));
+        $('#periode-mutasi-edit').val(data.periodeMutasi);
+        $('#nip-nama-peserta-edit').val(data.nip+"-"+data.namaPeserta);
+        $('#tgl-henti-kerja-edit').val(data.tglHentiKerja && moment(data.tglHentiKerja).format("DD/MM/YYYY"));
+        $('#id-nama-penerima-edit').val(data.idPenerimaMp+"-"+data.namaPenerimaMp);
+        $('#jenis-kelamin-edit').val(data.jenisKelamin);
+        $('#usia-henti-edit').val(data.usiaSaatHentiBulat);
+        $('#jenis-penerima-edit').val(data.idKategoriPenerimaMp.namaKategoriPenerima);
+        $('#tgl-lahir-peserta-edit').val(data.tglLahir && moment(data.tglLahir).format("DD/MM/YYYY"));
+        $('#tgl-lahir-penerima-edit').val(data.tglLahirPenerimaMp && moment(data.tglLahirPenerimaMp).format("DD/MM/YYYY"));
+        $('#tgl-mulai-bekerja-edit').val(data.tglMulaiKerja && moment(data.tglMulaiKerja).format("DD/MM/YYYY"));
+        $('#masa-kerja-total-edit').val(data.masaKerjaTotal);
+        $('#usia-bayar-edit').val(data.usiaPenerimaBayarBulat);
+        $('#phdp-edit').val(data.phdp && numeral(data.phdp).format("0,0.00"));
+
+        $('#mp-lama-edit').val(data.mpPerbulanRumus && numeral(data.mpPerbulanRumus).format("0,0.00"));
+        $('#mp-baru-edit').val(data.mpPerbulanRumusBaru && numeral(data.mpPerbulanRumusBaru).format("0,0.00"));
+        $('#mps20-lama-edit').val(data.mps20persenLama && numeral(data.mps20persenLama).format("0,0.00"));
+        $('#mps20-baru-edit').val(data.mps20persenBaru && numeral(data.mps20persenBaru).format("0,0.00"));
+        $('#mps-10juta-lama-edit').val(data.mps10jtLama && numeral(data.mps10jtLama).format("0,0.00"));
+        $('#mps-10juta-baru-edit').val(data.mps10jtBaru && numeral(data.mps10jtBaru).format("0,0.00"));
+        $('#mps100-lama-edit').val(data.mps100persenLama && numeral(data.mps100persenLama).format("0,0.00"));
+        $('#mps100-baru-edit').val(data.mps100persenBaru && numeral(data.mps100persenBaru).format("0,0.00"));
+        $('#mp-kurang-bayar-edit').val(data.kurangBayarMpyd && numeral(data.kurangBayarMpyd).format("0,0.00"));
+        $('#mp-lebih-bayar-edit').val(data.lebihBayarMpyd && numeral(data.lebihBayarMpyd).format("0,0.00"));
+        $('#kurang-bayar-mps20-edit').val(data.kurangBayarMps20persen && numeral(data.kurangBayarMps20persen).format("0,0.00"));
+        $('#lebih-bayar-mps20-edit').val(data.lebihBayarMps20persen && numeral(data.lebihBayarMps20persen).format("0,0.00"));
+        $('#kurang-bayar-mps10-juta-edit').val(data.kurangBayarMps10jt && numeral(data.kurangBayarMps10jt).format("0,0.00"));
+        $('#lebih-bayar-mps10-juta-edit').val(data.lebihBayarMps10jut && numeral(data.lebihBayarMps10jut).format("0,0.00"));
+        $('#kurang-bayar-mps100-edit').val(data.kurangBayarMps100persen && numeral(data.kurangBayarMps100persen).format("0,0.00"));
+        $('#lebih-bayar-mps100-edit').val(data.lebihBayarMps100persen && numeral(data.lebihBayarMps100persen).format("0,0.00"));
+        $('#ns-lama-edit').val(data.nilaiFsLama);
+        $('#ns-baru-edit').val(data.nilaiFsBaru );
+        $('#fpr-lama-edit').val(data.nilaiFprLama );
+        $('#fpr-baru-edit').val(data.nilaiFprBaru);
+        $('#keterangan-edit').val(data.keterangan);
+        $('#id-edit').val(data.id);
+        $('#nama-validasi-update').val(data.namaValidasi);
+        $('#tab3NamaKategoriCatatan').val(data.namaKategoriCatatan);
+
+        $.ajax({
+            url: '{{contextPath}}/api/setupparameter/get_periode',
+            dataType:'json',
+            method:'GET',
+            success:function (data) {
+                console.log(data);
+                dataPeriode = data;
+                $('#user-stamp-edit').val(data.putModeUserStamp);
+                $('#user-name-edit').val(data.userName);
+                $('#comp-name-edit').val(data.compName);
+
+            }
+        });
+
+        switch(data.idValidasi.id){
+            case 1:
+                $('#id-validasi-1').prop('checked', true);
+                $('#label-status-validasi').html(`<span class="tag tag-pill tag-info pull-right">Belum Validasi</span>`);
+                break;
+            case 2:
+                $('#id-validasi-2').prop('checked', true);
+                $('#label-status-validasi').html(`<span class="tag tag-pill tag-info pull-right">Sudah Validasi</span>`);
+                break;
+            case 3:
+                $('#id-validasi-3').prop('checked', true);
+                $('#label-status-validasi').html(`<span class="tag tag-pill tag-info pull-right">Batal Koreksi</span>`);
+                break;
+            case 7:
+                $('#id-validasi-7').prop('checked', true);
+                $('#label-status-validasi').html(`<span class="tag tag-pill tag-info pull-right">Batal Validasi</span>`);
+                break;
+        }
+
+        $('#id-validasi-1').unbind().on('change', function(){
+            $('#nama-validasi-update').val('Belum Validasi');
+        });
+        $('#id-validasi-2').unbind().on('change', function(){
+            $('#nama-validasi-update').val('Sudah Validasi');
+        });
+        $('#id-validasi-3').unbind().on('change', function(){
+            $('#nama-validasi-update').val('Batal Koreksi');
+        });
+        $('#id-validasi-7').unbind().on('change', function(){
+            $('#nama-validasi-update').val('Batal Validasi');
+        });
+
+        $('[name="parIdValidasi"]').attr('disabled', 'disabled');
+
+        if(window.DkppGlobal2.isPejabat == true) {
+            $('#id-validasi-1').removeAttr('disabled');
+            $('#id-validasi-2').removeAttr('disabled');
+            $('#id-validasi-3').removeAttr('disabled');
+            $('#id-validasi-7').removeAttr('disabled');
+
+        } else if (window.DkppGlobal2.isStaff == true) {
+            $('#id-validasi-1').removeAttr('disabled');
+
+            $('#id-validasi-3').removeAttr('disabled');
+
+        }
+
+        $.ajax({
+            url:  '{{contextPath}}{{listKategoriCatatan}}',
+            method: 'GET',
+            data: {
+                valueColumn: 'id',
+                textColumn: "${id} - ${namaKategoriCatatan}",
+                searchColumn: [
+                    'namaKategoriCatatan'
+                ],
+                referenceValue: [
+                    {
+                        column: "id",
+                        table: "kategoriMutasi",
+                        value: 27
+                    }
+                ],
+                includeObject: true
+            },
+            success: function(data){
+                console.log("data catatan");
+                console.log(data);
+                $('#tab3IdKategoriCatatan').select2(
+                    {
+                        data: data,
+                        width: "100%",
+                        placeholder: 'Pilih Kategori Catatan'
+                    }
+                );
+                $('#tab3IdKategoriCatatan').on('change', (e)=>{
+                    if ($(e.target).select2('data')){
+                        const data = $(e.target).select2('data')[0];
+                        if ($('#tab3IdKategoriCatatan').val() != '' && $('#tab3IdKategoriCatatan').val() != null) {
+                            $('#tab3NamaKategoriCatatan').val(data.dataProperties.namaKategoriCatatan)
+                        }
+                    }
+                });
+                $('#tab3IdKategoriCatatan').val(data.idKategoriCatatan==null?"":data.idKategoriCatatan.id).trigger('change');
+            }
+        });
+
+        $('#btn-save-edit').unbind().on('click', function () {
+            console.log('save');
+            $('#form-edit').validate();
+            $('#tab3IdKategoriCatatan').rules("add", {
+                required: true,
+                messages: {
+                    required: 'catatan diperlukan.'
+                }
+            });
+            $('#keterangan-edit').rules("add", {
+                required: true,
+                messages: {
+                    required: 'keterangan diperlukan.'
+                }
+            });
+            let validForm = $('#form-edit').valid();
+            if (validForm){
+                console.log('lolos validasi');
+
+                $.ajax({
+                    url: "{{contextPath}}/api/mutasi-perubahan-fpr/edit-proses",
+                    method: "POST",
+                    data: formToJSON($("form#form-edit")[0].elements)
+                }).success(function(data) {
+                    console.log("berhasil");
+                    $('#modal-edit').modal('hide');
+                    if (data.status = "success"){
+                        swal({title:"Berhasil",text:data.message, icon:"success", button:"OK"});
+                    }
+                    $('#tabel-mutasi-perubahan-fprfs').DataTable().ajax.reload();
+
+                }).error(function (data) {
+                    console.log("gagal");
+                    if (data.message = undefined)
+                        swal({title: "Gagal", text: data.message, icon: "error", button: "OK"});
+                    else
+                        swal({title: "Gagal", text: "Terjadi kegagalan.", icon: "error", button: "OK"});
+
+                });
+            }
+        });
+
+    }
+
+</script>
+{{/scripts}}
+
+{{/layout}}

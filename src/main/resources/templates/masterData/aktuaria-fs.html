@@ -1,0 +1,316 @@
+{{#layout}}
+
+{{#styles}}
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/googleapis/css/component.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/googleapis/css/googleapis.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/select2/css/select2.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css">
+{{/styles}}
+
+{{#title}}
+Master Aktuaria FS - DKPP
+{{/title}}
+
+
+<div class="card">
+    <div class="card-header">
+        <div class="col-md-12">
+            <div class="row pull-right">
+                <a class="btn btn-primary btn-icon btn-sm" id="btn-add"><i class="material-icons">add</i> Add</a>
+            </div>
+        </div>
+    </div>
+    <div class="card-block">
+        <div class="table-responsive">
+            <table class="table table-bordered datatable dataTable no-footer" id="keluarga_table"
+                   role="grid">
+                <thead>
+                <tr role="row">
+                    <th>
+                        Usia
+                    </th>
+                    <th>
+                        Faktor FS
+                    </th>
+                    <th>
+                        FS Pria Lajang
+                    </th>
+                    <th>
+                        FS Pria Kawin
+                    </th>
+                    <th>
+                        FS Wanita Lajang
+                    </th>
+                    <th>
+                        FS Wanita Kawin
+                    </th>
+                    <th>
+                        FS Pria Anak
+                    </th>
+                    <th>
+                        FS Wanita Anak
+                    </th>
+                    <th>
+                        Active
+                    </th>
+                    <th>
+                        Action
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{{#modal}}
+<div class="modal fade faktor-fs-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title small bold" id="myModalLabel">Form Aktuaria FS</h4>
+            </div>
+            <div class="modal-body">
+                <form id="aktuariaFsForm">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <input type="hidden" name="id" id="id">
+                            <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
+
+                            <div class="form-group row">
+                                <label for="usia-fs" class="col-sm-3 bold">Usia</label>
+                                <div class="col-xs-4">
+                                    <input class="form-control form-control-sm" type="number" name="usia" id="usia-fs">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="id-faktor-fs" class="col-sm-3 bold">Faktor FS</label>
+                                <div class="col-sm-6">
+                                    <select class="form-control form-control-sm" name="idFaktorFs" id="id-faktor-fs">
+                                        <option></option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="fs-prialajang" class="col-sm-3 bold">FS Pria Lajang</label>
+                                <div class="col-xs-4">
+                                    <input class="form-control form-control-sm" type="number" name="fsPrialajang" id="fs-prialajang">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="fs-priakawin" class="col-sm-3 bold">FS Pria Kawin</label>
+                                <div class="col-xs-4">
+                                    <input class="form-control form-control-sm" type="number" name="fsPriakawin" id="fs-priakawin">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="fs-wanitalajang" class="col-sm-3 bold">FS Wanita Lajang</label>
+                                <div class="col-xs-4">
+                                    <input class="form-control form-control-sm" type="number" name="fsWanitalajang" id="fs-wanitalajang">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="fs-wanitakawin" class="col-sm-3 bold">FS Wanita Kawin</label>
+                                <div class="col-xs-4">
+                                    <input class="form-control form-control-sm" type="number" name="fsWanitakawin" id="fs-wanitakawin">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="fs-priaanak" class="col-sm-3 bold">FS Pria Anak</label>
+                                <div class="col-xs-4">
+                                    <input class="form-control form-control-sm" type="number" name="fsPriaanak" id="fs-priaanak">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="fs-wanitaanak" class="col-sm-3 bold">FS Wanita Anak</label>
+                                <div class="col-xs-4">
+                                    <input class="form-control form-control-sm" type="number" name="fsWanitaanak" id="fs-wanitaanak">
+                                </div>
+                            </div>
+
+                            <div class="form-group row checkbox-show-hide">
+                                <label for="checkbox-active" class="col-sm-3 bold">Active</label>
+                                <div class="col-xs-6">
+                                    <label class="custom-control custom-checkbox m-b-1">
+                                        <input type="checkbox" class="custom-control-input" name="active" id="checkbox-active">
+                                        <span class="custom-control-indicator"></span>
+                                    </label>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="saveForm()">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+{{/modal}}
+
+{{#scripts}}
+<script src="{{contextPath}}/assets/vendor/datatables/media/js/jquery.dataTables.js"></script>
+<script src="{{contextPath}}/assets/vendor/datatables/media/js/dataTables.bootstrap4.js"></script>
+<script src="{{contextPath}}/assets/vendor/select2/js/select2.js"></script>
+<script src="{{contextPath}}/assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+<script src="{{contextPath}}/assets/vendor/sweetalert/sweetalert.min.js"></script>
+
+<script type="text/javascript">
+    window.RESTFulMode = "";
+    var selected = 0;
+
+    function showPrintOptions(){
+        $('#printOptionsModal').modal('show');
+    }
+
+    $('#btn_ok_print').unbind().on('click', function(){
+        $('#printOptionsModal').modal('hide');
+        $('#pdfReportModal').modal('show');
+    });
+
+    $('#filter_form').hide();
+
+    var aktuariaFsTable = dkppDataTable($('.datatable'), '{{contextPath}}/api/aktuaria-fs', {
+        'columns': [
+            { "data": "usia" },
+            { "data": "namaFaktorFs" },
+            { "data": "fsPrialajang" },
+            { "data": "fsPriakawin" },
+            { "data": "fsWanitalajang" },
+            { "data": "fsWanitakawin" },
+            { "data": "fsPriaanak" },
+            { "data": "fsWanitaanak" },
+            { "data": "active", "ordering": false },
+            { "data": "id"}
+        ],
+        'columnDefs': [
+            {
+                "targets": -1,
+                "data": "id",
+                "render": function(data, type, row, meta){
+                    return "<a class='btn btn-info btn-sm btn-icon btn-edit' onclick='displayEditModal(" + row.id + ")'><i class='material-icons'>edit</i> Edit</a>";
+                }
+            },
+            {
+                "targets": -2,
+                "data": "active",
+                "render": function(data, type, row, meta){
+                    if(data == true)
+                        return '<span class="tag tag-pill tag-success">active</span>';
+                    else
+                        return '<span class="tag tag-pill tag-danger">not active</span>';
+                }
+            }
+        ]
+    });
+
+    function displayEditModal(id) {
+        $('.checkbox-show-hide').show();
+        const aktuariaFs = aktuariaFsTable.rows().data().filter((data) => {return data.id === id})[0];
+        const aktuariaFsForm = $("form#aktuariaFsForm");
+
+        $.ajax({
+            url: '{{contextPath}}/data/faktor-fs',
+            method: 'GET',
+            success: function(data){
+                $('#id-faktor-fs').select2(
+                    {
+                        data: data,
+                        width: "50%",
+                        placeholder: 'Pilih Faktor FS'
+                    }
+                ).val(aktuariaFs.idFaktorFs).trigger('change');
+            }
+
+        });
+
+        $("#usia-fs").val(aktuariaFs.usia);
+        $("#fs-prialajang").val(aktuariaFs.fsPrialajang);
+        $("#fs-priakawin").val(aktuariaFs.fsPriakawin);
+        $("#fs-wanitalajang").val(aktuariaFs.fsWanitalajang);
+        $("#fs-wanitakawin").val(aktuariaFs.fsWanitakawin);
+        $("#fs-priaanak").val(aktuariaFs.fsPriaanak);
+        $("#fs-wanitaanak").val(aktuariaFs.fsWanitaanak);
+        $("#id").val(aktuariaFs.id);
+        $('.faktor-fs-modal').modal({backdrop: 'static', keyboard: false}).modal('show');
+        $("#checkbox-active")[0].checked = aktuariaFs.active;
+        window.RESTFulMode = "PUT";
+    }
+
+    function saveForm() {
+        $.ajax({
+            url: "{{contextPath}}/api/aktuaria-fs",
+            method: window.RESTFulMode,
+            data: formToJSON($("form#aktuariaFsForm")[0].elements)
+        }).success(function(data) {
+            $('.faktor-fs-modal').modal('hide');
+            if(data.status == "success") {
+                swal({title: "Berhasil", text: data.message, icon: "success", button: "OK"});
+            }
+            aktuariaFsTable.ajax.reload();
+        }).error(function(data){
+            if(data.message != undefined )
+                swal({title: "Gagal", text: data.message, icon: "error", button: "OK"});
+            else
+                swal({title: "Gagal", text: "Terjadi kegagalan.", icon: "error", button: "OK"});
+        });
+    }
+
+    $(document).ready(function(){
+        $('#btn-add').unbind().on('click', function(){
+            $("#id").val("");
+
+            $("#usia-fs").val("");
+            $("#id-faktor-fs").val("");
+            $("#fs-prialajang").val("");
+            $("#fs-priakawin").val("");
+            $("#fs-wanitalajang").val("");
+            $("#fs-wanitakawin").val("");
+            $("#fs-priaanak").val("");
+            $("#fs-wanitaanak").val("");
+            $('.faktor-fs-modal').modal({backdrop: 'static', keyboard: false}).modal('show');
+            $("#checkbox-active")[0].checked = true;
+            var modal = $('.faktor-fs-modal');
+            $('.checkbox-show-hide').hide();
+            modal.modal('show');
+            window.RESTFulMode = 'POST';
+        });
+
+        //select2 init
+        $('#id-faktor-fs').select2({
+            ajax: {
+                url: '{{contextPath}}/data/faktor-fs',
+                dataType: 'json',
+                delay: 250,
+                processResults: function(data){
+                    return {
+                        results: data
+                    };
+                }
+            },
+            width: "50%",
+            placeholder: 'Pilih Faktor FS'
+        });
+    });
+</script>
+{{/scripts}}
+
+{{/layout}}

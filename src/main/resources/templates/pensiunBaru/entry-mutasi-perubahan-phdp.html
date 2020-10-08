@@ -1,0 +1,1025 @@
+{{#layout}} 
+{{#styles}}
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/googleapis/css/component.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/googleapis/css/googleapis.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/select2/css/select2.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/bootstrap-datepicker/dist/css/bootstrap-datepicker.css">
+{{/styles}} 
+
+{{#title}} Mutasi Perubahan PhDP/Merit Increase - DKPP{{/title}}
+
+<div class="card">
+    <div class="card-block">
+        <div class="col-lg-12">
+            <input type="hidden" id="idMutasi" name="idMutasi" value="{{dto.id}}">
+            <input type="hidden" id="validasi" name="validasi" value="{{dto.statusValidasi.id}}">
+            <input type="hidden" id="namaValidasi" name="namaValidasi" value="{{dto.statusValidasi.namaValidasi}}">
+            <input type="hidden" id="keteranganOtomatisUpdate" name="keteranganOtomatisUpdate" value="{{dto.keteranganOtomatis}}">
+            <input type="hidden" id="idKategoriPensiun" name="idKategoriPensiun" value="">
+            <input type="hidden" id="idJenisMps" value="">
+            <input type="hidden" id="idKantorBayar" value="{{dto.idKantorBayar}}">
+
+            <div class="card card-block">
+                    <div class="row margin-clear">
+                        <label for="periodeMutasi" class="col-sm-3">Periode Mutasi</label>
+                        <div class="col-xs-3">
+                            <input class="form-control form-control-sm" disabled id="periodeMutasi" name="periodeMutasi" value="{{dto.periodeMutasi}}">
+                        </div>
+
+                        <label for="tglInput" class="col-sm-3">Tanggal Input</label>
+                        <div class="col-xs-3">
+                            <input class="form-control form-control-sm" disabled type="text" id="tglInput" name="tglInput" value="{{formdto.tanggalInput}}">
+                        </div>
+                    </div>
+                </div>
+        </div>
+        <div class="col-lg-12">
+            <div class="card">
+                    <div class="card-header">
+                        <strong>Data Peserta</strong>
+                    </div>
+                    <div class="card-block">
+
+                        <div class="col-lg-6">
+                            <div class="row margin-clear">
+                                <label for="nip" class="col-sm-6">NIP</label>
+                                {{#dto.id}}
+                                <div class="col-xs-6">
+                                    <input class="form-control form-control-sm" type="text" disabled id="nip" name="nip" value="{{dto.nip}}">
+                                </div>
+                                {{/dto.id}}
+                                {{^dto.id}}
+                                <div class="col-xs-6">
+                                    <select name="nip" id="nip" class="form-control form-control-sm">
+                                        <option></option>
+                                    </select>
+                                </div>
+                                {{/dto.id}}
+                            </div>
+                            <div class="row margin-clear">
+                                <label for="namaPeserta" class="col-sm-6">Nama Peserta</label>
+                                <div class="col-xs-6">
+                                    <input class="form-control form-control-sm" type="text" disabled id="namaPeserta" name="namaPeserta" value="{{dto.namaPeserta}}">
+                                </div>
+                            </div>
+                            <div class="row margin-clear">
+                                <label for="jenisKelaminPeserta" class="col-sm-6">Jenis Kelamin</label>
+                                <div class="col-xs-6">
+                                    <input type="hidden" id="jenisKelaminPeserta" value="{{dto.jenisKelaminPeserta}}">
+                                    <input type="text" class="form-control form-control-sm" id="namaJenisKelaminPeserta" name="namaJenisKelaminPeserta" disabled>
+                                </div>
+                            </div>
+                            <div class="row margin-clear">
+                                <label for="tglLahirPeserta" class="col-xs-6">Tgl. Lahir Peserta</label>
+                                <div class="col-xs-6">
+                                    <input class="form-control form-control-sm" disabled type="text" id="tglLahirPeserta" name="tglLahirPeserta" value="{{dto.tglLahirPeserta}}">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="row margin-clear">
+                                <label for="tglMulaiBekerja" class="col-xs-6">Tgl. Mulai Bekerja</label>
+                                <div class="col-xs-6">
+                                    <input class="form-control form-control-sm" disabled type="text" id="tglMulaiBekerja" name="tglMulaiBekerja" value="{{dto.tglKerjaPeserta}}">
+                                </div>
+                            </div>
+                            <div class="row margin-clear">
+                                <label for="tglBerhentiBekerja" class="col-xs-6">Tgl. Berhenti Bekerja/Wafat</label>
+                                <div class="col-xs-6">
+                                    <input class="form-control form-control-sm" disabled type="text" id="tglBerhentiBekerja" name="tglBerhentiBekerja" value="{{dto.tglHentiKerjaPeserta}}">
+                                </div>
+                            </div>
+                            <div class="row margin-clear">
+                                <label for="usiaPesertaSaatBerhenti" class="col-sm-6">Usia Peserta Saat Berhenti</label>
+                                <div class="col-xs-6">
+                                    <input class="form-control form-control-sm" disabled type="text" id="usiaPesertaSaatBerhenti" name="usiaPesertaSaatBerhenti" value="{{dto.usiaSaatHenti}}">
+                                </div>
+                            </div>
+                            <div class="row margin-clear">
+                                <label for="masaKerjaTotal" class="col-sm-6">Masa Kerja Total</label>
+                                <div class="col-xs-6">
+                                    <input class="form-control form-control-sm" disabled type="text" id="masaKerjaTotal" name="masaKerjaTotal" value="{{dto.masaKerjaHenti}}">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+        </div>
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    <strong>Data Penerima MP</strong>
+                </div>
+                <div class="card-block">
+                    <div class="col-lg-6">
+                        <div class="row margin-clear">
+                            <label for="namaPenerima" class="col-sm-6">ID-Nama Penerima</label>
+                            <div class="col-xs-6">
+                                <input type="hidden" id="idPenerimaMp" name="idPenerimaMp" value="{{dto.penerimaMp}}">
+                                <input class="form-control form-control-sm" type="text" disabled id="namaPenerima" name="namaPenerima" value="{{dto.penerimaMP}} - {{dto.namaPenerimaMP}}">
+                            </div>
+                        </div>
+                        <div class="row margin-clear">
+                            <label for="statusPernikahan" class="col-sm-6">Kategori Penerima MP</label>
+                            <div class="col-xs-6">
+                                <input class="form-control form-control-sm" type="text" disabled id="statusPernikahanPenerimaMp" name="statusPernikahanPenerimaMp" value="{{dto.namaKategoriPenerimaMp}}">
+                            </div>
+                        </div>
+                        <div class="row margin-clear">
+                            <label for="statusPernikahan" class="col-sm-6">Status Pernikahan</label>
+                            <div class="col-xs-6">
+                                <input class="form-control form-control-sm" type="text" disabled id="statusPernikahan" name="statusPernikahan" value="{{dto.statusKawin.statusKawin}}">
+                            </div>
+                        </div>
+                        <div class="row margin-clear">
+                            <label for="tglLahirPenerima" class="col-xs-6">Tgl. Lahir Penerima</label>
+                            <div class="col-xs-6">
+                                <input class="form-control form-control-sm" type="text" disabled id="tglLahirPenerima" name="tglLahirPenerima" value="{{dto.tglLahirPenerimaMP}}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="row margin-clear">
+                            <label for="usiaPenerimaSaatDiBayar" class="col-sm-6">Usia Penerima Saat Dibayar</label>
+                            <div class="col-xs-6">
+                                <input class="form-control form-control-sm" type="text"  disabled id="usiaPenerimaSaatDiBayar" name="usiaPenerimaSaatDiBayar" value="{{dto.usiaPenerimaBayar}}">
+                            </div>
+                        </div>
+                        <div class="row margin-clear">
+                            <label for="nilaifaktorPengurang" class="col-sm-6">Faktor Pengurang</label>
+                            <div class="col-xs-3">
+                                <input class="form-control form-control-sm" type="text" disabled id="nilaifaktorPengurang" name="nilaifaktorPengurang" value="{{dto.nilaiFpr}}">
+                            </div>
+                            <div class="col-xs-3">
+                                <input class="form-control form-control-sm" type="text" disabled id="faktorPengurang" name="faktorPengurang" value="{{dto.namaFaktorFpr}}">
+                            </div>
+                        </div>
+                        <div class="row margin-clear">
+                            <label for="faktorNS" class="col-sm-6">Faktor NS</label>
+
+                            <div class="col-xs-3">
+                                <input class="form-control form-control-sm" disabled type="text" id="nilaifaktorNS" name="nilaifaktorNS" value="{{dto.nilaiFs}}">
+                            </div>
+                            <div class="col-xs-3">
+                                <input class="form-control form-control-sm" disabled type="text" id="faktorNS" name="faktorNS" value="{{dto.namaFaktorFs}}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="card card-block">
+                    <h6>History Pembayaran MP</h6>
+                    <div class="col-lg-6"></div>
+                    <div class="row margin-clear">
+                        <div class="card">
+                            <div class="card-header">
+                                MP
+                                <div class="card-controls">
+                                    <a href="javascript:;" class="card-collapse" data-toggle="card-collapse"></a>
+                                </div>
+                            </div>
+                            <div class="card-block">
+                                <div class="table-responsive">
+                                    <table class="table table-sm" id="">
+                                        <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Periode</th>
+                                            <th>MP</th>
+                                            <th>Kurang Bayar</th>
+                                            <th>Lebih Bayar</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                    </div>
+                    <div class="row margin-clear">
+                        <div class="card">
+                            <div class="card-header">
+                                MPS 20%
+                                <div class="card-controls">
+                                    <a href="javascript:;" class="card-collapse" data-toggle="card-collapse"></a>
+                                </div>
+                            </div>
+                            <div class="card-block">
+                                <div class="table-responsive">
+                                    <table class="table table-sm">
+                                        <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Periode</th>
+                                            <th>MP</th>
+                                            <th>Kurang Bayar</th>
+                                            <th>Lebih Bayar</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row margin-clear">
+                        <div class="card">
+                            <div class="card-header">
+                                MPS 10 Juta
+                                <div class="card-controls">
+                                    <a href="javascript:;" class="card-collapse" data-toggle="card-collapse"></a>
+                                </div>
+                            </div>
+                            <div class="card-block">
+                                <div class="table-responsive">
+                                    <table class="table table-sm">
+                                        <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Periode</th>
+                                            <th>MP</th>
+                                            <th>Kurang Bayar</th>
+                                            <th>Lebih Bayar</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row margin-clear">
+                        <div class="card">
+                            <div class="card-header">
+                                MPS 100%
+                                <div class="card-controls">
+                                    <a href="javascript:;" class="card-collapse" data-toggle="card-collapse"></a>
+                                </div>
+                            </div>
+                            <div class="card-block">
+                                <div class="table-responsive">
+                                    <table class="table table-sm">
+                                        <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Periode</th>
+                                            <th>MP</th>
+                                            <th>Kurang Bayar</th>
+                                            <th>Lebih Bayar</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+        <div class="col-lg-6">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <strong>Merit Increase</strong>
+                            </div>
+                            <div class="card-block">
+                                <div class="col-lg-12">
+                                    <div class="row margin-clear">
+                                        <label for="phDPLama" class="col-sm-6">PhDP Lama</label>
+                                        <div class="col-xs-6">
+                                            <input class="form-control form-control-sm" disabled type="text"  id="phDPLama" name="phDPLama" value="{{dto.phdpLama}}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="row margin-clear">
+                                        <label for="phDPBaru" class="col-sm-6">PhDP Baru</label>
+
+                                        <div class="col-xs-6">
+                                            <input class="form-control form-control-sm" type="text" id="phDPBaru" name="phDPBaru" value="{{dto.phdpBaru}}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="row margin-clear">
+                                        <label for="tglMulaiBerlakuPhDP" class="col-sm-6">Tgl. Mulai Berlaku PhDP</label>
+                                        <div class="col-xs-6">
+                                            <input class="form-control form-control-sm" type="text" id="tglMulaiBerlakuPhDP" name="tglMulaiBerlakuPhDP" value="{{dto.tglAwalBayar}}" disabled>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row margin-clear">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <strong>Pembayaran MP Bulanan</strong>
+                            </div>
+                            <div class="card-block">
+                                <div class="col-lg-6">
+                                    <div class="row margin-clear">
+                                        <label for="example-text-input" class="col-sm-6">MP Lama</label>
+                                        <div class="col-xs-6">
+                                            <input class="form-control form-control-sm" disabled type="text" id="mpLama" name="mpLama" value="{{dto.mpydLama}}">
+                                        </div>
+                                    </div>
+                                    <div class="row margin-clear"></div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="row margin-clear">
+                                        <label for="example-text-input" class="col-sm-6">MP Baru</label>
+
+                                        <div class="col-xs-6">
+                                            <input class="form-control form-control-sm" type="text" disabled id="mpBaru" name="mpBaru" value="{{dto.mpydBaru}}">
+                                        </div>
+                                    </div>
+                                    <div class="row margin-clear">
+                                        <label for="example-text-input" class="col-sm-6">MP Kurang Bayar / Bulan</label>
+                                        <div class="col-xs-6">
+                                            <input class="form-control form-control-sm" disabled type="text" id="mpKurangBayar" name="mpKurangBayar" value="{{dto.kurangBayarMPRumus}}">
+                                        </div>
+                                    </div>
+                                    <div class="row margin-clear">
+                                        <label for="example-text-input" class="col-sm-6">MP Lebih Bayar / Bulan</label>
+                                        <div class="col-xs-6">
+                                            <input class="form-control form-control-sm" disabled type="text" id="mpLebihBayar" name="mpLebihBayar" value="{{dto.lebihBayarMPRumus}}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <hr />
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="row margin-clear">
+                                        <label for="example-text-input" class="col-sm-6">MPS 20% Lama</label>
+                                        <div class="col-xs-6">
+                                            <input class="form-control form-control-sm" type="text" disabled id="mps20PercLama" name="mps20PercLama" value="{{dto.mps20PersenLama}}">
+                                        </div>
+                                    </div>
+                                    <div class="row margin-clear"></div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="row margin-clear">
+                                        <label for="example-text-input" class="col-sm-6">MPS 20% Baru</label>
+                                        <div class="col-xs-6">
+                                            <input class="form-control form-control-sm" type="text" disabled id="mps20PercBaru" name="mps20PercBaru" value="{{dto.mps20PersenBaru}}">
+                                        </div>
+                                    </div>
+                                    <div class="row margin-clear">
+                                        <label for="example-text-input" class="col-sm-6">Kurang Bayar MPS 20%</label>
+                                        <div class="col-xs-6">
+                                            <input class="form-control form-control-sm" type="text" disabled id="kurangBayarMps20Perc" name="kurangBayarMps20Perc" value="{{dto.kurangBayarMps20Persen}}">
+                                        </div>
+                                    </div>
+                                    <div class="row margin-clear">
+                                        <label for="example-text-input" class="col-sm-6">Lebih Bayar MPS 20%</label>
+                                        <div class="col-xs-6">
+                                            <input class="form-control form-control-sm" type="text" disabled id="lebihBayarMps20Perc" name="lebihBayarMps20Perc" value="{{dto.lebihBayarMps20Persen}}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <hr />
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="row margin-clear">
+                                        <label for="example-text-input" class="col-sm-6">MPS 10 Juta Lama</label>
+                                        <div class="col-xs-6">
+                                            <input class="form-control form-control-sm" type="text" disabled id="mps10JutaLama" name="mps10JutaLama" value="{{dto.mps10JutaLama}}">
+                                        </div>
+                                    </div>
+                                    <div class="row margin-clear"></div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="row margin-clear">
+                                        <label for="example-text-input" class="col-sm-6">MPS 10 Juta Baru</label>
+
+                                        <div class="col-xs-6">
+                                            <input class="form-control form-control-sm" type="text" disabled id="mps10JutaBaru" name="mps10JutaBaru" value="{{dto.mps10JutaBaru}}">
+                                        </div>
+                                    </div>
+                                    <div class="row margin-clear">
+                                        <label for="example-text-input" class="col-sm-6">Kurang Bayar MPS 10 Juta</label>
+                                        <div class="col-xs-6">
+                                            <input class="form-control form-control-sm" type="text" disabled id="kurangBayarMps10Juta" name="kurangBayarMps10Juta" value="{{dto.kurangBayarMPS10Juta}}">
+                                        </div>
+                                    </div>
+                                    <div class="row margin-clear">
+                                        <label for="example-text-input" class="col-sm-6">Lebih Bayar MPS 10 Juta</label>
+                                        <div class="col-xs-6">
+                                            <input class="form-control form-control-sm" type="text" disabled id="lebihBayarMps10Juta" name="lebihBayarMps10Juta" value="{{dto.lebihBayarMPS10Juta}}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <hr />
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="row margin-clear">
+                                        <label for="example-text-input" class="col-sm-6">MPS 100% Lama</label>
+                                        <div class="col-xs-6">
+                                            <input class="form-control form-control-sm" disabled type="text" id="mps100PercLama" name="mps100PercLama" value="{{dto.mps100PersenLama}}">
+                                        </div>
+                                    </div>
+                                    <div class="row margin-clear"></div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="row margin-clear">
+                                        <label for="example-text-input" class="col-sm-6">MPS 100% Baru</label>
+                                        <div class="col-xs-6">
+                                            <input class="form-control form-control-sm" disabled type="text" id="mps100PercBaru" name="mps100PercBaru" value="{{dto.mps100PersenBaru}}">
+                                        </div>
+                                    </div>
+                                    <div class="row margin-clear">
+                                        <label for="example-text-input" class="col-sm-6">Kurang Bayar MPS 100%</label>
+                                        <div class="col-xs-6">
+                                            <input class="form-control form-control-sm" disabled type="text" id="kurangBayarMps100perc" name="kurangBayarMps100perc" value="{{dto.kurangBayarMPS100Persen}}">
+                                        </div>
+                                    </div>
+                                    <div class="row margin-clear">
+                                        <label for="example-text-input" class="col-sm-6">Lebih Bayar MPS 100%</label>
+                                        <div class="col-xs-6">
+                                            <input class="form-control form-control-sm" disabled type="text" id="lebihBayarMps100perc" name="lebihBayarMps100perc" value="{{dto.lebihBayarMPS100Persen}}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <hr />
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="row margin-clear">
+                                        <label for="rapelMPYDKurang" class="col-sm-6">Rapel MPYD Kurang</label>
+                                        <div class="col-xs-6">
+                                            <input class="form-control form-control-sm" disabled type="text" id="rapelMPYDKurang" name="rapelMPYDKurang" value="{{dto.rapelMPYDKurang}}">
+                                        </div>
+                                    </div>
+                                    <div class="row margin-clear"></div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="row margin-clear">
+                                        <label for="rapelMPYDLebih" class="col-sm-6">Rapel MPYD Lebih</label>
+                                        <div class="col-xs-6">
+                                            <input class="form-control form-control-sm" disabled type="text" id="rapelMPYDLebih" name="rapelMPYDLebih" value="{{dto.rapelMPYDLebih}}">
+                                        </div>
+                                    </div>
+                                    <div class="row margin-clear"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <div class="col-md-12">
+                <div class="row margin-clear">
+                    <div class="col-lg-12">
+                        <div class="card card-block">
+                            <div class="col-lg-12">
+                                {{#isEdit}}
+                                <label class="radio-inline">
+                                    <input type="radio" name="idValidasi" id="id-validasi-1" value="1" {{^isStaf}}disabled{{/isStaf}}/>
+                                    Belum Validasi
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="idValidasi" id="id-validasi-2" value="2" {{#isStaf}}disabled{{/isStaf}}/>
+                                    Sudah Validasi
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="idValidasi" id="id-validasi-3" value="3" {{^isStaf}}disabled{{/isStaf}}/>
+                                    Batal Koreksi
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="idValidasi" id="id-validasi-7" value="7" {{#isStaf}}disabled{{/isStaf}}/>
+                                    Batal Validasi
+                                </label>
+                                {{/isEdit}}
+                                {{^isEdit}}
+                                <label class="radio-inline">
+                                    <input type="radio" name="idValidasi" id="id-validasi-1" value="1" checked="checked"/>
+                                    Belum Validasi
+                                </label>
+                                {{/isEdit}}
+                                <input type="hidden" name="namaValidasi" id="nama-validasi"/>
+
+                            </div>
+                            <div class="col-lg-6">
+                                Kategori Catatan
+                                <select class="form-control select2" id="kategoriCatatan" name="kategoriCatatan">
+                                    {{#kcList}}
+                                    <option value="{{id}}">{{namaKategoriCatatan}}</option>
+                                    {{/kcList}}
+                                </select>
+                            </div>
+                            <div class="col-lg-6">
+                                Catatan
+                                <textarea class="form-control " id="keterangan" name="keterangan" rows="3" >{{dto.keterangan}}</textarea>
+                            </div>
+                            <div class="col-lg-12">
+                                <br>
+                            </div>
+                            <div class="col-lg-12">
+                                <label for="userStamp" class="col-xs-5">User Stamp</label>
+                                <div class="col-xs-7">
+                                    <input class="form-control form-control-sm" type="text" id="userStamp" name="userStamp" value="{{dto.userStamp}}" disabled>
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <label for="userValidasi" class="col-xs-5">User Validasi</label>
+                                <div class="col-xs-7">
+                                    <input class="form-control form-control-sm" type="text" id="userValidasi" name="userValidasi" value="{{dto.userValidasi}}" disabled>
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <br>
+                            </div>
+                            <div class="col-lg-12">
+                                <a class="btn btn-default btn-sm" href="{{contextPath}}/pensiun-baru/mutasi-perubahan-phdp">
+                                    <i class="fa fa-undo" style="color:black"></i> Back
+                                </a>
+                                <div class="pull-right">
+                                    {{^isSudahValidasi}}
+                                    <button class="btn btn-primary btn-sm" style="padding-left: 5px" id="btnSave" name="btnSave">
+                                        <i class="fa fa-save"></i> Simpan
+                                    </button>
+                                    {{/isSudahValidasi}}
+                                    <button class="btn btn-primary btn-sm" id="cetakCat" onclick="cetakReport()">
+                                        <i class="fa fa-print"></i> Cetak Catatan
+                                    </button>
+                                    <button class="btn btn-primary btn-sm" id="cetakForm" onclick="cetakFormulir()">
+                                        <i class="fa fa-print"></i> Cetak Formulir
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+        <iframe style="display: none" id="cetakCatatan" name="cetakCatatan"></iframe>
+</div>
+{{#modal}}
+{{/modal}}
+{{#scripts}}
+<script src="{{contextPath}}/assets/vendor/datatables/media/js/jquery.dataTables.js"></script>
+<script src="{{contextPath}}/assets/vendor/datatables/media/js/dataTables.bootstrap4.js"></script>
+<script src="{{contextPath}}/assets/vendor/select2/js/select2.js"></script>
+<script src="{{contextPath}}/assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+<script src="{{contextPath}}/assets/vendor/jquery-validation/dist/jquery.validate.js"></script>
+<script src="{{contextPath}}/assets/scripts/helpers/tsf/js/tsf-wizard-plugin.js"></script>
+<script src="{{contextPath}}/assets/vendor/parsley/parsley.min.js"></script>
+<script src="{{contextPath}}/assets/vendor/sweetalert/sweetalert.min.js"></script>
+<script type="text/javascript">
+ $(document).ready(function(){
+	$("#tglMulaiBerlakuPhDP").datepicker({
+	    format: 'dd/mm/yyyy',
+	    autoclose : true
+	});
+
+     const phdpLamaElmnt = $('#phDPLama');
+     const phdpBaruElmnt = $('#phDPBaru');
+     const mpLamaElmnt = $('#mpLama');
+     const mpBaruElmnt = $('#mpBaru');
+     const mpKurangBayarElmnt = $('#mpKurangBayar');
+     const mpLebihBayarElmnt = $('#mpLebihBayar');
+     const mps20PercLamaElmnt = $('#mps20PercLama');
+     const mps20PercBaruElmnt = $('#mps20PercBaru');
+     const kurangBayarMps20PercElmnt = $('#kurangBayarMps20Perc');
+     const lebihBayarMps20PercElmnt = $('#lebihBayarMps20Perc');
+     const mps10JutaLamaElmnt = $('#mps10JutaLama');
+     const mps10JutaBaruElmnt = $('#mps10JutaBaru');
+     const kurangBayarMps10JutaElmnt = $('#kurangBayarMps10Juta');
+     const lebihBayarMps10JutaElmnt = $('#lebihBayarMps10Juta');
+     const mps100PercLamaElmnt = $('#mps100PercLama');
+     const mps100PercBaruElmnt = $('#mps100PercBaru');
+     const kurangBayarMps100percElmnt = $('#kurangBayarMps100perc');
+     const lebihBayarMps100percElmnt = $('#lebihBayarMps100perc');
+     const rapelMPYDKurangElmnt = $('#rapelMPYDKurang');
+     const rapelMPYDLebihElmnt = $('#rapelMPYDLebih');
+
+     const kategoriCatatanSelectTemplate = "${namaKategoriCatatan}";
+
+     phdpLamaElmnt.number(true,2);
+     phdpBaruElmnt.number(true,2);
+     mpLamaElmnt.number(true,2);
+     mpBaruElmnt.number(true,2);
+     mpKurangBayarElmnt.number(true,2);
+     mpLebihBayarElmnt.number(true,2);
+     mps20PercLamaElmnt.number(true,2);
+     mps20PercBaruElmnt.number(true,2);
+     kurangBayarMps20PercElmnt.number(true,2);
+     lebihBayarMps20PercElmnt.number(true,2);
+     mps10JutaLamaElmnt.number(true,2);
+     mps10JutaBaruElmnt.number(true,2);
+     kurangBayarMps10JutaElmnt.number(true,2);
+     lebihBayarMps10JutaElmnt.number(true,2);
+     mps100PercLamaElmnt.number(true,2);
+     mps100PercBaruElmnt.number(true,2);
+     kurangBayarMps100percElmnt.number(true,2);
+     lebihBayarMps100percElmnt.number(true,2);
+     rapelMPYDKurangElmnt.number(true,2);
+     rapelMPYDLebihElmnt.number(true,2);
+
+     {{#isSudahValidasi}}
+     $("#phDPBaru").prop("disabled","disabled");
+     {{/isSudahValidasi}}
+
+     {{#dto.id}}
+     $('#id-validasi-{{dto.statusValidasi.id}}').prop("checked","checked");
+     $('#tglMulaiBerlakuPhDP').val(fillDateField("{{dto.tglAwalBayar}}"));
+     const select2kategoriCatatan =  $("#kategoriCatatan").select2();
+     setSelectValue(select2kategoriCatatan, {{{kategoriCatatanDefaultSelect}}}, 'id', kategoriCatatanSelectTemplate);
+     //$('#kategoriCatatan').val('{{dto.kategoriCatatan.id}}').trigger('change');
+     var pesertaMPInsert = $('#nip').val();
+         $.ajax({
+             url: '{{contextPath}}/api/mpensiun/'+pesertaMPInsert,
+             dataType:'json',
+             method:'GET',
+             success:function (data) {
+                 $('#namaPeserta').val(data.namaPeserta);
+                 $('#tglLahirPeserta').val(fillDateField(data.tglLahirPeserta));
+                 $('#tglMulaiBekerja').val(fillDateField(data.tglKerjaPeserta));
+                 $('#tglBerhentiBekerja').val(fillDateField(data.tglHentiKerjaPeserta));
+                 {{^isEdit}}
+                 $('#tglMulaiBerlakuPhDP').val(fillDateField(data.dataProperties.tglAwalBayar));
+                 {{/isEdit}}
+                 $('#usiaPesertaSaatBerhenti').val(data.usiaSaatHentiBulat);
+                 $('#masaKerjaTotal').val(data.totalMasaKerjaBulat);
+                 $('#idPenerimaMp').val(data.idPenerimaMP);
+                 $('#namaPenerima').val(data.idPenerimaMP+ " - " + data.namaPenerimaMp);
+                 $('#statusPernikahan').val(data.namaStatusKawinPenerimaMp);
+                 $('#tglLahirPenerima').val(fillDateField(data.tglLahirPenerimaMp));
+                 $('#usiaPenerimaSaatDiBayar').val(data.usiaPenerimaBayarBulat);
+                 $('#faktorPengurang').val(data.namaFaktorFpr);
+                 $('#nilaifaktorPengurang').val(data.nilaiFpr);
+                 $('#faktorNS').val(data.namaFaktorFs);
+                 $('#nilaifaktorNS').val(data.nilaiFs);
+                 $('#jenisKelaminPeserta').val(data.jenisKelaminPeserta);
+                 $('#statusPernikahanPenerimaMp').val(data.namaKategoriPenerimaMp)
+                 if (data.jenisKelaminPeserta == "P"){
+                     $('#namaJenisKelaminPeserta').val("Pria");
+                 }else if (data.jenisKelaminPeserta == "W"){
+                     $('#namaJenisKelaminPeserta').val("Wanita");
+                 }
+                 $('#idJenisMps').val(data.jenisMps.id);
+                 $('#idKategoriPensiun').val(data.kategoriPensiun.id);
+                 // Ambil Data History Pembayaran MP
+                 $.ajax({
+                    url: '{{contextPath}}{{historyPembayaranMpPathApi}}',
+                    dataType: 'json',
+                    method: 'GET',
+                    data: { nip: data.nip},
+                    success: (data)=>{
+                        console.log("historyPemabyaranMp data",data.nip);
+                    }
+                 });
+             }
+         });
+
+
+
+     {{/dto.id}}
+     {{^dto.id}}
+
+         var pesertaMPInsert = $('#nip').select2({
+             ajax: {
+                 url: '{{contextPath}}{{listPesertaCombo}}',
+                 dataType: 'json',
+                 method: 'GET',
+                 data: function(params){
+                     return {
+                         searchParam: params.term,
+                         valueColumn: 'nip',
+                         textColumn: "${nip}-${namaPeserta}",
+                         searchColumn: [
+                             'nip',
+                             'namaPeserta'
+                         ],
+                         referenceValue:[
+                             {
+                                 column: "idStatusBayar",
+                                 value: 1
+                             }
+                         ],
+                         includeObject: true
+                     }
+                 },
+                 // dropdownParent: $(".mutasi-nama-penerima"),
+                 delay: 250,
+                 processResults: function(data){
+                     return {
+                         results: data
+                     };
+                 }
+             },
+             width: "100%",
+             placeholder: 'Pilih Peserta MP'
+         });
+
+         pesertaMPInsert.on('change', (e) => {
+             if ($(e.target).select2('data')){
+             const data = $(e.target).select2('data')[0];
+             console.log(data.dataProperties);
+             if (pesertaMPInsert.val() != '' && pesertaMPInsert.val() != null){
+                 $('#namaPeserta').val(data.dataProperties.namaPeserta);
+                 $('#tglLahirPeserta').val(fillDateField(data.dataProperties.tglLahirPeserta));
+                 $('#tglMulaiBekerja').val(fillDateField(data.dataProperties.tglKerjaPeserta));
+                 $('#tglBerhentiBekerja').val(fillDateField(data.dataProperties.tglHentiKerjaPeserta));
+                 $('#tglMulaiBerlakuPhDP').val(fillDateField(data.dataProperties.tglAwalBayar));
+                 $('#usiaPesertaSaatBerhenti').val(data.dataProperties.usiaSaatHentiBulat);
+                 $('#masaKerjaTotal').val(data.dataProperties.totalMasaKerjaBulat);
+                 $('#idPenerimaMp').val(data.dataProperties.idPenerimaMP);
+                 $('#namaPenerima').val(data.dataProperties.idPenerimaMP+ " - " + data.dataProperties.namaPenerimaMp);
+                 $('#statusPernikahan').val(data.dataProperties.namaStatusKawinPenerimaMp);
+                 $('#tglLahirPenerima').val(fillDateField(data.dataProperties.tglLahirPenerimaMp));
+                 $('#usiaPenerimaSaatDiBayar').val(data.dataProperties.usiaPenerimaBayarBulat);
+                 $('#faktorPengurang').val(data.dataProperties.namaFaktorFpr);
+                 $('#nilaifaktorPengurang').val(data.dataProperties.nilaiFpr);
+                 $('#faktorNS').val(data.dataProperties.namaFaktorFs);
+                 $('#nilaifaktorNS').val(data.dataProperties.nilaiFs);
+                 $('#phDPLama').val(data.dataProperties.phdp);
+                 $('#jenisKelaminPeserta').val(data.dataProperties.jenisKelaminPeserta);
+                 $('#statusPernikahanPenerimaMp').val(data.dataProperties.namaKategoriPenerimaMp)
+                 $('#idJenisMps').val(data.dataProperties.jenisMps.id);
+                 $('#idKategoriPensiun').val(data.dataProperties.kategoriPensiun.id);
+                 if (data.dataProperties.jenisKelaminPeserta == "P"){
+                     $('#namaJenisKelaminPeserta').val("Pria");
+                 }else if (data.dataProperties.jenisKelaminPeserta == "W"){
+                     $('#namaJenisKelaminPeserta').val("Wanita");
+                 }
+                 $.ajax({
+                     url: '{{contextPath}}{{historyPembayaranMpPathApi}}',
+                     dataType: 'json',
+                     method: 'GET',
+                     data: { nip: data.nip },
+                     success: (data)=>{
+                        console.log("historyPemabyaranMp data",data);
+                     }
+                 });
+             }
+            }
+         });
+
+     {{/dto.id}}
+
+     $('#jenisKelaminPeserta').change(function(){
+        if($('#jenisKelaminPeserta').val() == "P"){ $('#namaJenisKelaminPeserta').val("Pria") }
+        else if($('#jenisKelaminPeserta').val() == "W"){ $('#namaJenisKelaminPeserta').val("Wanita") }
+     });
+
+     $("#phDPBaru").blur(function(){
+         var phDPBaru = $("#phDPBaru").val();
+         var tglMulaiBerlakuPhDP = $("#tglMulaiBerlakuPhDP").val();
+
+         if(phDPBaru == null || phDPBaru == ""){
+             swal("","PhDP Baru tidak boleh kosong","error");
+             return;
+         }
+
+         if(tglMulaiBerlakuPhDP == null || tglMulaiBerlakuPhDP == ""){
+             swal("","Tgl Mulai Berlaku PhDP Baru tidak boleh kosong","error");
+             $("#tglMulaiBerlakuPhDP").focus();
+             return;
+         }
+
+         let tglBerlakuPhdpBaru = ddMmYyyyToJavaDateFormat($("#tglMulaiBerlakuPhDP").val());
+         let tglMutasi = ddMmYyyyToJavaDateFormat($("#tglInput").val());
+
+         {{#dto.statusValidasi}}
+            if ({{dto.statusValidasi.id}} != 2){
+             $.ajax({
+                 url: "{{contextPath}}/api/mutasi-perubahan-phdp/cufnMiSimulation",
+                 method: "GET",
+                 data: {
+                     "nip": $("#nip").val(),
+                     "phdpBaru": $("#phDPBaru").val(),
+                     "tglBerlakuPhdpBaru": tglBerlakuPhdpBaru,
+                     "tglMutasi": tglMutasi,
+                     "periodeMutasi": $("#periodeMutasi").val()
+                 }
+             }).done((response) => {
+                 var status = response.status;
+
+                if(status){
+                 var data = response.data;
+                 for(var i=0; i< data.length; i++){
+                     $("#mpLama").val(data[i].mpPerbulanRumusLama);
+                     $("#mpBaru").val(data[i].mpPerbulanRumusBaru);
+                     $("#mpKurangBayar").val(data[i].kurangBayarMPRumus);
+                     $("#mpLebihBayar").val(data[i].lebihBayarMPRumus);
+
+                     $("#mps20PercLama").val(data[i].mps20PersenLama);
+                     $("#mps20PercBaru").val(data[i].mps20PersenBaru);
+                     $("#kurangBayarMps20Perc").val(data[i].kurangBayarMPS20Persen);
+                     $("#lebihBayarMps20Perc").val(data[i].lebihBayarMPS20Persen);
+
+                     $("#mps100PercLama").val(data[i].mps100PersenLama);
+                     $("#mps10JutaBaru").val(data[i].mps10JutaBaru);
+                     $("#kurangBayarMps10Juta").val(data[i].kurangBayarMPS10Juta);
+                     $("#lebihBayarMps10Juta").val(data[i].lebihBayarMPS10Juta);
+
+                     $("#mps10JutaLama").val(data[i].mps10JutaLama);
+                     $("#mps100PercBaru").val(data[i].mps100PersenBaru);
+                     $("#kurangBayarMps100perc").val(data[i].kurangBayarMPS100Persen);
+                     $("#lebihBayarMps100perc").val(data[i].lebihBayarMPS100Persen);
+
+                     {{^isSudahValidasi}}
+                     $("#rapelMPYDKurang").val(data[i].rapelMPYDKurang);
+                     $("#rapelMPYDLebih").val(data[i].rapelMPYDLebih);
+                     {{/isSudahValidasi}}
+                 }
+                }else{
+                 swal("","Terjadi kesalahan, Ketika Menjalankan Mi Simulation","error");
+                }
+
+             }).error(() => {
+                 swal({title:"Gagal",text: "Terjadi kesalahan", icon:"error", button:"OK"});
+             });
+         }
+         {{/dto.statusValidasi}}
+         {{^dto.statusValidasi}}
+                 $.ajax({
+                     url: "{{contextPath}}/api/mutasi-perubahan-phdp/cufnMiSimulation",
+                     method: "GET",
+                     data: {
+                         "nip": $("#nip").val(),
+                         "phdpBaru": $("#phDPBaru").val(),
+                         "tglBerlakuPhdpBaru": tglBerlakuPhdpBaru,
+                         "tglMutasi": tglMutasi,
+                         "periodeMutasi": $("#periodeMutasi").val()
+                     }
+                 }).done((response) => {
+                     var status = response.status;
+
+                 if(status){
+                     var data = response.data;
+                     for(var i=0; i< data.length; i++){
+                         $("#mpLama").val(data[i].mpydLama);
+                         $("#mpBaru").val(data[i].mpydBaru);
+                         $("#mpKurangBayar").val(data[i].kurangBayarMPRumus);
+                         $("#mpLebihBayar").val(data[i].lebihBayarMPRumus);
+
+                         $("#mps20PercLama").val(data[i].mps20PersenLama);
+                         $("#mps20PercBaru").val(data[i].mps20PersenBaru);
+                         $("#kurangBayarMps20Perc").val(data[i].kurangBayarMPS20Persen);
+                         $("#lebihBayarMps20Perc").val(data[i].lebihBayarMPS20Persen);
+
+                         $("#mps100PercLama").val(data[i].mps100PersenLama);
+                         $("#mps10JutaBaru").val(data[i].mps10JutaBaru);
+                         $("#kurangBayarMps10Juta").val(data[i].kurangBayarMPS10Juta);
+                         $("#lebihBayarMps10Juta").val(data[i].lebihBayarMPS10Juta);
+
+                         $("#mps10JutaLama").val(data[i].mps10JutaLama);
+                         $("#mps100PercBaru").val(data[i].mps100PersenBaru);
+                         $("#kurangBayarMps100perc").val(data[i].kurangBayarMPS100Persen);
+                         $("#lebihBayarMps100perc").val(data[i].lebihBayarMPS100Persen);
+
+                         {{^isSudahValidasi}}
+                         $("#rapelMPYDKurang").val(data[i].rapelMPYDKurang);
+                         $("#rapelMPYDLebih").val(data[i].rapelMPYDLebih);
+                         {{/isSudahValidasi}}
+                         }
+                         }else{
+                             swal("","Terjadi kesalahan, Ketika Menjalankan Mi Simulation","error");
+                         }
+
+                     }).error(() => {
+                     swal({title:"Gagal",text: "Terjadi kesalahan", icon:"error", button:"OK"});
+             });
+
+         {{/dto.statusValidasi}}
+     });
+
+     {{#dto.id}}
+         if ($('#phDPBaru').val() != ""){
+             $('#phDPBaru').blur();
+         }
+     {{/dto.id}}
+
+ });
+
+ $("#btnSave").click(function(){
+     var phDPBaru = $("#phDPBaru").val();
+     var tglMulaiBerlakuPhDP = $("#tglMulaiBerlakuPhDP").val();
+     var kategoriCatatan = $("#kategoriCatatan").val();
+     var keterangan = $("#keterangan").val();
+
+     if(phDPBaru == null || phDPBaru == ""){
+         swal({text: "PhDP Baru tidak boleh kosong", icon: "error"});
+     }
+
+     if(tglMulaiBerlakuPhDP == null || tglMulaiBerlakuPhDP == ""){
+         swal("","Tgl Mulai Berlaku PhDP Baru tidak boleh kosong","error");
+         $("#tglMulaiBerlakuPhDP").focus();
+         return;
+     }
+
+     if(kategoriCatatan == null || kategoriCatatan == ""){
+         swal("","Kaategori Catatan Baru tidak boleh kosong","error");
+         $("#kategoriCatatan").focus();
+         return;
+     }
+
+     if(keterangan == null || keterangan == ""){
+         swal("","Keterangan tidak boleh kosong","error");
+         $("#keterangan").focus();
+         return;
+     }
+
+     $.ajax({
+         url: "{{contextPath}}/api/mutasi-perubahan-phdp/cuspMutasiPerubahanPhdp",
+         method: "GET",
+         data: {
+             "idMutasi": $("#idMutasi").val(),
+             "nip": $("#nip").val(),
+             "phdpBaru": $("#phDPBaru").val(),
+             "tglBerlakuPhdpBaru": $("#tglMulaiBerlakuPhDP").val(),
+             "tglMutasi": $("#tglInput").val(),
+             "periodeMutasi": $("#periodeMutasi").val(),
+             "kategoriCatatan": $("#kategoriCatatan").val(),
+             "keterangan": $("#keterangan").val(),
+             "keteranganOtomatisUpdate": $("#keteranganOtomatisUpdate").val(),
+             "validasi": $("input[name='idValidasi']:checked").val(),
+             "namaValidasi": $("#namaValidasi").val()
+         }
+     }).done((response) => {
+         var status = response.status;
+
+         if(status){
+             swal("",response.message,"success");
+             setTimeout(function(){
+                 window.location.href = "{{contextPath}}/pensiun-baru/mutasi-perubahan-phdp";
+             },2000);
+         }else{
+             swal("","Terjadi kesalahan","error");
+         }
+
+     }).error(() => {
+             swal({title:"Gagal",text: "Terjadi kesalahan", icon:"error", button:"OK"});
+     });
+ });
+
+ 
+ function toRp(bilangan){
+   var number_string = bilangan.toString(),
+       sisa 	= number_string.length % 3,
+       rupiah 	= number_string.substr(0, sisa),
+       ribuan 	= number_string.substr(sisa).match(/\d{3}/g);
+    			
+       if (ribuan) {
+    	separator = sisa ? '.' : '';
+    	rupiah += separator + ribuan.join('.');
+       }
+    	
+    return"Rp." + rupiah;
+}
+
+ function cetakReport() {
+     data = {
+         tipeReport: 'catatan_perhitungan_manfaat_pensiun',
+         nip: $('#nip').val(),
+         idKategoriPensiun: $('#idKategoriPensiun').val(),
+         idKategoriMutasi: '13',
+         idJenisMps: $('#idJenisMps').val(),
+         periodeMutasi: $('#periodeMutasi').val(),
+         idKantorBayar: $('#idKantorBayar').val()
+     };
+     const param = $.param(data);
+     console.log(param);
+     const reportFrame = $("#cetakCatatan");
+     const res = encodeURI(('src', `{{contextPath}}/api/mutasi-perubahan-phdp/report-phdp?${param}`));
+     window.open(res,'_blank');
+ }
+
+     function cetakFormulir(){
+         data = {
+             tipeReport: 'formulir_entry_mutasi',
+             nip: $('#nip').val(),
+             idKategoriPensiun: $('#idKategoriPensiun').val(),
+             idKategoriMutasi: '13',
+             idJenisMps: $('#idJenisMps').val(),
+             periodeMutasi: $('#periodeMutasi').val(),
+             idKantorBayar: $('#idKantorBayar').val()
+         };
+         const param = $.param(data);
+         console.log(param);
+         const reportFrame = $("#cetakCatatan");
+         const res = encodeURI(('src', `{{contextPath}}/api/mutasi-perubahan-phdp/report-phdp?${param}`));
+         window.open(res,'_blank');
+     }
+</script>
+{{/scripts}} {{/layout}}

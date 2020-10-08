@@ -1,0 +1,799 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Blank_A4" pageWidth="612" pageHeight="792" whenNoDataType="AllSectionsNoDetail" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="96d22380-28ff-4278-b1dd-a852447c48f0">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="db_dapenbi"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<parameter name="nip" class="java.lang.String"/>
+	<parameter name="subReport" class="java.lang.String">
+		<defaultValueExpression><![CDATA[$P{subReport}]]></defaultValueExpression>
+	</parameter>
+	<parameter name="id_kategori_pensiun" class="java.lang.String"/>
+	<parameter name="id_jenis_mps" class="java.lang.String"/>
+	<parameter name="id_kategori_mutasi" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select a.nip,
+       a.nama_peserta,
+       a.nama_penerima_mp,
+       to_char(a.phdp_lama,'999,999,999,999.00') as phdp,
+       a.id_mutasi_pensiun,
+       to_char(a.tgl_sk_dapenbi,'DD Month YYYY','nls_date_language = indonesian') as tgl_sk_dapenbi,
+       a.no_sk_dapenbi,
+       to_char(a.tgl_henti_kerja_peserta,'DD Month YYYY','nls_date_language = indonesian') as tgl_henti_kerja_peserta,
+       to_char(a.mp_perbulan_10juta_lama,'999,999,999,999.00') as mp_perbulan_10juta_lama,
+       to_char(a.mp_perbulan_20persen_lama,'999,999,999,999.00') as mp_perbulan_20persen_lama,
+       to_char(a.mp_perbulan_rumus_lama,'999,999,999,999.00') as mp_perbulan_rumus_lama,
+       to_char(a.mps_10juta_lama,'999,999,999,999.00') as mps_10juta_lama,
+       to_char(a.mps_20persen_lama,'999,999,999,999.00') as mps20persen,
+       a.nilai_fpr as fpr,
+       to_char (a.tgl_lahir_penerima_mp,'DD Month YYYY','nls_date_language = indonesian') as tgl_lahir,
+       to_char(TO_DATE(a.periode_mutasi,'mm yyyy'),'MONTH YYYY','nls_date_language = indonesian') as periode_mutasi,
+       a.nama_kota_kab as CITY,
+       to_char(a.mpyd_lama,'999,999,999,999.00') as mpyd_lama,
+       SUBSTR(a.masa_kerja_mp, 1, 2) || ' ' || (CASE SUBSTR(a.masa_kerja_mp, 3, 2) WHEN '00' THEN '' ELSE SUBSTR(a.masa_kerja_mp, 3, 2) || '/12' END) as masa_kerja_mp
+       ,to_char(a.tgl_sp_bi,'dd/mm/yyyy') as tgl_sp_bi
+       ,a.no_sp_bi,
+       to_char(a.tgl_sk_bi,'dd/mm/yyyy') as tgl_sk_bi,
+       a.no_sk_bi
+       ,to_char(tgl_mutasi,'dd Month yyyy','nls_date_language = INDONESIAN') as tgl_mutasi
+       ,to_char(a.tgl_awal_bayar,'dd/mm/yyyy') as tgl_awal_bayar
+       ,to_char(a.tgl_mp_bulan_ke13,'dd/mm/yyyy') as tgl_bulan13
+       ,to_char(a.mp_bulan13,'999,999,999,999.00') as mp_bulan13
+       ,(CASE WHEN a.jenis_kelamin_peserta = 'P' then 'Sdr' WHEN jenis_kelamin_peserta = 'W' then 'Sdri' End) as jenis_kelamin_peserta
+from tbl_t_mutasi_pensiun a
+
+where a.id_kategori_pensiun = $P{id_kategori_pensiun}
+AND a.id_jenis_mps = $P{id_jenis_mps}
+AND a.nip = $P{nip}
+AND a.id_kategori_mutasi = $P{id_kategori_mutasi}
+
+group by a.nip,
+a.phdp_lama,
+a.nama_peserta,
+a.mpyd_lama,
+a.tgl_lahir_penerima_mp,
+a.periode_mutasi,
+a.nama_kota_kab, 
+a.nilai_fpr,
+a.mps_20persen_lama,
+a.mp_perbulan_10juta_lama,
+a.mp_perbulan_20persen_lama,
+a.mp_perbulan_rumus_lama,
+a.mps_10juta_lama,
+a.id_mutasi_pensiun,
+a.tgl_sk_dapenbi,
+a.no_sk_dapenbi,
+a.tgl_sp_bi,
+a.no_sp_bi,
+a.tgl_sk_bi,a.no_sk_bi,
+a.tgl_henti_kerja_peserta,
+a.masa_kerja_mp,
+a.tgl_mutasi,
+a.nama_penerima_mp,
+a.tgl_awal_bayar,
+a.tgl_mp_bulan_ke13,
+a.mp_bulan13,
+a.jenis_kelamin_peserta]]>
+	</queryString>
+	<field name="NIP" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NIP"/>
+	</field>
+	<field name="NAMA_PESERTA" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NAMA_PESERTA"/>
+	</field>
+	<field name="NAMA_PENERIMA_MP" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NAMA_PENERIMA_MP"/>
+	</field>
+	<field name="PHDP" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="PHDP"/>
+	</field>
+	<field name="ID_MUTASI_PENSIUN" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="ID_MUTASI_PENSIUN"/>
+	</field>
+	<field name="TGL_SK_DAPENBI" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="TGL_SK_DAPENBI"/>
+	</field>
+	<field name="NO_SK_DAPENBI" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NO_SK_DAPENBI"/>
+	</field>
+	<field name="TGL_HENTI_KERJA_PESERTA" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="TGL_HENTI_KERJA_PESERTA"/>
+	</field>
+	<field name="MP_PERBULAN_10JUTA_LAMA" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="MP_PERBULAN_10JUTA_LAMA"/>
+	</field>
+	<field name="MP_PERBULAN_20PERSEN_LAMA" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="MP_PERBULAN_20PERSEN_LAMA"/>
+	</field>
+	<field name="MP_PERBULAN_RUMUS_LAMA" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="MP_PERBULAN_RUMUS_LAMA"/>
+	</field>
+	<field name="MPS_10JUTA_LAMA" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="MPS_10JUTA_LAMA"/>
+	</field>
+	<field name="MPS20PERSEN" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="MPS20PERSEN"/>
+	</field>
+	<field name="FPR" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="FPR"/>
+	</field>
+	<field name="TGL_LAHIR" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="TGL_LAHIR"/>
+	</field>
+	<field name="PERIODE_MUTASI" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="PERIODE_MUTASI"/>
+	</field>
+	<field name="CITY" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="CITY"/>
+	</field>
+	<field name="MPYD_LAMA" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="MPYD_LAMA"/>
+	</field>
+	<field name="MASA_KERJA_MP" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="MASA_KERJA_MP"/>
+	</field>
+	<field name="TGL_SP_BI" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="TGL_SP_BI"/>
+	</field>
+	<field name="NO_SP_BI" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NO_SP_BI"/>
+	</field>
+	<field name="TGL_SK_BI" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="TGL_SK_BI"/>
+	</field>
+	<field name="NO_SK_BI" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NO_SK_BI"/>
+	</field>
+	<field name="TGL_MUTASI" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="TGL_MUTASI"/>
+	</field>
+	<field name="TGL_AWAL_BAYAR" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="TGL_AWAL_BAYAR"/>
+	</field>
+	<field name="TGL_BULAN13" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="TGL_BULAN13"/>
+	</field>
+	<field name="MP_BULAN13" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="MP_BULAN13"/>
+	</field>
+	<field name="JENIS_KELAMIN_PESERTA" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="JENIS_KELAMIN_PESERTA"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="196" splitType="Stretch">
+			<staticText>
+				<reportElement x="2" y="68" width="566" height="40" uuid="116255d9-cfa9-4084-ba2e-b06965bfe11b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="13" isBold="true"/>
+				</textElement>
+				<text><![CDATA[KEPUTUSAN
+PENGURUS DANA PENSIUN BANK INDONESIA]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="63" y="108" width="444" height="20" uuid="816e2f1b-754f-498d-a4e5-c43bc6a34fb2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="13" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NO_SK_DAPENBI} == null ? "Nomor : " : "Nomor : "+$F{NO_SK_DAPENBI}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="1" y="128" width="566" height="63" uuid="9628b7ea-dd3e-4739-99c6-bd5dac0bbf80"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font fontName="Arial" size="13" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TENTANG
+HAK ATAS MANFAAT PENSIUN DIPERCEPAT
+
+PENGURUS DANA PENSIUN BANK INDONESIA,]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="90" y="-20" width="116" height="88" uuid="d576f972-4ed2-4254-a987-46f31ce9f328"/>
+				<textElement>
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[""]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<detail>
+		<band height="552" splitType="Stretch">
+			<staticText>
+				<reportElement x="119" y="180" width="426" height="51" uuid="a129c176-18e2-4391-ae7e-201a6c08335f"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[bahwa oleh karena itu dipandang perlu untuk memberikan hak atas Manfaat Pensiun Peserta berupa Manfaat Pensiun Sekaligus 20% dan Manfaat pensiun Sekaligus diatas Rp.10.000.000,00 yang ditetapkan dalam suatu Keputusan Pengurus Dana Pensiun Bank Indonesia;]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="119" y="66" width="426" height="30" uuid="4e5d4336-d3a1-4d45-80aa-2db13be7931f"/>
+				<textElement textAlignment="Justified" verticalAlignment="Top">
+					<font fontName="Arial" size="11" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[Bahwa yang bersangkutan mengajukan permohonan agar hak atas pensiun dipercepat dibayarkan pada usia pensiun dipercepat;]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="119" y="92" width="426" height="30" uuid="f8825ab0-f80f-4921-942e-32d8e2f04d73"/>
+				<textElement textAlignment="Justified" verticalAlignment="Top">
+					<font fontName="Arial" size="11" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[Bahwa pembayaran manfaat pensiun dipercepat dilakukan terhitung bulan berikutnya setelah tanggal berhenti bekerja;]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="119" y="141" width="426" height="39" uuid="11ffdf2c-8b11-4047-a43d-2cd8b783aa62"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[bahwa pegawai yang bersangkutan mengajukan permohonan untuk menerima manfaat pensiun sekaligus dari nilai sekarang Manfaat Pensiun bulanan diatas Rp.10.000.000,00 setelah perhitungan Manfaat Pensiun Sekaligus 20%;]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="119" y="114" width="426" height="30" uuid="0265637f-cc72-48ff-a4d7-dc2bceafa384"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[bahwa pegawai yang bersangkutan mengajukan permohonan untuk menerima manfaat pensiun pertama kali secara sekaligus sebesar 20%;]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="119" y="13" width="426" height="40" uuid="2a8d4f61-52ea-45de-8a2a-2545f66eac54"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle" markup="html">
+					<font fontName="Arial" size="11" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Bahwa <b>"+$F{JENIS_KELAMIN_PESERTA}+".  "+$F{NAMA_PESERTA}+"- NIP. "+$F{NIP}+"</b> akan berhenti bekerja dari Bank Indonesia pada tanggal "+$F{TGL_HENTI_KERJA_PESERTA}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="100" y="13" width="19" height="40" uuid="bc1dceca-2e94-4241-9fed-5a6948971bda"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<text><![CDATA[a.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="100" y="42" width="19" height="30" uuid="aa0e5634-0e00-4134-b307-3f97b2b7cffa"/>
+				<textElement>
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<text><![CDATA[b.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="119" y="42" width="426" height="30" uuid="4131f659-96e7-4b45-9bb3-9507f4708482"/>
+				<textElement textAlignment="Justified" verticalAlignment="Top">
+					<font fontName="Arial" size="11" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[Bahwa yang bersangkutan pada saat berhenti bekerja telah mencapai usia Pensiun Dipercepat ;]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="100" y="66" width="19" height="30" uuid="5c88ce04-ea01-479d-b74c-bc26fb55850b"/>
+				<textElement>
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<text><![CDATA[c.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="100" y="92" width="19" height="30" uuid="50f100d6-2357-400d-95bd-5f910c5d064b"/>
+				<textElement>
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<text><![CDATA[d.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="100" y="114" width="19" height="30" uuid="1468a036-59ba-4926-b232-df2b7744a879"/>
+				<textElement>
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<text><![CDATA[e.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="100" y="140" width="19" height="40" uuid="7ca1abb5-fb23-47f6-834a-77a068b9b5f6"/>
+				<textElement>
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<text><![CDATA[f.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="100" y="180" width="19" height="30" uuid="f6540e54-5460-417d-a533-21e3c04f095d"/>
+				<textElement>
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<text><![CDATA[h.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="118" y="276" width="426" height="30" uuid="c9711478-8f74-48f4-ad16-030a9adf9cca"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[Peraturan Pemerintah Nomor 76 Tahun 1992 tentang Dana Pensiun Pemberi Kerja (Lembaran Negara tahun 1992 Nomor 126. Tambahan Lembaran Negara Nomor 3507) ;]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="118" y="306" width="426" height="71" uuid="5340a45a-968e-418d-bf06-323beef55b33"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[Peraturan Dewan Gubernur Bank Indonesia Nomor 19/6/PDG/2017 tanggal 18 Agustus 2017 tentang Peraturan Dana Pensiun dari Dana Pensiun Bank Indonesia, sebagaimana telah mendapatkan pengesahan Dewan Komisioner Otoritas Jasa Keuangan Nomor KEP-48/NB.1/2017 tanggal 5 September 2017 tentang Pengesahan Atas Peraturan Dana Pensiun Dari dana Pensiun Bank Indonesia;]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="118" y="246" width="426" height="30" uuid="2e179820-00f1-487e-94e6-f42ee17084f3"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[Undang-undang Nomor 11 Tahun 1992 tentang Dana Pensiun (Lembaran Negara Tahun 1992 Nomor 37, Tambahan Lembaran negara Nomor 3477);]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="99" y="249" width="20" height="30" uuid="e7606ed8-5d9e-47e4-b50a-743ef44c7cce"/>
+				<textElement>
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<text><![CDATA[1.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="99" y="280" width="20" height="30" uuid="45fd43f0-de3b-4747-9679-7bd429bf66c4"/>
+				<textElement>
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<text><![CDATA[2.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="99" y="312" width="20" height="30" uuid="e954e7d6-5b30-4c81-9bf9-ddb3470383fb"/>
+				<textElement>
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<text><![CDATA[3.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="100" y="391" width="19" height="30" uuid="b6af4a93-6fb5-4fef-9fdd-fb3b3d07e1e9"/>
+				<textElement>
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<text><![CDATA[1.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="100" y="417" width="19" height="30" uuid="30fe988f-169d-4a40-9401-e62a2d38cb92"/>
+				<textElement>
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<text><![CDATA[2.]]></text>
+			</staticText>
+			<break>
+				<reportElement x="0" y="551" width="590" height="1" uuid="6639c78c-18a0-4ff0-ad26-72b45fca24ee"/>
+			</break>
+			<textField>
+				<reportElement x="118" y="388" width="427" height="41" uuid="fc6e12bf-fdef-442f-97af-3adf4cf6178c"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle" markup="html">
+					<font fontName="Arial" size="11" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Keputusan Gubernur Bank Indonesia Nomor "+($F{NO_SK_BI} == null ? "-" : $F{NO_SK_BI}) +" tanggal "+($F{TGL_SK_BI} == null ? "-" : $F{TGL_SK_BI})+" tentang Pemberhentian Pegawai ;"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="118" y="417" width="427" height="57" uuid="e393f453-ee9f-47ed-a051-6a2f75462dbf"/>
+				<textElement textAlignment="Justified" verticalAlignment="Top" markup="html">
+					<font fontName="Arial" size="11" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Data dan Informasi atas nama <b>"+$F{JENIS_KELAMIN_PESERTA}+".  "+$F{NAMA_PESERTA}+"- NIP. "+$F{NIP}+"</b>,sesuai lampiran surat Bank Indonesia Nomor "+($F{NO_SP_BI} == null ? "-" : $F{NO_SP_BI} )+" Tanggal "+($F{TGL_SP_BI} == null ? "-" : $F{TGL_SP_BI})]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="429" y="474" width="116" height="30" uuid="90375129-5e00-47a7-8b92-3fa61c62b396"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[MEMUTUSKAN]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="4" y="13" width="60" height="18" uuid="9b290f13-2b5f-4f2f-bd6c-5df9c57753d2"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<text><![CDATA[Menimbang]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="4" y="247" width="60" height="18" uuid="12e6db09-45bf-4209-acd3-2a4929835253"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<text><![CDATA[Mengingat]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="391" width="85" height="18" uuid="2fa599f4-86b1-4109-95ee-d3377786270c"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<text><![CDATA[Memperhatikan :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="80" y="13" width="11" height="18" uuid="cdaf4691-fab6-4c15-98b1-67328898587a"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="80" y="247" width="11" height="18" uuid="93575b6e-cd97-44fa-881a-6f4ce4078feb"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+		</band>
+		<band height="299">
+			<staticText>
+				<reportElement x="216" y="79" width="138" height="30" uuid="2a01a532-51c4-4d7f-b869-6d09bfb46b6d"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font fontName="Arial" size="11" isBold="true" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[M E M U T U S K A N :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="109" y="108" width="446" height="30" uuid="40ec5249-e071-40fd-a204-356aef13b2a6"/>
+				<textElement textAlignment="Justified" verticalAlignment="Top">
+					<font fontName="Arial" size="11" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[KEPUTUSAN PENGURUS DANA PENSIUN BANK INDONESIA TENTANG HAK ATAS MANFAAT PENSIUN DIPERCEPAT]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="13" y="107" width="77" height="18" uuid="852c7316-9dfe-43b7-97b7-7cb9beb12e07"/>
+				<textElement textAlignment="Left">
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<text><![CDATA[Menetapkan]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="13" y="130" width="82" height="18" uuid="5bf8cf33-d73e-476a-b529-230113606c6f"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<text><![CDATA[PERTAMA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="91" y="107" width="15" height="18" uuid="0b88a122-23fe-4c3f-98fa-6dccd5aff8f0"/>
+				<textElement>
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="91" y="130" width="15" height="18" uuid="7bd2a378-a3ec-4c9e-a01a-7a7b80bbb2f9"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="14" y="165" width="82" height="18" uuid="9ed82281-9679-4df0-be52-3b03c69865bd"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<text><![CDATA[KEDUA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="92" y="165" width="15" height="18" uuid="c23925b5-51a4-432b-8d4c-abeab00308f1"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField pattern="&apos;Rp. &apos;#,000.00#;&apos;Rp. (&apos;#,000.00#)">
+				<reportElement x="109" y="188" width="445" height="31" uuid="03c092e6-012f-4806-a9c5-b129b06a4567"/>
+				<textElement textAlignment="Justified" verticalAlignment="Top">
+					<font fontName="Arial" size="11" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Besarnya Manfaat Pensiun Sekaligus 20% yang dibayarkan adalah sebesar "+"Rp. "+$F{MPS20PERSEN}.trim()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="110" y="238" width="446" height="18" uuid="4520202c-bc12-41d8-a1fc-b8bab200c3d2"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[Manfaat Pensiun Peserta berakhir pada bulan berikutnya Peserta meninggal dunia.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="14" y="185" width="82" height="18" uuid="a950ad07-8798-49db-b5b2-a7f5045532d4"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<text><![CDATA[KETIGA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="92" y="185" width="15" height="18" uuid="42de30a0-1dc4-438f-bc80-845768ae1b51"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="93" y="238" width="15" height="18" uuid="16e4688a-e30a-4be2-ab87-bd27ab18aa42"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="110" y="254" width="446" height="29" uuid="dc226b10-77ac-470c-accd-e7951487a204"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[Pajak atas Penghasilan Pensiun dibayar oleh dan atas beban Dana Pensiun Bank Indonesia]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="15" y="238" width="82" height="18" uuid="7c4e28dd-1c03-4bd5-a579-83cf60fdda4c"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<text><![CDATA[KELIMA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="15" y="254" width="82" height="18" uuid="e28bb95b-8602-4d3c-9e40-b1a2ddb75e4f"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<text><![CDATA[KEENAM]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="93" y="254" width="15" height="18" uuid="6c0850af-3387-41ed-be27-32a93c40c02a"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="110" y="281" width="284" height="18" uuid="b6cd7994-9b4a-43c0-a393-9dd6c11d6481"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[Susunan Keluarga untuk hak atas Manfaat Pensiun adalah :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="92" y="281" width="15" height="18" uuid="5d8939b5-3c1e-46b7-ac33-4512957be354"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="14" y="281" width="82" height="18" uuid="e74fb4c0-ce98-4547-acf4-07dbe2b9cd03"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<text><![CDATA[KETUJUH]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="108" y="166" width="443" height="29" uuid="518da19c-3b4c-4914-b435-074fa776f4ae"/>
+				<textElement textAlignment="Justified" verticalAlignment="Top">
+					<font fontName="Arial" size="11" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[Besarnya Manfaat Pensiun Peserta berupa Manfaat Pensiun Dipercepat adalah Rp.10.000.000,00 (Sepuluh juta rupiah).]]></text>
+			</staticText>
+			<textField pattern="&apos;Rp. &apos;#,000.00#;&apos;Rp. (&apos;#,000.00#)">
+				<reportElement x="110" y="213" width="443" height="27" uuid="dfd0072c-fb62-445b-bf71-04d55f05aed7"/>
+				<textElement textAlignment="Justified" verticalAlignment="Top">
+					<font fontName="Arial" size="11" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Besarnya Manfaat Pensiun Sekaligus Diatas Rp.10.000.000,00 yang dibayarkan adalah sebesar Rp. "+$F{MPS_10JUTA_LAMA}.trim()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="15" y="210" width="82" height="18" uuid="d7b2c227-8d39-45f9-907c-c623086680e3"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<text><![CDATA[KEEMPAT]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="93" y="210" width="15" height="18" uuid="964d4049-5282-467b-8cac-10334359affd"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="108" y="133" width="448" height="40" uuid="673bd5f7-ff69-490d-ae04-da93b55f445e"/>
+				<textElement textAlignment="Justified" verticalAlignment="Top" markup="html">
+					<font fontName="Arial" size="11" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Kepada <b>"+$F{JENIS_KELAMIN_PESERTA}+".  "+$F{NAMA_PESERTA}+"- NIP. "+$F{NIP}+"</b> diberikan hak atas Manfaat Pensiun Peserta berupa Manfaat Pensiun Dipercepat. "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="95" y="0" width="116" height="80" uuid="2dc356f5-7591-43c6-a9ff-073d8e681f4f"/>
+				<textElement>
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[""]]></textFieldExpression>
+			</textField>
+		</band>
+		<band height="30">
+			<subreport>
+				<reportElement x="110" y="1" width="457" height="29" uuid="9f1b5e9f-ea74-4aeb-8485-74d5257561f7"/>
+				<subreportParameter name="nip">
+					<subreportParameterExpression><![CDATA[$P{nip}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{subReport}]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="73">
+			<staticText>
+				<reportElement x="107" y="1" width="448" height="28" uuid="db915518-1be9-4f36-93c0-4506f79a9a98"/>
+				<textElement textAlignment="Justified" verticalAlignment="Top">
+					<font fontName="Arial" size="11" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[Mewajibkan yang bersangkutan untuk menyampaikan laporan kepada Dana Pensiun Bank Indonesia mengenai susunan keluarga, status pernikahan dan alamat apabila terjadi perubahan.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="91" y="2" width="15" height="18" uuid="6c27e455-6f2a-4061-a013-52ee44f2a885"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="13" y="2" width="82" height="18" uuid="954e6784-5e55-4b15-b6d7-8f6de1733ea0"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<text><![CDATA[KEDELAPAN]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="109" y="23" width="447" height="18" uuid="5f6c8aea-28bb-4164-9f14-cbe467a91284"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Keputusan ini mulai berlaku sejak tanggal "+$F{TGL_MUTASI}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="92" y="22" width="15" height="18" uuid="7789ce34-6fa2-425f-a12a-da80258b8fb5"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="107" y="43" width="449" height="30" uuid="9e510ce8-1151-4cc6-a783-677c70430fe6"/>
+				<textElement textAlignment="Justified" verticalAlignment="Top">
+					<font fontName="Arial" size="11" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[Apabila dikemudian hari ternyata terdapat kekeliruan dalam Keputusan ini, maka akan dilakukan perubahan sebagaimana mestinya.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="13" y="24" width="83" height="18" uuid="f3cd2044-24f2-41a0-b27c-38ba1dcd3f39"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<text><![CDATA[KESEMBILAN]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="92" y="41" width="15" height="18" uuid="72ddf542-26b5-412b-a7f2-91e267dafa40"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="13" y="43" width="83" height="18" uuid="0cebe577-f5a7-48c2-81aa-73563a1024b2"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<text><![CDATA[KESEPULUH]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="19">
+			<textField>
+				<reportElement x="254" y="0" width="64" height="19" uuid="6dcc32b7-c47a-4344-a722-7f6f92660e8c"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA["-"+$V{PAGE_COUNT}+"-"]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="162">
+			<staticText>
+				<reportElement x="316" y="6" width="82" height="18" uuid="60ccf723-6456-4a43-ad04-cdeaf84f2bee"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<text><![CDATA[Ditetapkan di]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="316" y="23" width="82" height="18" uuid="6ab78187-f391-4b68-b62c-2c2e9494f8b3"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<text><![CDATA[Pada Tanggal]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="382" y="6" width="22" height="18" uuid="fc2996bb-d544-4d49-a83c-a442e78811b4"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="382" y="23" width="22" height="18" uuid="8421dd38-5ae3-4eb8-bb50-4441536ecb12"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="390" y="23" width="100" height="18" uuid="6f2ac461-713a-4802-8996-024b99d164e8"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{TGL_MUTASI}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement key="" x="390" y="6" width="100" height="18" uuid="4c594dae-a6cf-4cf5-a5b9-cfe7e6c9f130"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Jakarta, "]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="290" y="44" width="225" height="1" uuid="4230f9ac-abdb-48cb-8fcb-51c2b298c814"/>
+			</line>
+			<staticText>
+				<reportElement x="290" y="45" width="221" height="29" uuid="2b487e47-f9d7-4914-8b74-01a7c9048510"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font fontName="Arial" size="11" isBold="true" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[PENGURUS
+DANA PENSIUN BANK INDONESIA]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="271" y="122" width="126" height="20" uuid="ccf89718-f649-40b7-921f-ee280890ed20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["RASMO SAMIUN"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="271" y="142" width="125" height="20" uuid="6fe31f02-21b6-4a25-b49f-4c17b9cecdb4"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["DIREKTUR UTAMA"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="419" y="122" width="126" height="20" uuid="83ec2022-02bc-4208-96d4-c21ad06a3054"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["SUTIKNO"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="420" y="142" width="125" height="20" uuid="2a1c4692-92a9-464a-b21d-12d07444e86e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["DIREKTUR"]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

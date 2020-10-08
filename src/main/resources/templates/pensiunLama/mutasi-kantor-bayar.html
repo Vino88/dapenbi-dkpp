@@ -1,0 +1,1144 @@
+{{#layout}}
+
+{{#styles}}
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/datatables/media/css/dataTables.bootstrap4.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/googleapis/css/component.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/googleapis/css/googleapis.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/select2/css/select2.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css">
+<style>
+    #pelepasan_table {
+        min-width: 1500px;
+    }
+    #mutasi_table {
+        min-width: 2100px;
+    }
+</style>
+{{/styles}}
+
+{{#title}}
+Pensiun Lama - Mutasi Kantor Bayar
+{{/title}}
+<div class="card">
+    <div class="card-header" id="filter_form" style="display: none;">
+        <div class="col-md-12">
+            <div class="col-md-2">
+            </div>
+            <div class="col-md-10">
+                <form class="form-inline pull-right">
+                    <div class="form-group">
+                        <label for="period">
+                            Periode
+                        </label>
+                        <input class="form-control" id="period" placeholder="Periode" type="text">
+                    </div>
+                    <label>
+                        Tanggal Input
+                    </label>
+                    <div class="form-group">
+                        <div class="form-row">
+                            <div class="input-prepend input-group col-xs-2">
+                                <input class="col-xs-2" data-provide="datepicker" id="start_input_date" placeholder="" size="8" type="text">
+                                <span class="add-on input-group-addon">
+                                                        <i class="material-icons">
+                                                            date_range
+                                                        </i>
+                                                    </span>
+                            </div>
+                        </div>
+                    </div>
+                    <label>
+                        s.d
+                    </label>
+                    <div class="form-group">
+                        <div class="form-row">
+                            <div class="input-prepend input-group col-xs-2">
+                                <input class="col-xs-2" data-provide="datepicker" id="end_input_date" placeholder="" size="8" type="text">
+                                <span class="add-on input-group-addon">
+                                                        <i class="material-icons">
+                                                            date_range
+                                                        </i>
+                                                    </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="data_status">
+                            Status Data
+                        </label>
+                        <select class="form-control" id="data_status">
+                            <option value="Sudah Validasi">
+                                Sudah Validasi
+                            </option>
+                            <option value="Belum Validasi">
+                                Belum Validasi
+                            </option>
+                            <option value="Batal Validasi">
+                                Batal Validasi
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-md btn-primary btn-icon loading-demo" type="button">
+                            <i class="material-icons">
+                                search
+                            </i>
+                            Tampilkan
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="card-block">
+        {{#isStaff}}
+        <button class="btn btn-primary btn-sm" data-toggle="modal" id="btn-add" data-target=".bd-example-modal"><i class="fa fa-plus"></i> <span>Tambah Data Mutasi</span></button>
+        {{/isStaff}}
+        <hr>
+
+        <div class="col-lg-12">
+            <div class="row">
+                <label for="periode-mutasi-grid" class="col-sm-1">Periode Mutasi</label>
+                <div class="col-xs-2">
+                    <input class="form-control form-control-sm" disabled="" type="text" value="092018" id="periode-mutasi-grid">
+                </div></div>
+        </div>
+        <div class="col-lg-12"><hr></div>
+        <div class="table-responsive">
+
+            <table class="table table-bordered datatable dataTable no-footer" id="mutasi-kantor-bayar-table" role="grid" aria-describedby="DataTables_Table_0_info">
+                <thead>
+                <tr role="row"><th class="sorting_asc" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="
+                                                    Tanggal  Mutasi
+                                                : activate to sort column descending" aria-sort="ascending">
+                    Tanggal  Mutasi
+                </th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="
+                                                    Periode Mutasi
+                                                : activate to sort column ascending">
+                    Periode Mutasi
+                </th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="
+                                                    NIP Peserta
+                                                : activate to sort column ascending">
+                    NIP Peserta
+                </th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="
+                                                    Nama Peserta
+                                                : activate to sort column ascending">
+                    Nama Peserta
+                </th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="
+                                                    Nama Penerima MP
+                                                : activate to sort column ascending">
+                    Nama Penerima MP
+                </th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="
+                                                    Jenis Penerima MP
+                                                : activate to sort column ascending">
+                    Jenis Penerima MP
+                </th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="
+                                                    Kantor Bayar Lama
+                                                : activate to sort column ascending">
+                    Kantor Bayar Lama
+                </th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="
+                                                    Kantor Bayar Baru
+                                                : activate to sort column ascending">
+                    Kantor Bayar Baru
+                </th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="
+													Keterangan
+												: activate to sort column ascending">
+                    Keterangan
+                </th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="
+                                                    Status Validasi
+                                                : activate to sort column ascending">
+                    Status Validasi
+                </th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="
+                                                    Action
+                                                : activate to sort column ascending">
+                    Action
+                </th></tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+    <iframe style="display: none" id="report" name="report" src=""></iframe>
+</div>
+{{#modal}}
+<div class="modal fade bd-example-modal main-modal" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title small bold" id="modalEntriMutasiKantorBayar">Mutasi Kantor Bayar</h4>
+            </div>
+            <div class="modal-body">
+                <form id="insertMutasiKantorBayarForm">
+                    <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
+                    <div class="row">
+
+                        <div class="col-lg-4">
+                            <div class="row">
+                                <label for="tgl-mutasi-insert" class="col-sm-6 bold">Tanggal Mutasi</label>
+
+                                <div class="col-xs-6">
+                                    <input class="form-control form-control-sm" name="tglMutasi" readonly="readonly" type="text" value="" id="tgl-mutasi-insert">
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="row">
+                                <label for="periode-mutasi-insert" class="col-sm-6 bold">Periode Mutasi</label>
+
+                                <div class="col-xs-6">
+                                    <input class="form-control form-control-sm" readonly="readonly" name="periodeMutasi" type="text" value="" id="periode-mutasi-insert" >
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-lg-12"><hr/></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <small class="bold">Data Peserta</small>
+                        </div>
+                        <div class="col-lg-4">
+                            <small class="bold">Data Penerima MP</small>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="row">
+                                <label for="example-text-input" class="col-sm-6">NIP</label>
+
+                                <div class="col-xs-6">
+                                    <select name="nip" id="id-peserta-mp-insert" class="form-control form-control-sm>
+                                    <option></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                                    <label for="nama-peserta-insert" class="col-sm-6">Nama Peserta</label>
+
+                                    <div class="col-xs-6">
+                                        <input class="form-control form-control-sm" readonly="readonly" type="text"  value="" id="nama-peserta-insert" name="namaPeserta">
+                                    </div>
+                                </div>
+
+
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="row">
+                                    <label for="id-nama-penerima-mp-insert" class="col-sm-6">ID-Nama Penerima MP</label>
+
+                                    <div class="col-xs-6">
+                                        <input class="form-control form-control-sm" readonly="readonly" type="text"  value="" name="idNamaPenerimaMp" id="id-nama-penerima-mp-insert">
+                                        <input class="form-control form-control-sm" readonly="readonly" type="hidden"  value="" name="idPenerimaMp" id="id-penerima-mp-insert">
+                                        <input class="form-control form-control-sm" readonly="readonly" type="hidden"  value="" name="namaPenerimaMp" id="nama-penerima-mp-insert">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <label for="example-text-input" class="col-sm-6">Jenis Penerima MP</label>
+
+                                    <div class="col-xs-6">
+                                        <input class="form-control form-control-sm" readonly="readonly" type="text"  value="" name="kategoriPenerimaMp" id="kategori-penerima-mp-insert">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="row">
+                                    <label for="nama-kantor-bayar-lama-insert" class="col-sm-4">Kantor Bayar Lama</label>
+
+                                    <div class="col-xs-8">
+                                        <input class="form-control form-control-sm" readonly="readonly" type="hidden"  value="" name="idKantorBayarLama" id="id-kantor-bayar-lama-insert">
+                                        <input class="form-control form-control-sm" readonly="readonly" type="text"  value="" name="namaKantorBayarLama" id="nama-kantor-bayar-lama-insert">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <label for="example-text-input" class="col-sm-4">Kantor Bayar Baru</label>
+
+                                    <div class="col-xs-8">
+                                        <select name="idKantorBayarBaru" id="id-kantor-bayar-baru-insert" class="form-control form-control-sm">
+                                            <option></option>
+                                        </select>
+                                        <input type="hidden" id="nama-kantor-bayar-baru-insert" name="namaKantorBayarBaru" />
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <br>
+
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="card card-block">
+
+
+                                    <div class="col-lg-6">
+                                        <label for="id-kategori-catatan-insert" class="col-xs-5">Kategori Catatan</label>
+
+                                        <select class="form-control form-control-sm" id="id-kategori-catatan-insert" name="idKategoriCatatan">
+                                            <option></option>
+                                        </select>
+                                        <input type="hidden" id="nama-kategori-catatan-insert" name="namaKategoriCatatan" />
+                                    </div>
+                                    <div class="col-lg-6">
+                                        Catatan
+                                        <textarea class="form-control  form-control-sm" id="keterangan-insert" name="keterangan" rows="3"></textarea>
+                                    </div>
+                                    <div class="col-lg-12"><br></div>
+                                    <div class="col-lg-12">
+                                        <label for="user-stamp-insert" class="col-xs-5">User Stamp</label>
+
+                                        <div class="col-xs-7">
+                                            <input class="form-control form-control-sm" type="text" value="" id="user-stamp-insert" readonly="readonly">
+                                            <input type="hidden" id="comp-name-insert" name="compName" />
+                                            <input type="hidden" id="user-name-insert" name="userName" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal" id="btn-close-insert">Close</button>
+                        <button type="button" class="btn btn-primary btn-sm" id="btn-save-insert">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ################################################################################Modal Edit#################################### -->
+<div class="modal fade bd-example-modal2 edit-modal" id="id-edit-modal" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title small bold" id="myModalLabel">Mutasi Kantor Bayar</h4>
+            </div>
+            <div class="modal-body">
+                <form id="edit-form">
+                    <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
+                    <div class="row">
+                        <div class="col-lg-6">
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                </div>
+                                <div class="col-xs-6" id="label-status-validasi">
+                                    ...
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="col-lg-4">
+                            <div class="row">
+                                <label for="tgl-mutasi-edit" class="col-sm-6 bold">Tanggal Mutasi</label>
+
+                                <div class="col-xs-6">
+                                    <input type="hidden" id="id-edit" name="id" />
+                                    <input class="form-control form-control-sm" readonly="readonly" type="text" value="" id="tgl-mutasi-edit" name="tglMutasi">
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="row">
+                                <label for="periode-mutasi-edit" class="col-sm-6 bold">Periode Mutasi</label>
+
+                                <div class="col-xs-6">
+                                    <input class="form-control form-control-sm" readonly="readonly" type="text" value="" id="periode-mutasi-edit" name="periodeMutasi" >
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-lg-12"><hr/></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <small class="bold">Data Peserta</small>
+                        </div>
+                        <div class="col-lg-4">
+                            <small class="bold">Data Penerima MP</small>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="row">
+                                <label for="nip-edit" class="col-sm-6">NIP</label>
+
+                                <div class="col-xs-6">
+                                    <input type="text" id="nip-edit" name="nip" class="form-control form-control-sm" readonly="readonly"/>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label for="nama-peserta-edit" class="col-sm-6">Nama Peserta</label>
+
+                                <div class="col-xs-6">
+                                    <input class="form-control form-control-sm" readonly="readonly" type="text"  value="" id="nama-peserta-edit" name="namaPeserta">
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="row">
+                                <label for="id-nama-penerima-mp-edit" class="col-sm-6">ID-Nama Penerima MP </label>
+
+                                <div class="col-xs-6">
+                                    <input class="form-control form-control-sm" readonly="readonly" type="text"  value="" id="id-nama-penerima-mp-edit">
+                                    <input type="hidden" readonly="readonly" type="text" id="id-penerima-edit" name="idPenerima" />
+                                    <input type="hidden" readonly="readonly" type="text" id="nama-penerima-edit" name="namaPenerima" />
+
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label for="kategori-penerima-mp-edit" class="col-sm-6">Jenis Penerima MP</label>
+
+                                <div class="col-xs-6">
+                                    <input class="form-control form-control-sm" readonly="readonly" type="text" name="kategoriPenerimaMp" value="" id="kategori-penerima-mp-edit">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="row">
+                                <label for="nama-kantor-bayar-lama-edit" class="col-sm-4">Kantor Bayar Lama</label>
+
+                                <div class="col-xs-8">
+                                    <input class="form-control form-control-sm" readonly="readonly" type="text"  value="" id="nama-kantor-bayar-lama-edit" name="namaKantorBayarLama">
+                                    <input class="form-control form-control-sm" readonly="readonly" type="hidden" value="" name="idKantorBayarLama" id="id-kantor-bayar-lama-edit">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label for="id-kantor-bayar-baru-edit" class="col-sm-4">Kantor Bayar Baru</label>
+
+                                <div class="col-xs-8">
+                                    <select name="idKantorBayarBaru" id="id-kantor-bayar-baru-edit" class="form-control form-control-sm">
+                                        <option></option>
+                                    </select>
+                                    <input type="hidden" id="nama-kantor-bayar-baru-edit" name="namaKantorBayarBaru" />
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card card-block">
+
+
+                                <div class="col-lg-12">
+                                    <label class="radio-inline">
+                                        <input type="radio" name="idValidasi" id="id-validasi-1" value="1" />
+                                        Belum Validasi
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="idValidasi" id="id-validasi-2" value="2" />
+                                        Sudah Validasi
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="idValidasi" id="id-validasi-3" value="3" />
+                                        Batal Koreksi
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="idValidasi" id="id-validasi-7" value="4" />
+                                        Batal Data
+                                    </label>
+                                    <input type="hidden" name="namaValidasi" id="nama-validasi"/>
+                                </div>
+
+                                <div class="col-lg-6">
+                                    Kategori Catatan
+                                    <select class="form-control form-control-sm" id="id-kategori-catatan-edit" name="idKategoriCatatan">
+                                        <option></option>
+                                    </select>
+                                    <input type="hidden" id="nama-kategori-catatan-edit" name="namaKategoriCatatan" />
+                                </div>
+                                <div class="col-lg-6">
+                                    Catatan
+                                    <textarea class="form-control  form-control-sm" id="keterangan-edit" name="keterangan" rows="3"></textarea>
+                                </div>
+                                <div class="col-lg-12"><br></div>
+                                <div class="col-lg-12">
+                                    <label for="user-stamp-edit" class="col-xs-5">User Stamp</label>
+
+                                    <div class="col-xs-7">
+                                        <input class="form-control form-control-sm" type="text" value="" id="user-stamp-edit" readonly="readonly">
+
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <label for="user-name-edit" class="col-xs-5">User Validasi</label>
+
+                                    <div class="col-xs-7">
+                                        <input class="form-control form-control-sm" type="text" value="" id="user-name-edit" name="userName" readonly="readonly">
+                                        <input class="form-control form-control-sm" type="hidden" value="" id="comp-name-edit" name="compName" readonly="readonly">
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary btn-sm" id="btn-save-update">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade report-modal" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title small bold" id="myModalLabel">Form Cetak Laporan Mutasi Kantor Bayar</h4>
+            </div>
+            <div class="modal-body">
+                <form id="pesertaForm">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <div class="radio" id="radio_formulir">
+                                    <label>
+                                        <input checked="" name="optradio" type="radio" value="formulir_entry_mutasi"> Formulir Entry Mutasi
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="cetakReport()">Cetak</button>
+            </div>
+        </div>
+    </div>
+</div>
+{{/modal}}
+{{#scripts}}
+<script src="{{contextPath}}/assets/vendor/datatables/media/js/jquery.dataTables.js"></script>
+<script src="{{contextPath}}/assets/vendor/datatables/media/js/dataTables.bootstrap4.js"></script>
+<script src="{{contextPath}}/assets/vendor/select2/js/select2.js"></script>
+<script src="{{contextPath}}/assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+<script src="{{contextPath}}/assets/vendor/jquery-validation/dist/jquery.validate.js"></script>
+<script src="{{contextPath}}/assets/vendor/numeral/numeral.min.js"></script>
+<script src="{{contextPath}}/assets/vendor/sweetalert/sweetalert.min.js"></script>
+
+<script type="text/javascript">
+        window.DkppReportParam = {};
+        function showEditForm(id) {
+            window.DkppGlobal2 = {};
+            window.DkppGlobal2.isPejabat = {{isPejabat}};
+            window.DkppGlobal2.isAdmin = {{isAdmin}};
+            window.DkppGlobal2.isStaff = {{isStaff}};
+            var kantorBayar = mutasiKantorBayar.rows().data().filter((data) => {return data.id == id})[0];
+            console.log('Kondisi',kantorBayar);
+            const editModalForm = $("form#edit-form");
+            const editModal = $('.edit-modal');
+            const dateFormat = "DD/MM/YYYY";
+            if (kantorBayar.statusValidasi.id == 2 || kantorBayar.statusValidasi.id == 4){
+                $('#btn-save-update').hide();
+                $('#id-kantor-bayar-baru-edit').attr('disabled', 'disabled');
+                $('#id-kategori-catatan-edit').attr('disabled', 'disabled');
+                $('#keterangan-edit').attr('disabled', 'disabled');
+
+            }else {
+                $('#btn-save-update').show();
+                $('#id-kantor-bayar-baru-edit').removeAttr('disabled', 'disabled');
+                $('#id-kategori-catatan-edit').removeAttr('disabled', 'disabled');
+                $('#keterangan-edit').removeAttr('disabled', 'disabled');
+            }
+
+            editModal.modal('show');
+
+            console.log(kantorBayar);
+            $('#tgl-mutasi-edit').val(kantorBayar.tglMutasi && moment(kantorBayar.tglMutasi).format(dateFormat));
+            $('#periode-mutasi-edit').val(kantorBayar.periodeMutasi);
+            $('#id-edit').val(kantorBayar.id);
+            $('#nip-edit').val(kantorBayar.nip);
+            $('#nama-peserta-edit').val(kantorBayar.namaPeserta);
+            $('#id-nama-penerima-mp-edit').val( kantorBayar.idPenerimaMP + "-" + kantorBayar.namaPenerimaMP );
+            $('#id-penerima-edit').val(kantorBayar.idPenerimaMP);
+            $('#nama-penerima-edit').val(kantorBayar.namaPenerimaMP);
+            $('#kategori-penerima-mp-edit').val(kantorBayar.namaKategoriPenerimaMP);
+            $('#id-kantor-bayar-lama-edit').val(kantorBayar.kantorBayar.id);
+            $('#nama-kantor-bayar-lama-edit').val(kantorBayar.kantorBayar.namaKantorBayar);
+            $('#keterangan-edit').val(kantorBayar.keterangan);
+            $('#nama-validasi').val(kantorBayar.statusValidasi.namaValidasi);
+            console.log('GET DATA',kantorBayar);
+            switch(kantorBayar.statusValidasi.id){
+                case 1:
+                    $('#id-validasi-1').prop('checked', true);
+                    $('#label-status-validasi').html(`<span class="tag tag-pill tag-info pull-right">Belum Validasi</span>`);
+                    break;
+                case 2:
+                    $('#id-validasi-2').prop('checked', true);
+                    $('#label-status-validasi').html(`<span class="tag tag-pill tag-success pull-right">Sudah Validasi</span>`);
+                    $('#btn-save-update').hide();
+                    break;
+                case 3:
+                    $('#id-validasi-2').prop('checked', true);
+                    $('#label-status-validasi').html(`<span class="tag tag-pill tag-warning pull-right">Batal Koreksi</span>`);
+                    break;
+                case 7:
+                    $('#id-validasi-7').prop('checked', true);
+                    $('#label-status-validasi').html(`<span class="tag tag-pill tag-warning pull-right">Batal Data</span>`);
+                    break;
+            }
+
+        $('#id-validasi-1').unbind().on('change', function(){
+            $('#nama-validasi').val('Belum Validasi');
+        });
+
+        $('#id-validasi-2').unbind().on('change', function(){
+            $('#nama-validasi').val('Sudah Validasi');
+        });
+
+        $('#id-validasi-3').unbind().on('change', function(){
+            $('#nama-validasi').val('Batal Koreksi');
+        });
+
+        $('#id-validasi-7').unbind().on('change', function(){
+            $('#nama-validasi').val('Batal Validasi');
+        });
+
+            $('[name="idValidasi"]').attr('disabled', 'disabled');
+            if(window.DkppGlobal2.isPejabat == true && kantorBayar.statusValidasi.id !=2) {
+                $('#id-validasi-1').removeAttr('disabled');
+                $('#id-validasi-2').removeAttr('disabled');
+                $('#id-validasi-3').removeAttr('disabled');
+                $('#id-validasi-7').removeAttr('disabled');
+            } else if (window.DkppGlobal2.isStaff == true && kantorBayar.statusValidasi.id !=2) {
+                $('#id-validasi-1').removeAttr('disabled');
+                $('#id-validasi-3').removeAttr('disabled');
+            }
+
+
+            $.ajax({
+                url:  '{{contextPath}}{{listKantorBayarCombo}}',
+                method: 'GET',
+                data: {
+                        valueColumn: 'id',
+                        textColumn: "${namaKantorBayar} - ${alamatSurat1} - ${alamatSurat2}",
+                        searchColumn: [
+                            'namaKantorBayar'
+                        ],
+                        includeObject: true
+                },
+                success: function(data){
+                    $('#id-kantor-bayar-baru-edit').select2(
+                        {
+                            data: data,
+                            width: "100%",
+                            placeholder: 'Pilih Kantor Bayar Baru'
+                        }
+                    ).val(kantorBayar.kantorBayarBaru.id).trigger('change');
+
+            }
+        });
+
+
+            $('#id-kantor-bayar-baru-edit').on('change', (e) => {
+                if ($(e.target).select2('data')){
+                    const data = $(e.target).select2('data')[0];
+                    $("#nama-kantor-bayar-baru-edit").val(data.dataProperties.namaKantorBayar);
+                }
+            });
+
+
+        $.ajax({
+            url:  '{{contextPath}}{{listKategoriCatatanCombo}}',
+            method: 'GET',
+            data: {
+                valueColumn: 'id',
+                textColumn: "${id} - ${namaKategoriCatatan}",
+                searchColumn: [
+                    'namaKategoriCatatan'
+                ],
+                referenceValue: [
+                    {
+                        column: "id",
+                        table: "kategoriMutasi",
+                        value: 23
+                    }
+                ],
+                includeObject: true
+            },
+            success: function(data){
+                $('#id-kategori-catatan-edit').select2(
+                    {
+                        data: data,
+                        width: "100%",
+                        placeholder: 'Pilih Kategori Catatan'
+                    }
+                ).val(kantorBayar.kategoriCatatan.id).trigger('change');
+
+            }
+        });
+
+        $('#id-kategori-catatan-edit').on('change', (e) => {
+            if ($(e.target).select2('data')){
+            const data = $(e.target).select2('data')[0];
+            $("#nama-kategori-catatan-edit").val(data.dataProperties.namaKategoriCatatan);
+        }
+    });
+
+
+        $.ajax({
+            url: '{{contextPath}}{{listPeriodeSetupParameter}}',
+            dataType: 'json',
+            method: 'GET',
+            success: (data)=>{
+                $('#user-stamp-edit').val(data.putModeUserStamp);
+                $('#comp-name-edit').val(data.compName);
+                $('#user-name-edit').val(data.userName);
+    }
+    });
+    }
+
+    var mutasiKantorBayar = dkppDataTable($('#mutasi-kantor-bayar-table'),
+        '{{contextPath}}/api/mutasi-kantor-bayar', {
+            'columns': [
+                {
+                    "data": "tglMutasi",
+                    "width": "50px"
+                },
+                {
+                    "data": "periodeMutasi",
+                    "width": "125px"
+                },
+                {
+                    "data": "nip",
+                    "width": "125px"
+                },
+                {
+                    "data": "namaPeserta"
+                },
+                {
+                    "data": "namaPenerimaMP"
+                },
+                {
+                    "data": "namaKategoriPenerimaMP",
+                    "width": "100px"
+                },
+                {
+                    "data": "namaKantorBayar",
+                    "width": "100px"
+                },
+                {
+                    "data": "namaKantorBayarBaru",
+                    "width": "100px"
+                },
+                {
+                    "data": "keterangan",
+                    "width": "100px"
+                },
+                {
+                    "data": "namaValidasi",
+                    "width": "50px"
+                },
+                {
+                    "data": "id",
+                    "width": "50px"
+                }
+            ],
+            'columnDefs': [
+                {
+                    "targets": [0],
+                    "render": function(data, type, row, meta) {
+                        return data && moment(data).format("DD/MM/YYYY");
+                    }
+                },
+                {
+                    "targets": -1,
+                    "className": "action-box",
+                    "render": function(data, type, row, meta){
+                        let htmlTag = `<a class='btn btn-info btn-sm btn-icon btn-edit' onclick="showEditForm(` + row.id + `)"><i class='material-icons'>edit</i> Edit</a>`;
+                        if(row.namaValidasi === "Sudah Validasi"){
+                            param = JSON.stringify(
+                                {
+                                    nip: row.nip,
+                                    periodeMutasi: row.periodeMutasi,
+                                    idKategoriMutasi: row.kategoriMutasi
+                                }
+                            );
+                            htmlTag = `<a class='btn btn-info btn-sm btn-icon btn-edit' onclick="showEditForm(` + row.id + `)"><i class='material-icons'>search</i> Show</a>` + `<br><a class=\'btn btn-info btn-sm btn-icon btn-printer\' onclick=\'displayCetak(` + param + `);\'><i class=\'material-icons\'>printer</i> Cetak</a>`;
+                        }else{
+                            htmlTag  = `<a class='btn btn-info btn-sm btn-icon btn-edit' onclick="showEditForm(` + row.id + `)"><i class='material-icons'>edit</i> Edit</a>`;
+                        }
+                        return htmlTag;
+                    }
+                },
+                {
+                    "targets": -2,
+                    "render": function(data, type, row, meta){
+                        console.log(row);
+                        switch(row.statusValidasi.id){
+                            case 1:
+                                return `<span class="tag tag-pill tag-info">` + row.namaValidasi + `</span>`;
+                                break;
+                            case 2:
+                                return `<span class="tag tag-pill tag-success">` + row.namaValidasi + `</span>`;
+                                break;
+                            case 4:
+                                return `<span class="tag tag-pill tag-danger">` + row.namaValidasi + `</span>`;
+                                break;
+                            case 3:
+                                return `<span class="tag tag-pill tag-warning">` + row.namaValidasi + `</span>`;
+                                break;
+                        }
+                    }
+                }
+            ]
+        });
+
+
+    $(document).ready(function() {
+        let btnAdd = $('#btn-add');
+        btnAdd.unbind().on('click', ()=>{
+            $('#insertMutasiKantorBayarForm').trigger("reset");
+        $('#id-peserta-mp-insert').val('').trigger('change');
+        $('#id-kantor-bayar-baru-insert').val('').trigger('change');
+        $('#id-kategori-catatan-insert').val('').trigger('change');
+
+        $.ajax({
+            url: '{{contextPath}}{{listPeriodeSetupParameter}}',
+            dataType: 'json',
+            method: 'GET',
+            success: (data)=>{
+            $('#user-stamp-insert').val(data.postModeUserStamp);
+        $('#periode-mutasi-insert').val(data.periodeMutasi);
+        $('#tgl-mutasi-insert').val(data.tglMutasi);
+        $('#comp-name-insert').val(data.compName);
+        $('#user-name-insert').val(data.userName);
+    }
+    });
+    });
+
+        var pesertaMPInsert = $('#id-peserta-mp-insert').select2({
+            ajax: {
+                url: '{{contextPath}}{{listPesertaCombo}}',
+                dataType: 'json',
+                method: 'GET',
+                data: function(params){
+                    return {
+                        searchParam: params.term,
+                        valueColumn: 'nip',
+                        textColumn: "${nip}-${namaPeserta}",
+                        searchColumn: [
+                            'nip',
+                            'namaPeserta'
+                        ],
+                        referenceValue: [
+                            {
+                                column: "idStatusBayar",
+                                value: 1
+                            }
+                        ],
+                        includeObject: true
+                    }
+                },
+                //dropdownParent: $(".main-modal"),
+                delay: 250,
+                processResults: function(data){
+                    return {
+                        results: data
+                    };
+                }
+            },
+            width: "100%",
+            placeholder: 'Pilih Peserta MP'
+        });
+
+        pesertaMPInsert.on('change', (e) => {
+            if ($(e.target).select2('data')){
+                const data = $(e.target).select2('data')[0];
+                if (pesertaMPInsert.val() != '' && pesertaMPInsert.val() != null) {
+                    checkExistMutasi("{{contextPath}}", pesertaMPInsert.val(), function(isExist){
+                        if(isExist == 1){
+                            $('#btn-save').hide();
+                        } else {
+                            $('#btn-save').show();
+                        }
+                    });
+                    $('#nama-peserta-insert').val(data.dataProperties.namaPeserta);
+                    $('#id-nama-penerima-mp-insert').val(data.dataProperties.idPenerimaMP + " - " + data.dataProperties.namaPenerimaMp);
+                    $('#id-penerima-mp-insert').val(data.dataProperties.idPenerimaMP);
+                    $('#nama-penerima-mp-insert').val(data.dataProperties.namaPenerimaMp);
+                    $('#kategori-penerima-mp-insert').val(data.dataProperties.namaKategoriPenerimaMp);
+                    $('#id-kantor-bayar-lama-insert').val(data.dataProperties.kantorBayar.id);
+                    $('#nama-kantor-bayar-lama-insert').val(data.dataProperties.namaKantorBayar);
+                }
+            }
+        });
+
+
+
+        var kantorBayarBaruInsert = $('#id-kantor-bayar-baru-insert').select2({
+            ajax: {
+                url: '{{contextPath}}{{listKantorBayarCombo}}',
+                dataType: 'json',
+                method: 'GET',
+                data: function(params){
+                    return {
+                        searchParam: params.term,
+                        valueColumn: 'id',
+                        textColumn: "${namaKantorBayar} - ${alamatSurat1} - ${alamatSurat2}",
+                        searchColumn: [
+                            'namaKantorBayar'
+                        ],
+                        includeObject: true
+                    }
+                },
+                //dropdownParent: $(".main-modal"),
+                delay: 250,
+                processResults: function(data){
+                    return {
+                        results: data
+                    };
+                }
+            },
+            width: "100%",
+            placeholder: 'Pilih Kantor Bayar'
+        });
+
+        kantorBayarBaruInsert.on('change', (e) => {
+            if ($(e.target).select2('data')){
+                const data = $(e.target).select2('data')[0];
+                if (kantorBayarBaruInsert.val() != '' && kantorBayarBaruInsert.val() != null) {
+                    $("#nama-kantor-bayar-baru-insert").val(data.dataProperties.namaKantorBayar);
+                }
+            }
+        });
+
+
+        var kategoriCatatanInsert = $('#id-kategori-catatan-insert').select2({
+            ajax: {
+                url: '{{contextPath}}{{listKategoriCatatanCombo}}',
+                dataType: 'json',
+                method: 'GET',
+                data: function(params){
+                    return {
+                        searchParam: params.term,
+                        valueColumn: 'id',
+                        textColumn: "${id} - ${namaKategoriCatatan}",
+                        searchColumn: [
+                            'namaKategoriCatatan'
+                        ],
+                        referenceValue: [
+                            {
+                                column: "id",
+                                table: "kategoriMutasi",
+                                value: 23
+                            }
+                        ],
+                        includeObject: true
+                    }
+                },
+                //dropdownParent: $(".main-modal"),
+                delay: 250,
+                processResults: function(data){
+                    return {
+                        results: data
+                    };
+                }
+            },
+            width: "100%",
+            placeholder: 'Pilih Kategori Catatan'
+        });
+
+        kategoriCatatanInsert.on('change', (e) => {
+            if ($(e.target).select2('data')){
+            const data = $(e.target).select2('data')[0];
+            if (kategoriCatatanInsert.val() != '' && kategoriCatatanInsert.val() != null ) {
+                $("#nama-kategori-catatan-insert").val(data.dataProperties.namaKategoriCatatan);
+            }
+        }
+    });
+
+        $('#btn-save-insert').on('click', ()=>{
+
+            $.validator.addMethod('cannotEqual', () => {
+                if($('#id-kantor-bayar-baru-insert').val() == $('#id-kantor-bayar-lama-insert').val()){
+            return false;
+        } else
+        return true;
+    });
+        $('#insertMutasiKantorBayarForm').validate();
+
+        $('#id-peserta-mp-insert').rules("add", {
+            required: true,
+            messages: {
+                required: 'Peserta tidak boleh kosong'
+            }
+        });
+
+        $('#id-kantor-bayar-baru-insert').rules("add", {
+            required: true,
+            cannotEqual: true,
+            messages: {
+                required: 'Kantor bayar tidak boleh kosong',
+                cannotEqual: 'Kantor bayar baru tidak boleh sama dengan kantor bayar lama.'
+            }
+        });
+
+        $('#id-kategori-catatan-insert').rules("add", {
+            required: true,
+            messages: {
+                required: 'Kategori catatan tidak boleh kosong.'
+            }
+        });
+
+
+
+        let validForm = $('#insertMutasiKantorBayarForm').valid();
+
+        if (validForm)
+            $.ajax({
+                url: "{{contextPath}}/api/mutasi-kantor-bayar",
+                method: 'POST',
+                data: formToJSON($("form#insertMutasiKantorBayarForm")[0].elements)
+            }).success(function(data) {
+                $('.main-modal').modal('hide');
+                if(data.status == "success") {
+                    swal({title: "Berhasil", text: data.message, icon: "success", button: "OK"});
+                }
+                mutasiKantorBayar.ajax.reload();
+
+            }).error(function(data){
+                if(data.message != undefined )
+                    swal({title: "Gagal", text: data.message, icon: "error", button: "OK"});
+                else
+                    swal({title: "Gagal", text: "Terjadi kegagalan.", icon: "error", button: "OK"});
+            });
+    });
+
+        $('#btn-save-update').on('click', ()=>{
+            $.validator.addMethod('cannotEqual', () => {
+                if($('#id-kantor-bayar-baru-edit').val() == $('#id-kantor-bayar-lama-edit').val()){
+            return false;
+        } else
+        return true;
+    });
+        $('#edit-form').validate();
+        $('#id-peserta-mp-edit').rules("add", {
+            required: true,
+            messages: {
+                required: 'Peserta tidak boleh kosong'
+            }
+        });
+
+        $('#id-kantor-bayar-baru-edit').rules("add", {
+            required: true,
+            cannotEqual: true,
+            messages: {
+                required: 'Kantor bayar tidak boleh kosong',
+                cannotEqual: 'Kantor bayar baru tidak boleh sama dengan kantor bayar lama.'
+            }
+        });
+
+        $('#id-kategori-catatan-edit').rules("add", {
+            required: true,
+            messages: {
+                required: 'Kategori catatan tidak boleh kosong.'
+            }
+        });
+
+        let validForm = $('#edit-form').valid();
+
+        if (validForm)
+            $.ajax({
+                url: "{{contextPath}}/api/mutasi-kantor-bayar",
+                method: 'PUT',
+                data: formToJSON($("form#edit-form")[0].elements)
+            }).success(function(data) {
+
+                if(data.status == "success") {
+                    swal({title: "Berhasil", text: data.message, icon: "success", button: "OK"});
+                    $('#id-edit-modal').modal('hide');
+                }
+                mutasiKantorBayar.ajax.reload();
+
+            }).error(function(data){
+                if(data.message != undefined )
+                    swal({title: "Gagal", text: data.message, icon: "error", button: "OK"});
+                else
+                    swal({title: "Gagal", text: "Terjadi kegagalan.", icon: "error", button: "OK"});
+            });
+    });
+
+
+        // $('#btn-update').on('click', ()=>{
+        //     $.ajax({
+        //         url: "{{contextPath}}/api/mutasi-kantor-bayar",
+        //         method: 'PUT',
+        //         data: formToJSON($("form#edit-form")[0].elements)
+        //     }).success(function(data) {
+        //         if(data.status == "success") {
+        //             $('.edit-modal').modal('hide');
+        //             swal({title: "Berhasil", text: data.message, icon: "success", button: "OK"});
+        //         }
+        //         mutasiKantorBayar.ajax.reload();
+        //
+        //
+        //     }).error(function(data){
+        //         if(data.message != undefined )
+        //             swal({title: "Gagal", text: data.message, icon: "error", button: "OK"});
+        //         else
+        //             swal({title: "Gagal", text: "Terjadi kegagalan.", icon: "error", button: "OK"});
+        //     });
+        // });
+
+        //Isi Periode Mutasi di Grid
+        $.ajax({
+            url: '{{contextPath}}{{listPeriodeSetupParameter}}',
+            dataType: 'json',
+            method: 'GET',
+            success: (data)=>{
+                $('#periode-mutasi-grid').val(data.periodeMutasi);
+            }
+        });
+    });
+
+        function displayCetak(param) {
+            window.DkppReportParam = param;
+            $('.report-modal').modal('show');
+            console.log(param);
+        }
+
+        function cetakReport() {
+            let radioReport = $("input[name='optradio']:checked").val();
+            data = {
+                tipeReport: radioReport,
+                nip: window.DkppReportParam.nip,
+                idKategoriMutasi: '23',
+                periodeMutasi: window.DkppReportParam.periodeMutasi
+            };
+            const param = $.param(data);
+            const reportFrame = $("#report");
+            const res = encodeURI(('src', `{{contextPath}}{{report_path_api}}?${param}`));
+            window.open(res, '_blank');
+        }
+
+
+</script>
+{{/scripts}}
+
+{{/layout}}

@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Daftar_Mutasi_Master_PensiunBI" pageWidth="850" pageHeight="618" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="810" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="90685e0e-3dd0-4330-b165-4419f10b7c60">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="dbserver"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="647"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="353"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="293"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="696"/>
+	<parameter name="periode_mutasi" class="java.lang.String"/>
+	<parameter name="kepala_divisi" class="java.lang.String"/>
+	<parameter name="kepala_seksi" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT to_char(to_date(a.periode_mutasi, 'MMYYYY'),'Month yyyy', 'nls_date_language = INDONESIAN') as periode
+                ,a.NIP
+                ,a.NAMA_PENERIMA_MP
+                ,a.no_rekening_baru
+                ,a.NAMA_KET_PERUBAHAN_REKENING
+                ,a.nama_cabang_bank
+                ,a.periode_mutasi
+                , $P{kepala_divisi} as kepala_divisi
+                , $P{kepala_seksi} as kepala_seksi 
+                ,to_char(SYSDATE,'dd Month yyyy','nls_date_language = INDONESIAN') as sign_date
+FROM tbl_t_mutasi_rekening a 
+WHERE a.periode_mutasi = $P{periode_mutasi}]]>
+	</queryString>
+	<field name="PERIODE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="PERIODE"/>
+	</field>
+	<field name="NIP" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NIP"/>
+	</field>
+	<field name="NAMA_PENERIMA_MP" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NAMA_PENERIMA_MP"/>
+	</field>
+	<field name="NO_REKENING_BARU" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NO_REKENING_BARU"/>
+	</field>
+	<field name="NAMA_KET_PERUBAHAN_REKENING" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NAMA_KET_PERUBAHAN_REKENING"/>
+	</field>
+	<field name="NAMA_CABANG_BANK" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NAMA_CABANG_BANK"/>
+	</field>
+	<field name="PERIODE_MUTASI" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="PERIODE_MUTASI"/>
+	</field>
+	<field name="KEPALA_DIVISI" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="KEPALA_DIVISI"/>
+	</field>
+	<field name="KEPALA_SEKSI" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="KEPALA_SEKSI"/>
+	</field>
+	<field name="SIGN_DATE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="SIGN_DATE"/>
+	</field>
+	<sortField name="NIP"/>
+	<group name="PERIODE">
+		<groupExpression><![CDATA[$F{PERIODE}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="72">
+			<textField>
+				<reportElement x="729" y="35" width="80" height="30" uuid="dd691cb1-a378-432f-9023-0d4817c511cc"/>
+				<textFieldExpression><![CDATA["Hal : "+$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="-20" y="12" width="850" height="30" uuid="2bc65c14-8c55-4866-871e-d8ad7cad9c26"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="html">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["PENGOLAHAN DATA UNTUK PPBI <br> PERIODE : "+($F{PERIODE} == null ? "-" : $F{PERIODE})]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="40">
+			<staticText>
+				<reportElement mode="Opaque" x="1" y="0" width="39" height="40" backcolor="#FFFFFF" uuid="30f0e07a-a913-4501-9966-7a034a668f7c"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[No.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="40" y="0" width="70" height="40" backcolor="#FFFFFF" uuid="1b3784b3-9908-45da-b3e1-a7a3498ade77"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Nip]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="430" y="0" width="110" height="40" backcolor="#FFFFFF" uuid="c4fe862d-45f3-40f8-806a-43275fce5c50"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Keterangan]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="540" y="0" width="120" height="40" backcolor="#FFFFFF" uuid="50b4fcf9-e725-4a4c-947f-d10977e7242f"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Nama Bank Pembayar]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="290" y="0" width="140" height="40" backcolor="#FFFFFF" uuid="01cd290b-1fb2-4137-b6ee-f328749d6538"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Rekening]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="110" y="0" width="180" height="40" backcolor="#FFFFFF" uuid="1967001b-5f43-45d0-95ae-c3e9cd840584"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<paragraph leftIndent="10"/>
+				</textElement>
+				<text><![CDATA[Nama Penerima]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="660" y="0" width="150" height="40" backcolor="#FFFFFF" uuid="5dfbda14-40fe-4e88-b0bb-b71de4a22282"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Periode]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="49" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement x="1" y="0" width="39" height="49" uuid="4f90b006-0cf8-4a94-a572-0eb5f034b64e"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="40" y="0" width="70" height="49" uuid="7a545c5b-6d81-4462-921f-4b2d67a9d4b5"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NIP}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="110" y="0" width="180" height="49" uuid="34f548f8-794b-4234-8093-49dcdbeeea86"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+					<paragraph leftIndent="10" rightIndent="0"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NAMA_PENERIMA_MP}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,000.00##;(#,000.00##-)" isBlankWhenNull="true">
+				<reportElement x="660" y="0" width="150" height="49" uuid="bc4fc62f-7675-41f0-b44b-2096638d7060"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PERIODE_MUTASI} == null ? "-" : $F{PERIODE_MUTASI}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="430" y="0" width="110" height="49" uuid="fcbd73e5-2d96-4cde-9b64-52f6091c8188"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NAMA_KET_PERUBAHAN_REKENING} == null ? "-" : $F{NAMA_KET_PERUBAHAN_REKENING}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="540" y="0" width="120" height="49" uuid="26e74bb7-1f13-4cf0-805c-6b6a3b7362e8"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NAMA_CABANG_BANK} == null ? "-" : $F{NAMA_CABANG_BANK}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,000.00##;(#,000.00##-)" isBlankWhenNull="true">
+				<reportElement x="290" y="0" width="140" height="49" uuid="1b6ce6cf-2fa6-4fe1-9802-880daf75aec0"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NO_REKENING_BARU} == null ? "-" : $F{NO_REKENING_BARU}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="128">
+			<staticText>
+				<reportElement x="571" y="22" width="209" height="20" uuid="7302b952-fb78-4883-9dc2-07701162973d"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Divisi Kepesertaan dan Pelayanan Pensiun]]></text>
+			</staticText>
+			<textField pattern="MMMMM dd, yyyy">
+				<reportElement x="579" y="4" width="199" height="15" uuid="fb2238b7-2726-4b7c-ab32-da82445beb9f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["Jakarta, "+($F{SIGN_DATE} == null ? "" : $F{SIGN_DATE})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="572" y="107" width="134" height="16" uuid="2222b29f-ba78-45f7-bd53-041f86dfbcb2"/>
+				<textFieldExpression><![CDATA["Kepala Divisi"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="698" y="106" width="84" height="16" uuid="9697c977-5f56-4149-9f42-c5e574aa4e63"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Kepala Seksi"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="554" y="87" width="100" height="20" uuid="1d075ed3-68af-4b30-8b69-a0640abe93fb"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{KEPALA_DIVISI}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="688" y="85" width="118" height="20" uuid="bc3dce5c-7d60-48a2-85c8-18de0f79ef1f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{KEPALA_SEKSI}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

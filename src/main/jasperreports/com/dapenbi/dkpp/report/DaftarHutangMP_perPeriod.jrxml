@@ -1,0 +1,455 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="DaftarHutangMP_perPeriod" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="df5e0b93-29b0-4e0a-8385-ca5ba9b967cf">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="dbserver"/>
+	<parameter name="periode_mutasi" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT DISTINCT
+to_char(to_date(a.periode_mutasi,'MMYYYY'),'Month YYYY','nls_date_language = INDONESIAN') as periode_mutasi
+,a.nip
+,a.nama_peserta
+,a.id_kategori_hutang
+,a.nama_kategori_hutang
+,to_char(add_months(TRUNC(ADD_MONTHS(TRUNC((select tgl_awal_bayar from tbl_t_setup_parameter where periode = $P{periode_mutasi}), 'MM'), 1) -1, 'DD'), 0),'dd Mon YYYY','nls_date_language = INDONESIAN') as periode_akhir
+,to_char(add_months(TRUNC(ADD_MONTHS(TRUNC((select tgl_awal_bayar from tbl_t_setup_parameter where periode = $P{periode_mutasi}), 'MM'), 1) -1, 'DD'), 0),'Month YYYY','nls_date_language = INDONESIAN') as periode
+,to_char(add_months(TRUNC(ADD_MONTHS(TRUNC((select tgl_awal_bayar from tbl_t_setup_parameter where periode = $P{periode_mutasi}), 'MM'), 0) -1, 'DD'), 0),'dd Mon YYYY','nls_date_language = INDONESIAN') as periode_awal
+,a.jumlah_hutang
+,(SELECT sum(a.jumlah_hutang) FROM tbl_t_hutang_detail a where periode_mutasi = to_char(add_months(TRUNC(ADD_MONTHS(TRUNC((select tgl_awal_bayar from tbl_t_setup_parameter where periode = $P{periode_mutasi}), 'MM'), 0) -1, 'DD'), 0),'dd Mon YYYY','nls_date_language = INDONESIAN')) as saldo_lalu
+,b.total_hutang
+,b.sudah_dibayar
+,b.sisa_hutang
+,a.keterangan
+,(case when not exists (select hd.nip from tbl_t_her_registrasi_detail hd where hd.tahun_her = substr($P{periode_mutasi},3,4) and a.nip = hd.nip) 
+       then 'SUDAH HER' 
+       when exists (select hd2.nip from tbl_t_her_registrasi_detail hd2 where hd2.tahun_her = substr($P{periode_mutasi},3,4) and a.nip = hd2.nip) 
+       then case when (select hd3.is_sudah_her from tbl_t_her_registrasi_detail hd3 where hd3.tahun_her = substr($P{periode_mutasi},3,4) and a.nip = hd3.nip) = '1' 
+                 then 'SUDAH HER' else 'BELUM HER' end end) as belum_her
+--,(case WHEN id_kategori_hutang = '1' then c.tahun_her else '' END) belum_her
+,SUM(a.jumlah_hutang) as jml_periode_awal_hutang
+,SUM(b.sudah_dibayar) as jml_kredit
+,SUM(b.sisa_hutang) as jml_saldo_periode_akhir
+FROM tbl_t_hutang_detail a
+INNER JOIN tbl_t_hutang b ON a.nip = b.nip and b.type = (case when a.type = 'MPS' then 'MP' else a.type end)
+--INNER JOIN tbl_t_her_registrasi_detail c ON a.nip = c.nip
+WHERE a.periode_mutasi <= $P{periode_mutasi}
+GROUP BY 
+a.nip
+,a.nama_peserta
+,a.id_kategori_hutang
+,a.nama_kategori_hutang
+,a.periode_mutasi
+,a.jumlah_hutang
+,b.total_hutang
+,b.sudah_dibayar
+,b.sisa_hutang
+,a.keterangan
+--,c.tahun_her
+ORDER BY a.id_kategori_hutang]]>
+	</queryString>
+	<field name="PERIODE_MUTASI" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="PERIODE_MUTASI"/>
+	</field>
+	<field name="NIP" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NIP"/>
+	</field>
+	<field name="NAMA_PESERTA" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NAMA_PESERTA"/>
+	</field>
+	<field name="ID_KATEGORI_HUTANG" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="ID_KATEGORI_HUTANG"/>
+	</field>
+	<field name="NAMA_KATEGORI_HUTANG" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NAMA_KATEGORI_HUTANG"/>
+	</field>
+	<field name="PERIODE_AKHIR" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="PERIODE_AKHIR"/>
+	</field>
+	<field name="PERIODE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="PERIODE"/>
+	</field>
+	<field name="PERIODE_AWAL" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="PERIODE_AWAL"/>
+	</field>
+	<field name="JUMLAH_HUTANG" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="JUMLAH_HUTANG"/>
+	</field>
+	<field name="SALDO_LALU" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="SALDO_LALU"/>
+	</field>
+	<field name="TOTAL_HUTANG" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="TOTAL_HUTANG"/>
+	</field>
+	<field name="SUDAH_DIBAYAR" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="SUDAH_DIBAYAR"/>
+	</field>
+	<field name="SISA_HUTANG" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="SISA_HUTANG"/>
+	</field>
+	<field name="KETERANGAN" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="KETERANGAN"/>
+	</field>
+	<field name="BELUM_HER" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="BELUM_HER"/>
+	</field>
+	<field name="JML_PERIODE_AWAL_HUTANG" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="JML_PERIODE_AWAL_HUTANG"/>
+	</field>
+	<field name="JML_KREDIT" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="JML_KREDIT"/>
+	</field>
+	<field name="JML_SALDO_PERIODE_AKHIR" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="JML_SALDO_PERIODE_AKHIR"/>
+	</field>
+	<variable name="Total_saldo_awal" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{SALDO_LALU}]]></variableExpression>
+	</variable>
+	<variable name="jml_hutang_skrg" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{JUMLAH_HUTANG}]]></variableExpression>
+	</variable>
+	<variable name="Total_saldo_akhir" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{SISA_HUTANG}]]></variableExpression>
+	</variable>
+	<variable name="jml_dibayar" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{SUDAH_DIBAYAR}]]></variableExpression>
+	</variable>
+	<group name="ID_KATEGORI_HUTANG">
+		<groupExpression><![CDATA[$F{ID_KATEGORI_HUTANG}]]></groupExpression>
+		<groupHeader>
+			<band height="20">
+				<textField>
+					<reportElement x="0" y="0" width="800" height="20" uuid="6d869886-c4f2-450e-bcc1-55dbe3013c61"/>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Left" verticalAlignment="Middle" markup="html">
+						<font size="12" isBold="true"/>
+						<paragraph leftIndent="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{NAMA_KATEGORI_HUTANG} == null ? "-" : $F{NAMA_KATEGORI_HUTANG}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
+	<group name="NAMA_KATEGORI_HUTANG">
+		<groupExpression><![CDATA[$F{NAMA_KATEGORI_HUTANG}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="70" splitType="Stretch">
+			<staticText>
+				<reportElement x="-20" y="4" width="842" height="36" uuid="462b8e97-b781-4d0f-a0aa-35815b46bc75"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DANA PENSIUN BANK INDONESIA
+DAFTAR HUTANG MANFAAT PENSIUN]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="-20" y="40" width="842" height="30" uuid="25f98352-dc5f-4117-817e-c20fe8fd7285"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="html">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PERIODE_MUTASI} == null ? "PER " : "PER "+$F{PERIODE_MUTASI}.toString().trim()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="61" splitType="Stretch">
+			<staticText>
+				<reportElement x="310" y="10" width="180" height="30" uuid="173fcbff-fec3-46dd-99a3-7ac848d23697"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="html">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Mutasi]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="90" y="10" width="130" height="51" uuid="ced3b567-3aae-4203-a90f-61edbff5f57f"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="html">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Nama]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="490" y="10" width="90" height="51" uuid="f06a411f-ec1b-4e27-96d9-2765d9a2cbd8"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="html"/>
+				<textFieldExpression><![CDATA[$F{PERIODE_AKHIR} == null ? "Saldo Akhir" : "Saldo Akhir <br>"+$F{PERIODE_AKHIR}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="220" y="10" width="90" height="51" uuid="4837491a-52d5-4381-bdcb-f2a4f2799abb"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="html"/>
+				<textFieldExpression><![CDATA[$F{PERIODE_AWAL} == null ? "Saldo Awal " : "Saldo Awal <br>"+$F{PERIODE_AWAL}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="10" width="30" height="51" uuid="ff62ab96-e8c2-47a5-a705-fc665605cc78"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="html">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[No.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="580" y="10" width="220" height="51" uuid="04e568ce-e80d-47ba-95f5-55d43463a3e5"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="html">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Keterangan]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="310" y="40" width="90" height="21" uuid="79838dc2-69b3-4bf3-8104-e07a6ab029a5"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="html">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Debet]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="10" width="60" height="51" uuid="f8dc8708-e17e-4f51-8d11-00c03cbc650f"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="html">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[NIP]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="400" y="40" width="90" height="21" uuid="d8fe472c-24be-44b4-8dbc-d7b1b463d73f"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="html">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Kredit]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField pattern="#,000.00#;¤(#,000.00#-)" isBlankWhenNull="false">
+				<reportElement x="490" y="0" width="90" height="20" uuid="edb42b45-19aa-4b12-ae78-7f8c1c533ff5"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{SISA_HUTANG} == null ? "-" : $F{SISA_HUTANG}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,000.00#;¤(#,000.00#-)" isBlankWhenNull="false">
+				<reportElement x="400" y="0" width="90" height="20" uuid="73922483-ee6d-4b61-a35e-f87bf4da782a"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{SUDAH_DIBAYAR} == null ? "0.00" : $F{SUDAH_DIBAYAR}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="30" y="0" width="60" height="20" uuid="1e8fc397-7a58-4348-a6f9-7ca6cb58061a"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{NIP}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="90" y="0" width="130" height="20" uuid="af2a89da-ec92-4203-bd4a-3cdeea2edbb8"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{NAMA_PESERTA}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="580" y="0" width="220" height="20" uuid="179845c8-a08a-454b-95cd-7b07c8c577d7"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<paragraph leftIndent="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{KETERANGAN} == null ? "-" : $F{KETERANGAN}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,000.00#;¤(#,000.00#-)" isBlankWhenNull="false">
+				<reportElement x="220" y="0" width="90" height="20" uuid="3c73b72c-291c-4710-a8d4-3091477b91c0"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{SALDO_LALU} == null ? "0.00" : $F{SALDO_LALU}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,000.00#;¤(#,000.00#-)" isBlankWhenNull="false">
+				<reportElement x="310" y="0" width="90" height="20" uuid="d7df2e5a-ed65-4a27-b6b1-ef88bd67fe08"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{JUMLAH_HUTANG} == null ? "0.00" : $F{JUMLAH_HUTANG}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="0" width="30" height="20" uuid="ed140e99-f3ed-4ceb-a1c3-e79969a9d240"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="20" splitType="Stretch">
+			<textField pattern="#,000.00#;¤(#,000.00#-)" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="220" y="0" width="90" height="20" uuid="391db980-a43b-419c-bb21-b9be1a970d7f"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{Total_saldo_awal} == null ? "0.00" : $V{Total_saldo_awal}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,000.00#;¤(#,000.00#-)" isBlankWhenNull="true">
+				<reportElement x="490" y="0" width="90" height="20" uuid="d21b3043-56ec-4cca-bdf8-9348241c3a90"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{Total_saldo_akhir} == null ? "0.00" : $V{Total_saldo_akhir}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,000.00#;(#,000.00#-)">
+				<reportElement x="400" y="0" width="90" height="20" uuid="e5883194-ccb4-4ca3-bead-604fe3ad308a"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{jml_dibayar} == null ? "0.00" : $V{jml_dibayar}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,000.00#;¤(#,000.00#-)">
+				<reportElement x="310" y="0" width="90" height="20" uuid="bcd8c3c0-4043-40df-ac66-1571585f41c3"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{jml_hutang_skrg} == null ? "0.00" : $V{jml_hutang_skrg}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="580" y="0" width="220" height="20" uuid="3be3a7e3-0d7f-4fce-a70c-53149f8b52dc"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textFieldExpression><![CDATA["-"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="0" width="220" height="20" uuid="b637b971-d816-4849-bb7d-ca51215bbcc7"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Total Saldo Hutang "]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

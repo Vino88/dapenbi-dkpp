@@ -1,0 +1,245 @@
+{{#layout}}
+
+{{#styles}}
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/datatables/media/css/dataTables.bootstrap4.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/googleapis/css/component.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/googleapis/css/googleapis.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/select2/css/select2.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css">
+<style>
+    .required{
+        color:red;
+    }
+
+    #datatable1 {
+        min-width: 100%;
+    }
+</style>
+{{/styles}}
+
+{{#title}}
+Her Registrasi - Laporan
+{{/title}}
+<ul class="nav nav-tabs" role="tablist">
+    <li class="nav-item">
+        <a class="nav-link active" data-toggle="tab" href="#pensiunBaru" role="tab">Laporan Her-Registrasi</a>
+    </li>
+</ul>
+
+
+<div class="tab-content">
+    <div class="tab-pane active" id="pensiunBaru" role="tabpanel">
+        <div class="card">
+            <div class="card-block">
+                <table class="table table-bordered table-striped m-b-0 dataTable no-footer display" id="datatable1"
+                       role="grid">
+                    <thead>
+                    <tr role="row">
+                        <th>
+                            No.
+                        </th>
+                        <th>
+                            Laporan
+                        </th>
+                        <th>
+                            Action
+                        </th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+            <iframe style="display: none" id="report" name="report"></iframe>
+    </div>
+{{#modal}}
+<div class="modal fade report-modal" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title small bold" id="myModalLabel">Form Cetak Laporan Her Registrasi</h4>
+            </div>
+            <div class="modal-body">
+                <form id="pesertaForm">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="form-group row" id="tgl">
+                                <label for="tglHer" class="col-sm-3 bold">Tanggal HerRegistrasi<span class="required">*</span></label>
+                                <div class="col-xs-3">
+                                    <input placeholder="dd-mm-yyyy" class="form-control form-control-sm text-sm" type="text" name="tglHer" id="tglHer" data-provide="datepicker" data-date-format="dd-mm-yyyy">
+                                </div>
+                            </div>
+                            <div class="form-group row" id="nip">
+                                <label for="peserta" class="col-sm-3 bold">NIP - Peserta<span class="required">*</span> </label>
+                                <div class="col-xs-3">
+                                    <select class="form-control form-control-sm" name="peserta" id="peserta"></select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="cetakReport()">Cetak</button>
+            </div>
+        </div>
+    </div>
+</div>
+{{/modal}}
+{{#scripts}}
+<script src="{{contextPath}}/assets/vendor/datatables/media/js/jquery.dataTables.js"></script>
+<script src="{{contextPath}}/assets/vendor/datatables/media/js/dataTables.bootstrap4.js"></script>
+<script src="{{contextPath}}/assets/vendor/select2/js/select2.js"></script>
+<script src="{{contextPath}}/assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+<script src="{{contextPath}}/assets/vendor/jquery-validation/dist/jquery.validate.js"></script>
+<script src="{{contextPath}}/assets/vendor/numeral/numeral.min.js"></script>
+
+<script type="text/javascript">
+    window.DkppReportParam = {};
+    let RESTFulMode = "";
+    $(function () {
+        $("#pesertaForm").validate({
+            rules: {
+                tahunHer:{
+                    required:true,
+                    minlength:4,
+                    maxlength:4
+                },
+                action: "required"
+            },
+            messages:{
+                tahunHer: {
+                    required: "Inputan Tidak Boleh Kosong",
+                    minlength: "Harus 4 karakter",
+                    maxlength: "Harus 4 Karakter"
+                },
+                action: "masukan data"
+            },
+            submitHandler : function () {
+                cetakReport();
+            }
+        });
+    });
+    $('#datatable1').dataTable({
+        data: [
+            {
+                id: '1',
+                text: 'Daftar Peserta Manfaat Pensiun Yang Sudah Registrasi Ulang',
+                no: '01'
+            },
+            {
+                id: '2',
+                text: 'Daftar Peserta Manfaat Pensiun Yang Belum Registrasi Ulang',
+                no: '02'
+            },
+            {
+                id: '3',
+                text: 'Rekapitulasi Penerima Manfaat Pensiun Peserta, Janda/Duda dan Anak yang sudah Registrasi Ulang',
+                no: '03'
+            },
+            {
+                id: '4',
+                text: 'Rekapitulasi Penerima Manfaat Pensiun Peserta, Janda/Duda dan Anak yang belum Registrasi Ulang',
+                no: '04'
+            }
+        ],
+        'columnDefs': [
+            {
+                "targets": 2,
+                "data": null,
+                "render": function (data, type, row, meta) {
+                    let param = JSON.stringify(row);
+                    return `<a class=\'btn btn-info btn-sm btn-icon btn-printer\' onclick=\'displayCetak(`+ param +`);\'><i class=\'material-icons\'>printer</i> Cetak</a>`;
+                }
+            }
+        ],
+        columns: [
+            {
+                data: 'id'
+            },
+            {
+                data: 'text'
+            },
+            {
+                data: 'no'
+            }
+        ]
+    });
+
+    $(document).ready(function() {
+
+    });
+
+    function displayCetak(param) {
+        window.DkppReportParam = param;
+        let text = param.no;
+        console.log(DkppReportParam);
+        let allRadioId = ['tgl', 'nip'];
+
+        let radioGroup = {
+            '01': ['tgl'],
+            '02':['tgl'],
+            '03':['tgl'],
+            '04':['tgl']
+        };
+
+        for (i = 0; i < allRadioId.length; i++) {
+            $('#' + allRadioId[i]).hide();
+        }
+
+        for (j = 0; j < radioGroup[text].length; j++) {
+            $('#' + radioGroup[text][j]).show();
+        }
+
+        $("#tglHer").val("");
+        $("#peserta").select2('val',"");
+        $('.report-modal').modal('show');
+        console.log(param);
+    }
+
+    function cetakReport(){
+        let tglHer = $("input[name='tglHer']").val();
+        let peserta = $('#peserta option:selected').val();
+
+        data ={
+            tipeReport: window.DkppReportParam.no,
+            tglHer: tglHer,
+            nip: peserta
+        };
+        const param = $.param(data);
+        const reportFrame = $("#report");
+        const res = encodeURI(('src', `{{contextPath}}{{laporan_path_api}}?${param}`));
+        window.open(res, '_blank');
+    }
+
+    $('#peserta').select2({
+        ajax: {
+            url: '{{contextPath}}{{listPesertaCombo}}',
+            dataType: 'json',
+            delay: 250,
+            data: function(params){
+                return {
+                    searchParam: params.term,
+                    valueColumn: 'nip',
+                    textColumn: "${nip}-${namaPeserta}",
+                    searchColumn: [
+                        'nip',
+                        'namaPeserta'
+                    ],
+                }
+            },
+            processResults: function(data){
+                return {
+                    results: data
+                };
+            }
+        },
+        width: "100%",
+        placeholder: 'Pilih Peserta MP'
+    });
+</script>
+{{/scripts}}
+{{/layout}}

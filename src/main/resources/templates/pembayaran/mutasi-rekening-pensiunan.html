@@ -1,0 +1,1788 @@
+{{#layout}}
+
+{{#styles}}
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/datatables/media/css/dataTables.bootstrap4.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/googleapis/css/component.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/googleapis/css/googleapis.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/select2/css/select2.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css">
+{{/styles}}
+<style>
+    .required{
+        color:red;
+    }
+</style>
+
+{{#title}}
+Mutasi Rekening Pensiunan - DKPP
+{{/title}}
+<!-- main area -->
+<div class="main-content">
+    <div class="content-view">
+
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#one" role="tab">Input Rekening Pensiunan</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#two" role="tab">Perbandingan Rekening</a>
+            </li>
+        </ul>
+
+        <div class="tab-content">
+            <div class="tab-pane active" id="one" role="tabpanel">
+                <div class="card">
+                    <div class="row">
+                        <br/>
+                        <div class="col-lg-4">
+                            <label for="example-text-input" class="col-lg-3">Periode : </label>
+                            <div class="col-lg-5">
+                                <input class="form-control form-control-sm"  type="text" value="{{periodeMutasi}}" id="filterPeriode">
+                                <input type="hidden" value="{{periodeMutasi}}" id="periodeMutasi">
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <label for="example-text-input" class="col-lg-2">Tanggal Input : </label>
+                            <div class="col-lg-3">
+                                <input class="form-control form-control-sm"  type="text" data-provide="datepicker" placeholder="dd/mm/yyyy" data-date-format="dd/mm/yyyy" value="" id="filterDateStart">
+                            </div>
+                            <label for="example-text-input" class="col-lg-1">S/d : </label>
+                            <div class="col-lg-3">
+                                <input class="form-control form-control-sm"  type="text" data-provide="datepicker" placeholder="dd/mm/yyyy" data-date-format="dd/mm/yyyy" value="" id="filterDateEnd">
+                            </div>
+                            <div class="col-lg-1">
+                                <a class="btn btn-info btn-sm" onclick="filterData()"><i class="fa fa-edit"></i> <span>Tampilkan</span></a>
+                            </div>
+                        </div>
+                    </div><div class="row">&nbsp;</div>
+                    <div class="row">
+                        <div align="right">
+                            <div class="col-lg-12">
+                                <button class="btn btn-primary btn-sm" id="btn-cetak-daftar"><i class="fa fa-print"></i> <span>Cetak Daftar</span></button>
+
+
+                                <button class="btn btn-primary btn-sm" id="btn-preview"><i class="fa fa-eye"></i> <span>Lihat Rekening</span></button>
+
+                                <button class="btn btn-primary btn-sm" id="btn-cetak-pembayaran"><i class="fa fa-money"></i> <span>Cetak Pembayaran MP Susulan</span></button>
+
+                                <button class="btn btn-primary btn-sm" id="btn-cetak-rekenning" ><i class="fa fa-credit-card"></i> <span>Cetak Rekening Kosong</span></button>
+
+                                <button class="btn btn-primary btn-sm" id="btn-proses-ykkbi"><i class="fa fa-print"></i> <span>Proses Untuk YKKBI  PPBI</span></button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            </div>
+                        </div>
+                    </div>
+                    <hr/>
+
+                    <div class="card-block">
+
+                        <button class="btn btn-primary btn-sm" onclick="inputPerubahanRekening()"><i class="fa fa-plus"></i> <span>Input Perubahan Rekening</span></button>
+
+                        <hr/>
+
+                        <table class="table table-bordered table-striped m-b-0 dataTable no-footer display" id="tMutasiRekening" >
+                            <thead>
+                            <tr>
+                                <th>
+                                    No.
+                                </th>
+                                <th>
+                                    Periode
+                                </th>
+                                <th>
+                                    Tanggal Input
+                                </th>
+                                <th>
+                                    NIP
+                                </th>
+                                <th>
+                                    Nama Peserta
+                                </th>
+                                <th>
+                                    Nama Penerima
+                                </th>
+                                <th>
+                                    Ket. Rek. Lama
+                                </th>
+                                <th>
+                                    No. Rek. Baru
+                                </th>
+                                <th>
+                                    ID Bank
+                                </th>
+                                <th>
+                                    Nama Cabang Bank
+                                </th>
+                                <th>
+                                    Nama Pada Rekening
+                                </th>
+                                <th>
+                                    Status
+                                </th>
+                                <th>
+                                    Action
+                                </th>
+                            </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane" id="two" role="tabpanel">
+                <div class="card">
+                    <div class="card-block">
+                        <div class="row">
+                            <label for="periodeMutasi" class="col-xs-1">Periode</label>
+                            <div class="col-xs-1">
+                                <input class="form-control form-control-sm" type="text" value="{{periodeMutasi}}" id="periodeMutasi">
+                            </div>
+                        </div><br/>
+                        <div class="row">
+                            <label for="pilihFile" class="col-xs-1">Upload File</label>
+                            <div class="col-xs-2">
+                                <input class="form-control form-control-sm" type="file" id="pilihFile">
+                            </div>
+
+                            <div class="colxs-2" align="right">
+                                <button class="btn btn-primary btn-sm" id="btnUpload"><i class="fa fa-upload"></i> <span>Upload Data</span></button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div>
+                    <div class="card">
+                        <div class="card-block">
+                            <h6> Data Rekening Versi Bank Mandiri </h6>
+                            <table class="table table-bordered datatable2" id="dataTableRekeningUpload">
+                                <thead>
+                                <tr>
+                                    <th>
+                                        No
+                                    </th>
+                                    <th>
+                                        Periode
+                                    </th>
+                                    <th>
+                                        NIP
+                                    </th>
+                                    <th>
+                                        Nama Penerima MP
+                                    </th>
+                                    <th>
+                                    Nomor Rekening
+                                </th>
+                                    <th>
+                                        Nama Pada Rekening
+                                    </th>
+                                </tr>
+                                </thead>
+                            </table>
+                            <div class="card-block">
+                                <div class="row">
+                                    <label for="jumlahData" class="col-xs-1">Jumlah Nomor Rekening</label>
+                                    <div class="col-xs-1">
+                                        <input class="form-control form-control-sm" disabled type="text" value="" id="jumlahData">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-block">
+                            <div class="row">
+                                <div class="colxs-2" align="right">
+                                    <button class="btn btn-primary btn-sm" onclick="prosesRekonsiliasi()"><i class="fa fa-edit"></i> <span>Proses Bandingkan</span></button>
+                                    <button class="btn btn-primary btn-sm" onclick="prosesValidasi()" id="btnValidasi"><i class="fa fa-check"></i> <span>Validasi</span></button>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="card">
+                                            <div class="card-block">
+                                                <div class="scroll-y" style="height: 300px;">
+                                                    <table class="table table-bordered datatable3 " id="tblRekonsiliasi">
+                                                        <thead>
+                                                        <tr>
+
+                                                            <th>
+                                                                Periode
+                                                            </th>
+                                                            <th>
+                                                                NIP
+                                                            </th>
+                                                            <th>
+                                                            Nama Penerima
+                                                        </th>
+                                                            <th>
+                                                                No. Rek Mandiri
+                                                            </th>
+                                                            <th>
+                                                                Nama Rekening Mandiri
+                                                            <th>
+                                                                No. Rek Dapenbi
+                                                            </th>
+                                                            <th>
+                                                                Nama Rekening Dapenbi
+                                                            </th>
+                                                            <th>
+                                                                <input type="checkbox" id="checkAll">
+                                                            </th>
+                                                        </tr>
+                                                        </thead>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                    </div>
+                                    <div class="col-lg-6">
+
+                                    </div>
+
+                                    <div class="row"></div>
+                                    <div class="col-lg-12">
+                                        <div class="row">
+                                            <label for="jumlahNoRekening" class="col-xs-2">Jumlah No. Rek</label>
+
+                                            <div class="col-xs-3">
+                                                <input class="form-control form-control-sm" type="text" value="" id="jumlahNoRekening" disabled>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- bottom footer -->
+            <iframe style="display: none" id="report" name="report" src=""></iframe>
+            <!-- /bottom footer -->
+        </div>
+        <!-- /main area -->
+{{#modal}}
+        <!-- Modal demos -->
+        <div class="modal fade bd-example-modal" tabindex="-2" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title small bold" id="myModalLabel">Hasil Perbandingan Rekening</h4>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- /Modal demos -->
+
+        </div>
+
+
+
+        <div class="modal fade modalInputPerubahanRekening" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title small bold" id="myModalLabel">Input Rekening Bank</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form id="formInputPerubahanRekening">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <label for="example-date-input" class="col-sm-3 bold">NIP</label>
+                                    <div class="col-xs-3">
+                                        <div id="insertMode">
+                                        <select name="nip" id="nip" class="form-control form-control-sm">
+                                            <option></option>
+                                        </select>
+                                        </div>
+                                        <div id="editMode">
+                                            <input type="hidden" id="idMutasiRekening" />
+                                            <input type="hidden" id="hiddenNip" />
+                                            <input class="form-control form-control-sm" disabled type="text" id="nipEdit">
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-6">
+                                        <label for="example-date-input" class="col-sm-2 bold">Periode</label>
+                                        <div class="col-xs-4">
+                                            <input class="form-control form-control-sm" disabled type="text" value="{{periodeMutasi}}" id="periodeMutasi">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <label for="example-date-input" class="col-sm-3 bold">Tanggal Update</label>
+                                    <div class="col-xs-3">
+                                        <input class="form-control form-control-sm" type="text" value="{{tglUpdate}}" id="tglInput" disabled>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <label for="example-date-input" class="col-sm-3 bold">Nama Peserta</label>
+                                    <div class="col-xs-6">
+                                        <input class="form-control form-control-sm" type="text" value="" id="namaPeserta" disabled>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <label for="example-date-input" class="col-sm-3 bold">Nama Penerima</label>
+                                    <div class="col-xs-6">
+                                        <input type="hidden" id="idPenerimaMp" />
+                                        <input class="form-control form-control-sm" type="text" value="" id="namaPenerimaMp" disabled>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <label for="example-date-input" class="col-sm-3 bold">Nama Pada Rek. Bank Lama</label>
+                                    <div class="col-xs-6">
+                                        <input class="form-control form-control-sm" type="text" value="" id="namaRekeningLama" disabled>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <label for="example-date-input" class="col-sm-3 bold">No. Rekening Lama</label>
+                                    <div class="col-xs-6">
+                                        <input class="form-control form-control-sm" type="text" value="" id="noRekeningLama" disabled>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <label for="example-date-input" class="col-sm-3 bold">Ket. Perubahan Rekening</label>
+                                    <div class="col-xs-6">
+                                        <select class="form-control form-control-sm" id="namaKetPerubahanRekening">
+                                            <option>
+                                                Pilih Keterangan Perubahan
+                                            </option>
+
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <label for="noRekeningBaru" class="col-sm-3 bold">No. Rekening Baru</label>
+                                    <div class="col-xs-6">
+                                        <input class="form-control form-control-sm" type="text" value="" id="noRekeningBaru" onkeyup="rekeningValidation()">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <label for="example-date-input" class="col-sm-3 bold">Bank</label>
+                                    <div class="col-xs-6">
+                                        <select class="form-control form-control-sm" id="idJenisBank">
+                                            <option>
+                                                Pilih
+                                            </option>
+                                        </select>
+                                        <input type="hidden" id="jenisBank" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <label for="example-date-input" class="col-sm-3 bold">Nama Cabang Bank</label>
+                                    <div class="col-xs-6">
+                                        <input class="form-control form-control-sm" type="text" value="" id="namaCabangBank" >
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <label for="example-date-input" class="col-sm-3 bold">Nama Pada Rek. Bank</label>
+                                    <div class="col-xs-6">
+                                        <input class="form-control form-control-sm" type="text" value="" id="namaRekeningBaru" >
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowValidasi">
+                                <div class="col-lg-12">
+                                    <label class="radio-inline">
+                                        <input type="radio" name="idValidasi" id="idValidasi1" value="1" data-name="Belum Validasi" />
+                                        Belum Validasi
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="idValidasi" id="idValidasi2" value="2" data-name="Sudah Validasi"/>
+                                        Sudah Validasi
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="idValidasi" id="idValidasi3" value="3" data-name="Batal Koreksi"/>
+                                        Batal Koreksi
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="idValidasi" id="idValidasi7" value="7" data-name="Batal Validasi"/>
+                                        Batal Validasi
+                                    </label>
+                                    <input type="hidden" name="namaValidasi" id="namaValidasi"/>
+                                </div>
+                            </div>
+                            <div class="row rowValidasi">
+                                <div class="col-lg-12">
+                                    <label for="example-date-input" class="col-sm-3 bold">User Stamp</label>
+                                    <div class="col-xs-6">
+                                        <input class="form-control form-control-sm" disabled type="text" value="" id="userStamp" >
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row rowValidasi">
+                                <div class="col-lg-12">
+                                    <label for="example-date-input" class="col-sm-3 bold">User Validasi</label>
+                                    <div class="col-xs-6">
+                                        <input class="form-control form-control-sm" disabled type="text" value="" id="userValidasi" >
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+
+                        <br/>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Batal</button>
+                            <button id="btnSimpan" type="button" class="btn btn-primary btn-sm pull-right" onclick="addMutasiRekening()">Simpan</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- /Modal demos -->
+
+        </div>
+
+
+        <div class="modal fade bd-example-modal3" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title small bold" id="myModalLabel">Edit Rekening Bank</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <label for="example-date-input" class="col-sm-3 bold">NIP</label>
+                                <div class="col-xs-2">
+                                    <input class="form-control form-control-sm"  type="text" disabled value="123" id="example-text-input">
+                                </div>
+                                <div class="col-xs-6">
+                                    <label for="example-date-input" class="col-sm-2 bold">Periode</label>
+                                    <div class="col-xs-4">
+                                        <input class="form-control form-control-sm" type="text" disabled value="092018" id="example-text-input">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <label for="example-date-input" class="col-sm-3 bold">Tanggal Update</label>
+                                <div class="col-xs-3">
+                                    <input class="form-control form-control-sm" type="text" value="12/09/2018" id="example-text-input" disabled>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <label for="example-date-input" class="col-sm-3 bold">Nama Peserta</label>
+                                <div class="col-xs-6">
+                                    <input class="form-control form-control-sm" type="text" value="Rahmat S" id="example-text-input" disabled>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <label for="example-date-input" class="col-sm-3 bold">Nama Penerima</label>
+                                <div class="col-xs-6">
+                                    <input class="form-control form-control-sm" type="text" value="Sitarani" id="example-text-input" disabled>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <label for="example-date-input" class="col-sm-3 bold">Nama Pada Rek. Bank Lama</label>
+                                <div class="col-xs-6">
+                                    <input class="form-control form-control-sm" type="text" value="Sitarani" id="example-text-input" disabled>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <label for="example-date-input" class="col-sm-3 bold">No. Rekening Lama</label>
+                                <div class="col-xs-6">
+                                    <input class="form-control form-control-sm" type="text" value="123456789" id="example-text-input" disabled>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <label for="example-date-input" class="col-sm-3 bold">Ket. Perubahan Rekening</label>
+                                <div class="col-xs-6">
+                                    <select class="form-control form-control-sm" id="exampleSelect1">
+                                        <option>
+                                            1 - <i>Baru/Perubahan/Janda/Duda/Anak	</i>
+                                        </option>
+                                        <option>
+                                            2
+                                        </option>
+                                        <option>
+                                            3
+                                        </option>
+                                        <option>
+                                            4
+                                        </option>
+                                        <option>
+                                            5
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <label for="example-date-input" class="col-sm-3 bold">No. Rekening Baru</label>
+                                <div class="col-xs-6">
+                                    <input class="form-control form-control-sm" type="text" value="987654321" id="example-text-input" >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <label for="example-date-input" class="col-sm-3 bold">Bank</label>
+                                <div class="col-xs-6">
+                                    <select class="form-control form-control-sm" id="exampleSelect1">
+                                        <option>
+                                            1 - <i>Mandiri</i>
+                                        </option>
+                                        <option>
+                                            2- <i>Bank Non Mandiri</i>
+                                        </option>
+                                        <option>
+                                            3- <i>Luar Negeri</i>
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <label for="example-date-input" class="col-sm-3 bold">Nama Cabang Bank</label>
+                                <div class="col-xs-6">
+                                    <input class="form-control form-control-sm" type="text" value="" id="example-text-input" >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <label for="example-date-input" class="col-sm-3 bold">Nama Pada Rek. Bank</label>
+                                <div class="col-xs-6">
+                                    <input class="form-control form-control-sm" type="text" value="" id="example-text-input" >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <label for="example-date-input" class="col-sm-3 bold">Status Valid</label>
+                                <div class="col-xs-4">
+                                    <input class="form-control form-control-sm" type="text" value="" id="example-text-input">
+                                </div>
+                            </div>
+                        </div>		<br/>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <label for="example-date-input" class="col-sm-3 bold">User Stamp</label>
+                                <div class="col-xs-6">
+                                    <input class="form-control form-control-sm" type="text" value="" id="example-text-input" disabled>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <label for="example-date-input" class="col-sm-3 bold">Validasi</label>
+                                <div class="col-xs-6">
+                                    <input class="form-control form-control-sm" type="text" value="" id="example-text-input" disabled>
+                                </div>
+                            </div>
+                        </div><br/>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Batal</button>
+                            <button type="button" class="btn btn-primary btn-sm pull-right" data-dismiss="modal">Simpan</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+            <!-- /Modal demos -->
+        <div class="modal fade report-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title small bold" id="myModalLabel">Form Cetak Laporan Mutasi Rekening</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form id="pesertaForm">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="form-group row">
+                                        <label for="startDate" class="col-sm-2 bold">Tanggal <span class="required">*</span></label>
+                                        <div class="col-sm-2">
+                                            <input placeholder="dd-mm-yyyy" class="form-control form-control-sm text-sm" type="text" name="startDate" id="startDate" data-provide="datepicker" data-date-format="dd-mm-yyyy">
+                                        </div>
+                                        <label class="col-sm-1">s/d</label>
+                                        <div class="col-sm-2">
+                                            <input placeholder="dd-mm-yyyy" class="form-control form-control-sm text-sm" type="text" name="endDate" id="endDate" data-provide="datepicker" data-date-format="dd-mm-yyyy">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="namaPejabat" class="col-sm-2 bold">Kepala Divisi <span class="required">*</span></label>
+                                        <div class="col-sm-5">
+                                            <input class="form-control form-control-sm" type="text" placeholder="" value="" name="namaPejabat" id="namaPejabat">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="namaPetugas" class="col-sm-2 bold">Kepala Seksi <span class="required">*</span></label>
+                                        <div class="col-sm-5">
+                                            <input class="form-control form-control-sm" type="text" placeholder="" value="" name="namaPetugas" id="namaPetugas">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary btn-sm" id="btnCetak">Cetak</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+<!-- Modal 2 -->
+        <div class="modal fade preview-modal" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg ">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title small bold" id="myModalLabel">Form Cetak Laporan Mutasi Rekening</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form id="pesertaForm">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="form-group row" id="periode">
+                                        <label for="periodeMutasi" class="col-sm-2 bold">Periode Mutasi <span class="required">*</span></label>
+                                        <div class="col-sm-2">
+                                            <input class="form-control form-control-sm" type="hidden" placeholder="" value="{{periodeMutasi}}"/>
+                                            <input class="form-control form-control-sm" type="text" placeholder="" value="{{periodeMutasi}}" name="periodeMutasi" id="periodeMutasi">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="startDate" class="col-sm-2 bold">Tanggal <span class="required">*</span></label>
+                                        <div class="col-sm-2">
+                                            <input placeholder="dd-mm-yyyy" class="form-control form-control-sm text-sm" type="text" name="start-Date" id="start-Date" data-provide="datepicker" data-date-format="dd-mm-yyyy">
+                                        </div>
+                                        <label class="col-sm-1">s/d</label>
+                                        <div class="col-sm-2">
+                                            <input placeholder="dd-mm-yyyy" class="form-control form-control-sm text-sm" type="text" name="end-Date" id="end-Date" data-provide="datepicker" data-date-format="dd-mm-yyyy">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row" id="kategori_pensiun">
+                                        <label for="idKategoriPensiun" class="col-sm-2 bold">Kategori Pensiun <span class="required">*</span></label>
+                                        <div class="col-sm-2">
+                                            <select class="form-control form-control-sm" name="idKategoriPensiun" id="idKategoriPensiun">
+                                                <option value="">- Pilih Kategori Pensiun -</option>
+                                                <option value="PN">Pensiun Normal</option>
+                                                <option value="PD">Pensiun Dipercepat</option>
+                                                <option value="PC">Pensiun Cacat</option>
+                                                <option value="PM">Pensiun Meninggal Dunia</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="kepalaDivisi" class="col-sm-2 bold">Kepala Divisi <span class="required">*</span></label>
+                                        <div class="col-sm-5">
+                                            <input class="form-control form-control-sm" type="text" placeholder="" value="" name="kepalaDivisi" id="kepalaDivisi">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="kepalaSeksi" class="col-sm-2 bold">Kepala Seksi <span class="required">*</span></label>
+                                        <div class="col-sm-5">
+                                            <input class="form-control form-control-sm" type="text" placeholder="" value="" name="kepalaSeksi" id="kepalaSeksi">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="example-text-input" class="col-sm-2 bold">Jenis Report <span class="required">*</span></label>
+                                        <div class="col-sm-6" id="radio_formulir">
+                                            <label>
+                                                <input checked="" name="optradio" type="radio" value="rekening_pensiun_baru"> Cetak Rekening Pensiun Baru
+                                            </label>
+                                            <br>
+                                            <label>
+                                                <input name="optradio" type="radio"  value="perubahan_rekening_pensiunan"> Cetak Perubahan Rekening Pensiunan
+                                                </input>
+                                            </label>
+                                            <label>
+                                                <input name="optradio" type="radio" value="cetak_rek_mps_20"> Cetak Rekening Pensiunan Yang Ambil MPS 20%
+                                                </input>
+                                            </label>
+                                            <label>
+                                                <input name="optradio" type="radio" value="cetak_rek_mps_10jt"> Cetak Rekening Pensiunan Yang Ambil MPS > 10 Juta
+                                                </input>
+                                            </label>
+                                            <label>
+                                                <input name="optradio" type="radio" value="cetak_rek_mps100"> Cetak Rekening Pensiunan Yang Ambil MPS Sekaligus
+                                                </input>
+                                            </label>
+                                            <br>
+                                            <label>
+                                                <input name="optradio" type="radio" value="cetak_rek_semua"> Cetak Seluruhnya
+                                                </input>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary btn-sm" id="btnPreview">Cetak</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal 3 -->
+
+        <div class="modal fade cetak-pembayaran-modal" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title small bold" id="myModalLabel">Form Cetak Laporan Pembayaran MP Susulan</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form id="mpSusulanForm">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="form-group row">
+                                        <label for="startDate" class="col-sm-2 bold">Tanggal Bayar MP <span class="required">*</span></label>
+                                        <div class="col-sm-2">
+                                            <input placeholder="dd-mm-yyyy" class="form-control form-control-sm text-sm" type="text" name="mulai" id="mulai" data-provide="datepicker" data-date-format="dd-mm-yyyy">
+                                        </div>
+                                        <label class="col-sm-1">s/d</label>
+                                        <div class="col-sm-2">
+                                            <input placeholder="dd-mm-yyyy" class="form-control form-control-sm text-sm" type="text" name="akhir" id="akhir" data-provide="datepicker" data-date-format="dd-mm-yyyy">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="namaPetugas" class="col-sm-2 bold">Tanggal Cetak <span class="required">*</span></label>
+                                        <div class="col-sm-5">
+                                            <input class="form-control form-control-sm" type="text" data-provide="datepicker" data-date-format="dd-mm-yyyy" placeholder="" value="" name="tglCetak" id="tglCetak" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="kadiv" class="col-sm-2 bold">Kepala Divisi <span class="required">*</span></label>
+                                        <div class="col-sm-5">
+                                            <input class="form-control form-control-sm" type="text" placeholder="" value="" name="kadiv" id="kadiv">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="kasi" class="col-sm-2 bold">Kepala Seksi <span class="required">*</span></label>
+                                        <div class="col-sm-5">
+                                            <input class="form-control form-control-sm" type="text" placeholder="" value="" name="kasi" id="kasi">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary btn-sm" id="btnCetakPembayaran">Cetak</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal 4 -->
+        <div class="modal fade cetak-rekening-modal" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title small bold" id="myModalLabel">Form Cetak Laporan Rekening Kosong</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form id="rekKosongForm">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="form-group row" id="periode">
+                                        <label for="periodeMutasi" class="col-sm-2 bold">Periode Mutasi <span class="required">*</span></label>
+                                        <div class="col-sm-2">
+                                            <input class="form-control form-control-sm" type="hidden" placeholder="" value="{{periodeMutasi}}"/>
+                                            <input class="form-control form-control-sm" type="text" placeholder="" value="{{periodeMutasi}}" name="periodeMutasi" id="periodeMutasi">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="namaPetugas" class="col-sm-2 bold">Tanggal Cetak <span class="required">*</span></label>
+                                        <div class="col-sm-5">
+                                            <input class="form-control form-control-sm" type="text" data-provide="datepicker" data-date-format="dd-mm-yyyy" placeholder="" value="" name="tglPrint" id="tglPrint" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="kepDivisi" class="col-sm-2 bold">Kepala Divisi <span class="required">*</span></label>
+                                        <div class="col-sm-5">
+                                            <input class="form-control form-control-sm" type="text" placeholder="" value="" name="kepDivisi" id="kepDivisi">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="kepSeksi" class="col-sm-2 bold">Kepala Seksi <span class="required">*</span></label>
+                                        <div class="col-sm-5">
+                                            <input class="form-control form-control-sm" type="text" placeholder="" value="" name="kepSeksi" id="kepSeksi">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary btn-sm" id="btnCetakRekKosong">Cetak</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal 5 -->
+
+        <div class="modal fade proses-modal" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title small bold" id="myModalLabel">Form Cetak Laporan Proses Data YKKBI dan PPBI</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form id="prosesForm">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="form-group row" id="periode">
+                                        <label for="periodeMutasi" class="col-sm-2 bold">Periode Mutasi <span class="required">*</span></label>
+                                        <div class="col-sm-2">
+                                            <input class="form-control form-control-sm" type="hidden" placeholder="" value="{{periodeMutasi}}"/>
+                                            <input class="form-control form-control-sm" type="text" placeholder="" value="{{periodeMutasi}}" name="periodeMutasi" id="periodeMutasi">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="jenis" class="col-sm-2 bold">Pilihan Data <span class="required">*</span></label>
+                                        <div class="col-sm-2">
+                                            <select class="form-control form-control-sm" name="jenis" id="jenis">
+                                                <option value="">- Pilihan Data -</option>
+                                                <option value="ykkbi">YKKBI</option>
+                                                <option value="ppbi">PPBI</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="kep-Divisi" class="col-sm-2 bold">Kepala Divisi <span class="required">*</span></label>
+                                        <div class="col-sm-5">
+                                            <input class="form-control form-control-sm" type="text" placeholder="" value="" name="kep-Divisi" id="kep-Divisi">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="kep-Seksi" class="col-sm-2 bold">Kepala Seksi <span class="required">*</span></label>
+                                        <div class="col-sm-5">
+                                            <input class="form-control form-control-sm" type="text" placeholder="" value="" name="kep-Seksi" id="kep-Seksi">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary btn-sm" id="btnProsesYkkbi">Cetak</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+{{/modal}}
+
+{{#scripts}}
+<script src="{{contextPath}}/assets/vendor/datatables/media/js/jquery.dataTables.js"></script>
+<script src="{{contextPath}}/assets/vendor/datatables/media/js/dataTables.bootstrap4.js"></script>
+<script src="{{contextPath}}/assets/vendor/select2/js/select2.js"></script>
+<script src="{{contextPath}}/assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+<script src="{{contextPath}}/assets/vendor/jquery-validation/dist/jquery.validate.js"></script>
+<script src="{{contextPath}}/assets/vendor/numeral/numeral.min.js"></script>
+<script src="{{contextPath}}/assets/vendor/sweetalert/sweetalert.min.js"></script>
+<script type="text/javascript">
+    window.DkppReportParam = {};
+    window.inputMode = '';
+    window.roleCode = '{{roleCode}}';
+
+    const rekeningValidation = function () {
+        let strOld = $('#noRekeningBaru').val();
+        //strOld = strOld.replace(/\D/g,'');
+        strOld = strOld.replace(/[^0-9\-\.]/g, '');
+        $('#noRekeningBaru').val(strOld);
+    }
+    const inputPerubahanRekening = (row = null) => {
+        $('#btnSimpan').show();
+        if(row == null){
+            inputMode = 'insert';
+            $('#formInputPerubahanRekening').trigger('reset');
+            $('#insertMode').show();
+            $('#editMode').hide();
+            $('.rowValidasi').hide();
+        } else {
+            inputMode = 'edit';
+            $('#idMutasiRekening').val(row.idMutasiRekening);
+
+            $('#insertMode').hide();
+            $('#editMode').show();
+            $('.rowValidasi').show();
+
+            $('#hiddenNip').val(row.nip);
+            $('#nip').val(row.nip);
+            $('#nipEdit').val(row.nip);
+            $('#namaPeserta').val(row.namaPeserta);
+            $('#namaPenerimaMp').val(row.namaPenerimaMp);
+            $('#idPenerimaMp').val(row.idPenerimaMp);
+            $('#namaRekeningLama').val(row.namaRekeningLama);
+            $('#noRekeningLama').val(row.noRekeningLama);
+            $('#namaKetPerubahanRekening').val(row.namaKetPerubahanRekening); $('#namaKetPerubahanRekening').trigger('change');
+            $('#noRekeningBaru').val(row.noRekeningBaru);
+            $('#idJenisBank').val(row.idJenisBank); $('#idJenisBank').trigger('change');
+            $('#jenisBank').val(row.jenisBank);
+            $('#namaCabangBank').val(row.namaCabangBank);
+            $('#namaRekeningBaru').val(row.namaRekeningBaru);
+            $('#idValidasi' + row['idValidasi']).attr('checked', 'checked');
+            if(row.idValidasi == 2) $('#btnSimpan').hide();
+            if(window.roleCode == "ROLE_PEJABAT"){
+                $('#idValidasi1').prop('disabled', 'disabled');
+            } else if (window.roleCode == "ROLE_STAFF"){
+                $('#idValidasi2').prop('disabled', 'disabled');
+                $('#idValidasi7').prop('disabled', 'disabled');
+            }
+
+            $.ajax({
+                url: '{{getUserStamp}}',
+                method: 'GET',
+                success: function(response){
+                    console.log(response);
+                    $('#userStamp').val(response.userStamp);
+                    $('#userValidasi').val(response.userValidasi);
+                }
+            });
+        }
+        $('.modalInputPerubahanRekening').modal('show');
+    };
+
+    const prosesRekonsiliasi = () => {
+        $.ajax({
+            url: '{{linkProsesRekonsiliasi}}',
+            method: 'POST',
+            data: {
+                parPeriode: $('#periodeMutasi').val(),
+                _csrf: '{{_csrf.token}}'
+            },
+            success: function(response){
+                let msg = JSON.parse(response.data.parMsg);
+                $('#jumlahNoRekening').val(msg.totalData);
+                swal({title: "Berhasil", text: response.message, icon: "success", button: "OK"})
+                    .then(()=>{
+                        fillDataTableRekonsiliasi();
+                    });
+            },
+            failed: function(response){
+                swal({title: "Gagal", text: response.message, icon: "error", button: "OK"});
+            }
+        });
+    };
+
+    const fillDataTableRekeningUpload = function(){
+        let dataTableRekeningUpload = dkppDataTable($('#dataTableRekeningUpload'), '{{linkDataRekeningUpload}}', {
+            destroy: true,
+            'columns': [
+                {data: 'periode'},
+                {data: 'nip'},
+                {data: 'idPenerimaMp'},
+                {data: 'namaPenerimaMp'},
+                {data: 'nomorRekening'},
+                {data: 'namaRekening'}
+            ],
+            'columnDefs': [
+
+            ]
+        });
+        dataTableRekeningUpload.on('draw.dt', function(){
+            let pageInfo = $('#dataTableRekeningUpload').DataTable().page.info();
+            dataTableRekeningUpload.column(0, {page: 'current'}).nodes().each(function(cell, i){
+                cell.innerHTML = i + 1 + pageInfo.start;
+            });
+        });
+
+    };
+
+    const fillDataTableRekonsiliasi = function(){
+
+        var tblRekonsiliasi = dkppDataTable( $('#tblRekonsiliasi'), '{{linkDataRekonsiliasi}}' ,{
+            destroy: true,
+            'columns': [
+                {data: 'periode'},
+                {data: 'nip'},
+                {data: 'namaPenerimaMp'},
+                {data: 'nomorRekeningMandiri'},
+                {data: 'namaRekeningMandiri'},
+                {data: 'nomorRekeningDapenbi'},
+                {data: 'namaRekeningDapenbi'},
+                {data: 'periode', }
+            ],
+            'columnDefs': [
+                {
+                    targets: -1,
+                    orderable: false,
+                    width: '60px',
+                    render: function(data, type, row, meta){
+                        jsonRow = JSON.stringify(row);
+                        return `<input type="checkbox" name="cb" class="cbReconcile" data-value='` + jsonRow + `' value="` + row.periode + `-` + row.nip + `"><div style="display: inline-block" id="div_` + row.periode + row.nip + `"></div>`;
+                    }
+                }
+            ]
+        });
+    };
+
+    const filterData = function(){
+        let dataFilter = {
+            periode: $('#filterPeriode').val(),
+            startDate: $('#filterDateStart').val(),
+            endDate: $('#filterDateEnd').val()
+        };
+
+        var tMutasiRekening = dkppDataTableDataFilter( $('#tMutasiRekening'), '{{rekeningPensiunanFilterLink}}', dataFilter, {
+            destroy: true,
+            'columns': [
+                {data: 'idMutasiRekening'},
+                {data: 'periodeMutasi'},
+                {data: 'tglInput'},
+                {data: 'nip'},
+                {data: 'namaPeserta'},
+                {data: 'namaPenerimaMp'},
+                {data: 'namaKetPerubahanRekening'},
+                {data: 'noRekeningBaru'},
+                {data: 'idJenisBank'},
+                {data: 'namaCabangBank'},
+                {data: 'namaRekeningBaru'},
+                {data: 'namaValidasi'},
+                {data: 'idMutasiRekening'}
+            ],
+            'columnDefs': [
+                {
+                    "targets": 2,
+                    "render": function(data, type, row, meta){
+                        return (row.tglInput == null || row.tglInput == "")? "-" : fillDateField(row.tglInput)
+                    }
+                },
+                {
+                    "targets":-1,
+                    "data":"id",
+                    "render": function(data, type, row, meta){
+                        row = JSON.stringify(row);
+                        return `<button class="btn btn-primary btn-sm" onclick='inputPerubahanRekening(` + row + `)'><i class="fa fa-edit"></i> <span>Edit</span></button>`;
+                    }
+                },
+                {
+                    "targets": 11,
+                    render: function(data, type, row, meta){
+                        var result="";
+                        if (data == "Sudah Validasi")
+                        {
+                            result = '<span class="tag tag-pill tag-success">' + data + '</span>';
+                        }
+                        else if (data == "Batal Validasi")
+                        {
+                            result = '<span class="tag tag-pill tag-danger">' + data + '</span>';
+                        }
+                        else if (data == "Belum Validasi")
+                        {
+                            result = '<span class="tag tag-pill tag-info">' + data + '</span>';
+                        }
+                        else if (data == "Batal Koreksi")
+                        {
+                            result = '<span class="tag tag-pill tag-warning">' + data + '</span>';
+                        }
+                        return result;
+                    }
+                },
+                {
+                    "targets":8,
+                    "data":"id",
+                    "render": function(data, type, row, meta){
+                        return ( (row.idJenisBank == null || row.idJenisBank == "")? "" : row.idJenisBank ) + " - " + ( (row.jenisBank == "" || row.jenisBank == null )? "" : row.jenisBank );
+                    }
+                }
+            ],
+            "order": [[ 1, 'desc' ]]
+        });
+
+        $('#tMutasiRekening').DataTable().on('draw.dt', function(){
+            let pageInfo = $('#tMutasiRekening').DataTable().page.info();
+            $('#tMutasiRekening').DataTable().column(0, {page: 'current'}).nodes().each(function(cell, i){
+                cell.innerHTML = i + 1 + pageInfo.start;
+            });
+        });
+    };
+
+
+    const addMutasiRekening = () => {
+        let params={
+            parRoleId: $('#roleId').val(),
+            parCompName: $('#compName').val(),
+            parUserName: $('#userName').val(),
+            parPeriodeMutasi: $('#periodeMutasi').val(),
+            parTglInput: $('#tglInput').val(),
+            parIdMutasiRekening: $('#idMutasiRekening').val(),
+            parNip: inputMode == "insert" ? $('#nip').val() : $('#hiddenNip').val(),
+            parNamaPeserta: $('#namaPeserta').val(),
+            parIdPenerimaMp: $('#idPenerimaMp').val(),
+            parNamaPenerimaMp: $('#namaPenerimaMp').val(),
+            parNoRekeningLama: $('#noRekeningLama').val(),
+            parNamaRekeningLama: $('#namaRekeningLama').val(),
+            parNamaKetPerubahanRek: $('#namaKetPerubahanRekening').val(),
+            parNoRekeningBaru: $('#noRekeningBaru').val(),
+            parNamaRekeningBaru: $('#namaRekeningBaru').val(),
+            parIdJenisBank: $('#idJenisBank').val(),
+            parJenisBank: $('#jenisBank').val(),
+            parNamaCabangBank: $('#namaCabangBank').val(),
+            parIdValidasi: $( "[name='idValidasi']:checked" ).val() == undefined ? "1" : $( "[name='idValidasi']:checked" ).val(),
+            parNamaValidasi: $( "[name='idValidasi']:checked" ).data('name') == undefined ? "Belum Validasi" : $( "[name='idValidasi']:checked" ).data('name'),
+
+            _csrf: "{{_csrf.token}}"
+        };
+
+        $.ajax({
+            url: '{{saveMutasiRekening}}',
+            method: 'POST',
+            data: params,
+            success: function(response){
+                if(response.status == "success") {
+                    swal({title: "Berhasil", text: response.message, icon: "success", button: "OK"})
+                        .then(()=>{
+                            $('#tMutasiRekening').DataTable().ajax.reload();
+                            $('.modal').modal('hide');
+                        });
+                }
+            },
+            error: function(response){
+                if(response.message != undefined )
+                    swal({title: "Gagal", text: response.message, icon: "error", button: "OK"});
+                else
+                    swal({title: "Gagal", text: "Mohon periksa kembali nilai yang Anda masukkan.", icon: "error", button: "OK"});
+            }
+        });
+    };
+
+    $(document).ready(function() {
+        var tMutasiRekening = dkppDataTable( $('#tMutasiRekening'), '{{rekeningPensiunanLink}}' ,{
+            destroy: true,
+            'columns': [
+                {data: 'idMutasiRekening'},
+                {data: 'periodeMutasi'},
+                {data: 'tglInput'},
+                {data: 'nip'},
+                {data: 'namaPeserta'},
+                {data: 'namaPenerimaMp'},
+                {data: 'namaKetPerubahanRekening'},
+                {data: 'noRekeningBaru'},
+                {data: 'idJenisBank'},
+                {data: 'namaCabangBank'},
+                {data: 'namaRekeningBaru'},
+                {data: 'namaValidasi'},
+                {data: 'idMutasiRekening'}
+            ],
+            'columnDefs': [
+                {
+                    "targets": 2,
+                    "render": function(data, type, row, meta){
+                        return (row.tglInput == null || row.tglInput == "")? "-" : fillDateField(row.tglInput)
+                    }
+                },
+                {
+                    "targets":-1,
+                    "data":"id",
+                    "render": function(data, type, row, meta){
+                        row = JSON.stringify(row);
+                        return `<button class="btn btn-primary btn-sm" onclick='inputPerubahanRekening(` + row + `)'><i class="fa fa-edit"></i> <span>Edit</span></button>`;
+                    }
+                },
+                {
+                    "targets": 11,
+                    render: function(data, type, row, meta){
+                        var result="";
+                        if (data == "Sudah Validasi")
+                        {
+                            result = '<span class="tag tag-pill tag-success">' + data + '</span>';
+                        }
+                        else if (data == "Batal Validasi")
+                        {
+                            result = '<span class="tag tag-pill tag-danger">' + data + '</span>';
+                        }
+                        else if (data == "Belum Validasi")
+                        {
+                            result = '<span class="tag tag-pill tag-info">' + data + '</span>';
+                        }
+                        else if (data == "Batal Koreksi")
+                        {
+                            result = '<span class="tag tag-pill tag-warning">' + data + '</span>';
+                        }
+                        return result;
+                    }
+                },
+                {
+                    "targets":8,
+                    "data":"id",
+                    "render": function(data, type, row, meta){
+                        return ( (row.idJenisBank == null || row.idJenisBank == "")? "" : row.idJenisBank ) + " - " + ( (row.jenisBank == "" || row.jenisBank == null )? "" : row.jenisBank );
+                    }
+                }
+            ],
+            "order": [[ 1, 'desc' ]]
+        });
+        tMutasiRekening.on( 'order.dt search.dt', function () {
+            tMutasiRekening.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+                cell.innerHTML = i+1;
+            } );
+        } ).draw();
+
+        var select2Nip = $('#nip').select2({
+            ajax: {
+                url: '{{contextPath}}{{listPesertaCombo}}',
+                dataType: 'json',
+                method: 'GET',
+                data: function(params){
+                    return {
+                        searchParam: params.term,
+                        valueColumn: 'nip',
+                        textColumn: "${nip}-${namaPeserta}",
+                        searchColumn: [
+                            'nip',
+                            'namaPeserta'
+                        ]
+                    }
+                },
+                //dropdownParent: $(".main-modal"),
+                delay: 250,
+                processResults: function(data){
+                    return {
+                        results: data
+                    };
+                }
+            },
+            width: "100%",
+            placeholder: 'Pilih Peserta'
+        });
+
+        select2Nip.on('change', function(e){
+            if ($(e.target).select2('data')){
+                const data = $(e.target).select2('data')[0];
+                $('#namaPeserta').val(data.dataProperties.namaPeserta);
+                $('#namaPenerimaMp').val(data.dataProperties.namaPenerimaMp);
+                $('#idPenerimaMp').val(data.dataProperties.idPenerimaMP);
+                $.ajax({
+                    url: '{{findMasterPenerimaRekeningByNip}}',
+                    data: {
+                        nip: $('#nip').val()
+                    },
+                    success: function(response){
+                        if(response.result == true){
+                            $('#noRekeningLama').val(response.dto.nomorRekening);
+                            $('#namaRekeningLama').val(response.dto.namaRekening);
+                        } else {
+                            $('#noRekeningLama').val('');
+                            $('#namaRekeningLama').val('');
+                        }
+                    }
+                });
+            }
+        });
+
+        var select2KetPerubahanRekening = $('#namaKetPerubahanRekening').select2({
+            data: [
+                {id: "BARU", text: "Baru"},
+                {id: "PERUBAHAN", text: "Perubahan"},
+                {id: "JANDA", text: "Janda"},
+                {id: "DUDA", text: "Duda"},
+                {id: "ANAK", text: "Anak"}
+            ]
+        });
+
+        $.ajax({
+            url: "{{listJenisBank}}",
+            method: 'GET',
+            success: function(response){
+                let select2Data = [];
+                for(i=0; i<response.length; i++){
+                    select2Data.push({id: response[i]['id'], text: response[i]['text']});
+                }
+                var select2JenisBank = $('#idJenisBank').select2({
+                    data: select2Data
+                });
+
+                select2JenisBank.on('change', function(e){
+                    if ($(e.target).select2('data')) {
+                        const data = $(e.target).select2('data')[0];
+                        $('#jenisBank').val(data.text);
+                    }
+                });
+            }
+        });
+    });
+</script>
+<script type="text/javascript">
+    var globalFile;
+    var Upload = function (file) {
+        this.file = file;
+    };
+
+    Upload.prototype.getType = function() {
+        return this.file.type;
+    };
+    Upload.prototype.getSize = function() {
+        return this.file.size;
+    };
+    Upload.prototype.getName = function() {
+        return this.file.name;
+    };
+    Upload.prototype.doUpload = function () {
+        loader($('body'), true);
+        var that = this;
+        var formData = new FormData();
+
+        // add assoc key values, this will be posts values
+        formData.append("file", this.file, this.getName());
+        formData.append("upload_file", true);
+        formData.append("_csrf", "{{_csrf.token}}");
+
+        $.ajax({
+            type: "POST",
+            url: "{{uploadLink}}",
+            xhr: function () {
+                var myXhr = $.ajaxSettings.xhr();
+                if (myXhr.upload) {
+
+                }
+                return myXhr;
+            },
+            success: function (data) {
+                loader($('body'), false);
+                swal("Upload berhasil.");
+                $('#jumlahData').val(data.data.jumlahData);
+
+                fillDataTableRekeningUpload();
+            },
+            error: function (error) {
+                loader($('body'), false);
+                swal("Upload gagal");
+            },
+            async: true,
+            data: formData,
+            cache: false,
+            contentType: false,
+            processData: false,
+            timeout: 0
+        });
+    };
+
+    $('#btnUpload').on('click', () => {
+        var upload = new Upload(globalFile);
+
+        $.validator.addMethod('matchFileType', () => {
+            if(globalFile.type == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'){
+                return true;
+            } else
+                return false;
+        });
+
+        $.validator.addMethod('fileNameContain', () => {
+            let status = false;
+            let fileName = globalFile.name.toLowerCase();
+
+            status = fileName.includes("rekening");
+
+            return status;
+
+        });
+
+        $('#modal-upload-form').validate();
+        $('#pilih-file').rules("add", {
+            required: true,
+            matchFileType: true,
+            fileNameContain: true,
+            messages: {
+                required: 'File tidak boleh kosong.',
+                matchFileType: 'Tipe file yang diizinkan adalah .xlsx',
+                fileNameContain: 'Penamaan file yang diupload tidak sesuai dengan jenis potongan. Sorot di <a onmouseover="swal(\'Contoh untuk tipe PGA, maka nama filenya harus mengandung kata pga. Misalnya, pga-sep-2019.xlsx.\');"><strong><u>sini</u></strong></a> untuk info lebih lanjut.'
+            }
+        });
+
+
+        //let validForm = $('#modal-upload-form').valid();
+
+        //if (validForm)
+            upload.doUpload();
+    });
+
+    $("#pilihFile").on("change", function (e) {
+        globalFile = $(this)[0].files[0];
+    });
+
+    // $('#checkAll').on('change', function(){
+    //     if($('#checkAll').attr('checked') == 'checked')
+    //         $('.cbReconcile').attr('checked', 'checked');
+    //     else
+    //         $('.cbReconcile').removeAttr('checked');
+    // });
+
+    $("#checkAll").click(function(){
+        $('.cbReconcile:checkbox').prop('checked', this.checked);
+    });
+
+    const prosesValidasi = () => {
+        $.each($('.cbReconcile:checked'), function(){
+            rowData = $(this).data('value');
+            $.ajax({
+                url: '{{linkValidasiRekonsiliasi}}',
+                method: 'POST',
+                data: {
+                    parNip: rowData.nip,
+                    parPeriode: rowData.periode,
+                    parIdValidasi: 1,
+                    parNamaValidasi: 'Sudah Validasi',
+                    _csrf: '{{_csrf.token}}'
+                },
+                success: function(response){
+                    $('#div_'+response.data.parPeriode + response.data.parNip).html(`<span class="tag tag-pill tag-success">sukses</span>`);
+                },
+                failed: function(response){
+                    $('#div_'+response.data.parPeriode + response.data.parNip).html(`<span class="tag tag-pill tag-error">gagal</span>`);
+                }
+
+            });
+        });
+    };
+
+//modal 1
+
+    $('#btn-cetak-daftar').unbind().on('click', function(){
+        $('#pesertaForn').trigger('reset');
+        $('#startDate').val();
+        $('#endDate').val();
+        $('#namaPejabat').val();
+        $('#namaPetugas').val();
+
+        var modal = $('.report-modal');
+        modal.modal('show');
+
+    });
+
+    $('#btnCetak').unbind().on('click', function(){
+        let startDate = $("input[name = 'startDate']").val();
+        let endDate = $("input[name= 'endDate']").val();
+        let namaPetugas = $("input[name= 'namaPetugas']").val();
+        let periodeMutasi = $("input[name='periodeMutasi']").val();
+        let idKategoriPensiun = $('#idKategoriPensiun option:selected').val();
+        let kepalaDivisi = $("input[name='namaPejabat']").val();
+        let kepalaSeksi = $("input[name='namaPetugas']").val();
+        data = {
+            tipeReport:'DaftarDataPerubahanRekening1',
+            startDate: startDate,
+            endDate: endDate,
+            namaPetugas: namaPetugas,
+            periodeMutasi: periodeMutasi,
+            idKategoriPensiun: idKategoriPensiun,
+            kepalaDivisi: kepalaDivisi,
+            kepalaSeksi: kepalaSeksi
+        };
+        const param = $.param(data);
+        console.log(param);
+        const reportFrame = $("#report");
+        const res = encodeURI(('src', `{{contextPath}}{{repot_rekening}}?${param}`));
+        window.open(res, '_blank');
+        /*loader($("body"), true);
+        reportFrame.on('load', function (prop) {
+            window.frames[prop.target.id].print();
+            loader($("body"), false);
+        }) */
+        //var res = encodeURI('{{contextPath}}{{laporan_path_api}}') + "?" + param;
+        //window.open(res, '_blank');
+        //$('.report-modal').modal('hide');
+    });
+
+// modal 2
+
+    $('#btn-preview').unbind().on('click', function(){
+        $('#startDate').val();
+        $('#endDate').val();
+
+        $.ajax({
+            url: '{{contextPath}}/api/setupparameter/get_periode',
+            dataType: 'json',
+            method: 'GET',
+            success: function (data) {
+                param :{
+                    $('#user-stamp').val(data.postModeUserStamp);
+                    $('#periodeMutasi').val(data.periodeMutasi);
+                    $('#compName').val(data.compName);
+                    $('#userName').val(data.userName);
+                }
+            }
+        });
+
+        $('#pesertaForn').trigger('reset');
+        var modal = $('.preview-modal');
+        modal.modal('show');
+
+    });
+
+    $('#btnPreview').unbind().on('click', function(){
+        let startDate = $("input[name = 'start-Date']").val();
+        let endDate = $("input[name= 'end-Date']").val();
+        let periodeMutasi = $("input[name='periodeMutasi']").val();
+        let idKategoriPensiun = $('#idKategoriPensiun option:selected').val();
+        let kepalaDivisi = $("input[name='kepalaDivisi']").val();
+        let kepalaSeksi = $("input[name='kepalaSeksi']").val();
+        let radioReport = $("input[name='optradio']:checked").val();
+        let namaPetugas = $("input[name= 'namaPetugas']").val();
+        data = {
+            tipeReport: radioReport,
+            startDate: startDate,
+            endDate: endDate,
+            periodeMutasi: periodeMutasi,
+            idKategoriPensiun: idKategoriPensiun,
+            kepalaDivisi: kepalaDivisi,
+            kepalaSeksi: kepalaSeksi,
+            namaPetugas: namaPetugas
+
+        };
+        const param = $.param(data);
+        console.log(param);
+        const reportFrame = $("#report");
+        const res = reportFrame.attr('src', `{{contextPath}}{{repot_rekening}}?${param}`);
+        loader($("body"), true);
+        reportFrame.on('load', function (prop) {
+            window.frames[prop.target.id].print();
+            loader($("body"), false);
+        })
+        //var res = encodeURI('{{contextPath}}{{laporan_path_api}}') + "?" + param;
+        //window.open(res, '_blank');
+        //$('.report-modal').modal('hide');
+    });
+// Modal 3
+    $('#btn-cetak-pembayaran').unbind().on('click', function(){
+        $('#pesertaForn').trigger('reset');
+        $('#mulai').val();
+        $('#akhir').val();
+        $('#kadiv').val();
+        $('#kasi').val();
+        $(function() {
+            $("#tglCetak").datepicker({
+                dateFormat: "dd-mm-yyyy"
+            }).datepicker("setDate", "0");
+        });
+        var modal = $('.cetak-pembayaran-modal');
+        modal.modal('show');
+
+    });
+
+    $('#btnCetakPembayaran').unbind().on('click', function(){
+        let startDate = $("input[name = 'mulai']").val();
+        let endDate = $("input[name= 'akhir']").val();
+        let periodeMutasi = $("input[name='periodeMutasi']").val();
+        let idKategoriPensiun = $('#idKategoriPensiun option:selected').val();
+        let kepalaDivisi = $("input[name='kadiv']").val();
+        let kepalaSeksi = $("input[name='kasi']").val();
+        let namaPetugas = $("input[name= 'namaPetugas']").val();
+
+        data = {
+            tipeReport:'cetak_mp_susulan',
+            startDate: startDate,
+            endDate: endDate,
+            periodeMutasi: periodeMutasi,
+            idKategoriPensiun: idKategoriPensiun,
+            kepalaDivisi: kepalaDivisi,
+            kepalaSeksi: kepalaSeksi,
+            namaPetugas: namaPetugas
+
+        };
+        const param = $.param(data);
+        console.log(param);
+        const reportFrame = $("#report");
+        const res = reportFrame.attr('src', `{{contextPath}}{{repot_rekening}}?${param}`);
+        loader($("body"), true);
+        reportFrame.on('load', function (prop) {
+            window.frames[prop.target.id].print();
+            loader($("body"), false);
+        })
+        //var res = encodeURI('{{contextPath}}{{laporan_path_api}}') + "?" + param;
+        //window.open(res, '_blank');
+        //$('.report-modal').modal('hide');
+    });
+
+    // Modal 4
+
+    $('#btn-cetak-rekenning').unbind().on('click', function(){
+        $('#rekKosongForm').trigger('reset');
+
+        $('#tglPrint').val();
+        $('#kepDivisi').val();
+        $('#kepSeksi').val();
+
+        $.ajax({
+            url: '{{contextPath}}/api/setupparameter/get_periode',
+            dataType: 'json',
+            method: 'GET',
+            success: function (data) {
+                param :{
+                    $('#user-stamp').val(data.postModeUserStamp);
+                    $('#periodeMutasi').val(data.periodeMutasi);
+                    $('#compName').val(data.compName);
+                    $('#userName').val(data.userName);
+                }
+            }
+        });
+
+        $(function() {
+            $("#tglPrint").datepicker({
+                dateFormat: "dd-mm-yyyy"
+            }).datepicker("setDate", "0");
+        });
+
+        var modal = $('.cetak-rekening-modal');
+        modal.modal('show');
+
+    });
+
+    $('#btnCetakRekKosong').unbind().on('click', function(){
+        let startDate = $("input[name = 'start-Date']").val();
+        let endDate = $("input[name= 'end-Date']").val();
+        let periodeMutasi = $("input[name='periodeMutasi']").val();
+        let idKategoriPensiun = $('#idKategoriPensiun option:selected').val();
+        let kepalaDivisi = $("input[name='kepDivisi']").val();
+        let kepalaSeksi = $("input[name='kepSeksi']").val();
+        let namaPetugas = $("input[name= 'namaPetugas']").val();
+        data = {
+            tipeReport: 'cetak_rek_kosong',
+            startDate: startDate,
+            endDate: endDate,
+            periodeMutasi: periodeMutasi,
+            idKategoriPensiun: idKategoriPensiun,
+            kepalaDivisi: kepalaDivisi,
+            kepalaSeksi: kepalaSeksi,
+            namaPetugas: namaPetugas
+        };
+        const param = $.param(data);
+        console.log(param);
+        const reportFrame = $("#report");
+        const res = reportFrame.attr('src', `{{contextPath}}{{repot_rekening}}?${param}`);
+        loader($("body"), true);
+        reportFrame.on('load', function (prop) {
+            window.frames[prop.target.id].print();
+            loader($("body"), false);
+        })
+        //var res = encodeURI('{{contextPath}}{{laporan_path_api}}') + "?" + param;
+        //window.open(res, '_blank');
+        //$('.report-modal').modal('hide');
+    });
+
+    //Modal 5
+
+    $('#btn-proses-ykkbi').unbind().on('click', function(){
+        $('#prosesForm').trigger('reset');
+
+        $.ajax({
+            url: '{{contextPath}}/api/setupparameter/get_periode',
+            dataType: 'json',
+            method: 'GET',
+            success: function (data) {
+                param :{
+                    $('#user-stamp').val(data.postModeUserStamp);
+                    $('#periodeMutasi').val(data.periodeMutasi);
+                    $('#compName').val(data.compName);
+                    $('#userName').val(data.userName);
+                }
+            }
+        });
+
+        $(function() {
+            $("#tglPrint").datepicker({
+                dateFormat: "dd-mm-yyyy"
+            }).datepicker("setDate", "0");
+        });
+
+        var modal = $('.proses-modal');
+        modal.modal('show');
+
+    });
+
+    $('#btnProsesYkkbi').unbind().on('click', function(){
+        let periodeMutasi = $("input[name='periodeMutasi']").val();
+        let kepalaDivisi = $("input[name='kep-Divisi']").val();
+        let kepalaSeksi = $("input[name='kep-Seksi']").val();
+        let jenis = $('#jenis option:selected').val();
+            loader($("body"), true);
+        data = {
+            tipeReport: 'cetak_proses_ppbi_ykkbi',
+            periodeMutasi: periodeMutasi,
+            kepalaDivisi: kepalaDivisi,
+            kepalaSeksi: kepalaSeksi,
+            jenis: jenis
+        };
+        const param = $.param(data);
+        console.log(param);
+        const reportFrame = $("#report");
+        const res = reportFrame.attr('src', `{{contextPath}}{{report_excel}}?${param}`);
+        setTimeout(function () {
+            loader($("body"), false);
+        },1000);
+
+        //loader($("body"), false);
+        //var res = encodeURI('{{contextPath}}{{laporan_path_api}}') + "?" + param;
+        //window.open(res, '_blank');
+        //$('.report-modal').modal('hide');
+    });
+</script>
+{{/scripts}}
+
+{{/layout}}

@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="BuktiPenerimaanFormulirRegistrasi" pageWidth="615" pageHeight="878" whenNoDataType="AllSectionsNoDetail" columnWidth="575" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="32201ee6-1e5f-45ec-b513-57520f2aea68">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="db_dapenbi"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="cm"/>
+	<parameter name="nip" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select a.tahun_her  
+    , to_char(a.tgl_her, 'dd Month yyyy','nls_date_language = INDONESIAN') as tgl_her_desc
+    , a.tahun_her
+    , a.nomor_her
+    , a.nip
+    , a.nama_penerima
+    , a.is_ada_kk
+    , a.IS_ADA_KTP
+    , a.IS_ADA_PHOTO
+    , a.catatan
+    ,to_char(SYSDATE,'dd Month yyyy','nls_date_language = INDONESIAN') as sign_date
+from TBL_T_HER_REGISTRASI_DETAIL a
+where  a.nip=$P{nip} and a.is_sudah_her = '1']]>
+	</queryString>
+	<field name="TAHUN_HER" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="TAHUN_HER"/>
+	</field>
+	<field name="TGL_HER_DESC" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="TGL_HER_DESC"/>
+	</field>
+	<field name="COLUMN_3" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="TAHUN_HER"/>
+	</field>
+	<field name="NOMOR_HER" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NOMOR_HER"/>
+	</field>
+	<field name="NIP" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NIP"/>
+	</field>
+	<field name="NAMA_PENERIMA" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NAMA_PENERIMA"/>
+	</field>
+	<field name="IS_ADA_KK" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="IS_ADA_KK"/>
+	</field>
+	<field name="IS_ADA_KTP" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="IS_ADA_KTP"/>
+	</field>
+	<field name="IS_ADA_PHOTO" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="IS_ADA_PHOTO"/>
+	</field>
+	<field name="CATATAN" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="CATATAN"/>
+	</field>
+	<field name="SIGN_DATE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="SIGN_DATE"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="55" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="38" width="550" height="17" uuid="4e67e7b2-6336-4fc0-9aea-953238a3cda2"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Tahun : "+($F{TAHUN_HER} == null ? "-" : $F{TAHUN_HER})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="21" width="550" height="17" uuid="4f0fe6be-7f2b-4b0b-abae-008b00f5cf6c"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Tanggal Her Registarsi : "+($F{TGL_HER_DESC} == null ? "-" : $F{TGL_HER_DESC})]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="2" width="550" height="17" uuid="054b0186-6a09-44ac-ab7e-2009dfb35d01"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[BUKTI PENERIMAAN FORMULIR REGISTRASI]]></text>
+			</staticText>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="3" width="550" height="17" uuid="8dd97558-4052-4081-94c1-b9cfe4cb5537"/>
+				<textElement textAlignment="Right">
+					<font size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["No Registrasi : "+($F{NOMOR_HER} == null ? "-" : $F{NOMOR_HER})]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="254" splitType="Stretch">
+			<line>
+				<reportElement x="0" y="0" width="560" height="1" uuid="8619436d-1d1b-4dca-ad60-c2bbed78c556"/>
+			</line>
+			<line>
+				<reportElement x="0" y="125" width="561" height="1" uuid="f12e95d9-2b57-4c40-a8a1-107db05bf77d"/>
+			</line>
+			<staticText>
+				<reportElement x="0" y="3" width="550" height="17" uuid="632158be-bfd1-4e02-b885-8b746594a7b0"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Telah diterima dari :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="31" width="130" height="17" uuid="a0326a11-7f63-4513-8e86-7639cb9e9a04"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[NIP]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="48" width="130" height="17" uuid="025839f7-c621-4bad-91e5-ef54db0dd9d5"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Nama Penerima MP]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="65" width="130" height="17" uuid="353fe814-861a-43ab-b7d4-1e7235bc8c6c"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Kelengkapan Dokumen]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="130" y="31" width="50" height="17" uuid="16839403-7ce7-4f9d-a7de-d318f4995be1"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="130" y="48" width="50" height="17" uuid="db869655-75f9-4a9b-8fc2-3220841bab93"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="130" y="65" width="50" height="17" uuid="f78f654f-293f-4e7b-90c6-f4851608ac66"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="180" y="31" width="370" height="17" uuid="80aaff5b-ad26-4dec-90f1-4f0e49da8da9"/>
+				<textElement textAlignment="Left">
+					<font size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NIP}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="180" y="48" width="370" height="17" uuid="109c958b-4d7f-416f-b2f3-27263d47c1af"/>
+				<textElement textAlignment="Left">
+					<font size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NAMA_PENERIMA}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="180" y="65" width="370" height="36" uuid="6ae58a6e-cbaf-4d3e-9799-befbdbcf58c9"/>
+				<textElement textAlignment="Left">
+					<font size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{IS_ADA_KK}.intValue()==1 && $F{IS_ADA_KTP}.intValue()==1 &&  $F{IS_ADA_PHOTO}.intValue()==1?
+"Lengkap" :
+$F{IS_ADA_KK}.intValue()==0 && $F{IS_ADA_KTP}.intValue()==0 &&  $F{IS_ADA_PHOTO}.intValue()==0?
+"Tidak Lengkap (Dokumen yang kurang adalah Pas Poto,KK, dan KTP)" :
+$F{IS_ADA_KK}.intValue()==0 || $F{IS_ADA_KTP}.intValue()==0 ||  $F{IS_ADA_PHOTO}.intValue()==0?
+($F{IS_ADA_KK}.intValue()==0 && $F{IS_ADA_KTP}.intValue()==0?
+"Tidak Lengkap (Dokumen yang kurang adalah KK, dan KTP)" :$F{IS_ADA_KK}.intValue()==0 && $F{IS_ADA_PHOTO}.intValue()==0?
+"Tidak Lengkap (Dokumen yang kurang adalah  Pas Poto dan KK)" :$F{IS_ADA_KTP}.intValue()==0 && $F{IS_ADA_PHOTO}.intValue()==0?
+"Tidak Lengkap (Dokumen yang kurang adalah  Pas Poto dan KTP)" :$F{IS_ADA_KTP}.intValue()==0?
+"Tidak Lengkap (Dokumen yang kurang adalah  KTP)" : $F{IS_ADA_PHOTO}.intValue()==0?
+"Tidak Lengkap (Dokumen yang kurang adalah  Pas Poto)" : "Tidak Lengkap (Dokumen yang kurang adalah  KK)" ) :"Lengkap"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="101" width="550" height="17" uuid="8f9f6d5b-e5ca-44a6-b44a-6f093cb7a998"/>
+				<textElement textAlignment="Left">
+					<font size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Catatan : "+($F{CATATAN} == null ? "-" : $F{CATATAN})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="256" y="139" width="300" height="21" uuid="c54b6716-832a-4a4b-8b25-fdb367430f7d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Jakarta, "+$F{TGL_HER_DESC}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="256" y="160" width="300" height="17" uuid="15ce602c-5600-4d23-9703-f8636d1b7564"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Divisi Kepersertaan Dan Pelayanan Pensiun]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="256" y="237" width="300" height="17" uuid="eff43c30-248b-4d2a-acda-704672072a48"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[(                                )]]></text>
+			</staticText>
+		</band>
+	</detail>
+</jasperReport>

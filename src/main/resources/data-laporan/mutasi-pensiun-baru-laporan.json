@@ -1,0 +1,13 @@
+{
+  "data": [
+	["1","Daftar Pensiun Baru"],
+	["2","Rekapitulasi Daftar MPS 20% (Group by Cabang) untuk penerima MP: Pensiun Normal, Pensiun Dipercepat, Penerima MP Janda/Duda/Anak Langsung, Pensiun Cacat"],
+	["3","Daftar MPS > Rp.10 Juta (Rekapitulasi dan Rincian per Cabang): Pensiun Normal, Pensiun Dipercepat, Penerima MP Janda/Duda/Anak Langsung, Pensiun Cacat"],
+	["4","Rekapitulasi MP yang telah diterima (hitorikal MP bulanan, rapel MP, MPS 20%, rapel MPS 20%, MPS > Rp. 10 Juta dan rapel MPS > Rp. 10 Juta)"],
+	["5","Rekapitulasi Mutasi Rupiah Bulanan"],
+	["6","Laporan Daftar Mutasi Master Pensiun"],
+	["7","Daftar Rekapitulasi & Rincian Mutasi Kurang Bayar per Bulan"],
+	["8","Daftar Rekapitulasi & Rincian Mutasi Lebih Bayar per Bulan"],
+	["9","Daftar Pembayaran MP kepada Pihak Yang Ditunjuk/ Ahli Waris yang dilengkapi nomor rekening sebagai lampiran perintah pembayaran kepada Bank Pembayaran"]
+  ]
+}

@@ -1,0 +1,1410 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="PerhitunganMP_DipercepatDengan_MPS20persen_MI" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="e4d8cb7c-7bf5-4d22-9f5a-96575b34509b">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="db_dapenbi"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<property name="net.sf.jasperreports.awt.ignore.missing.font" value="true"/>
+	<property name="net.sf.jasperreports.default.font.name" value="Sans Serif"/>
+	<parameter name="subReport" class="java.lang.String"/>
+	<parameter name="id_jenis_mps" class="java.lang.String"/>
+	<parameter name="id_kategori_pensiun" class="java.lang.String"/>
+	<parameter name="periode_mutasi" class="java.lang.String"/>
+	<parameter name="nip" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT 
+    a.nip
+    ,b.npwp as npwp
+    ,a.nama_peserta
+    ,a.nama_penerima_mp
+    ,a.nama_kategori_pensiun as jenis_manfaat_pensiun
+    ,b.nik as nik
+    ,a.nama_suskel as suskel
+    ,'K/1' as ptkp
+    ,a.nama_kategori_penerima_mp as kategori_penerima
+    ,TO_CHAR(a.tgl_lahir_peserta, 'DD-MM-YYYY') AS tgl_lahir_peserta
+    ,to_char(a.tgl_kerja_peserta, 'DD-MM-YYYY') as tgl_mulai_bekerja
+    ,TO_CHAR(a.tgl_dptht_peserta, 'DD-MM-YYYY') as tgl_peserta
+    ,to_char(a.tgl_mp_bulan_ke13,'dd-mm-yyyy') as tgl_bulan_ke13
+    ,a.no_sk_bi
+    ,to_char(a.tgl_sk_bi, 'dd-mm-yyyy') as tgl_sk_bi
+    ,a.no_sp_bi
+    ,to_char(a.tgl_sp_bi, 'dd-mm-yyyy') as tgl_sp_bi
+    ,TO_CHAR(a.tgl_henti_kerja_peserta, 'DD-MM-YYYY') AS tgl_henti_kerja_peserta
+    ,to_char(a.tgl_awal_bayar,'dd-mm-yyyy') as tgl_awal_bayar
+    ,TO_CHAR(a.phdp_lama, '999,999,999,999.00') as gaji_pokok_terakhir
+    ,to_char(a.tgl_mulai_berlaku_phdp_baru,'dd-mm-yyyy') as tanggal_berlaku_phdp
+    ,to_char(a.phdp_baru,'999,999,999,999.00') as phdp_baru
+    ,a.golongan_pangkat
+    ,'Setingkat Asisten Direktur' as jabatan
+    ,'KPwGI Yogyakarta -hardcoded' as satuan_kerja
+    , to_char(a.tgl_lahir_peserta , 'DD-MM-YYYY') || 
+        '  -  ' || 
+        TO_CHAR(a.tgl_henti_kerja_peserta, 'DD-MM-YYYY') || 
+        ' = ' || 
+        SUBSTR(a.usia_saat_henti, 1, 2) || 
+        ' th ' ||  
+        SUBSTR(a.usia_saat_henti, 3, 2) || 
+        ' bl ' ||
+        SUBSTR(a.usia_saat_henti, 5, 2) || 
+        ' hr'
+        as usia_saat_henti
+    ,to_char(a.tgl_kerja_peserta, 'DD-MM-YYYY') || 
+        '  -  ' || 
+        TO_CHAR(a.tgl_henti_kerja_peserta, 'DD-MM-YYYY') || 
+        ' = ' || 
+        SUBSTR(a.masa_kerja_henti, 1, 2) || 
+        ' th ' ||  
+        SUBSTR(a.masa_kerja_henti, 3, 2) || 
+        ' bl ' ||
+        SUBSTR(a.masa_kerja_henti, 5, 2) || 
+        ' hr'
+        as masa_kerja_henti
+        
+  
+    ,'2,5% x ' as penghasilan_pensiun_rumus
+    ,SUBSTR(a.masa_kerja_mp, 1, 2) || ' ' || (CASE SUBSTR(a.masa_kerja_mp, 3, 2) WHEN '00' THEN '' ELSE SUBSTR(a.masa_kerja_mp, 3, 2) || '/12' END) as masa_kerja_mp
+    ,TO_CHAR(a.phdp_lama, '999,999,999,999.00') AS phdp_lama
+    ,TO_CHAR(a.mp_perbulan_rumus_lama, '999,999,999,999.00') AS mp_perbulan_rumus_lama
+    ,TO_CHAR(a.mp_perbulan_rumus_baru,'999,999,999,999.00') as mp_perbulan_rumus_baru
+    ,'100%' as ik_berlaku_saat_tgl_bayar
+    ,TO_CHAR(a.mps_20persen_lama, '999,999,999,999.00') AS mps_20persen_lama
+    ,TO_CHAR(a.mp_perbulan_20persen_lama, '999,999,999,999.00') as mp_setelah_mps20_persen
+    ,TO_CHAR(a.mp_perbulan_10juta_lama, '999,999,999,999.00') AS mp_perbulan_10juta_lama
+    ,to_char(a.mps_10juta_lama,'999,999,999,999.00') as mps_10jt
+    ,to_char(a.mp_perbulan_10juta_lama,'999,999,999,999.00') as mp_bulanan_setelah_mps_10jt
+    ,to_char(a.mps_20persen_baru,'999,999,999,999.00') as mps_20_baru
+    ,to_char(a.mp_perbulan_20persen_baru,'999,999,999,999.00') as mp_perbulan20_baru
+    ,to_char(a.mp_perbulan_10juta_baru,'999,999,999,999.00') as mp_perbulan_10jt_baru
+    ,to_char(a.mps_10juta_baru,'999,999,999,999.00') as mps_10jt_baru
+    ,to_char(a.mp_bulan13_baru,'999,999,999,999.00') as mp_bulan_ke13_baru
+    ,a.nilai_fpr as nilai_fpr
+    , TO_CHAR(a.tgl_lahir_peserta,'DD-MM-YYYY') || 
+        '  -  ' || 
+        TO_CHAR(SYSDATE, 'DD-MM-YYYY')|| 
+        ' = ' || 
+        SUBSTR(SYSDATE, 1, 2) || 
+        ' th ' ||  
+        SUBSTR(SYSDATE, 3, 2) || 
+        ' bl ' ||
+        SUBSTR(SYSDATE, 5, 2) || 
+        ' hr'
+        as usia_saat_dibayar
+        
+        ,TO_CHAR(a.tgl_henti_kerja_peserta, 'DD-MM-YYYY') || 
+        '  -  '  ||
+        TO_CHAR(add_months( to_date(a.tgl_lahir_peserta), 56*12 ),'DD-MM-YYYY') ||
+        ' = ' || 
+        SUBSTR(a.masa_kerja_tambahan, 1, 2) || 
+        ' th ' ||  
+        SUBSTR(a.masa_kerja_tambahan, 3, 2) || 
+        ' bl ' ||
+        SUBSTR(a.masa_kerja_tambahan, 5, 2) || 
+        ' hr'
+        as masa_kerja_tambahan
+        
+        ,TO_CHAR(a.tgl_kerja_peserta, 'DD-MM-YYYY') || 
+        '  -  ' ||
+       TO_CHAR(add_months( to_date(a.tgl_lahir_peserta), 56*12 ), 'DD-MM-YYYY') ||
+        ' = ' || 
+        SUBSTR(a.total_masa_kerja, 1, 2) || 
+        ' th ' ||  
+        SUBSTR(a.total_masa_kerja, 3, 2) || 
+        ' bl ' ||
+        SUBSTR(a.total_masa_kerja, 5, 2) || 
+        ' hr'
+        as masa_kerja_total
+        
+         ,TO_CHAR(a.tgl_awal_bayar, 'DD-MM-YYYY') || 
+        '  -  ' ||
+       TO_CHAR(a.tgl_lahir_penerima_mp,'DD-MM-YYYY') ||
+        ' = ' || 
+        SUBSTR(a.usia_penerima_bayar, 1, 2) || 
+        ' th ' ||  
+        SUBSTR(a.usia_penerima_bayar, 3, 2) || 
+        ' bl ' ||
+        SUBSTR(a.usia_penerima_bayar, 5, 2) || 
+        ' hr'
+        as usia_janda_duda
+        
+        ,to_char(a.mp_bulan13_baru,'999,999,999,999.00') as mp_bulan13
+       ,to_char(a.kurang_bayar_mpyd,'999,999,999,999.00') as kurang_bayar
+       
+       ,to_char(a.rapel_mpyd_kurang,'999,999,999,999.00') as rapel_kurang_bayar
+       ,to_char(a.rapel_mpyd_lebih,'999,999,999,999.00') as rapel_lebih_bayar
+       
+    ,to_char(SYSDATE,'DD-MM-YY') as date_now
+    , to_char(SYSDATE, 'DD Month YYYY') as SIGN_DATE
+    ,a.nama_kantor_bayar as kantor_bayar
+     ,'12' as jumlah_bulan
+     ,a.kurang_bayar_mps20persen as kurang_bayar_mps20p
+     ,to_char(a.kurang_bayar_mps10juta,'999,999,999,999.00') as kurang_bayar_mps10jt
+    ,a.nilai_fpr as fpr
+    ,a.nilai_fs as NS
+    ,'20%' as rumus_mps_20_persen
+    ,'80%' as rumus_80_persen
+    ,TO_CHAR(a.kurang_bayar_mpyd,'999,999,999,999.00') as kurang_bayar
+    ,to_char(a.tgl_mutasi, 'Month','nls_date_language = INDONESIAN') as bulan_mutasi
+    ,to_char(a.tgl_mutasi, 'YYYY') as tahun_mutasi
+    ,to_char(a.tgl_mutasi,'dd Month yyyy','nls_date_language = INDONESIAN') as tgl_mutasi
+    ,to_char(to_date(a.periode_mutasi,'MMYYYY','nls_date_language = INDONESIAN'),'Month YYYY','nls_date_language = INDONESIAN') as periode_mutasi
+    ,to_char(a.tgl_awal_bayar,'Month yyyy','nls_date_language = INDONESIAN')|| ' s.d ' || to_char(a.tgl_mutasi,'Month yyyy','nls_date_language = INDONESIAN') as rapel_bulan
+    ,a.keterangan
+	,(CASE WHEN a.id_jenis_mps = '1' then a.kurang_bayar_mps20persen WHEN a.id_jenis_mps = '2' then a.kurang_bayar_mps10juta WHEN a.id_jenis_mps = '4' then (a.kurang_bayar_mps20persen + a.kurang_bayar_mps10juta) END) as rapel_mps
+	,(CASE WHEN a.id_jenis_mps = '1' then 'Rapel MPS 20%' WHEN a.id_jenis_mps = '2' then 'Rapel MPS > 10 Jt' WHEN a.id_jenis_mps = '4' then 'Rapel MPS 20% dan MPS > 10Jt' END) as kondisi_rapel
+    ,(CASE when a.rapel_mpyd_kurang > 0 then a.rapel_mpyd_kurang  when a.rapel_mpyd_lebih > 0 then a.rapel_mpyd_lebih END) as rapel_mpyd
+FROM tbl_t_mutasi_pensiun a 
+INNER JOIN tbl_m_pensiun b ON a.nip = b.nip
+WHERE a.id_kategori_mutasi = '13' AND a.id_jenis_mps = $P{id_jenis_mps} AND a.id_kategori_pensiun = $P{id_kategori_pensiun} AND a.periode_mutasi = $P{periode_mutasi} AND a.nip = $P{nip}]]>
+	</queryString>
+	<field name="NIP" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NIP"/>
+	</field>
+	<field name="NPWP" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NPWP"/>
+	</field>
+	<field name="NAMA_PESERTA" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NAMA_PESERTA"/>
+	</field>
+	<field name="NAMA_PENERIMA_MP" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NAMA_PENERIMA_MP"/>
+	</field>
+	<field name="JENIS_MANFAAT_PENSIUN" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="JENIS_MANFAAT_PENSIUN"/>
+	</field>
+	<field name="NIK" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NIK"/>
+	</field>
+	<field name="SUSKEL" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="SUSKEL"/>
+	</field>
+	<field name="PTKP" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="PTKP"/>
+	</field>
+	<field name="KATEGORI_PENERIMA" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="KATEGORI_PENERIMA"/>
+	</field>
+	<field name="TGL_LAHIR_PESERTA" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="TGL_LAHIR_PESERTA"/>
+	</field>
+	<field name="TGL_MULAI_BEKERJA" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="TGL_MULAI_BEKERJA"/>
+	</field>
+	<field name="TGL_PESERTA" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="TGL_PESERTA"/>
+	</field>
+	<field name="TGL_BULAN_KE13" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="TGL_BULAN_KE13"/>
+	</field>
+	<field name="NO_SK_BI" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NO_SK_BI"/>
+	</field>
+	<field name="TGL_SK_BI" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="TGL_SK_BI"/>
+	</field>
+	<field name="NO_SP_BI" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NO_SP_BI"/>
+	</field>
+	<field name="TGL_SP_BI" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="TGL_SP_BI"/>
+	</field>
+	<field name="TGL_HENTI_KERJA_PESERTA" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="TGL_HENTI_KERJA_PESERTA"/>
+	</field>
+	<field name="TGL_AWAL_BAYAR" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="TGL_AWAL_BAYAR"/>
+	</field>
+	<field name="GAJI_POKOK_TERAKHIR" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="GAJI_POKOK_TERAKHIR"/>
+	</field>
+	<field name="TANGGAL_BERLAKU_PHDP" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="TANGGAL_BERLAKU_PHDP"/>
+	</field>
+	<field name="PHDP_BARU" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="PHDP_BARU"/>
+	</field>
+	<field name="GOLONGAN_PANGKAT" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="GOLONGAN_PANGKAT"/>
+	</field>
+	<field name="JABATAN" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="JABATAN"/>
+	</field>
+	<field name="SATUAN_KERJA" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="SATUAN_KERJA"/>
+	</field>
+	<field name="USIA_SAAT_HENTI" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="USIA_SAAT_HENTI"/>
+	</field>
+	<field name="MASA_KERJA_HENTI" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="MASA_KERJA_HENTI"/>
+	</field>
+	<field name="PENGHASILAN_PENSIUN_RUMUS" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="PENGHASILAN_PENSIUN_RUMUS"/>
+	</field>
+	<field name="MASA_KERJA_MP" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="MASA_KERJA_MP"/>
+	</field>
+	<field name="PHDP_LAMA" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="PHDP_LAMA"/>
+	</field>
+	<field name="MP_PERBULAN_RUMUS_LAMA" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="MP_PERBULAN_RUMUS_LAMA"/>
+	</field>
+	<field name="MP_PERBULAN_RUMUS_BARU" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="MP_PERBULAN_RUMUS_BARU"/>
+	</field>
+	<field name="IK_BERLAKU_SAAT_TGL_BAYAR" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="IK_BERLAKU_SAAT_TGL_BAYAR"/>
+	</field>
+	<field name="MPS_20PERSEN_LAMA" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="MPS_20PERSEN_LAMA"/>
+	</field>
+	<field name="MP_SETELAH_MPS20_PERSEN" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="MP_SETELAH_MPS20_PERSEN"/>
+	</field>
+	<field name="MP_PERBULAN_10JUTA_LAMA" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="MP_PERBULAN_10JUTA_LAMA"/>
+	</field>
+	<field name="MPS_10JT" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="MPS_10JT"/>
+	</field>
+	<field name="MP_BULANAN_SETELAH_MPS_10JT" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="MP_BULANAN_SETELAH_MPS_10JT"/>
+	</field>
+	<field name="MPS_20_BARU" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="MPS_20_BARU"/>
+	</field>
+	<field name="MP_PERBULAN20_BARU" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="MP_PERBULAN20_BARU"/>
+	</field>
+	<field name="MP_PERBULAN_10JT_BARU" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="MP_PERBULAN_10JT_BARU"/>
+	</field>
+	<field name="MPS_10JT_BARU" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="MPS_10JT_BARU"/>
+	</field>
+	<field name="MP_BULAN_KE13_BARU" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="MP_BULAN_KE13_BARU"/>
+	</field>
+	<field name="NILAI_FPR" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="NILAI_FPR"/>
+	</field>
+	<field name="USIA_SAAT_DIBAYAR" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="USIA_SAAT_DIBAYAR"/>
+	</field>
+	<field name="MASA_KERJA_TAMBAHAN" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="MASA_KERJA_TAMBAHAN"/>
+	</field>
+	<field name="MASA_KERJA_TOTAL" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="MASA_KERJA_TOTAL"/>
+	</field>
+	<field name="USIA_JANDA_DUDA" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="USIA_JANDA_DUDA"/>
+	</field>
+	<field name="MP_BULAN13" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="MP_BULAN13"/>
+	</field>
+	<field name="KURANG_BAYAR" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="KURANG_BAYAR"/>
+	</field>
+	<field name="RAPEL_KURANG_BAYAR" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="RAPEL_KURANG_BAYAR"/>
+	</field>
+	<field name="RAPEL_LEBIH_BAYAR" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="RAPEL_LEBIH_BAYAR"/>
+	</field>
+	<field name="DATE_NOW" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="DATE_NOW"/>
+	</field>
+	<field name="SIGN_DATE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="SIGN_DATE"/>
+	</field>
+	<field name="KANTOR_BAYAR" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="KANTOR_BAYAR"/>
+	</field>
+	<field name="JUMLAH_BULAN" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="JUMLAH_BULAN"/>
+	</field>
+	<field name="KURANG_BAYAR_MPS20P" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="KURANG_BAYAR_MPS20P"/>
+	</field>
+	<field name="KURANG_BAYAR_MPS10JT" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="KURANG_BAYAR_MPS10JT"/>
+	</field>
+	<field name="FPR" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="FPR"/>
+	</field>
+	<field name="NS" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="NS"/>
+	</field>
+	<field name="RUMUS_MPS_20_PERSEN" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="RUMUS_MPS_20_PERSEN"/>
+	</field>
+	<field name="RUMUS_80_PERSEN" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="RUMUS_80_PERSEN"/>
+	</field>
+	<field name="COLUMN_63" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="KURANG_BAYAR"/>
+	</field>
+	<field name="BULAN_MUTASI" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="BULAN_MUTASI"/>
+	</field>
+	<field name="TAHUN_MUTASI" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="TAHUN_MUTASI"/>
+	</field>
+	<field name="TGL_MUTASI" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="TGL_MUTASI"/>
+	</field>
+	<field name="PERIODE_MUTASI" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="PERIODE_MUTASI"/>
+	</field>
+	<field name="RAPEL_BULAN" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="RAPEL_BULAN"/>
+	</field>
+	<field name="KETERANGAN" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="KETERANGAN"/>
+	</field>
+	<field name="RAPEL_MPS" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="RAPEL_MPS"/>
+	</field>
+	<field name="KONDISI_RAPEL" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="KONDISI_RAPEL"/>
+	</field>
+	<field name="RAPEL_MPYD" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="RAPEL_MPYD"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="158" splitType="Stretch">
+			<staticText>
+				<reportElement x="-1" y="37" width="540" height="40" uuid="0869455a-d9b9-4e81-a7db-c2c69f14dfa9"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Tahoma" size="12" isBold="true" isItalic="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[PERIHAL: PERHITUNGAN  MANFAAT PENSIUN PESERTA PENSIUN DIPERCEPAT
+(Dengan MPS 20%)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="-1" y="17" width="540" height="20" uuid="33204efd-2db8-4394-9b69-ba38621e1199"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Tahoma" size="12" isBold="true" isItalic="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[CATATAN]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="250" y="79" width="90" height="15" uuid="d3a62205-5674-4d6d-b8c6-3067df7af7ce"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NIP}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="20" y="79" width="218" height="15" uuid="d83eb28d-89d0-4a80-91b9-d37d90884f43"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<text><![CDATA[NIP]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="238" y="79" width="3" height="15" uuid="c0fd7241-06c3-4f15-80dc-b468d78d06f2"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="20" y="92" width="218" height="15" uuid="fe8e95aa-764d-42fd-a127-082da1a6ea18"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<text><![CDATA[Nama Peserta Manfaat Pensiun]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="238" y="92" width="3" height="15" uuid="75342e7f-fd50-45da-af5c-efdf2ddb1083"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="250" y="92" width="289" height="15" uuid="22e640fb-8bba-4984-a79a-70d282102a1a"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NAMA_PESERTA} == null ? "" : $F{NAMA_PESERTA}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="20" y="105" width="218" height="15" uuid="9e5fb375-2cde-481f-9cc3-0115394a4426"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<text><![CDATA[Nama Penerima Manfaat Pensiun]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="238" y="105" width="2" height="15" uuid="90bca82f-2eb0-4157-97ab-cdc8ea36b4ff"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="249" y="105" width="288" height="15" uuid="3fef19cc-5b3b-4a29-b5c4-80c0941b35c0"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NAMA_PENERIMA_MP} == null ? "" : $F{NAMA_PENERIMA_MP}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="79" width="20" height="15" uuid="11deb61d-525d-4d15-8d94-e44e658314ed"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<text><![CDATA[1.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="92" width="20" height="15" uuid="bb94d6d9-de2b-4802-883b-ab1e5f366b2d"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<text><![CDATA[2.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="238" y="117" width="3" height="15" uuid="93958afa-6049-4c4e-bac4-2edf0192096c"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="250" y="117" width="287" height="15" uuid="2c87dff6-cb39-4262-ac1a-e839b0716cc5"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{JENIS_MANFAAT_PENSIUN} == null ? "" : $F{JENIS_MANFAAT_PENSIUN}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="117" width="20" height="15" uuid="479a59dc-dc5d-486e-b35e-b8a9d5eeca73"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<text><![CDATA[3.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="20" y="117" width="218" height="15" uuid="b6617121-bea5-43d6-a23e-24f6f510367c"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<text><![CDATA[Jenis Manfaat Pensiun]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="130" width="20" height="15" uuid="eb53ae1c-4610-42eb-9d8f-01f073b2f041"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<text><![CDATA[4.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="20" y="130" width="218" height="15" uuid="e380a7b5-b04a-472e-afdc-8cfe28ee6edd"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<text><![CDATA[SusKel u/ Hak Atas MP]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="238" y="130" width="3" height="15" uuid="9fd6d4e6-ca53-4191-abdb-2694dc0c6c84"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="250" y="130" width="287" height="15" uuid="1f9ec8d7-bbce-465d-8d0b-5722771c6a44"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{SUSKEL} == null ? "" : $F{SUSKEL}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="143" width="20" height="15" uuid="36faf55c-1a37-47bf-9b14-41f921a77bdf"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<text><![CDATA[5.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="20" y="143" width="218" height="15" uuid="aa044870-bbc2-4027-a8cf-637c8ef898e2"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<text><![CDATA[Daftar Keluarga yang Terdaftar di Bank Indonesia]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="445" y="0" width="94" height="20" uuid="cc1ecebb-2d33-4c77-9a5e-43e0d0e73f26"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Tahoma" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[MERIT INCREASE]]></text>
+			</staticText>
+		</band>
+		<band height="34">
+			<subreport>
+				<reportElement x="20" y="3" width="530" height="30" uuid="95138295-bd0d-40c2-b4eb-ae6d4ef07454"/>
+				<subreportParameter name="nip">
+					<subreportParameterExpression><![CDATA[$P{nip}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{subReport}]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="506">
+			<staticText>
+				<reportElement x="0" y="0" width="20" height="15" uuid="dd5a51c6-06b2-4cc5-97ae-113bf8823fad"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<text><![CDATA[6.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="20" y="0" width="321" height="15" uuid="13f32d1c-57f7-4865-b852-2ec692b44b30"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<text><![CDATA[Data Pensiunan]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="20" y="15" width="20" height="15" uuid="94de512c-b337-4834-ae1d-eb965cf49da6"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<text><![CDATA[6.1]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="40" y="15" width="197" height="15" uuid="0d1747e6-b72e-48e1-9d39-bca17d3f277c"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<text><![CDATA[Tanggal Lahir]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="248" y="15" width="3" height="15" uuid="f15d7ce3-8a69-4256-9302-0b4172d298b9"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="260" y="15" width="280" height="15" uuid="4286a62c-7b7a-4986-8991-f495e9da0b73"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{TGL_LAHIR_PESERTA} == null ? "" : $F{TGL_LAHIR_PESERTA}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="260" y="30" width="280" height="15" uuid="8018aa2b-b721-4883-816d-ec74ff00f849"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{TGL_MULAI_BEKERJA} == null ? "" : $F{TGL_MULAI_BEKERJA}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="20" y="30" width="20" height="15" uuid="5286c8ca-2c75-4cc8-9367-5fe1741d27b3"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<text><![CDATA[6.2]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="40" y="30" width="197" height="15" uuid="e4072846-7fa4-43ab-a018-d78c85b2d07a"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<text><![CDATA[Tanggal Mulai Bekerja]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="248" y="30" width="3" height="15" uuid="67784cee-d644-40dc-8be1-b5b680e2ad1d"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="40" y="45" width="197" height="15" uuid="f7bddbb0-f039-4325-b25d-daa73a487999"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<text><![CDATA[Tanggal Peserta]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="248" y="45" width="3" height="15" uuid="553e9e39-39e2-4073-ab72-a55d0656b26d"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="260" y="45" width="280" height="15" uuid="ed7d964e-0023-42ba-b5c5-89af5d7dae9a"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{TGL_PESERTA} == null ? "" : $F{TGL_PESERTA}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="20" y="45" width="20" height="15" uuid="dff87048-b198-4295-9f93-de7f53012b9c"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<text><![CDATA[6.3]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="248" y="60" width="3" height="15" uuid="ff86e796-fa31-40c8-98ce-6dce4bf2608c"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="260" y="60" width="200" height="15" uuid="36e0becc-ff08-47bb-bed8-d513c84b4809"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NO_SK_BI} == null ? "" : $F{NO_SK_BI}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="20" y="60" width="20" height="15" uuid="1c1264f2-5f50-437b-aea6-e81c0124da0d"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<text><![CDATA[6.4]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="40" y="60" width="197" height="15" uuid="12194ab5-47ab-4961-903a-9c81cb8dcfeb"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<text><![CDATA[No. SK Pemberhentian dari Bank Indonesia]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="260" y="75" width="200" height="15" uuid="8a7b58d4-bc59-4aae-b786-5b60938ce3fd"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NO_SP_BI} == null ? "" : $F{NO_SP_BI}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="40" y="75" width="197" height="15" uuid="313379d0-99df-49ee-b2c5-0f197a90c123"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<text><![CDATA[No. Surat Pengantar "Data & Informasi"]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="248" y="75" width="3" height="15" uuid="cbc60fa7-c722-4771-a1c8-56d539e2049b"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="20" y="75" width="20" height="15" uuid="f4c2c119-7db2-4dc0-b13c-6350740b7414"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<text><![CDATA[6.5]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="20" y="90" width="20" height="15" uuid="a61d6979-269c-43de-8fe0-2a864aee13c9"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<text><![CDATA[6.6]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="40" y="90" width="197" height="15" uuid="e8cae3e5-f695-407c-8af5-6d37d13858eb"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<text><![CDATA[Tanggal Pemberhentian]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="248" y="90" width="3" height="15" uuid="7c9f206b-f60b-4a49-a7e5-cd04e429d297"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="260" y="90" width="280" height="15" uuid="b46f67a7-2c52-4da3-a4d4-c3d40d3b0c2c"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{TGL_HENTI_KERJA_PESERTA} == null ? "" : $F{TGL_HENTI_KERJA_PESERTA}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="20" y="106" width="20" height="15" uuid="52375622-b9a3-40aa-8f50-72c62c7a5426"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<text><![CDATA[6.7]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="40" y="106" width="197" height="15" uuid="ab576a2f-dd2c-435a-b951-2f88c5849ae9"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<text><![CDATA[Tanggal MP mulai dibayar]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="248" y="106" width="3" height="15" uuid="64396872-2d0a-469f-bb2b-827fa0d5cae4"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="260" y="106" width="280" height="15" uuid="009effa6-219d-4b12-b5f4-262a906990b8"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{TGL_AWAL_BAYAR}== null ? "" : $F{TGL_AWAL_BAYAR}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="20" y="121" width="20" height="15" uuid="af862b4c-15cb-4b0b-ba44-e0396aaa83cc"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<text><![CDATA[6.8]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="40" y="121" width="197" height="15" uuid="c68a60e2-f7ed-4215-8bb9-68beb6e9ae11"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<text><![CDATA[Gaji Pokok terakhir]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="248" y="121" width="3" height="15" uuid="3df9913f-1ef9-4c4e-89db-55e5ac780812"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="260" y="122" width="280" height="15" uuid="62b4b33e-e564-4f2f-ba6d-29132a0d40ca"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Rp. "+$F{PHDP_BARU}.trim()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="20" y="136" width="20" height="15" uuid="a1992e7b-c269-4db3-870f-95fc2b7d88b8"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<text><![CDATA[6.9]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="40" y="136" width="197" height="15" uuid="bb035121-cec8-464b-84a9-506efca3ed5c"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<text><![CDATA[PhDP Baru]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="248" y="136" width="3" height="15" uuid="74775bac-faab-42dd-8056-c6400f969e32"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="260" y="137" width="119" height="15" uuid="a93ce5f5-17bb-457b-82c3-b3892841bec4"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Rp. "+$F{PHDP_BARU}.trim()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="18" y="151" width="22" height="15" uuid="a0e49249-e046-4e5e-b418-f9869ee527de"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<text><![CDATA[6.10]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="40" y="151" width="197" height="15" uuid="aaabb87d-ea76-422f-ad36-d86746169d28"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<text><![CDATA[Gol/Jabatan/Satuan Kerja]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="248" y="151" width="3" height="15" uuid="64d6013f-e8ba-4e8e-90ed-861f41dfe074"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="260" y="151" width="280" height="15" uuid="de8d8061-f1bb-4bca-9040-d72944ee6289"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{GOLONGAN_PANGKAT}.concat("/").concat($F{JABATAN}).concat("/").concat($F{SATUAN_KERJA})]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="18" y="166" width="22" height="15" uuid="5fad0ba1-bc55-44ce-b67a-9d7e45c3e105"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<text><![CDATA[6.11]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="40" y="166" width="197" height="15" uuid="05ef21ea-1a3a-4c1b-925b-cdd653ceb118"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<text><![CDATA[Usia pada saat berhenti bekerja]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="248" y="166" width="3" height="15" uuid="6bfef708-f554-4d5d-9ea5-7c40f0bb2379"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="260" y="166" width="280" height="15" uuid="1450688a-5523-4425-9340-fc4c5ac4debd"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{USIA_SAAT_HENTI} == null ? "" : $F{USIA_SAAT_HENTI}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="18" y="181" width="22" height="15" uuid="4ddfd3f0-f458-427d-a46d-d0dc2e4ad77b"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<text><![CDATA[6.12]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="260" y="181" width="280" height="15" uuid="5c8af457-e1fd-49fb-9a46-c57fb2cf9c32"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{MASA_KERJA_HENTI} == null ? "" : $F{MASA_KERJA_HENTI}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="248" y="181" width="3" height="15" uuid="4885ac8b-1d3c-4eae-81fc-2729378c2187"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="40" y="181" width="197" height="15" uuid="3dc461c7-f2f9-4e43-90c7-601d5ec7de88"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<text><![CDATA[Masa Kerja dihitung s/d tgl. berhenti]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="18" y="196" width="22" height="15" uuid="f340ddc8-2ac6-4c99-b2d8-f35be83faaa9"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<text><![CDATA[6.13]]></text>
+			</staticText>
+			<textField>
+				<reportElement stretchType="RelativeToTallestObject" x="260" y="196" width="280" height="15" uuid="d8167621-e3c7-4fd9-98e8-9e6b95c2d987"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PENGHASILAN_PENSIUN_RUMUS}.concat($F{MASA_KERJA_MP}).concat(" x ").concat("Rp. "+$F{PHDP_BARU}.trim()).concat(" = ").concat("Rp. "+$F{MP_PERBULAN_RUMUS_BARU}.trim())]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="248" y="196" width="3" height="15" uuid="1615d8b0-af54-47fc-968e-e6764fe663a6"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="40" y="196" width="207" height="15" uuid="e90546c3-bb7e-4060-9ab8-2f1d797611e8"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<text><![CDATA[Manfaat Pensiun Normal (FPr x MK x PhDP)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="18" y="211" width="22" height="15" uuid="b7b62d8c-98ec-46b5-880f-4cfd73c30ed7"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<text><![CDATA[6.14]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="260" y="211" width="280" height="15" uuid="96d16b74-cdd0-4933-8b9a-25041782fc13"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{IK_BERLAKU_SAAT_TGL_BAYAR} == null ? "" : $F{IK_BERLAKU_SAAT_TGL_BAYAR}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="248" y="211" width="3" height="15" uuid="67d1db97-0352-4a4a-974b-d530ad648f07"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="40" y="211" width="197" height="15" uuid="f828104e-1e3d-4b32-bdc9-8e71a242ff37"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<text><![CDATA[IK pada saat tanggal bayar]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="18" y="226" width="22" height="15" uuid="1c998cd8-0ef6-43c1-98d9-d6755527cb70"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<text><![CDATA[6.15]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="259" y="226" width="280" height="15" uuid="420a28d9-0e30-45c0-a30f-a84b61bc26f6"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{MP_PERBULAN_RUMUS_BARU} == null ? "" : "Rp. "+$F{MP_PERBULAN_RUMUS_BARU}.trim().concat(" x ").concat($F{IK_BERLAKU_SAAT_TGL_BAYAR}).concat(" = ").concat("Rp. "+$F{MP_PERBULAN_RUMUS_BARU}.trim())]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="248" y="226" width="3" height="15" uuid="e6c7f942-5233-4a53-af65-c6d48156a40d"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="40" y="226" width="197" height="15" uuid="24f2401a-dbd5-4882-8da8-3b4bbe47eb11"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<text><![CDATA[Penghasilan Pensiun (MPN x IK)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="285" width="20" height="15" uuid="98dcb4cd-8ac6-4e57-83a9-c9b7fe3fa466"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<text><![CDATA[7.]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="257" y="285" width="288" height="15" uuid="3f2d994b-65df-4689-a8cc-90380707ab52"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{KANTOR_BAYAR} == null ? "" :$F{KANTOR_BAYAR}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="249" y="284" width="12" height="15" uuid="044ec6c3-8e7c-4279-9daf-feb3f61cd695"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="20" y="285" width="217" height="15" uuid="cf3ce516-f0ee-4ff4-be57-abf40886da74"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<text><![CDATA[Kantor Bayar]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="298" width="20" height="15" uuid="63b31359-d464-4d8a-82e8-11ce641026cf"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<text><![CDATA[8.]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="21" y="298" width="485" height="15" uuid="b77bb785-de28-4d72-9749-5a27c7378b65"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Hak atas Manfaat Pensiun Dipercepat tersebut telah dimutasikan untuk bulan "+$F{PERIODE_MUTASI}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="5" y="392" width="131" height="21" uuid="52d029d4-bb17-4577-8975-b6eefff0d6f4"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Persetujuan Penerbitan SK MP"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="76" y="414" width="60" height="29" uuid="fcfb2fc4-bc44-4a0b-aaf7-233b7f505434"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="5" y="414" width="71" height="29" uuid="bf5c2f4c-98d7-4633-afd0-a47138a209fb"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Kepala Divisi"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="5" y="444" width="71" height="27" uuid="e7afbabd-9306-4fdc-9d60-90abb93a860a"/>
+				<box>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Direktur Bidang"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="76" y="444" width="60" height="27" uuid="41712930-1f4e-4632-ac7e-150d5be27591"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="339" y="437" width="101" height="69" uuid="41e6148d-7c5c-4279-bd3d-7f9807d9b3a7"/>
+				<box>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA[""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="339" y="418" width="100" height="19" uuid="a8b36f46-7bec-48c6-893a-b158327a9892"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Validasi"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="339" y="396" width="200" height="21" uuid="1a73893a-9587-4b19-a819-99ad5d987226"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Seksi Kepesertaan & Pelayanan Pensiun"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="339" y="372" width="200" height="21" uuid="0142219d-6b00-4de2-9cef-1be08a87272f"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Jakarta, "+$F{SIGN_DATE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="439" y="437" width="100" height="69" uuid="a8bb5840-8f8f-4a3f-a466-a43a39438f2d"/>
+				<box>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textFieldExpression><![CDATA[""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="439" y="418" width="100" height="19" uuid="03bb1559-804b-4546-bd2e-e14bff6aa4d9"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Petugas"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="344" y="471" width="90" height="14" uuid="3fc96c2b-def0-4b2d-ba3b-667f9f602416"/>
+				<textElement textAlignment="Center">
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<text><![CDATA[Rosalind Permatasari]]></text>
+			</staticText>
+			<line>
+				<reportElement x="344" y="485" width="90" height="1" uuid="c532f696-43ad-4705-a955-5eb988b583a8"/>
+			</line>
+			<staticText>
+				<reportElement x="344" y="486" width="90" height="14" uuid="f9640ba4-69df-48f8-bac1-4827a6954f85"/>
+				<textElement textAlignment="Center">
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<text><![CDATA[Kepala Seksi]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="443" y="471" width="90" height="14" uuid="65a4fd7f-6405-472c-8e33-4188828c7190"/>
+				<textElement textAlignment="Center">
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<text><![CDATA[Idris Sakti Daulay]]></text>
+			</staticText>
+			<line>
+				<reportElement x="443" y="485" width="90" height="1" uuid="ff28d241-d46b-41c9-9163-865ad6493b68"/>
+			</line>
+			<staticText>
+				<reportElement x="443" y="486" width="90" height="14" uuid="3d7bdfc3-59d3-488e-a1c8-a22c32a91084"/>
+				<textElement textAlignment="Center">
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<text><![CDATA[Staf]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="17" y="241" width="24" height="15" uuid="5de540f5-c764-4716-a1f9-b1993f3bbbad"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<text><![CDATA[6.16]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="258" y="241" width="280" height="15" uuid="95c57d1c-ad31-40bc-9ce9-9fd2de26fb13"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{RUMUS_MPS_20_PERSEN}+" ( "+$F{NS}+" x "+$F{JUMLAH_BULAN}+" x "+"Rp. "+$F{MP_PERBULAN_RUMUS_BARU}.trim()+" )"+" = "+"Rp. "+$F{MPS_20_BARU}.trim()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="249" y="241" width="3" height="15" uuid="35e61976-455d-4581-a827-5cb493532124"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="41" y="241" width="197" height="15" uuid="3f8303c5-ceb6-46c9-a931-7c4772b0cc87"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<text><![CDATA[MPS 20% (20% x NS x 12 x PHDP)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="17" y="256" width="24" height="15" uuid="9deb464a-069f-47e4-b8e6-626514b6f453"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<text><![CDATA[6.17]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="259" y="256" width="280" height="15" uuid="4599dabb-0bd4-44f4-ac35-37be1613d1b0"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{MP_PERBULAN_RUMUS_BARU} == null ? "" : "Rp. "+$F{MP_PERBULAN_RUMUS_BARU}.trim().concat(" x ")+$F{RUMUS_80_PERSEN}+" = "+"Rp. "+$F{MP_PERBULAN20_BARU}.trim()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="249" y="256" width="3" height="15" uuid="43d73922-96e3-4117-bdc5-94003b8fba81"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="41" y="256" width="197" height="15" uuid="f5b8d99c-5a97-40de-90d9-c9230a4e97ef"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<text><![CDATA[Penghasilan Pensiun setelah MpS 20%]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="17" y="270" width="24" height="15" uuid="aaa88f75-ff74-4a43-934f-0ec2beb86e26"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<text><![CDATA[6.19]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="249" y="253" width="3" height="15" uuid="b7f41cae-8bae-4d44-becb-a92f3d7da326"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="257" y="270" width="280" height="15" uuid="5673d24e-5e00-4386-8f25-40ad324a29ff"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Rp. "+$F{MP_PERBULAN20_BARU}.trim()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="248" y="272" width="3" height="15" uuid="5979898a-5419-4aa2-8d5d-2b884f934901"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="40" y="270" width="197" height="15" uuid="721b9dec-5f6d-41e0-9007-28df02bea796"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<text><![CDATA[Penghasilan pensiun dibayarkan perbulan]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="374" y="138" width="105" height="15" uuid="c5197608-939c-44eb-942a-fad89851cf5d"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<text><![CDATA[PhDP Lama :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="444" y="138" width="125" height="15" uuid="6032de76-7d21-4c6e-b8ee-b4393a7253cd"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Rp. "+$F{PHDP_LAMA}.trim()]]></textFieldExpression>
+			</textField>
+			<textField pattern="&apos;Rp. &apos;#,000.00#;(#,000.00#-)">
+				<reportElement x="258" y="312" width="275" height="15" uuid="ddbfb352-adb4-4886-9c0a-bffe13047189"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{RAPEL_MPYD} == null ? "-" : $F{RAPEL_MPYD}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="452" y="60" width="51" height="15" uuid="e1bd3743-c2cc-417d-9a40-83d581642383"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<text><![CDATA[Tanggal :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="452" y="75" width="51" height="15" uuid="3e22ad89-c9f3-4962-b2a2-dba0725c686d"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<text><![CDATA[Tanggal :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="500" y="60" width="75" height="15" uuid="6796f0b5-b5ff-4dbf-be03-e9f1e2eea0f6"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{TGL_SK_BI} == null ? "-" : $F{TGL_SK_BI}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="500" y="75" width="75" height="15" uuid="0668f0f1-5335-447a-8b19-3cb72c1c501d"/>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{TGL_SP_BI} == null ? "-" :$F{TGL_SP_BI}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="312" width="20" height="15" uuid="f0d7abff-5538-4348-990a-cee740416680">
+					<printWhenExpression><![CDATA[new Boolean($F{KURANG_BAYAR_MPS20P}.intValue()>0)]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<text><![CDATA[9.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="249" y="312" width="3" height="15" uuid="4ff248c7-030e-48d3-bb14-7826f8ef3e18">
+					<printWhenExpression><![CDATA[new Boolean($F{KURANG_BAYAR_MPS20P}.intValue()>0)]]></printWhenExpression>
+				</reportElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="21" y="312" width="217" height="15" uuid="62f2a7a0-15f1-4689-aa48-abd9f3838853">
+					<printWhenExpression><![CDATA[new Boolean($F{KURANG_BAYAR_MPS20P}.intValue()>0)]]></printWhenExpression>
+				</reportElement>
+				<textElement markup="html">
+					<font fontName="Tahoma" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Rapel MP Bulan "+$F{RAPEL_BULAN}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="249" y="325" width="4" height="15" isRemoveLineWhenBlank="true" uuid="41c55f28-3deb-4da3-bdee-36181e0f3f3b">
+					<printWhenExpression><![CDATA[new Boolean ($P{id_jenis_mps}.equals("1") || $P{id_jenis_mps}.equals("2") || $P{id_jenis_mps}.equals("4"))]]></printWhenExpression>
+				</reportElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="19" y="325" width="211" height="15" isRemoveLineWhenBlank="true" uuid="3c40eb09-04f1-45c0-8b93-68a4b8db805f">
+					<printWhenExpression><![CDATA[new Boolean ($P{id_jenis_mps}.equals("1") || $P{id_jenis_mps}.equals("2") || $P{id_jenis_mps}.equals("4"))]]></printWhenExpression>
+				</reportElement>
+				<textElement markup="html"/>
+				<textFieldExpression><![CDATA[($F{KONDISI_RAPEL} == null ? "" : $F{KONDISI_RAPEL})]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="-1" y="325" width="20" height="15" isRemoveLineWhenBlank="true" uuid="39bcff2a-2585-4105-bcf4-a472926525e9">
+					<printWhenExpression><![CDATA[new Boolean ($P{id_jenis_mps}.equals("1") || $P{id_jenis_mps}.equals("2") || $P{id_jenis_mps}.equals("4"))]]></printWhenExpression>
+				</reportElement>
+				<text><![CDATA[10.]]></text>
+			</staticText>
+			<textField pattern="&apos;Rp. &apos;#,000.00#;(#,000.00#-)">
+				<reportElement x="261" y="325" width="275" height="15" isRemoveLineWhenBlank="true" uuid="dbae426b-df7c-46dd-a91c-9f1ca6c7b210">
+					<printWhenExpression><![CDATA[new Boolean ($P{id_jenis_mps}.equals("1") || $P{id_jenis_mps}.equals("2") || $P{id_jenis_mps}.equals("4"))]]></printWhenExpression>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{RAPEL_MPS} == null ? "0.00" : $F{RAPEL_MPS}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="19" y="339" width="539" height="33" isRemoveLineWhenBlank="true" uuid="6b89a310-063c-4286-8561-fbdbf6679c91"/>
+				<textFieldExpression><![CDATA[$F{KETERANGAN} == null ? " " : $F{KETERANGAN}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

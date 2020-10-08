@@ -1,0 +1,12 @@
+create or replace view VW_PENSBARU_PELEPASAN as
+  SELECT  p.*
+  FROM STG_TBL_M_PESERTA p
+  WHERE not exists (select 'x' from TBL_T_MUTASI_PENSIUN mp where mp.nip = p.nip and mp.ID_VALIDASI not in (4, 7) and mp.ID_KATEGORI_MUTASI = '01')
+  and p.IS_ACTIVE = 1
+/
+
+create or replace view VW_MUTASI_PENSIUN_BARU as
+  SELECT  mp.*
+  FROM TBL_T_MUTASI_PENSIUN mp where mp.ID_KATEGORI_MUTASI = '01'
+  and EXISTS (SELECT 'x' FROM TBL_T_SETUP_PARAMETER where mp.PERIODE_MUTASI = TBL_T_SETUP_PARAMETER.PERIODE AND TBL_T_SETUP_PARAMETER.IS_BUKA_PERIODE = 1)
+/

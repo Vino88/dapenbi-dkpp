@@ -1,0 +1,406 @@
+{{#layout}}
+
+{{#styles}}
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/datatables/media/css/dataTables.bootstrap4.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/googleapis/css/component.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/googleapis/css/googleapis.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/select2/css/select2.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css">
+<style>
+    #penerima_table {
+        min-width: 2550px;
+    }
+</style>
+{{/styles}}
+
+{{#title}}
+Master Penerima MP - DKPP
+{{/title}}
+
+
+<div class="card">
+    <div class="card-header">
+        <div class="col-md-12">
+            <div class="row pull-right">
+                <a class="btn btn-primary btn-icon btn-sm" id="btn-add"><i class="material-icons">add</i> Add</a>
+            </div>
+        </div>
+    </div>
+    <div class="card-block">
+        <table class="table table-bordered table-striped m-b-0 dataTable no-footer display" id="penerima_table"
+               role="grid">
+            <thead>
+            <tr role="row">
+                <th>
+                    NIP
+                </th>
+                <th>
+                    Nama Penerima
+                </th>
+                <th>
+                    Jenis Kelamin
+                </th>
+                <th>
+                    Hak MP
+                </th>
+                <th>
+                    No.Mutasi
+                </th>
+                <th>
+                    Tanggung
+                </th>
+                <th>
+                    Tanggal Lahir
+                </th>
+                <th>
+                    Tanggal Awal Bayar
+                </th>
+                <th>
+                    Tanggal Menikah
+                </th>
+                <th>
+                    Tempat Menikah
+                </th>
+                <th>
+                    Tanggal Cerai
+                </th>
+                <th>
+                    Tanggal Nikah Lagi
+                </th>
+                <th>
+                    Tanggal Usia 25
+                </th>
+                <th>
+                    Tanggal Wafat
+                </th>
+                <th>
+                    Status
+                </th>
+                <th>
+                    Actions
+                </th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+
+{{#modal}}
+<div class="modal fade penerima-modal" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title small bold" id="myModalLabel">Form Master Penerima MP</h4>
+            </div>
+            <div class="modal-body">
+                <form id="penerimaForm">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group row">
+                                <label for="nip" class="col-sm-3 bold">NIP</label>
+                                <div class="col-xs-9">
+                                    <input type="hidden" name="id" id="id">
+                                    <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
+                                    <input class="form-control form-control-sm" type="text" name="nip" id="nip">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="namaPenerima" class="col-sm-3 bold">Nama Penerima</label>
+                                <div class="col-xs-9">
+                                    <input class="form-control form-control-sm" type="text" name="namaPenerima" id="namaPenerima">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="jenisKelamin" class="col-sm-3 bold">Jenis Kelamin</label>
+                                <div class="col-xs-9">
+                                    <select class="form-control form-control-sm" name="jenisKelamin" id="jenisKelamin"></select>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="tglLahir" class="col-sm-3 bold">Tanggal Lahir</label>
+                                <div class="col-xs-9">
+                                    <input placeholder="dd/mm/yyyy" class="form-control form-control-sm text-sm" type="text" name="tglLahir" id="tglLahir" data-provide="datepicker" data-date-format="dd/mm/yyyy">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="tglMenikah" class="col-sm-3 bold">Tanggal Menikah</label>
+                                <div class="col-xs-9">
+                                    <input placeholder="dd/mm/yyyy" class="form-control form-control-sm text-sm" type="text" name="tglMenikah" id="tglMenikah" data-provide="datepicker" data-date-format="dd/mm/yyyy">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="tglCerai" class="col-sm-3 bold">Tanggal Cerai</label>
+                                <div class="col-xs-9">
+                                    <input placeholder="dd/mm/yyyy" class="form-control form-control-sm text-sm" type="text" name="tglCerai" id="tglCerai" data-provide="datepicker" data-date-format="dd/mm/yyyy">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="tglAwal" class="col-sm-3 bold">Tanggal Awal Bayar</label>
+                                <div class="col-xs-9">
+                                    <input placeholder="dd/mm/yyyy" class="form-control form-control-sm text-sm" type="text" name="tglAwal" id="tglAwal" data-provide="datepicker" data-date-format="dd/mm/yyyy">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="checkbox-active" class="col-sm-3 bold">Active</label>
+                                <div class="col-xs-9">
+                                    <label class="custom-control custom-checkbox m-b-1">
+                                        <input type="checkbox" class="custom-control-input" name="active" id="checkbox-active">
+                                        <span class="custom-control-indicator"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <div class="form-group row">
+                                <label for="noMutasi" class="col-sm-3 bold">No. Mutasi</label>
+                                <div class="col-xs-9">
+                                    <input class="form-control form-control-sm" type="text" name="noMutasi" id="noMutasi">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="hakMP" class="col-sm-3 bold">Hak MP</label>
+                                <div class="col-xs-9">
+                                    <input class="form-control form-control-sm" type="text" name="hakMP" id="hakMP">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="tanggung" class="col-sm-3 bold">Tanggung</label>
+                                <div class="col-xs-9">
+                                    <input class="form-control form-control-sm" type="text" name="tanggung" id="tanggung">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="tempatMenikah" class="col-sm-3 bold">Tempat Menikah</label>
+                                <div class="col-xs-9">
+                                    <input class="form-control form-control-sm" type="text" name="tempatMenikah" id="tempatMenikah">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="tglMenikahLagi" class="col-sm-3 bold">Tanggal Menikah Lagi</label>
+                                <div class="col-xs-9">
+                                    <input placeholder="dd/mm/yyyy" class="form-control form-control-sm text-sm" type="text" name="tglMenikahLagi" id="tglMenikahLagi" data-provide="datepicker" data-date-format="dd/mm/yyyy">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="tglUsia25" class="col-sm-3 bold">Tanggal Usia 25</label>
+                                <div class="col-xs-9">
+                                    <input placeholder="dd/mm/yyyy" class="form-control form-control-sm text-sm" type="text" name="tglUsia25" id="tglUsia25" data-provide="datepicker" data-date-format="dd/mm/yyyy">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="tglWafat" class="col-sm-3 bold">Tanggal Wafat</label>
+                                <div class="col-xs-9">
+                                    <input placeholder="dd/mm/yyyy" class="form-control form-control-sm text-sm" type="text" name="tglWafat" id="tglWafat" data-provide="datepicker" data-date-format="dd/mm/yyyy">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="saveForm()">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+{{/modal}}
+
+{{#scripts}}
+<script src="{{contextPath}}/assets/vendor/datatables/media/js/jquery.dataTables.js"></script>
+<script src="{{contextPath}}/assets/vendor/datatables/media/js/dataTables.bootstrap4.js"></script>
+<script src="{{contextPath}}/assets/vendor/select2/js/select2.js"></script>
+<script src="{{contextPath}}/assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+<script src="{{contextPath}}/assets/vendor/sweetalert/sweetalert.min.js"></script>
+
+<script type="text/javascript">
+    let RESTFulMode = "";
+
+    var penerimaTable = dkppDataTable($('.dataTable'),
+        '{{contextPath}}/api/penerima-mp', {
+            'columns': [
+                {
+                    "data": "nip",
+                    "width": "50px"
+                },
+                {
+                    "data": "namaPenerima",
+                    "width": "350px"
+                },
+
+                {
+                    "data": "jenisKelamin",
+                    "width": "70px"
+                },
+                {
+                    "data": "hakMP",
+                    "width": "100px"
+                },
+                {
+                    "data": "noMutasi",
+                    "width": "100px"
+                },
+                {
+                    "data": "tanggung",
+                    "width": "70px"
+                },
+                {
+                    "data": "tglLahir",
+                    "width": "100px"
+                },
+                {
+                    "data": "tglAwal",
+                    "width": "100px"
+                },
+                {
+                    "data": "tglMenikah",
+                    "width": "100px"
+                },
+                {
+                    "data": "tempatMenikah",
+                    "width": "100px"
+                },
+                {
+                    "data": "tglCerai",
+                    "width": "150px"
+                },
+                {
+                    "data": "tglMenikahLagi",
+                    "width": "100px"
+                },
+                {
+                    "data": "tglUsia25",
+                    "width": "100px"
+                },
+                {
+                    "data": "tglWafat",
+                    "width": "100px"
+                },
+                {
+                    "data": "id",
+                }
+            ],
+            'columnDefs': [
+                {
+                    "targets": 2,
+                    "render": function(data, type, row, meta) {
+                        return data && genderText(data);
+                    }
+                },
+                {
+                    "targets": [6, 7, 8, 10, 11, 12, 13],
+                    "render": function(data, type, row, meta) {
+                        return data && moment(data).format("DD/MM/YYYY");
+                    }
+                },
+                {
+                    "targets": 14,
+                    "data": "active",
+                    "render": function(data, type, row, meta) {
+                        const text = (data ? '' : 'Non ') + 'Active';
+                        const tag = data ? 'success' : 'danger';
+
+                        return `<span class="tag tag-pill tag-${tag}">${text}</span>`;
+                    }
+                },
+                {
+                    "targets": 15,
+                    "data": "id",
+                    "render": function(data, type, row, meta){
+                        return "<a class='btn btn-info btn-sm btn-icon btn-edit' onclick='displayEditModal(" + row.id + ")'><i class='material-icons'>edit</i> Edit</a>";
+                    }
+                }
+            ]
+        });
+
+    function displayEditModal(id) {
+        const penerima = penerimaTable.rows().data().filter((data) => {return data.id === id})[0];
+        const penerimaForm = $("form#penerimaForm");
+
+        $("#id").val(penerima.id);
+        $("#nip").val(penerima.nip);
+        $("#namaPenerima").val(penerima.namaPenerima);
+        $("#jenisKelamin").select2('val', penerima.jenisKelamin);
+        $("#hakMP").val(penerima.hakMP);
+        $("#noMutasi").val(penerima.noMutasi);
+        $("#tanggung").val(penerima.tanggung);
+        $("#tglLahir").val(penerima.tglLahir ? moment(penerima.tglLahir).format('DD/MM/YYYY') : '');
+        $("#tglAwal").val(penerima.tglAwal ? moment(penerima.tglAwal).format('DD/MM/YYYY') : '');
+        $("#tglMenikah").val(penerima.tglMenikah ? moment(penerima.tglMenikah).format('DD/MM/YYYY') : '');
+        $("#tglCerai").val(penerima.tglCerai ? moment(penerima.tglCerai).format('DD/MM/YYYY') : '');
+        $("#tglMenikahLagi").val(penerima.tglMenikahLagi ? moment(penerima.tglMenikahLagi).format('DD/MM/YYYY') : '');
+        $("#tglUsia25").val(penerima.tglUsia25 ? moment(penerima.tglUsia25).format('DD/MM/YYYY') : '');
+        $("#tglWafat").val(penerima.tglWafat ? moment(penerima.tglWafat).format('DD/MM/YYYY') : '');
+        $("#checkbox-active").prop("checked", penerima.active);
+        $('.penerima-modal').modal('show');
+        RESTFulMode = "PUT";
+    }
+
+    function saveForm() {
+        $.ajax({
+            url: "{{contextPath}}/api/penerima-mp",
+            method: RESTFulMode,
+            data: formToJSON($("form#penerimaForm")[0].elements)
+        }).success(function(data) {
+            $('.penerima-modal').modal('hide');
+            if (data.status == "success") {
+                swal({title: "Berhasil", text: data.message, icon: "success", button: "OK"});
+            }
+            penerimaTable.ajax.reload();
+        }).error(function(data){
+            if(data.message != undefined )
+                swal({title: "Gagal", text: data.message, icon: "error", button: "OK"});
+            else
+                swal({title: "Gagal", text: "Terjadi Kesalahan.", icon: "error", button: "OK"});
+        });
+    }
+
+    $(document).ready(function(){
+        $('#btn-add').unbind().on('click', function(){
+            var modal = $('.penerima-modal');
+            modal.modal('show');
+            RESTFulMode = 'POST';
+
+            $("#nip").val("");
+            $("#namaPenerima").val("");
+            $("#jenisKelamin").select2('val', "");
+            $("#hakMP").val("");
+            $("#noMutasi").val("");
+            $("#tanggung").val("");
+            $("#tglLahir").val("");
+            $("#tglAwal").val("");
+            $("#tglMenikah").val("");
+            $("#tempatMenikah").val("");
+            $("#tglCerai").val("");
+            $("#tglMenikahLagi").val("");
+            $("#tglUsia25").val("");
+            $("#tglWafat").val("");
+            $("#checkbox-active").prop("checked", false);
+        });
+
+        //select2 init
+
+        let gender = [];
+        {{#gender}}
+        gender.push({
+            id: "{{id}}",
+            text: "{{text}}"
+        });
+        {{/gender}}
+            $('#jenisKelamin').select2({placeholder: "Pilih Jenis Kelamin", data: gender, width: "70%"});
+            $('#jenisKelamin').select2('val', '');
+        });
+</script>
+{{/scripts}}
+
+{{/layout}}

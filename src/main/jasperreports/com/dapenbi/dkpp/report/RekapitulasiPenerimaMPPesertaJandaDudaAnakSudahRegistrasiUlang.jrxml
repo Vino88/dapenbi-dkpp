@@ -1,0 +1,460 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RekapitulasiPenerimaMPPesertaJandaDudaAnakSudahRegistrasiUlang" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4381dd4a-a2ea-49bb-a99f-d2fc19ebf93f">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="dbserver"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="0"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="1000"/>
+	<parameter name="tanggal_her" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[with cte as(
+SELECT a.tahun_her 
+	, a.tgl_her
+    ,b.nama_kantor_bayar
+    ,a.status_her_desc
+    ,a.id_kategori_penerima_mp as id_kategori_penerima_mp_her
+    ,b.id_kategori_penerima_mp as id_kategori_penerima_mp
+    , count(a.id_kategori_penerima_mp) as jumlah_penerima_her
+    , count(b.id_kategori_penerima_mp) as jumlah_penerima
+from tbl_t_her_registrasi_detail a inner join tbl_m_pensiun b on a.nip=b.nip
+where to_char(a.tgl_her,'dd-mm-yyyy') = $P{tanggal_her}
+group by a.tahun_her,b.nama_kantor_bayar,a.id_kategori_penerima_mp,a.status_her_desc,b.id_kategori_penerima_mp,a.tgl_her
+)
+select nama_kantor_bayar
+	,status_her_desc
+	,to_char(tgl_her, 'dd Month yyyy','nls_date_language = INDONESIAN') as tgl_her_desc
+    ,(select jumlah_penerima from cte where id_kategori_penerima_mp=1) as peserta
+    ,(select sum(jumlah_penerima) from cte where id_kategori_penerima_mp in (2,20) ) as janda_duda
+    ,(select sum(jumlah_penerima) from cte where id_kategori_penerima_mp not in (2,20,1,11) )as anak
+    ,(select sum(jumlah_penerima) from cte )as jumlah
+    ,(select jumlah_penerima_her from cte where id_kategori_penerima_mp_her=1 and UPPER(status_her_desc)='SUDAH HEREGISTRASI') as peserta_her
+    ,(select sum(jumlah_penerima_her) from cte where id_kategori_penerima_mp_her in (2,20) and UPPER(status_her_desc)='SUDAH HEREGISTRASI') as janda_duda_her
+    ,(select sum(jumlah_penerima_her) from cte where id_kategori_penerima_mp_her not in (2,20,1,11) and UPPER(status_her_desc)='SUDAH HEREGISTRASI')as anak_her
+    ,(select sum(jumlah_penerima_her) from cte where UPPER(status_her_desc)='Sudah Her Registrasi')as jumlah_her
+    ,tahun_her
+    ,to_char(SYSDATE,'dd Month yyyy') as sign_date
+from cte
+where to_char(tgl_her,'dd-mm-yyyy') = $P{tanggal_her}  and UPPER(status_her_desc) = 'SUDAH HEREGISTRASI'
+group by nama_kantor_bayar,tahun_her,status_her_desc,tgl_her]]>
+	</queryString>
+	<field name="NAMA_KANTOR_BAYAR" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NAMA_KANTOR_BAYAR"/>
+	</field>
+	<field name="STATUS_HER_DESC" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="STATUS_HER_DESC"/>
+	</field>
+	<field name="TGL_HER_DESC" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="TGL_HER_DESC"/>
+	</field>
+	<field name="PESERTA" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="PESERTA"/>
+	</field>
+	<field name="JANDA_DUDA" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="JANDA_DUDA"/>
+	</field>
+	<field name="ANAK" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="ANAK"/>
+	</field>
+	<field name="JUMLAH" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="JUMLAH"/>
+	</field>
+	<field name="PESERTA_HER" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="PESERTA_HER"/>
+	</field>
+	<field name="JANDA_DUDA_HER" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="JANDA_DUDA_HER"/>
+	</field>
+	<field name="ANAK_HER" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="ANAK_HER"/>
+	</field>
+	<field name="JUMLAH_HER" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="JUMLAH_HER"/>
+	</field>
+	<field name="TAHUN_HER" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="TAHUN_HER"/>
+	</field>
+	<field name="SIGN_DATE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="SIGN_DATE"/>
+	</field>
+	<variable name="Jumlah_Peserta_penerima_MP" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{PESERTA}]]></variableExpression>
+	</variable>
+	<variable name="sum_janda_duda" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{JANDA_DUDA}]]></variableExpression>
+	</variable>
+	<variable name="sum_anak" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{ANAK}]]></variableExpression>
+	</variable>
+	<variable name="sum_jumlah_penerima_mp" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{JUMLAH}]]></variableExpression>
+	</variable>
+	<variable name="sum_peserta_her" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{PESERTA_HER}]]></variableExpression>
+	</variable>
+	<variable name="sum_janda_duda_her" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{JANDA_DUDA_HER}]]></variableExpression>
+	</variable>
+	<variable name="sum_anak_her" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{ANAK_HER}]]></variableExpression>
+	</variable>
+	<variable name="sum_jumlah_her" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{JUMLAH_HER}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="13" width="575" height="17" uuid="ac221c82-3156-46a5-95bb-b25a676a777d"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[REKAPITULASI PENERIMA MP PESERTA, JANDA/DUDA/ANAK ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="31" width="575" height="17" uuid="16989f42-def5-40da-8456-fb198d408b85"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{TAHUN_HER} == null ? "SUDAH REGISTRASI ULANG TAHUN -" : "SUDAH REGISTRASI ULANG TAHUN "+$F{TAHUN_HER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="48" width="575" height="17" uuid="7515a6d6-21bc-44a7-987c-7ae808ccdfc3"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{TGL_HER_DESC} == null ? "TANGGAL HER REGISTRASI -" : "TANGGAL HER REGISTRASI "+$F{TGL_HER_DESC}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="47" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Opaque" x="526" y="2" width="46" height="41" backcolor="#6AD5D9" uuid="0511cc7f-cd49-46ea-b521-e337377e1e0a"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Jumlah]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="463" y="24" width="61" height="20" backcolor="#6AD5D9" uuid="85fcf07d-df70-4164-9866-868f1a56cdc9"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Anak]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="388" y="24" width="74" height="20" backcolor="#6AD5D9" uuid="e2934703-052f-43c0-af98-7e47d3e4ce50"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Janda/Duda]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="329" y="24" width="58" height="20" backcolor="#6AD5D9" uuid="546233e7-47ec-4e4d-80d6-55be42f401ca"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Peserta]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="329" y="3" width="195" height="20" backcolor="#6AD5D9" uuid="b918a1a7-36c7-4bfe-9018-7be104fce0d6"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Penerima MP yg Sudah Registrasi]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="282" y="3" width="45" height="41" backcolor="#6AD5D9" uuid="5b273de5-f0b9-4315-93a7-dc02080650f3"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Jumlah]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="238" y="24" width="42" height="20" backcolor="#6AD5D9" uuid="50e1fef8-55ef-4880-a65a-cf1b8c19a469"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Anak]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="161" y="24" width="76" height="20" backcolor="#6AD5D9" uuid="59936e8f-e959-4ba0-bf56-74249060700b"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Janda/Duda]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="110" y="24" width="50" height="20" backcolor="#6AD5D9" uuid="8e87fc19-e6f4-460e-a7d8-4252e3006474"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Peserta]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="110" y="3" width="170" height="20" backcolor="#6AD5D9" uuid="9c33415c-b6dd-4c6c-986a-a06c6c533072"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Penerima MP]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="20" y="2" width="89" height="41" backcolor="#6AD5D9" uuid="f2621322-399c-41bd-83f9-15cd4bcd8c12"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Wilayah]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="-12" y="2" width="31" height="41" backcolor="#6AD5D9" uuid="d6171697-306e-4a35-891e-b0d2c7bf4666"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[No.]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="41" splitType="Stretch">
+			<line>
+				<reportElement x="-18" y="36" width="590" height="1" uuid="f67f2a93-5bb1-4403-9790-2c5f6a0c623c"/>
+			</line>
+			<textField isBlankWhenNull="true">
+				<reportElement x="-12" y="0" width="31" height="30" uuid="53f2f8a7-985f-42ec-9ccc-b59252953386"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="20" y="2" width="89" height="30" uuid="7bc360bd-016b-4ef0-ba37-aef486366b91"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{NAMA_KANTOR_BAYAR}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="110" y="1" width="50" height="30" uuid="93ec1b4c-463b-4d6f-94c7-221fcb2901c7"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{PESERTA}==null?"0":$F{PESERTA}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="161" y="1" width="76" height="30" uuid="40c40fa1-9ead-46f8-97ed-d676a7db3f50"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{JANDA_DUDA}==null?"0":$F{JANDA_DUDA}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="240" y="1" width="42" height="30" uuid="f7ec7d2e-dba2-4fbb-9428-0e45c20c6406"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{ANAK}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="282" y="1" width="45" height="30" uuid="b8f88c25-f208-42b5-beb9-93e344939223"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{JUMLAH}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="329" y="0" width="58" height="30" uuid="f966fc66-0301-411e-87a1-83d9731ee611"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{PESERTA_HER}==null?0:$F{PESERTA_HER}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="388" y="1" width="74" height="30" uuid="c9cd2ad8-17c5-401d-8307-74965124ce37"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{JANDA_DUDA_HER}==null?0:$F{JANDA_DUDA_HER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="463" y="-1" width="61" height="30" uuid="1e3126e0-13e4-4d93-b8c1-114c634729c1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{ANAK_HER}==null?0:$F{ANAK_HER}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="526" y="2" width="46" height="30" uuid="574773a7-72fd-4b2c-aa75-2b8190c13b10"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{JUMLAH_HER}==null?0:$F{JUMLAH_HER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="118" splitType="Stretch">
+			<textField>
+				<reportElement x="357" y="10" width="197" height="21" uuid="1c32e12f-cbaa-4443-90eb-01dccba8507a"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{SIGN_DATE} == null ? "Jakarta, " : "Jakarta, "+$F{SIGN_DATE}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="340" y="95" width="70" height="17" uuid="d320d9fd-dc1e-45b3-9929-91f7fb3b3b57"/>
+				<textElement>
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Kepala Divisi]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="473" y="95" width="87" height="17" uuid="3afe2233-6a61-49bd-aafc-b6d1eba42cdf"/>
+				<textElement>
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Kepala Seksi]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="335" y="77" width="80" height="17" uuid="1b550cf9-7da1-46eb-8d04-360c05dab026"/>
+				<textElement>
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Ackhmad Mufit]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="474" y="77" width="70" height="17" uuid="63d92a7e-490b-4989-ba60-8dfd91ce02cb"/>
+				<textElement>
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Rosalind P.]]></text>
+			</staticText>
+		</band>
+	</columnFooter>
+	<summary>
+		<band height="38" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Transparent" x="-10" y="2" width="110" height="30" backcolor="#6AD5D9" uuid="e75dc8df-ef50-450e-8972-1d1113a8a69d"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="240" y="1" width="42" height="30" uuid="6d897ba6-7513-4bef-abba-c00d11874a31"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sum_anak}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="161" y="1" width="76" height="30" uuid="9d1cacfd-db3f-490a-81ce-3246cd48b104"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sum_janda_duda}==null?"0":$V{sum_janda_duda}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="110" y="1" width="50" height="30" uuid="ab1f36bf-462f-4348-a960-6464809911a1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{Jumlah_Peserta_penerima_MP}==null?"0":$V{Jumlah_Peserta_penerima_MP}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="282" y="1" width="45" height="30" uuid="dc7d952e-20f0-4a45-9fd9-f7a5db6ddf0f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sum_jumlah_penerima_mp}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="329" y="1" width="58" height="30" uuid="37d0e833-7c01-4900-93c0-c01d51fcab2e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sum_peserta_her}==null?0:$V{sum_peserta_her}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="388" y="1" width="74" height="30" uuid="9667b438-7985-4230-a835-0ab085af5877"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sum_janda_duda_her}==null?0:$V{sum_janda_duda_her}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="463" y="1" width="61" height="30" uuid="99d7337b-4230-4cea-9836-a6e813b1cae3"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sum_anak_her}==null?0:$V{sum_anak_her}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="526" y="2" width="46" height="30" uuid="1d905847-eddb-4dfe-afcd-420167abb0dc"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sum_jumlah_her}==null?0:$V{sum_jumlah_her}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

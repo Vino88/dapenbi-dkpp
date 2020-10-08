@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RincianRapelMPS20persen_kenaikanMP" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="8f8dbade-b9a4-470a-99e0-1918cf0a3ee7">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DKPPUAT"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<parameter name="id_kantor_bayar" class="java.lang.String"/>
+	<parameter name="periode_bayar" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT 
+COUNT(a.nip) as jml_orang
+,to_char(to_date(a.periode_bayar,'MMYYYY'),'MONTH YYYY','nls_date_language = INDONESIAN') as periode_mutasi
+,to_char(to_date(a.periode_bayar,'MMYYYY'),'YYYY','nls_date_language = INDONESIAN') as tahun_kenaikan
+,(CASE WHEN b.id_kantor_bayar = '003' then 'KP' else 'KPWBI' END) as kantor
+,to_char(SYSDATE, 'dd-mm-yyyy') as date_now
+,to_char(SYSDATE,'dd Month yyyy','nls_date_language = INDONESIAN') as sign_date
+,SUM(a.nominal) as nominal
+,b.id_kantor_bayar as kode_cabang
+,b.nama_kantor_bayar as kantor_bayar
+FROM tbl_t_pmby_uang_pmbn_d a
+INNER JOIN tbl_m_pensiun b ON a.nip = b.nip 
+WHERE to_char(to_date(periode_bayar,'mmyyyy'),'yyyy') = $P{periode_bayar} AND (id_kantor_bayar = $P{id_kantor_bayar} OR $P{id_kantor_bayar} = '00') AND is_status_bayar = '1'
+GROUP BY
+b.id_kantor_bayar
+,b.nama_kantor_bayar 
+,a.periode_bayar]]>
+	</queryString>
+	<field name="JML_ORANG" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="JML_ORANG"/>
+	</field>
+	<field name="PERIODE_MUTASI" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="PERIODE_MUTASI"/>
+	</field>
+	<field name="TAHUN_KENAIKAN" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="TAHUN_KENAIKAN"/>
+	</field>
+	<field name="KANTOR" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="KANTOR"/>
+	</field>
+	<field name="DATE_NOW" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="DATE_NOW"/>
+	</field>
+	<field name="SIGN_DATE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="SIGN_DATE"/>
+	</field>
+	<field name="NOMINAL" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="NOMINAL"/>
+	</field>
+	<field name="KODE_CABANG" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="KODE_CABANG"/>
+	</field>
+	<field name="KANTOR_BAYAR" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="KANTOR_BAYAR"/>
+	</field>
+	<variable name="TOTAL_Orang" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{JML_ORANG}]]></variableExpression>
+	</variable>
+	<variable name="TOTAL_UangPembinaan" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{NOMINAL}]]></variableExpression>
+	</variable>
+	<group name="KANTOR_BAYAR">
+		<groupExpression><![CDATA[$F{KANTOR_BAYAR}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="57" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement x="-21" y="0" width="843" height="30" uuid="a06a9453-41d6-4f27-ae1e-d4e58e11ddd9"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="html">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{TAHUN_KENAIKAN} == null ? "DAFTAR REKAPITULASI PEMBAYARAN UANG PEMBINAAN TAHUN -" : "DAFTAR REKAPITULASI PEMBAYARAN UANG PEMBINAAN TAHUN "+$F{TAHUN_KENAIKAN}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="-20" y="32" width="843" height="20" uuid="1a49c030-cdb0-4ecd-b82c-182769fda5dc">
+					<printWhenExpression><![CDATA[new Boolean 
+($P{id_kantor_bayar}.equals("003")||($P{id_kantor_bayar}.equals("010")||($P{id_kantor_bayar}.equals("020")||($P{id_kantor_bayar}.equals("030")||($P{id_kantor_bayar}.equals("040")||($P{id_kantor_bayar}.equals("050")||($P{id_kantor_bayar}.equals("060")||($P{id_kantor_bayar}.equals("070")||($P{id_kantor_bayar}.equals("090")||($P{id_kantor_bayar}.equals("100")||($P{id_kantor_bayar}.equals("120")||($P{id_kantor_bayar}.equals("130")||($P{id_kantor_bayar}.equals("140")||($P{id_kantor_bayar}.equals("150")||($P{id_kantor_bayar}.equals("190")||($P{id_kantor_bayar}.equals("220")||($P{id_kantor_bayar}.equals("230")||($P{id_kantor_bayar}.equals("240")||($P{id_kantor_bayar}.equals("310")||($P{id_kantor_bayar}.equals("320")||($P{id_kantor_bayar}.equals("330")||($P{id_kantor_bayar}.equals("340")||($P{id_kantor_bayar}.equals("350")||($P{id_kantor_bayar}.equals("003")||($P{id_kantor_bayar}.equals("360")||($P{id_kantor_bayar}.equals("370")||($P{id_kantor_bayar}.equals("380")||($P{id_kantor_bayar}.equals("390")||($P{id_kantor_bayar}.equals("410")||($P{id_kantor_bayar}.equals("470")||($P{id_kantor_bayar}.equals("510")||($P{id_kantor_bayar}.equals("530")||($P{id_kantor_bayar}.equals("540")||($P{id_kantor_bayar}.equals("560")||($P{id_kantor_bayar}.equals("570")||($P{id_kantor_bayar}.equals("580")||($P{id_kantor_bayar}.equals("600")||($P{id_kantor_bayar}.equals("610")||($P{id_kantor_bayar}.equals("620")||($P{id_kantor_bayar}.equals("630")||($P{id_kantor_bayar}.equals("690")||($P{id_kantor_bayar}.equals("710")||($P{id_kantor_bayar}.equals("720")||($P{id_kantor_bayar}.equals("740")||($P{id_kantor_bayar}.equals("770")||($P{id_kantor_bayar}.equals("810")||($P{id_kantor_bayar}.equals("820")||($P{id_kantor_bayar}.equals("880")))))))))))))))))))))))))))))))))))))))))))))))))]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["WILAYAH "+$F{KANTOR}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="-20" y="31" width="843" height="20" uuid="7fcc06c9-2d24-4a8f-945d-98c4eafa19e4">
+					<printWhenExpression><![CDATA[new Boolean ($P{id_kantor_bayar}.equals("00"))]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["SELURUH KANTOR CABANG"]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="78" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Opaque" x="350" y="47" width="215" height="31" backcolor="#FFFFFF" uuid="8934cdcf-545b-4682-a4c6-9d16d4cc1971"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Jumlah Orang]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="-8" y="47" width="30" height="31" backcolor="#FFFFFF" uuid="9aa4aa04-5d10-46b7-af2b-2a5794fad158"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[No.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="565" y="47" width="238" height="31" backcolor="#FFFFFF" uuid="b9037d75-bdc9-4b2f-87c2-994efa69ed87"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+					<paragraph rightIndent="10"/>
+				</textElement>
+				<text><![CDATA[Uang Pembinaan]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="727" y="3" width="74" height="17" uuid="f1b28d36-bea1-4fa0-812c-81ae65798eb3"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Hal : "+$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="710" y="23" width="91" height="17" uuid="35cdee6a-15a4-49f7-b70a-4c64573413be"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{DATE_NOW}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="22" y="47" width="327" height="31" backcolor="#FFFFFF" uuid="40fae45b-cd86-4175-8b1e-43d7c243bd6b"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nama Kantor Cabang]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="33">
+			<textField evaluationTime="Group" evaluationGroup="KANTOR_BAYAR" pattern="#,000.00#;(#,000.00#-)" isBlankWhenNull="true">
+				<reportElement x="564" y="1" width="240" height="30" uuid="6883b012-e912-48f6-9dec-46bc8646046a"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="10"/>
+					<paragraph rightIndent="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NOMINAL}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="21" y="0" width="123" height="30" printWhenGroupChanges="KANTOR_BAYAR" uuid="f9603d12-1d0f-4e7e-a759-81f94004dc63">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="df8b74aa-f20a-40f7-b702-cf3f60683d4f"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{KODE_CABANG}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Group" evaluationGroup="KANTOR_BAYAR" isBlankWhenNull="true">
+				<reportElement x="-9" y="0" width="30" height="30" uuid="6a4352d6-4984-41a7-b072-585671a45f5a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="348" y="1" width="216" height="30" uuid="c3f7c92d-69f1-4c52-848e-e04296d125e6"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{JML_ORANG}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="144" y="1" width="204" height="30" uuid="05c48620-e406-487c-9791-7e520a580a08"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{KANTOR_BAYAR}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="-7" y="32" width="808" height="1" uuid="6fc01aff-d75c-4a72-bcb5-5fcb3a076256"/>
+			</line>
+		</band>
+	</detail>
+	<lastPageFooter>
+		<band height="136">
+			<staticText>
+				<reportElement x="565" y="23" width="209" height="20" uuid="500c285c-6bcc-42e3-9673-4d7f67f97fd1"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Divisi Kepesertaan dan Pelayanan Pensiun]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="565" y="111" width="134" height="16" uuid="8395764f-2bb6-48d8-b65d-c530a37f39f8"/>
+				<textFieldExpression><![CDATA["Kepala Divisi"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="691" y="110" width="84" height="16" uuid="a416408c-7354-4960-946a-38fbd6555706"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Kepala Seksi"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="547" y="91" width="100" height="20" uuid="53cf0325-c5f2-4c63-bbdd-c1834e758c3b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["Achmad Mufit"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="681" y="89" width="118" height="20" uuid="a62c98c5-12be-41e6-9371-148b16ad724b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["Rosalind Permatasari"]]></textFieldExpression>
+			</textField>
+			<textField pattern="MMMMM dd, yyyy">
+				<reportElement x="573" y="5" width="199" height="15" uuid="dac226da-6c95-4b58-89fa-ce37a9c60ae1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{SIGN_DATE} == null ? "Jakarta, " : "Jakarta, "+$F{SIGN_DATE}]]></textFieldExpression>
+			</textField>
+		</band>
+	</lastPageFooter>
+	<summary>
+		<band height="40">
+			<textField pattern="#,000.00#;(#,000.00#-)" isBlankWhenNull="true">
+				<reportElement x="565" y="10" width="240" height="30" uuid="f818d09b-41fe-4d17-a04d-026bb72dbfbc"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+					<paragraph rightIndent="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{TOTAL_UangPembinaan}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="10" y="14" width="182" height="19" uuid="d3ff7bb8-3069-4a2d-890c-d5b5ed19f32b">
+					<printWhenExpression><![CDATA[new Boolean ($P{id_kantor_bayar}.equals("00"))]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total Seluruh Cabang]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="20" y="8" width="200" height="30" uuid="7156ec87-f329-480b-9e31-c4efb4c1ff11">
+					<printWhenExpression><![CDATA[new Boolean 
+($P{id_kantor_bayar}.equals("003")||($P{id_kantor_bayar}.equals("010")||($P{id_kantor_bayar}.equals("020")||($P{id_kantor_bayar}.equals("030")||($P{id_kantor_bayar}.equals("040")||($P{id_kantor_bayar}.equals("050")||($P{id_kantor_bayar}.equals("060")||($P{id_kantor_bayar}.equals("070")||($P{id_kantor_bayar}.equals("090")||($P{id_kantor_bayar}.equals("100")||($P{id_kantor_bayar}.equals("120")||($P{id_kantor_bayar}.equals("130")||($P{id_kantor_bayar}.equals("140")||($P{id_kantor_bayar}.equals("150")||($P{id_kantor_bayar}.equals("190")||($P{id_kantor_bayar}.equals("220")||($P{id_kantor_bayar}.equals("230")||($P{id_kantor_bayar}.equals("240")||($P{id_kantor_bayar}.equals("310")||($P{id_kantor_bayar}.equals("320")||($P{id_kantor_bayar}.equals("330")||($P{id_kantor_bayar}.equals("340")||($P{id_kantor_bayar}.equals("350")||($P{id_kantor_bayar}.equals("003")||($P{id_kantor_bayar}.equals("360")||($P{id_kantor_bayar}.equals("370")||($P{id_kantor_bayar}.equals("380")||($P{id_kantor_bayar}.equals("390")||($P{id_kantor_bayar}.equals("410")||($P{id_kantor_bayar}.equals("470")||($P{id_kantor_bayar}.equals("510")||($P{id_kantor_bayar}.equals("530")||($P{id_kantor_bayar}.equals("540")||($P{id_kantor_bayar}.equals("560")||($P{id_kantor_bayar}.equals("570")||($P{id_kantor_bayar}.equals("580")||($P{id_kantor_bayar}.equals("600")||($P{id_kantor_bayar}.equals("610")||($P{id_kantor_bayar}.equals("620")||($P{id_kantor_bayar}.equals("630")||($P{id_kantor_bayar}.equals("690")||($P{id_kantor_bayar}.equals("710")||($P{id_kantor_bayar}.equals("720")||($P{id_kantor_bayar}.equals("740")||($P{id_kantor_bayar}.equals("770")||($P{id_kantor_bayar}.equals("810")||($P{id_kantor_bayar}.equals("820")||($P{id_kantor_bayar}.equals("880")))))))))))))))))))))))))))))))))))))))))))))))))]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["SUBTOTAL : "+$F{KANTOR_BAYAR}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="349" y="10" width="216" height="30" uuid="2e709dd3-a03d-4541-805d-dbb892f73f8a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{TOTAL_Orang}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

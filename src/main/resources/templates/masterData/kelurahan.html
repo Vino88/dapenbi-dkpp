@@ -1,0 +1,244 @@
+{{#layout}}
+
+{{#styles}}
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/googleapis/css/component.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/googleapis/css/googleapis.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/select2/css/select2.css">
+
+{{/styles}}
+
+{{#title}}
+Master Kelurahan - DKPP
+{{/title}}
+
+
+<div class="card">
+    <div class="card-header">
+        <div class="col-md-12">
+            <div class="row pull-right">
+                <a class="btn btn-success btn-icon" id="btn-add"><i class="material-icons">add</i> Add</a>
+            </div>
+        </div>
+    </div>
+    <div class="card-block">
+        <div class="table-responsive">
+            <table class="table table-bordered datatable dataTable no-footer" id="kota_table"
+                   role="grid">
+                <thead>
+                <tr role="row">
+                    <th>
+                        Nama Kelurahan
+                    </th>
+                    <th>
+                        Nama Kecamatan
+                    </th>
+                    <th>
+                        Nama Kota
+                    </th>
+                    <th>
+                        Nama Provinsi
+                    </th>
+                    <th>
+                        Is Active
+                    </th>
+                    <th>
+                        Action
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{{#modal}}
+<div class="modal fade kelurahan-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title small bold" id="myModalLabel">Form Kelurahan</h4>
+            </div>
+            <div class="modal-body">
+                <form id="kelurahanForm">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="form-group row">
+                                <label for="kelurahan-name" class="col-sm-3 bold">Kelurahan</label>
+                                <div class="col-xs-9">
+                                    <input type="hidden" name="id" id="kelurahan-id">
+                                    <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
+                                    <input class="form-control form-control-sm" type="text" name="namaKelurahan" id="kelurahan-name">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="id-kecamatan" class="col-sm-3 bold">Kecamatan</label>
+                                <div class="col-xs-9">
+                                    <input type="hidden" name="id" id="id">
+                                    <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
+                                    <select class="form-control form-control-sm" name="idKecamatan" id="id-kecamatan">
+                                        <option></option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group row checkbox-show-hide">
+                                <label for="kelurahan-active" class="col-sm-3 bold">Active</label>
+                                <div class="col-xs-9">
+                                    <label class="custom-control custom-checkbox m-b-1">
+                                        <input type="checkbox" class="custom-control-input" name="active" id="kelurahan-active">
+                                        <span class="custom-control-indicator"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="saveForm()">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+{{/modal}}
+
+{{#scripts}}
+<script src="{{contextPath}}/assets/vendor/datatables/media/js/jquery.dataTables.js"></script>
+<script src="{{contextPath}}/assets/vendor/datatables/media/js/dataTables.bootstrap4.js"></script>
+<script src="{{contextPath}}/assets/vendor/select2/js/select2.js"></script>
+<script src="{{contextPath}}/assets/vendor/sweetalert/sweetalert.min.js"></script>
+
+
+<script type="text/javascript">
+    window.RESTFulMode = "";
+    function showPrintOptions(){
+        $('#printOptionsModal').modal('show');
+    }
+
+    $('#btn_ok_print').unbind().on('click', function(){
+        $('#printOptionsModal').modal('hide');
+        $('#pdfReportModal').modal('show');
+    });
+
+    $('#filter_form').hide();
+
+    var kelurahanTable = dkppDataTable($('.datatable'), '{{contextPath}}/api/kelurahan', {
+        'columns': [
+            { "data": "namaKelurahan" },
+            { "data": "kecamatan.namaKecamatan" },
+            { "data": "kecamatan.kota.namaKota" },
+            { "data": "kecamatan.kota.provinsi.namaProvinsi" },
+            { "data": "active", "ordering": false }
+        ],
+        'columnDefs': [
+            {
+                "targets": 4,
+                "data": "active",
+                "render": function(data, type, row, meta){
+                    console.log(data);
+                    if(data == true)
+                        return '<span class="tag tag-pill tag-success">active</span>';
+                    else
+                        return '<span class="tag tag-pill tag-danger">not active</span>';
+                }
+            },
+            {
+                "render": function(data, type, row, meta){
+                    return "<a class='btn btn-info btn-sm btn-icon btn-edit' onclick='displayEditModal(" + row.id + ")'><i class='material-icons'>edit</i> Edit</a>";
+                },
+                "targets": 5
+            }
+        ]
+    });
+
+    function displayEditModal(id) {
+        $('.checkbox-show-hide').show();
+        const kelurahanTbl = kelurahanTable.rows().data().filter((data) => {return data.id === id})[0];
+        const kelurahanForm = $("form#kelurahanForm");
+
+        $.ajax({
+            url: '{{contextPath}}/data/kecamatan',
+            method: 'GET',
+            success: function(data){
+                $('#id-kecamatan').select2(
+                    {
+                        data: data,
+                        width: "50%",
+                        placeholder: 'Pilih Kecamatan'
+                    }
+                )
+                    .val(kelurahanTbl.idKecamatan)
+                    .trigger('change');
+
+            }
+
+        });
+
+        $("#kelurahan-id").val(kelurahanTbl.id);
+        $("#kelurahan-name").val(kelurahanTbl.namaKelurahan);
+        $("#id-kecamatan").val(fillDateField(kelurahanTbl.idKecamatan));$("#id-kecamatan").trigger("change");
+        $("#kelurahan-active")[0].checked = kelurahanTbl.active;
+        $('.kelurahan-modal').modal({backdrop:'static', keyboard:false}).modal('show');
+        window.RESTFulMode = "PUT";
+
+    }
+
+    function saveForm() {
+        $.ajax({
+            url: "{{contextPath}}/api/kelurahan",
+            method: window.RESTFulMode,
+            data: formToJSON($("form#kelurahanForm")[0].elements)
+        }).success(function(data) {
+            $('.kelurahan-modal').modal('hide');
+            if (data.status = "success"){
+                swal({title:"Berhasil",text:data.message, icon:"success", button:"OK"});
+            }
+            kelurahanTable.ajax.reload();
+        }).error(function (data) {
+            if (data.message = undefined)
+                swal({title: "Gagal", text: data.message, icon: "error", button: "OK"});
+            else
+                swal({title: "Gagal", text: "Terjadi kegagalan.", icon: "error", button: "OK"});
+
+        });
+    }
+
+    $(document).ready(function(){
+        $('#btn-add').unbind().on('click', function(){
+            $('#kelurahan-name').val("");
+            $('#id-kecamatan').val("");
+            $('.checkbox-show-hide').hide();
+            var modal = $('.kelurahan-modal');
+            modal.modal('show');
+            RESTFulMode = 'POST';
+
+            //select2 init
+            $('#id-kecamatan').select2({
+                ajax: {
+                    url: '{{contextPath}}/data/kecamatan',
+                    dataType: 'json',
+                    delay: 250,
+                    processResults: function(data){
+                        return {
+                            results: data
+                        };
+                    }
+                },
+                width: "50%",
+                placeholder: 'Pilih Kota'
+            });
+        });
+
+    });
+</script>
+{{/scripts}}
+
+{{/layout}}

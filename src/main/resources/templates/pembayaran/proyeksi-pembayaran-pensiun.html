@@ -1,0 +1,1435 @@
+{{#layout}}
+
+{{#styles}}
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/datatables/media/css/dataTables.bootstrap4.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/googleapis/css/component.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/googleapis/css/googleapis.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/select2/css/select2.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css">
+{{/styles}}
+
+{{#title}}
+Proyeksi Pembayaran Pensiun - DKPP
+{{/title}}
+<!-- main area -->
+<div class="main-content">
+    <div class="content-view">
+
+
+
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#one" role="tab">Master Data Proyeksi</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#two" role="tab">Proyeksi Pembayaran Manfaat Pensiun Baru</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#three" role="tab">Proyeksi Pembayaran Manfaat Pensiun Lama</a>
+            </li>
+        </ul>
+
+        <div class="tab-content">
+            <div class="tab-pane active" id="one" role="tabpanel">
+                <div class="card">
+                    <div class="card-block">
+                        <button class="btn btn-primary btn-sm" data-toggle="modal" data-target=".bd-example-modal"><i class="fa fa-plus"></i> <span>Tambah Master Proyeksi</span></button>
+                        <hr/>
+                        <div class="table-responsive" style="overflow-y:auto">
+                            <table class="table table-bordered datatable" id="table-master-proyeksi">
+                                <thead>
+                                <tr>
+                                    <th>
+                                        Tanggal Input
+                                    </th>
+                                    <th>
+                                        Untuk Proyeksi Tahun
+                                    </th>
+                                    <th>
+                                        Batas Usia Pensiun GOL I-IV
+                                    </th>
+                                    <th>
+                                        Batas Usia Pensiun GOL VII-VIII
+                                    </th>
+                                    <th>
+                                        Jumlah Simulasi
+                                    </th>
+                                    <th>
+                                        Jenis Kenaikan MP (Untuk Simulasi 1,2,3)
+                                    </th>
+                                    <th>
+                                        Proyeksi Prosentase Kenaikan MP 1
+                                    </th>
+                                    <th>
+                                        Proyeksi Minimal Nominal Kenaikan MP 1
+                                    </th>
+                                    <th>
+                                        Proyeksi Prosentase Kenaikan MP 2
+                                    </th>
+                                    <th>
+                                        Proyeksi Minimal Nominal Kenaikan MP 2
+                                    </th>
+                                    <th>
+                                        Proyeksi Prosentase Kenaikan MP 3
+                                    </th>
+                                    <th>
+                                        Proyeksi Minimal Nominal Kenaikan MP 3
+                                    </th>
+                                    <th>
+                                        Proyeksi Prosentase Kenaikan PhDP 1
+                                    </th>
+                                    <th>
+                                        Proyeksi Prosentase Kenaikan PhDP 2
+                                    </th>
+                                    <th>
+                                        Proyeksi Prosentase Kenaikan PhDP 3
+                                    </th>
+                                    <th>
+                                        Action
+                                    </th>
+                                </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane" id="two" role="tabpanel">
+                <div class="card">
+                    <div class="card-block">
+                        <div class="col-md-4">
+                            <div class="col-md-6">
+                                <form id="prosesProyeksiPensiunBaru">
+                                    <div class="row">
+                                        <div>
+                                            <label for="proyeksiPensBaruAwalTahun">Proyeksi Tahun</label>
+                                            <div>
+                                                <input class="form-control form-control-sm" type="text" id="proyeksiPensBaruAwalTahun" name="parTahunProyeksi">
+                                                <input type="hidden" id="comNamePensBaru" name="parCompName">
+                                                <input type="hidden" id="userNamePensBaru" name="parUserName">
+                                                <input type="hidden" id="userStampPensBaru" name="parUserStamp">
+                                                <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <label for="estimasiTahunProyeksiPensBaru">Jumlah Tahun Proyeksi</label>
+                                            <div>
+                                                <select class="form-control form-control-sm" id="estimasiTahunProyeksiPensBaru" name="parUntukProyeksi">
+                                                    <option value="1">
+                                                        Setahun yang akan datang
+                                                    </option>
+                                                    <option value="2">
+                                                        2 Tahun yang akan datang
+                                                    </option></select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col-xs-1">
+                                        <label> </label>
+                                        <div>
+                                            <a class="btn btn-primary btn-sm" id="processProyeksiPensBaru"><i class="fa fa-edit"></i> <span>Proses</span></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" data-toggle="tab" href="#subtwo" role="tab">Proyeksi Simulasi 1 (Kenaikan MP)</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#subone" role="tab">Proyeksi Simulasi 1 (Kenaikan PhDP) </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#subfour" role="tab">Proyeksi Simulasi 2 (Kenaikan MP)</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link " data-toggle="tab" href="#subthree" role="tab">Proyeksi Simulasi 2 (Kenaikan PhDP)</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#subsix" role="tab">Proyeksi Simulasi 3 (Kenaikan MP)</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#subfive" role="tab">Proyeksi Simulasi 3 (Kenaikan PhDP)</a>
+                    </li>
+                </ul>
+
+                <div class="tab-content">
+                    <div class="tab-pane " id="subone" role="tabpanel">
+                        <div class="card">
+                            <div class="card-block">
+                                <div class="datatable-responsive" style="overflow-y:auto">
+                                    <table class="table table-bordered datatable2" id="tabel-kenaikan-phpd1">
+                                        <thead>
+                                        <tr>
+                                            <th>
+                                                Tahun Proyeksi
+                                            </th>
+                                            <th>
+                                                NIP
+                                            </th>
+                                            <th>
+                                                Nama Penerima
+                                            </th>
+                                            <th>
+                                                Jenis Kelamin
+                                            </th>
+                                            <th>
+                                                Golongan
+                                            </th>
+                                            <th>
+                                                Tanggal Lahir
+                                            </th>
+                                            <th>
+                                                Tanggal Kepesertaan
+                                            </th>
+                                            <th>
+                                                Tanggal Henti
+                                            </th>
+                                            <th>
+                                                Masa Kerja
+                                            </th>
+                                            <th>
+                                                PhDP
+                                            </th>
+                                            <th>
+                                                MP Bulanan
+                                            </th>
+                                            <th>
+                                                Faktor Sekaligus
+                                            </th>
+                                            <th>
+                                                MPS 20%
+                                            </th>
+                                            <th>
+                                                MP Bulanan Setelah MPS 20%
+                                            </th>
+                                            <th>
+                                                MP Untuk Hitung MPS > 10 Juta
+                                            </th>
+                                            <th>
+                                                MPS > 10 Juta
+                                            </th>
+                                            <th>
+                                                MP Bulanan Setelah MPS > 10 Juta
+                                            </th>
+                                        </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane active" id="subtwo" role="tabpanel">
+                        <div class="card">
+                            <div class="card-block">
+                                <div class="datatable-responsive" style="overflow-y:auto">
+                                    <table class="table table-bordered datatable responsive" id="tabel-kenaikan-mp1">
+                                        <thead>
+                                        <tr>
+                                            <th>
+                                                Tahun Proyeksi
+                                            </th>
+                                            <th>
+                                                NIP
+                                            </th>
+                                            <th>
+                                                Nama Peserta
+                                            </th>
+                                            <th>
+                                                Nama Penerima
+                                            </th>
+                                            <th>
+                                                Golongan
+                                            </th>
+                                            <th>
+                                                % Kenaikan MP
+                                            </th>
+                                            <th>
+                                                Kenaikan MP
+                                            </th>
+                                            <th>
+                                                MP Baru (Setelah Kenaikan)
+                                            </th>
+                                        </tr>
+
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="subthree" role="tabpanel">
+                        <div class="card">
+                            <div class="card-block">
+                                <div class="datatable-responsive" style="overflow-y:auto">
+                                    <table class="table table-bordered datatable responsive" id="tabel-kenaikan-phdp2">
+                                        <thead>
+                                            <tr>
+                                            <th>
+                                                Tahun Proyeksi
+                                            </th>
+                                            <th>
+                                                NIP
+                                            </th>
+                                            <th>
+                                                Nama Penerima
+                                            </th>
+                                            <th>
+                                                Jenis Kelamin
+                                            </th>
+                                            <th>
+                                                Golongan
+                                            </th>
+                                            <th>
+                                                Tanggal Lahir
+                                            </th>
+                                            <th>
+                                                Tanggal Kepesertaan
+                                            </th>
+                                            <th>
+                                                Tanggal Henti
+                                            </th>
+                                            <th>
+                                                Masa Kerja
+                                            </th>
+                                            <th>
+                                                PhDP
+                                            </th>
+                                            <th>
+                                                MP Bulanan
+                                            </th>
+                                            <th>
+                                                Faktor Sekaligus
+                                            </th>
+                                            <th>
+                                                MPS 20%
+                                            </th>
+                                            <th>
+                                                MP Bulanan Setelah MPS 20%
+                                            </th>
+                                            <th>
+                                                MP Untuk Hitung MPS > 10 Juta
+                                            </th>
+                                            <th>
+                                                MPS > 10 Juta
+                                            </th>
+                                            <th>
+                                                MP Bulanan Setelah MPS > 10 Juta
+                                            </th>
+                                        </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="subfour" role="tabpanel">
+                        <div class="card">
+                            <div class="card-block">
+                                <div class="datatable-responsive" style="overflow-y:auto">
+                                    <table class="table table-bordered datatable responsive" id="tabel-kenaikan-mp2">
+                                        <thead>
+                                        <tr>
+                                            <th>
+                                                Tahun Proyeksi
+                                            </th>
+                                            <th>
+                                                NIP
+                                            </th>
+                                            <th>
+                                                Nama Peserta
+                                            </th>
+                                            <th>
+                                                Nama Penerima
+                                            </th>
+                                            <th>
+                                                Golongan
+                                            </th>
+                                            <th>
+                                                % Kenaikan MP
+                                            </th>
+                                            <th>
+                                                Kenaikan MP
+                                            </th>
+                                            <th>
+                                                MP Baru (Setelah Kenaikan)
+                                            </th>
+                                        </tr>
+
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="subfive" role="tabpanel">
+                        <div class="card">
+                            <div class="card-block">
+                                <div class="datatable-responsive" style="overflow-y:auto">
+                                    <table class="table table-bordered datatable2" id="tabel-kenaikan-phdp3">
+                                        <thead>
+                                        <tr>
+                                            <th>
+                                                Tahun Proyeksi
+                                            </th>
+                                            <th>
+                                                NIP
+                                            </th>
+                                            <th>
+                                                Nama Penerima
+                                            </th>
+                                            <th>
+                                                Jenis Kelamin
+                                            </th>
+                                            <th>
+                                                Golongan
+                                            </th>
+                                            <th>
+                                                Tanggal Lahir
+                                            </th>
+                                            <th>
+                                                Tanggal Kepesertaan
+                                            </th>
+                                            <th>
+                                                Tanggal Henti
+                                            </th>
+                                            <th>
+                                                Masa Kerja
+                                            </th>
+                                            <th>
+                                                PhDP
+                                            </th>
+                                            <th>
+                                                MP Bulanan
+                                            </th>
+                                            <th>
+                                                Faktor Sekaligus
+                                            </th>
+                                            <th>
+                                                MPS 20%
+                                            </th>
+                                            <th>
+                                                MP Bulanan Setelah MPS 20%
+                                            </th>
+                                            <th>
+                                                MP Untuk Hitung MPS > 10 Juta
+                                            </th>
+                                            <th>
+                                                MPS > 10 Juta
+                                            </th>
+                                            <th>
+                                                MP Bulanan Setelah MPS > 10 Juta
+                                            </th>
+                                        </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="subsix" role="tabpanel">
+                        <div class="card">
+                            <div class="card-block">
+                                <div class="datatable-responsive" style="overflow-y:auto">
+                                    <table class="table table-bordered datatable responsive" id="tabel-kenaikan-mp3">
+                                        <thead>
+                                        <tr>
+                                            <th>
+                                                Tahun Proyeksi
+                                            </th>
+                                            <th>
+                                                NIP
+                                            </th>
+                                            <th>
+                                                Nama Peserta
+                                            </th>
+                                            <th>
+                                                Nama Penerima
+                                            </th>
+                                            <th>
+                                                Golongan
+                                            </th>
+                                            <th>
+                                                % Kenaikan MP
+                                            </th>
+                                            <th>
+                                                Kenaikan MP
+                                            </th>
+                                            <th>
+                                                MP Baru (Setelah Kenaikan)
+                                            </th>
+                                        </tr>
+
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="tab-pane" id="three" role="tabpanel">
+                <div class="card">
+                    <div class="card-block">
+                        <div class="col-md-4">
+                            <div class="col-md-6">
+                                <form id="prosesProyeksiPensiunLama">
+                                    <div class="row">
+                                        <div>
+                                            <label for="proyeksiPensBaruAwalTahun">Proyeksi Tahun</label>
+                                            <div>
+                                                <input class="form-control form-control-sm" type="text" id="proyeksiPensLamaAwalTahun" name="parTahunProyeksi">
+                                                <input type="hidden" id="comNamePensLama" name="parCompName">
+                                                <input type="hidden" id="userNamePensLama" name="parUserName">
+                                                <input type="hidden" id="userStampPensLama" name="parUserStamp">
+                                                <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <label for="estimasiTahunProyeksiPensBaru">Jumlah Tahun Proyeksi</label>
+                                            <div>
+                                                <select class="form-control form-control-sm" id="parUntukProyeksi" name="parUntukProyeksi">
+                                                    <option value="1">
+                                                        Setahun yang akan datang
+                                                    </option>
+                                                    <option value="2">
+                                                        2 Tahun yang akan datang
+                                                    </option></select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col-xs-1">
+                                        <label> </label>
+                                        <div>
+                                            <a class="btn btn-primary btn-sm" id="processProyeksiPensLama"><i class="fa fa-edit"></i> <span>Proses</span></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" data-toggle="tab" href="#subthreetwo" role="tab">Proyeksi Simulasi 1 (Kenaikan MP)</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#subthreefour" role="tab">Proyeksi Simulasi 2 (Kenaikan MP)</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#subthreesix" role="tab">Proyeksi Simulasi 3 (Kenaikan MP)</a>
+                    </li>
+
+                </ul>
+
+                <div class="tab-content">
+                    <div class="tab-pane active" id="subthreetwo" role="tabpanel">
+                        <div class="card">
+                            <div class="card-block">
+                                <div class="datatable-responsive" style="overflow-y:auto">
+                                    <table class="table table-bordered datatable responsive" id="tabel-kenaikan-mp-tab31">
+                                        <thead>
+                                        <tr>
+                                            <th>
+                                                Periode Proyeksi
+                                            </th>
+                                            <th>
+                                                NIP
+                                            </th>
+                                            <th>
+                                                Nama Peserta
+                                            </th>
+                                            <th>
+                                                Nama Penerima
+                                            </th>
+                                            <th>
+                                                Golongan
+                                            </th>
+                                            <th>
+                                                % Kenaikan MP
+                                            </th>
+                                            <th>
+                                                Kenaikan MP
+                                            </th>
+                                            <th>
+                                                MP Baru (Setelah Kenaikan)
+                                            </th>
+                                        </tr>
+
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="subthreefour" role="tabpanel">
+                        <div class="card">
+                            <div class="card-block">
+                                <div class="datatable-responsive" style="overflow-y:auto">
+                                    <table class="table table-bordered datatable responsive" id="tabel-kenaikan-mp-tab32">
+                                        <thead>
+                                        <tr>
+                                            <th>
+                                                Periode Proyeksi
+                                            </th>
+                                            <th>
+                                                NIP
+                                            </th>
+                                            <th>
+                                                Nama Peserta
+                                            </th>
+                                            <th>
+                                                Nama Penerima
+                                            </th>
+                                            <th>
+                                                Golongan
+                                            </th>
+                                            <th>
+                                                % Kenaikan MP
+                                            </th>
+                                            <th>
+                                                Kenaikan MP
+                                            </th>
+                                            <th>
+                                                MP Baru (Setelah Kenaikan)
+                                            </th>
+                                        </tr>
+
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="subthreesix" role="tabpanel">
+                        <div class="card">
+                            <div class="card-block">
+                                <div class="datatable-responsive" style="overflow-y:auto">
+                                    <table class="table table-bordered datatable responsive" id="tabel-kenaikan-mp-tab33">
+                                        <thead>
+                                        <tr>
+                                            <th>
+                                                Periode Proyeksi
+                                            </th>
+                                            <th>
+                                                NIP
+                                            </th>
+                                            <th>
+                                                Nama Peserta
+                                            </th>
+                                            <th>
+                                                Nama Penerima
+                                            </th>
+                                            <th>
+                                                Golongan
+                                            </th>
+                                            <th>
+                                                % Kenaikan MP
+                                            </th>
+                                            <th>
+                                                Kenaikan MP
+                                            </th>
+                                            <th>
+                                                MP Baru (Setelah Kenaikan)
+                                            </th>
+                                        </tr>
+
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+
+{{#modal}}
+<!-- Modal demos -->
+<div class="modal fade bd-example-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form name="form-input">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title small bold" id="myModalLabel">Master Data Proyeksi </h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <!--  <span class="tag tag-pill tag-info pull-right">Belum Validasi</span> -->
+                    </div><br>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="row">
+                            <label for="tglInput" class="col-sm-6">Tanggal Input</label>
+
+                            <div class="col-xs-6">
+                                <input type="hidden" id="idProyeksi" value="">
+                                <input class="form-control form-control-sm"  type="text" disabled  value="" id="tglInput">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <hr/>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="row">
+                            <label for="example-text-input" class="col-sm-6">Untuk Proyeksi </label>
+
+                            <div class="col-xs-6">
+                                <select class="form-control form-control-sm" id="estimasiTahun">
+                                    <option value="1">
+                                        Setahun yang akan datang
+                                    </option>
+                                    <option value="2">
+                                        2 Tahun yang akan datang
+                                    </option></select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label for="example-text-input" class="col-sm-6">Batas Usia Pensiun GOL I-VI</label>
+
+                            <div class="col-xs-6">
+                                <input class="form-control form-control-sm"  type="text"  value="" id="batasUsiaGolIV">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label for="example-text-input" class="col-sm-6">Batas Usia Pensiun GOL VII-VIII</label>
+
+                            <div class="col-xs-6">
+                                <input class="form-control form-control-sm"  type="text"  value="" id="batasUsiaGolVIII">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label for="example-text-input" class="col-sm-6">Jumlah Simulasi</label>
+
+                            <div class="col-xs-6">
+                                <input class="form-control form-control-sm"  type="text"  value="" id="jmlSimulasi">
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <br>
+                <div class="row">
+                    <div class="col-lg-6 small bold">Master Proyeksi Kenaikan MP</div>
+                    <div class="col-lg-6 small bold">
+                        Master Proyeksi Kenaikan PhDP
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="row">
+                            <label for="example-text-input" class="col-sm-6">Jenis Kenaikan MP (Untuk Semua Simulasi)</label>
+                            <div class="col-xs-6">
+                                <select class="custom-select" id="presentaseMinimum">
+                                    <option value="1">Prosentase Tanpa Minimum Nominal</option>
+                                    <option value="2">Prosentase Dengan Minimum Nominal</option>
+                                    <option value="3">Nominal</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label for="proyeksiPresentasiMP1" class="col-sm-6">Proyeksi Prosentase Kenaikan MP 1</label>
+
+                            <div class="col-xs-6">
+                                <input class="form-control form-control-sm"  type="text"  value="" id="proyeksiPresentasiMP1">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label for="proyeksiMinimalNominalMP1" class="col-sm-6">Proyeksi Minimal Nominal Kenaikan MP 1</label>
+
+                            <div class="col-xs-6">
+                                <input class="form-control form-control-sm"  type="text"  value="" id="proyeksiMinimalNominalMP1">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label for="proyeksiPresentasiMP2" class="col-sm-6">Proyeksi Prosentase Kenaikan MP 2</label>
+
+                            <div class="col-xs-6">
+                                <input class="form-control form-control-sm"  type="text"  value="" id="proyeksiPresentasiMP2">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label for="proyeksiMinimalNominalMP2" class="col-sm-6">Proyeksi Minimal Nominal Kenaikan MP 2</label>
+
+                            <div class="col-xs-6">
+                                <input class="form-control form-control-sm"  type="text"  value="" id="proyeksiMinimalNominalMP2">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label for="proyeksiPresentasiMP3" class="col-sm-6">Proyeksi Prosentase Kenaikan MP 3</label>
+
+                            <div class="col-xs-6">
+                                <input class="form-control form-control-sm"  type="text"  value="" id="proyeksiPresentasiMP3">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label for="proyeksiMinimalNominalMP3" class="col-sm-6">Proyeksi Minimal Nominal Kenaikan MP 3</label>
+
+                            <div class="col-xs-6">
+                                <input class="form-control form-control-sm"  type="text"  value="" id="proyeksiMinimalNominalMP3">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="row">
+                            <label for="proyeksiPresentasiPhdp" class="col-sm-6">Proyeksi Prosentase Kenaikan PhDP 1</label>
+
+                            <div class="col-xs-6">
+                                <input class="form-control form-control-sm"  type="text"  value="" id="proyeksiPresentasiPhdp">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label for="proyeksiPresentasiPhdp2" class="col-sm-6">Proyeksi Prosentase Kenaikan PhDP 2</label>
+
+                            <div class="col-xs-6">
+                                <input class="form-control form-control-sm"  type="text"  value="" id="proyeksiPresentasiPhdp2">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label for="proyeksiPresentasiPhdp3" class="col-sm-6">Proyeksi Prosentase Kenaikan PhDP 3</label>
+
+                            <div class="col-xs-6">
+                                <input class="form-control form-control-sm"  type="text"  value="" id="proyeksiPresentasiPhdp3">
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="row">
+                                    <label for="user_stamp" class="col-sm-6">User Stamp</label>
+
+                                    <div class="col-xs-6">
+                                        <input class="form-control form-control-sm" disabled  type="text"  value="" id="user_stamp">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary btn-sm" id="btnSaveMaster">Save</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+{{/modal}}
+
+{{#scripts}}
+<script src="{{contextPath}}/assets/vendor/datatables/media/js/jquery.dataTables.js"></script>
+<script src="{{contextPath}}/assets/vendor/datatables/media/js/dataTables.bootstrap4.js"></script>
+<script src="{{contextPath}}/assets/vendor/select2/js/select2.js"></script>
+<script src="{{contextPath}}/assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+<script src="{{contextPath}}/assets/vendor/jquery-validation/dist/jquery.validate.js"></script>
+<script src="{{contextPath}}/assets/vendor/numeral/numeral.min.js"></script>
+<script src="{{contextPath}}/assets/vendor/parsley/parsley.min.js"></script>
+<script src="{{contextPath}}/assets/vendor/sweetalert/sweetalert.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        var pembayaranMpTabel = dkppDataTable($('#table-master-proyeksi'),'{{contextPath}}/api/pembayaran/proyeksi-pembayaran-manfaat',{
+            'columns':[
+                {"data":"tglInput"},
+                {"data":"awalTahunProyeksi"},
+                {"data":"batasGolIVi"},
+                {"data":"batasGolViiViii"},
+                {"data":"jumlahSimulasi"},
+                {"data":"idJenisKenaikanMp"},
+                {"data":"persentaseKenaikanMp1"},
+                {"data":"minimalKenaikanMp1"},
+                {"data":"persentaseKenaikanMp2"},
+                {"data":"minimalKenaikanMp2"},
+                {"data":"persentaseKenaikanMp3"},
+                {"data":"minimalKenaikanMp3"},
+                {"data":"persentaseKenaikanPhdp"},
+                {"data":"persentaseKenaikanPhdp2"},
+                {"data":"persentaseKenaikanPhdp3"},
+                {"data":"id"},
+
+            ],
+            'columnDefs':[
+                {
+                    "targets": [0],
+                    "render": function(data, type, row, meta) {
+                        return data && moment(data).format("DD/MM/YYYY");
+                    }
+                },
+                {
+                    "targets": -1,
+                    "data": 'id',
+                    "render": function(data, type, row, meta){
+                        let param = JSON.stringify(row);
+                        return `<center><a href='#'><button class="btn btn-primary btn-sm" data-toggle="modal" data-target=".bd-example-modal" onclick='displayEditMasterProyeksi(`+param+`)'>` + `<i class="material-icons">edit</i> <span>Edit</span></button></a> &nbsp;&nbsp;` + `<a href='#'><button class="btn btn-danger btn-sm" onclick='hapusProyeksi(`+param+`)'>` + `<i class="material-icons">delete_sweep</i> <span>Hapus</span></button></a></center>`
+                    }
+                }
+            ],
+            "order": [[ 1, 'asc' ]],
+
+        });
+        pembayaranMpTabel.on( 'order.dt search.dt', function () {
+            pembayaranMpTabel.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+                cell.innerHTML = i+1;
+            } );
+        } ).draw();
+
+        $.ajax({
+            url: '{{contextPath}}/api/setupparameter/get_periode',
+            dataType:'json',
+            method:'GET',
+            success:function (data) {
+                console.log("data periode",data);
+                dataPeriode = data;
+                $('#comNamePensLama').val(data.compName);
+                $('#userNamePensLama').val(data.userName);
+                $('#userStampPensLama').val(data.postModeUserStamp);
+                $('#comNamePensBaru').val(data.compName);
+                $('#userNamePensBaru').val(data.userName);
+                $('#userStampPensBaru').val(data.postModeUserStamp);
+
+            }
+        });
+    });
+
+    var tabelKenaikanMp1 = dkppDataTable($('#tabel-kenaikan-mp1'),'{{contextPath}}/api/pembayaran/proyeksi-pembayaran-pensiun-baru',{
+        'columns':[
+            {"data":"tahunProyeksi"},
+            {"data":"nip"},
+            {"data":"namaPeserta"},
+            {"data":"namaPenerimaMp"},
+            {"data":"idGolongan.id"},
+            {"data":"idProyeksi.persentaseKenaikanMp1"},
+            {"data":"kenaikanMp1"},
+            {"data":"mpBulananBaru1"},
+        ],
+        'columnDefs':[
+            {
+                "targets": [6,7],
+                "render": function(data, type, row, meta) {
+                    return data && numeral(data).format("0,0.00");
+                }
+            },
+        ],
+        "oreder":[[1,'asc']],
+    });
+
+    var tabelKenaikanPhdp1 = dkppDataTable($('#tabel-kenaikan-phpd1'),'{{contextPath}}/api/pembayaran/proyeksi-pembayaran-pensiun-baru',{
+        'columns':[
+            {"data":"tahunProyeksi"},
+            {"data":"nip"},
+            {"data":"namaPenerimaMp"},
+            {"data":"jenisKelamin"},
+            {"data":"idGolongan.id"},
+            {"data":"tglLahir"},
+            {"data":"tglKepesertaan"},
+            {"data":"tglHenti"},
+            {"data":"masaKerja"},
+            {"data":"phdpBaru1"},
+            {"data":"mpBulanan"},
+            {"data":"nilaiFs"},
+            {"data":"mpBulanan20persen1"},
+            {"data":"mpBulanan20persen1"},
+            {"data":"mps10jutaBaru1"},
+            {"data":"mpBulanan10jutaBaru1"}
+        ],
+        'columnDefs':[],
+        "oreder":[[1,'asc']],
+    });
+
+    var tabelKenaikanMp2 = dkppDataTable($('#tabel-kenaikan-mp2'),'{{contextPath}}/api/pembayaran/proyeksi-pembayaran-pensiun-baru',{
+        'columns':[
+            {"data":"tahunProyeksi"},
+            {"data":"nip"},
+            {"data":"namaPeserta"},
+            {"data":"namaPenerimaMp"},
+            {"data":"idGolongan.id"},
+            {"data":"idProyeksi.persentaseKenaikanMp2"},
+            {"data":"kenaikanMp2"},
+            {"data":"mpBulananBaru2"},
+        ],
+        'columnDefs':[
+            {
+                "targets": [6,7],
+                "render": function(data, type, row, meta) {
+                    return data && numeral(data).format("0,0.00");
+                }
+            },
+        ],
+        "oreder":[[1,'asc']],
+    });
+
+    var tabelKenaikanPhdp2 = dkppDataTable($('#tabel-kenaikan-phdp2'),'{{contextPath}}/api/pembayaran/proyeksi-pembayaran-pensiun-baru',{
+        'columns':[
+            {"data":"tahunProyeksi"},
+            {"data":"nip"},
+            {"data":"namaPenerimaMp"},
+            {"data":"jenisKelamin"},
+            {"data":"idGolongan.id"},
+            {"data":"tglLahir"},
+            {"data":"tglKepesertaan"},
+            {"data":"tglHenti"},
+            {"data":"masaKerja"},
+            {"data":"phdpBaru2"},
+            {"data":"mpBulanan"},
+            {"data":"nilaiFs"},
+            {"data":"mpBulanan20persen2"},
+            {"data":"mpBulanan20persen2"},
+            {"data":"mps10jutaBaru2"},
+            {"data":"mpBulanan10jutaBaru2"}
+        ],
+        'columnDefs':[],
+        "oreder":[[1,'asc']],
+    });
+
+    var tabelKenaikanMp3 = dkppDataTable($('#tabel-kenaikan-mp3'),'{{contextPath}}/api/pembayaran/proyeksi-pembayaran-pensiun-baru',{
+        'columns':[
+            {"data":"tahunProyeksi"},
+            {"data":"nip"},
+            {"data":"namaPeserta"},
+            {"data":"namaPenerimaMp"},
+            {"data":"idGolongan.id"},
+            {"data":"idProyeksi.persentaseKenaikanMp3"},
+            {"data":"kenaikanMp3"},
+            {"data":"mpBulananBaru3"},
+        ],
+        'columnDefs':[
+            {
+                "targets": [6,7],
+                "render": function(data, type, row, meta) {
+                    return data && numeral(data).format("0,0.00");
+                }
+            },
+        ],
+        "oreder":[[1,'asc']],
+    });
+
+    var tabelKenaikanPhdp3 = dkppDataTable($('#tabel-kenaikan-phdp3'),'{{contextPath}}/api/pembayaran/proyeksi-pembayaran-pensiun-baru',{
+        'columns':[
+            {"data":"tahunProyeksi"},
+            {"data":"nip"},
+            {"data":"namaPenerimaMp"},
+            {"data":"jenisKelamin"},
+            {"data":"idGolongan.id"},
+            {"data":"tglLahir"},
+            {"data":"tglKepesertaan"},
+            {"data":"tglHenti"},
+            {"data":"masaKerja"},
+            {"data":"phdpBaru3"},
+            {"data":"mpBulanan"},
+            {"data":"nilaiFs"},
+            {"data":"mpBulanan20persen3"},
+            {"data":"mpBulanan20persen3"},
+            {"data":"mps10jutaBaru3"},
+            {"data":"mpBulanan10jutaBaru3"}
+        ],
+        'columnDefs':[],
+        "oreder":[[1,'asc']],
+    });
+
+    var tabelKenaikanMpTab31 = dkppDataTable($('#tabel-kenaikan-mp-tab31'),'{{contextPath}}/api/pembayaran/proyeksi-pembayaran-pensiun-lama',{
+        'columns':[
+            {"data":"periodeProyeksi"},
+            {"data":"nip"},
+            {"data":"namaPeserta"},
+            {"data":"namaPenerimaMp"},
+            {"data":"idGolongan.id"},
+            {"data":"idProyeksi.persentaseKenaikanMp1"},
+            {"data":"kenaikanMp1"},
+            {"data":"mpBulananBaru1"},
+        ],
+        'columnDefs':[
+            {
+                "targets": [6,7],
+                "render": function(data, type, row, meta) {
+                    return data && numeral(data).format("0,0.00");
+                }
+            },
+    ],
+        "oreder":[[1,'asc']],
+    });
+
+    var tabelKenaikanMpTab32 = dkppDataTable($('#tabel-kenaikan-mp-tab32'),'{{contextPath}}/api/pembayaran/proyeksi-pembayaran-pensiun-lama',{
+        'columns':[
+            {"data":"periodeProyeksi"},
+            {"data":"nip"},
+            {"data":"namaPeserta"},
+            {"data":"namaPenerimaMp"},
+            {"data":"idGolongan.id"},
+            {"data":"idProyeksi.persentaseKenaikanMp2"},
+            {"data":"kenaikanMp2"},
+            {"data":"mpBulananBaru2"},
+        ],
+        'columnDefs':[
+            {
+                "targets": [6,7],
+                "render": function(data, type, row, meta) {
+                    return data && numeral(data).format("0,0.00");
+                }
+            },
+        ],
+        "oreder":[[1,'asc']],
+    });
+
+    var tabelKenaikanMpTab33 = dkppDataTable($('#tabel-kenaikan-mp-tab33'),'{{contextPath}}/api/pembayaran/proyeksi-pembayaran-pensiun-lama',{
+        'columns':[
+            {"data":"periodeProyeksi"},
+            {"data":"nip"},
+            {"data":"namaPeserta"},
+            {"data":"namaPenerimaMp"},
+            {"data":"idGolongan.id"},
+            {"data":"idProyeksi.persentaseKenaikanMp3"},
+            {"data":"kenaikanMp3"},
+            {"data":"mpBulananBaru3"},
+        ],
+        'columnDefs':[
+            {
+                "targets": [6,7],
+                "render": function(data, type, row, meta) {
+                    return data && numeral(data).format("0,0.00");
+                }
+            },
+        ],
+        "oreder":[[1,'asc']],
+    });
+
+    $('.bd-example-modal').on('show.bs.modal', function (e) {
+        var tglInput = $("#tglInput");
+        var userStamp = $("#user_stamp");
+        tglInput.val( fillDateField(new Date()));
+        userStamp.val("BARU : {{userStamp}}");
+
+    });
+
+    fillParam = function(strElementId){
+        if($('#' + strElementId).val() === undefined)
+            return "";
+        else if ($('#' + strElementId).val() == "null")
+            return "";
+        else
+            return $('#' + strElementId).val()
+    }
+
+    function displayEditMasterProyeksi(param){
+        var userStamp = param.userStamp;
+        userStamp = userStamp.replace("BARU","EDIT");
+        console.log(param);
+        $("#tglInput").val(param.tglInput);
+        $("#idProyeksi").val(param.idProyeksi);
+        $("#estimasiTahun").val(param.jumlahTahunProyeksi);
+        $("#batasUsiaGolIV").val(param.batasGolIVi);
+        $("#batasUsiaGolVIII").val(param.batasGolViiViii);
+        $("#jmlSimulasi").val(param.jumlahSimulasi);
+        $("#presentaseMinimum").val(param.idJenisKenaikanMp);
+        $("#proyeksiPresentasiMP1").val(param.persentaseKenaikanMp1);
+        $("#proyeksiPresentasiMP2").val(param.persentaseKenaikanMp2);
+        $("#proyeksiPresentasiMP3").val(param.persentaseKenaikanMp3);
+        $("#proyeksiMinimalNominalMP1").val(param.minimalKenaikanMp1);
+        $("#proyeksiMinimalNominalMP2").val(param.minimalKenaikanMp2);
+        $("#proyeksiMinimalNominalMP3").val(param.minimalKenaikanMp3);
+        $("#proyeksiPresentasiPhdp").val(param.persentaseKenaikanPhdp);
+        $("#proyeksiPresentasiPhdp2").val(param.persentaseKenaikanPhdp2);
+        $("#proyeksiPresentasiPhdp3").val(param.persentaseKenaikanPhdp3);
+        $("#user_stamp").val(userStamp);
+
+    }
+
+    function hapusProyeksi(param){
+
+        swal({
+            title: "Anda yakin?",
+            text: "Data yg telah dihapus tidak dapat ditampilkan kembali",
+            icon: "warning",
+            buttons: [
+                'Tidak',
+                'Ya'
+            ],
+            dangerMode: true,
+        }).then(function(isConfirm) {
+            if (isConfirm) {
+                SPParam = {
+                    parCompName : "",
+                    parUserName : "",
+                    parIdProyeksi : param.idProyeksi,
+                    parTglInput : "01/01/1970",
+                    parJmlThnProyeksi : param.jumlahTahunProyeksi,
+                    parBatasGolIIV : param.batasGolIVi,
+                    parBatasGolVII : param.batasGolViiViii,
+                    parJmlSimulasi : param.jumlahSimulasi,
+                    parIdJenisKenaikanMp : param.idJenisKenaikanMp,
+                    parPersentaseKenaikanMp1 : param.persentaseKenaikanMp1,
+                    parPersentaseKenaikanMp2 : param.persentaseKenaikanMp2,
+                    parPersentaseKenaikanMp3 : param.persentaseKenaikanMp3,
+                    parMinimalKenaikanMp1 : param.minimalKenaikanMp1,
+                    parMinimalKenaikanMp2 : param.minimalKenaikanMp2,
+                    parMinimalKenaikanMp3 : param.minimalKenaikanMp3,
+                    parPersentaseKenaikanPhdp : param.persentaseKenaikanPhdp,
+                    parPersentaseKenaikanPhdp2 : param.persentaseKenaikanPhdp2,
+                    parPersentaseKenaikanPhdp3 : param.persentaseKenaikanPhdp3,
+                    parAction : 'D',
+                    parUserStamp : "BARU : {{userStamp}}",
+                    _csrf: "{{_csrf.token}}"
+                }
+
+                $.ajax({
+                    url: "{{contextPath}}{{proyeksi_master_path}}",
+                    method: "POST",
+                    data: SPParam,
+                    success: function(data){
+                        if(data.status == "success") {
+                            swal({title: "Berhasil", text: data.message, icon: "success", button: "OK"})
+                                .then(()=>{
+                                    setTimeout(function(){window.location.href = "{{gridPath}}";}, 1000);
+                                });
+                        }
+                    },
+                    error: function(data){
+                        if(data.message != undefined )
+                            swal({title: "Gagal", text: data.message, icon: "error", button: "OK"});
+                        else
+                            swal({title: "Gagal", text: "Terjadi kesalahan.", icon: "error", button: "OK"});
+                    }
+                });
+
+            } else {
+                swal("Cancelled", "Your imaginary file is safe :)", "error");
+            }
+        })
+
+    }
+
+    function processProyeksiPensBaru(){
+        var tahunProyeksiElmnt =$("#proyeksiPensBaruAwalTahun");
+        var jmlTahunProyeksiElmnt =$("#estimasiTahunProyeksiPensBaru");
+        loader($("body"), true);
+        SPParam = {
+            parCompName : "",
+            parUserName : "",
+            parTahunProyeksi : tahunProyeksiElmnt.val(),
+            parUntukProyeksi : jmlTahunProyeksiElmnt.val(),
+            parUserStamp : "BARU : {{userStamp}}",
+            _csrf: "{{_csrf.token}}"
+        };
+
+        $.ajax({
+            url: "{{contextPath}}{{proyeksi_pensbaru_path}}",
+            method: "POST",
+            data: SPParam,
+            success: function(data){
+                loader($("body"), false);
+                if(data.status == "success") {
+                    swal({title: "Berhasil", text: data.message, icon: "success", button: "OK"})
+                        .then(()=>{
+                            setTimeout(function(){window.location.href = "{{gridPath}}";}, 1000);
+                        });
+                }
+            },
+            error: function(data){
+                loader($("body"), false);
+                if(data.message != undefined )
+                    swal({title: "Gagal", text: data.message, icon: "error", button: "OK"});
+                else
+                    swal({title: "Gagal", text: "Terjadi kesalahan.", icon: "error", button: "OK"});
+            }
+        });
+    }
+
+    $('#btnSaveMaster').on('click', function (e){
+        var presentaseMinimumElmnt = $("#presentaseMinimum");
+        var estimasiTahunElmnt = $("#presentaseMinimum");
+        var action_ = 'C';
+
+        if ($("#idProyeksi").val() != null && $("#idProyeksi").val() != "" && $("#idProyeksi").val() != undefined){
+            action_ = 'U';
+        }
+
+        //$('#form-input').validate();
+        //let validForm = $('#form-input').valid();
+        //if (validForm) {
+            SPParam = {
+                parCompName : "",
+                parUserName : "",
+                parIdProyeksi : $("#idProyeksi").val(),
+                parTglInput : $("#tglInput").val(),
+                parJmlThnProyeksi : estimasiTahunElmnt.val(),
+                parBatasGolIIV : $("#batasUsiaGolIV").val(),
+                parBatasGolVII : $("#batasUsiaGolVIII").val(),
+                parJmlSimulasi : $("#jmlSimulasi").val(),
+                parIdJenisKenaikanMp : presentaseMinimumElmnt.val(),
+                parPersentaseKenaikanMp1 : $("#proyeksiPresentasiMP1").val(),
+                parPersentaseKenaikanMp2 : $("#proyeksiPresentasiMP2").val(),
+                parPersentaseKenaikanMp3 : $("#proyeksiPresentasiMP3").val(),
+                parMinimalKenaikanMp1 : $("#proyeksiMinimalNominalMP1").val(),
+                parMinimalKenaikanMp2 : $("#proyeksiMinimalNominalMP2").val(),
+                parMinimalKenaikanMp3 : $("#proyeksiMinimalNominalMP3").val(),
+                parPersentaseKenaikanPhdp : $("#proyeksiPresentasiPhdp").val(),
+                parPersentaseKenaikanPhdp2 : $("#proyeksiPresentasiPhdp2").val(),
+                parPersentaseKenaikanPhdp3 : $("#proyeksiPresentasiPhdp3").val(),
+                parAction : action_,
+                parUserStamp : "BARU : {{userStamp}}",
+                _csrf: "{{_csrf.token}}"
+            }
+
+            $.ajax({
+                url: "{{contextPath}}{{proyeksi_master_path}}",
+                method: "POST",
+                data: SPParam,
+                success: function(data){
+                    if(data.status == "success") {
+                        swal({title: "Berhasil", text: data.message, icon: "success", button: "OK"})
+                            .then(()=>{
+                            setTimeout(function(){window.location.href = "{{gridPath}}";}, 1000);
+                    });
+                    }
+                },
+                error: function(data){
+                    if(data.message != undefined )
+                        swal({title: "Gagal", text: data.message, icon: "error", button: "OK"});
+                    else
+                        swal({title: "Gagal", text: "Terjadi kesalahan.", icon: "error", button: "OK"});
+                }
+            });
+        //}
+
+    });
+
+    $('#processProyeksiPensBaru').on('click', ()=>{
+        $('#prosesProyeksiPensiunBaru').validate();
+        $('#proyeksiPensBaruAwalTahun').rules("add", {
+            required: true,
+            messages: {
+                required: 'masukan proyeksi tahun.'
+            }
+        });
+        $('#estimasiTahunProyeksiPensBaru').rules("add", {
+            required: true,
+            messages: {
+                required: 'pilih jumlah proyeksi tahun.'
+            }
+        });
+        let validForm = $('#prosesProyeksiPensiunBaru').valid();
+        if(validForm){
+
+            $.ajax({
+                url: "{{contextPath}}/api/pembayaran/proyeksi-pembayaran-pensiun-baru/proses-pensiun-baru",
+                method: 'POST',
+                data: formToJSON($("form#prosesProyeksiPensiunBaru")[0].elements)
+            }).success(function(data) {
+                console.log("berhasil");
+                if(data.status == "success") {
+                    swal({title: "Berhasil", text: data.message, icon: "success", button: "OK"});
+                }
+
+                $('#tabel-kenaikan-mp1').DataTable().ajax.reload();
+                $('#tabel-kenaikan-mp2').DataTable().ajax.reload();
+                $('#tabel-kenaikan-mp3').DataTable().ajax.reload();
+                $('#tabel-kenaikan-phpd1').DataTable().ajax.reload();
+                $('#tabel-kenaikan-phpd2').DataTable().ajax.reload();
+                $('#tabel-kenaikan-phpd3').DataTable().ajax.reload();
+
+            }).error(function(data){
+                console.log("gagal");
+                swal({title: "Gagal", text: data.responseJSON.message, icon: "error", button: "OK"});
+                // if(data.message != undefined )
+                //     swal({title: "Gagal", text: data.message, icon: "error", button: "OK"});
+                // else
+                //     swal({title: "Gagal", text: "Terjadi kegagalan.", icon: "error", button: "OK"});
+            });
+        }
+
+    });
+
+    $('#processProyeksiPensLama').on('click', ()=>{
+        $('#prosesProyeksiPensiunLama').validate();
+        $('#proyeksiPensLamaAwalTahun').rules("add", {
+            required: true,
+            messages: {
+                required: 'masukan proyeksi tahun.'
+            }
+        });
+        $('#estimasiTahunProyeksiPensLama').rules("add", {
+            required: true,
+            messages: {
+                required: 'pilih jumlah proyeksi tahun.'
+            }
+        });
+        let validForm = $('#prosesProyeksiPensiunLama').valid();
+        if(validForm){
+            loader($("body"), true);
+            $.ajax({
+                url: "{{contextPath}}/api/pembayaran/proyeksi-pembayaran-pensiun-lama/proses-pensiun-lama",
+                method: 'POST',
+                data: formToJSON($("form#prosesProyeksiPensiunLama")[0].elements)
+            }).success(function(data) {
+                console.log("berhasil");
+                loader($("body"), false);
+                if(data.status == "success") {
+                    swal({title: "Berhasil", text: data.message, icon: "success", button: "OK"});
+                }
+
+                $('#tabel-kenaikan-mp-tab31').DataTable().ajax.reload();
+                $('#tabel-kenaikan-mp-tab32').DataTable().ajax.reload();
+                $('#tabel-kenaikan-mp-tab33').DataTable().ajax.reload();
+
+            }).error(function(data){
+                console.log("gagal");
+                loader($("body"), false);
+                swal({title: "Gagal", text: data.responseJSON.message, icon: "error", button: "OK"});
+                // if(data.message != undefined )
+                //     swal({title: "Gagal", text: data.message, icon: "error", button: "OK"});
+                // else
+                //     swal({title: "Gagal", text: "Terjadi kegagalan.", icon: "error", button: "OK"});
+            });
+        }
+
+    });
+
+</script>
+{{/scripts}}
+
+{{/layout}}

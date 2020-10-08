@@ -1,0 +1,169 @@
+{{#layout}}
+
+{{#styles}}
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/datatables/media/css/dataTables.bootstrap4.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/googleapis/css/component.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/googleapis/css/googleapis.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/select2/css/select2.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css">
+<style>
+    #mutasi_table {
+        min-width: 2100px;
+    }
+</style>
+{{/styles}}
+
+{{#title}}
+Pensiun Lama - Mutasi Otomatis Penerima MP Anak 25 Tahun dan MP Bulan Ke-13
+{{/title}}
+
+
+
+<ul class="nav nav-tabs" role="tablist">
+    <li class="nav-item">
+        <a class="nav-link active" data-toggle="tab" href="#one" role="tab">Master Mutasi Otomatis Anak 25 Tahun dan MP 80%</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#two" role="tab">Data Mutasi Otomatis Anak 25 Tahun</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#three" role="tab">Data Mutasi Otomatis Janda/Duda/Anak Bulan Ke-13 (MP 80%)</a>
+    </li>
+</ul>
+
+<div class="tab-content">
+    {{>pensiunLama/mutasi-penerima-anak/tab1-grid}}
+    {{>pensiunLama/mutasi-penerima-anak/tab2-grid}}
+    {{>pensiunLama/mutasi-penerima-anak/tab3-grid}}
+</div>
+
+{{#modal}}
+{{>pensiunLama/mutasi-penerima-anak/tab2-modal}}
+
+{{>pensiunLama/mutasi-penerima-anak/tab3-modal}}
+{{/modal}}
+
+{{#scripts}}
+<script src="{{contextPath}}/assets/vendor/datatables/media/js/jquery.dataTables.js"></script>
+<script src="{{contextPath}}/assets/vendor/datatables/media/js/dataTables.bootstrap4.js"></script>
+<script src="{{contextPath}}/assets/vendor/select2/js/select2.js"></script>
+<script src="{{contextPath}}/assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+<script src="{{contextPath}}/assets/vendor/jquery-validation/dist/jquery.validate.js"></script>
+<script src="{{contextPath}}/assets/vendor/numeral/numeral.min.js"></script>
+<script src="{{contextPath}}/assets/vendor/sweetalert/sweetalert.min.js"></script>
+
+<script type="text/javascript">
+    let mutasiTable = dkppDataTable($('#mutasi_table'),
+        '{{contextPath}}{{mutasi_path_api}}', {
+            'columns': [
+                {
+                    "data": "tglMutasi",
+                    "width": "50px"
+                },
+                {
+                    "data": "periodeMutasi",
+                    "width": "50px"
+                },
+                {
+                    "data": "nip",
+                    "width": "50px",
+                    searchable: true
+                },
+                {
+                    "data": "namaPeserta"
+                },
+                {
+                    "data": "jenisKelaminPeserta",
+                    "width": "70px"
+                },
+                {
+                    "data": "golonganPangkat",
+                    "width": "100px"
+                },
+                {
+                    "data": "namaPenerimaMp"
+                },
+                {
+                    "data": "namaKategoriPenerimaMp",
+                    "width": "100px"
+                },
+                {
+                    "data": "tglMenikahlagiPenerimaMp",
+                    "width": "100px"
+                },
+                {
+                    "data": "tglInfNikahPenerimampLama",
+                    "width": "100px"
+                },
+                {
+                    "data": "namaPenerimaMpBaru"
+                },
+                {
+                    "data": "namaKategoriPenerimaMpBaru",
+                    "width": "100px"
+                },
+                {
+                    "data" : "statusBayar"
+                },
+                {
+                    "data" : "nomorHer"
+                },
+                {
+                    "data": "namaValidasi",
+                    "width": "100px"
+                },
+                {
+                    "data": "nip",
+                    "width": "50px"
+                }
+            ],
+            'columnDefs': [
+                {
+                    "targets": 4,
+                    "render": function(data, type, row, meta) {
+                        return data && genderText(data);
+                    }
+                },
+                {
+                    "targets": [0, 8, 9],
+                    "render": function(data, type, row, meta) {
+                        return data && moment(data).format("DD/MM/YYYY");
+                    }
+                },
+                {
+                    "targets": 14,
+                    "render": function(data, type, row, meta) {
+                        var result="";
+                        if (data == "Sudah Validasi")
+                        {
+                            result = '<span class="tag tag-pill tag-success">' + data + '</span>';
+                        }
+                        else if (data == "Batal Validasi")
+                        {
+                            result = '<span class="tag tag-pill tag-danger">' + data + '</span>';
+                        }
+                        else if (data == "Belum Validasi")
+                        {
+                            result = '<span class="tag tag-pill tag-info">' + data + '</span>';
+                        }
+                        return result;
+                    }
+                },
+                {
+                    "targets": 15,
+                    "className": "action-box",
+                    "render": function(data, type, row, meta){
+                        return `<a class='btn btn-info btn-sm btn-icon btn-edit' href='{{contextPath}}${objectToText(row, "{{entry_mutasi_path}}")}' ><i class='material-icons'>edit</i> Process</a>`;
+                    }
+                }
+            ]
+        });
+</script>
+
+{{>pensiunLama/mutasi-penerima-anak/tab1-script}}
+{{>pensiunLama/mutasi-penerima-anak/tab2-script}}
+{{>pensiunLama/mutasi-penerima-anak/tab3-script}}
+
+{{/scripts}}
+
+{{/layout}}

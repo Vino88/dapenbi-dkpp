@@ -1,0 +1,41 @@
+{{#authLayout}}
+<div class="entityManager-content" style='background: url("{{contextPath}}/assets/images/bg_login.jpg") no-repeat center center fixed; background-size: 100%'>
+    <div class="card card-block form-layout" style="margin-bottom: 500.313; height: 650px; ">
+        <form action="{{contextPath}}/auth/forgot-password" method="post" id="validate">
+            <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
+            <div class="text-xs-center m-b-3">
+                <img src="{{contextPath}}/assets/images/logo_dapenbi.png" height="80" alt="avatar" class="m-b-1"/>
+                <h5>
+                    Forgot Password
+                </h5>
+            </div>
+            {{#loginError}}
+            <div class="alert {{style}}">
+                {{message}}
+            </div>
+            {{/loginError}}
+            <fieldset class="form-group">
+                <label for="username">
+                    Enter Your Email
+                </label>
+                <input type="text" class="form-control form-control-lg" id="username" name="email" placeholder="insert email" required/>
+            </fieldset>
+            <button class="btn btn-primary btn-block btn-lg" type="submit" onclick="sweet()">
+                Send Confirmation
+            </button>
+        </form>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        function sweet(){
+            swal({
+                title: "Good job!",
+                text: "You clicked the button!",
+                icon: "success",
+            });
+        }
+    })
+</script>
+{{/authLayout}}

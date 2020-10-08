@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RekapitulasiPenerimaMP_ANAK_PenerimaMP_Anak_MeninggalDunia" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="2907a436-eca9-4c38-bbca-2872016e6b0c">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="dbserver"/>
+	<parameter name="periode_x" class="java.lang.String"/>
+	<parameter name="periode_y" class="java.lang.String"/>
+	<parameter name="id_kantor_bayar" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT 
+a.periode_mutasi,
+to_char(to_date(a.periode_mutasi,'mm yyyy'),'Month yyyy','nls_date_language = INDONESIAN') as periode_mutasi_header,
+a.nama_kantor_bayar,
+COUNT(a.nama_kantor_bayar) as penerima_anak_berikutnya,
+to_char(to_date($P{periode_x},'mm yyyy'),'Month','nls_date_language = INDONESIAN') as periode_x,
+to_char(to_date($P{periode_y},'mm yyyy'),'Month yyyy','nls_date_language = INDONESIAN') as periode_y
+FROM tbl_t_mutasi_pensiun a WHERE periode_mutasi BETWEEN $P{periode_x} AND $P{periode_y} AND (id_kantor_bayar LIKE '%$P!{id_kantor_bayar}%' OR $P{id_kantor_bayar} = '00') AND id_kategori_penerima_mp NOT IN('1','2')
+GROUP BY
+periode_mutasi,
+nama_kantor_bayar]]>
+	</queryString>
+	<field name="PERIODE_MUTASI" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="PERIODE_MUTASI"/>
+	</field>
+	<field name="PERIODE_MUTASI_HEADER" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="PERIODE_MUTASI_HEADER"/>
+	</field>
+	<field name="NAMA_KANTOR_BAYAR" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NAMA_KANTOR_BAYAR"/>
+	</field>
+	<field name="PENERIMA_ANAK_BERIKUTNYA" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="PENERIMA_ANAK_BERIKUTNYA"/>
+	</field>
+	<field name="PERIODE_X" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="PERIODE_X"/>
+	</field>
+	<field name="PERIODE_Y" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="PERIODE_Y"/>
+	</field>
+	<variable name="Total" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{PENERIMA_ANAK_BERIKUTNYA}]]></variableExpression>
+	</variable>
+	<group name="PERIODE_MUTASI">
+		<groupExpression><![CDATA[$F{PERIODE_MUTASI}]]></groupExpression>
+	</group>
+	<group name="NAMA_KANTOR_BAYAR">
+		<groupExpression><![CDATA[$F{NAMA_KANTOR_BAYAR}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="89" splitType="Stretch">
+			<staticText>
+				<reportElement x="-20" y="4" width="595" height="55" uuid="1fd175be-e586-4739-bc96-8d488d5d5b60"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[REKAPITULASI DAFTAR PENERIMA MP ANAK 
+KARENA PENERIMA MP ANAK MENINGGAL DUNIA]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="-20" y="59" width="595" height="30" uuid="f1210594-d625-4bc6-bec2-d2ccdc4d385e"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Periode Bulan : "+$F{PERIODE_X}+" s.d "+$F{PERIODE_Y}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="63" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="10" width="130" height="50" backcolor="#FFFFFF" uuid="d7129ee5-3c8c-493e-9d6f-9fd4eb6f76cb"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Bulan]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="130" y="10" width="140" height="50" backcolor="#FFFFFF" uuid="35454d6f-6550-45dd-bda5-5c7930d61969"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Kantor Bayar]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="270" y="10" width="280" height="30" backcolor="#FFFFFF" uuid="6d8d254a-0f36-45d1-9dc7-da4c33e3aaad"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Jumlah Orang]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="270" y="40" width="130" height="20" backcolor="#FFFFFF" uuid="4dfb2840-7a69-46d8-b495-18609210ef19"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[MP Anak berikutnya]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="400" y="40" width="150" height="20" backcolor="#FFFFFF" uuid="f8996a9c-2e31-4e8d-88e7-076713016fda"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Hapus]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="30">
+			<textField>
+				<reportElement x="0" y="-2" width="130" height="30" uuid="ea4ef596-6123-4597-bc84-285acb7c5b74"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{PERIODE_MUTASI} == null ? "-" : $F{PERIODE_MUTASI}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="400" y="-2" width="150" height="30" uuid="993ce9cd-c872-4ba7-bfe4-432c79aaee4d"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[""]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Group" evaluationGroup="PERIODE_MUTASI">
+				<reportElement x="130" y="-2" width="140" height="30" uuid="ba2ce9bb-8ce9-41f9-95ff-e2330d2a6a87"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{NAMA_KANTOR_BAYAR} == null ? "-" : $F{NAMA_KANTOR_BAYAR}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="270" y="-2" width="130" height="30" uuid="d65dd394-4472-469a-875a-eef0ff06342e"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{PENERIMA_ANAK_BERIKUTNYA} == null ? "-" : $F{PENERIMA_ANAK_BERIKUTNYA}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="76" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="43" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="6" width="270" height="30" uuid="82d0e58e-8f18-40a3-a085-27451732efef"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total MP Anak]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="270" y="6" width="130" height="30" uuid="d8f3c478-77ed-43e5-a01b-f75dd253b692"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{Total}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="400" y="6" width="150" height="30" uuid="ffc3bf24-f39a-4446-aa80-05663cdc1bee"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[""]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

@@ -1,0 +1,1309 @@
+{{#layout}}
+
+{{#title}}
+Mutasi Manfaat Pensiun Sekaligus 100% - DKPP
+{{/title}}
+
+{{#styles}}
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/datatables/media/css/dataTables.bootstrap4.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/googleapis/css/component.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/googleapis/css/googleapis.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/select2/css/select2.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css">
+{{/styles}}
+
+<!-- main area -->
+<div class="main-content">
+    <div class="content-view">
+        <div class="card">
+
+            <div class="card-block">
+                <div class="alert alert-info">
+                    Ketentuan Pengambilan MPS 100% : (KMK. No.50/PMK.010/2012, MP bulanan  ≤ 1,5 juta)
+                </div>
+                {{#isStaff}}
+                <button class="btn btn-primary btn-sm" data-toggle="modal" id="btn-add" data-target=".bd-example-modal"><i class="fa fa-plus"></i> <span>Tambah Data Mutasi</span></button>
+                {{/isStaff}}
+                <hr/>
+                <div class="col-lg-12">
+                    <div class="row">
+                        <label for="example-text-input" class="col-sm-1">Periode Mutasi</label>
+                        <div class="col-xs-2">
+                            <input class="form-control form-control-sm" readonly type="text" value="092018" id="periode-mutasi-depan">
+                        </div></div>
+                </div>
+                <div class="col-lg-12"><hr/></div>
+
+                <table class="table table-bordered datatable" id="mutasi-mp-sekaligus">
+                    <thead>
+                    <tr>
+                        <th>
+                            Tanggal Mutasi
+                        </th>
+                        <th>
+                            Periode Mutasi
+                        </th>
+                        <th>
+                            NIP Peserta
+                        </th>
+                        <th>
+                            Nama Peserta
+                        </th>
+                        <th>
+                            Nama Penerima MP
+                        </th>
+                        <th>
+                            Jenis Penerima MP
+                        </th>
+                        <th>
+                            Tanggal Permohonan MPS 100%
+                        </th>
+                        <th>
+                            MP Bulanan
+                        </th>
+                        <th>
+                            MPS 100%
+                        </th>
+                        <th>
+                            Tanggal Henti Bayar
+                        </th>
+                        <th>
+                            No. Her registrasi
+                        </th>
+                        <th>
+                            Status Validasi
+                        </th>
+                        <th>
+                            Aksi
+                        </th>
+                    </tr>
+                    </thead>
+                </table>
+
+            </div>
+        </div>
+    </div>
+    <!-- bottom footer -->
+    <iframe style="display: none" id="report" name="report" src=""></iframe>
+    <!-- /bottom footer -->
+</div>
+
+<!-- Modal add -->
+<div class="modal fade modal-create" id="modal-create" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form id="form-create">
+                <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title small bold" id="myModalLabel">Mutasi MPS 100%</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="row">
+                                <label for="tgl-mutasi" class="col-sm-6 bold">Tanggal Mutasi</label>
+                                <div class="col-xs-6">
+                                    <input class="form-control form-control-sm" disabled type="text" value="" name="tglMutasi" id="tgl-mutasi" disabled>
+                                    <!--<input class="form-control form-control-sm" type="text" name="tglMutasi" id="tgl-mutasi" disabled>-->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="row">
+                                <label for="periode-mutasi" class="col-sm-6 bold">Periode Mutasi</label>
+                                <div class="col-xs-6">
+                                    <input class="form-control form-control-sm" readonly stype="text" name="periodeMutasi" id="periode-mutasi" >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-12"><hr/></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <small class="bold">Data Peserta</small>
+                        </div>
+                        <div class="col-lg-6">
+                            <small class="bold">Data Penerima MP</small>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="row">
+                                <label for="example-text-input" class="col-sm-6">NIP</label>
+                                <input id="nip" type="hidden" name="nip">
+                                <div class="col-xs-6">
+                                    <select name="nip" id="id-peserta-mp" required class="form-control form-control-sm">
+                                        <option></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label for="nama-peserta" class="col-sm-6">Nama Peserta</label>
+
+                                <div class="col-xs-6">
+                                    <input class="form-control form-control-sm" type="text" readonly name="namaPeserta"  id="nama-peserta">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label for="jenis-kelamin-peserta" class="col-sm-6">Jenis Kelamin</label>
+
+                                <div class="col-xs-6">
+                                    <input class="form-control form-control-sm" type="text" readonly name="jenisKelaminPeserta" id="jenis-kelamin-peserta">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label for="tgl-lahir-peserta" class="col-sm-6">Tanggal Lahir</label>
+
+                                <div class="col-xs-6">
+                                    <input class="form-control form-control-sm" readonly type="text" name="tglLahirPeserta" id="tgl-lahir-peserta">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label for="tgl-kerja-peserta" class="col-sm-6">Tanggal Mulai Bekerja</label>
+
+                                <div class="col-xs-6">
+                                    <input class="form-control form-control-sm" readonly type="text" name="tglKerjaPeserta"  id="tgl-kerja-peserta">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label for="tgl-henti-kerja" class="col-sm-6">Tanggal Berhenti Bekerja</label>
+
+                                <div class="col-xs-6">
+                                    <input class="form-control form-control-sm" readonly type="text" name="tglHentiKerjaPeserta" id="tgl-henti-kerja">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label for="tgl-henti-kerja" class="col-sm-6">Tanggal Wafat</label>
+
+                                <div class="col-xs-6">
+                                    <input class="form-control form-control-sm" readonly type="text" name="tglHentiKerjaPeserta" id="tgl-henti-wafat">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label for="example-text-input" class="col-sm-6">Usia Peserta Saat Berhenti</label>
+
+                                <div class="col-xs-6">
+                                    <input class="form-control form-control-sm" readonly type="text" name="usiaSaatHenti" id="usia-saat-henti">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label for="example-text-input" class="col-sm-6">Masa Kerja Total</label>
+
+                                <div class="col-xs-6">
+                                    <input class="form-control form-control-sm" readonly type="text" name="totalMasaKerja" id="total-masa-kerja">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label for="example-text-input" class="col-sm-6">PhDP</label>
+
+                                <div class="col-xs-6">
+                                    <input class="form-control form-control-sm" readonly type="text" name="phdpLama" id="phdp-lama">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label for="example-text-input" class="col-sm-6">Alasan Mps</label>
+                                <input id="nama-alasan" type="hidden" name="namaAlasanMps100">
+                                <div class="col-xs-6">
+                                    <select name="idAlasanMps100" id="id-alasan" required class="form-control form-control-sm">
+                                        <option></option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="row">
+                                <label for="example-text-input" class="col-sm-6">ID-Nama Penerima MP</label>
+                                <input type="hidden" name="idPenerimaMp" id="id-penerima-mp">
+                                <input type="hidden" name="namaPenerimaMp" id="nama-penerima-mp">
+                                <div class="col-xs-6">
+                                    <input class="form-control form-control-sm" readonly type="text"  id="id-nama-penerima-">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label for="example-text-input" class="col-sm-6">Jenis Penerima MP</label>
+
+                                <div class="col-xs-6">
+                                    <input class="form-control form-control-sm" readonly type="text" name="namaKategoriPenerimaMp" id="nama-kategori-penerima-mp">
+                                    <input type="hidden" name="kategoriPenerima" id="id-kategori-penerima">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label for="example-text-input" class="col-sm-6">Status Pernikahan</label>
+
+                                <div class="col-xs-6">
+                                    <input class="form-control form-control-sm" readonly type="text" name="namaStatusKawinPenerimaMp"  id="status-kawin-penerima">
+                                    <input type="hidden" name="idStatusKawinPenerimaMp" id="id-statuskawin-penerima-mp">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label for="example-text-input" class="col-sm-6">ID SusKel</label>
+
+                                <div class="col-xs-6">
+                                    <input class="form-control form-control-sm" readonly type="text" name="namaSuskel"  id="nama-suskel">
+                                    <input type="hidden" name="idSuskel" id="id-suskel">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label for="mpyd-lama" class="col-sm-6">MP Bulanan</label>
+
+                                <div class="col-xs-6">
+                                    <input class="form-control form-control-sm" readonly type="text" name="mpydLama" id="mpyd-lama">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label for="tgl-permohonan-mps-100" class="col-sm-6">Tanggal Permohonan MPS 100%</label>
+
+                                <div class="col-xs-6">
+                                    <input class="form-control form-control-sm" placeholder="dd/mm/yyyy"  type="text" name="tglMohonMps100" required id="tgl-permohonan-mps-100" data-provide="datepicker" data-date-format="dd/mm/yyyy">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label for="tgl-bayar-mps-100" class="col-sm-6">Tanggal Bayar MPS 100%</label>
+
+                                <div class="col-xs-6">
+                                    <input class="form-control form-control-sm " placeholder="dd/mm/yyyy"  type="text" name="tglBayarMps100" required id="tgl-bayar-mps-100" data-provide="datepicker" data-date-format="dd/mm/yyyy">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label for="usia-penerima-saat-mps-100-dibayar" class="col-sm-6">Usia Penerima Saat MPS 100% Dibayar</label>
+
+                                <div class="col-xs-6">
+                                    <input class="form-control form-control-sm " readonly type="TEXT" name="usiaPenerimaBayar" id="usia-penerima-saat-mps-100-dibayar">
+                                    <input type="hidden" name="usiaPenerimaBayarBlt" id="usia-penerima-bayar-blt">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label for="tgl-henti-bayar" class="col-sm-6">Tanggal Henti Bayar</label>
+
+                                <div class="col-xs-6">
+                                    <input class="form-control form-control-sm"  type="text" placeholder="dd/mm/yyyy" name="tglHentiBayar" id="tgl-henti-bayar" required data-provide="datepicker" data-date-format="dd/mm/yyyy" readonly>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label for="mps-100-bulat" class="col-sm-6">MPS 100%</label>
+
+                                <div class="col-xs-6">
+                                    <input class="form-control form-control-sm" readonly type="text" name="mps100Bulat" id="mps-100-bulat">
+                                    <input type="hidden" name="mps100" id="mps-100">
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <br><br>
+                    <div class="row">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="card card-block">
+                                    <div class="col-lg-6">
+                                        Kategori Catatan
+                                        <select class="form-control form-control-sm" name="idKategoriCatatan" id="id-kagtegori-catatan" >
+                                            <option></option>
+                                        </select>
+                                        <input type="hidden" name="namaCatatan" id="nama-kategoricatatan">
+                                    </div>
+                                    <div class="col-lg-6">
+                                        Catatan
+                                        <textarea class="form-control  form-control-sm" name="keterangan" id="keterangan" rows="3"></textarea>
+                                    </div>
+                                    <div class="col-lg-12"><br></div>
+                                    <div class="col-lg-12">
+                                        <label for="user-stamp" class="col-xs-5">User Stamp</label>
+                                        <div class="col-xs-7">
+                                            <input class="form-control form-control-sm" type="text" id="user-stamp" readonly>
+                                            <input type="hidden" name="compName" id="comp-name">
+                                            <input type="hidden" name="userName" id="user-name">
+                                            <input type="hidden" name="idFaktorFs" id="id-faktor-fs">
+                                            <input type="hidden" name="namaFaktorFs" id="nama-faktor-fs">
+                                            <input type="hidden" name="faktorFs" id="faktor-fs">
+                                            <input type="hidden" name="nilaiFaktorFs" id="nilai-fs">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary btn-sm" id="btn-save">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- /Modal edit -->
+<div class="modal fade modal-update" id="modal-update" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <form class="modal-content" id="update-form">
+                <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
+            <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
+            <h4 class="modal-title small bold" id="myModalLabel">Mutasi MPS 100%</h4>
+        </div>
+            <div class="modal-body">
+            <div class="row">
+                <div class="col-lg-6"></div>
+                <div class="col-lg-6">
+                    <div class="row">
+                        <div class="col-sm-6">
+                        </div>
+                        <div class="col-xs-6" id="label-status-validasi">
+                            ...
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="col-lg-6">
+                    <div class="row">
+                        <label for="tgl-mutasi-update" class="col-sm-6 bold">Tanggal Mutasi</label>
+                        <div class="col-xs-6">
+                            <input class="form-control form-control-sm" readonly type="text" name="tglMutasi" value="" id="tgl-mutasi-update">
+                            <input type="hidden" name="idMutasi" id="id-mutasi">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="row">
+                        <label for="periode-mutasi-update" class="col-sm-6 bold">Periode Mutasi</label>
+                        <div class="col-xs-6">
+                            <input class="form-control form-control-sm" readonly type="text" value="" name="periodeMutasi" id="periode-mutasi-update">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12"><hr></div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <small class="bold">Data Peserta</small>
+                </div>
+                <div class="col-lg-6">
+                    <small class="bold">Data Penerima MP</small>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="row">
+                        <label for="example-text-input" class="col-sm-6">NIP-Nama Peserta</label>
+                        <div class="col-xs-6">
+                            <input class="form-control form-control-sm" readonly type="text" value="" id="show-id-nama-peserta">
+                            <input type="hidden" name="nip" id="nip-update">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label for="example-text-input" class="col-sm-6">Jenis Kelamin</label>
+                        <div class="col-xs-6">
+                            <input class="form-control form-control-sm" readonly type="text" value="" name="jenisKelaminPeserta" id="jenis-kelamin-peserta-update">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label for="example-text-input" class="col-sm-6">Tanggal Lahir</label>
+                        <div class="col-xs-6">
+                            <input class="form-control form-control-sm" readonly type="text" value="" name="tglLahirPeserta" id="tgl-lahir-peserta-update">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label for="example-text-input" class="col-sm-6">Tanggal Mulai Bekerja</label>
+                        <div class="col-xs-6">
+                            <input class="form-control form-control-sm" readonly type="text" value="" name="tglKerjaPeserta" id="tgl-kerja-peserta-update">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label for="example-text-input" class="col-sm-6">Tanggal Berhenti Bekerja</label>
+
+                        <div class="col-xs-6">
+                            <input class="form-control form-control-sm" readonly type="text" value="" name="tglHentiKerja" id="tgl-henti-kerja-update">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label for="example-text-input" class="col-sm-6">Tanggal Wafat</label>
+
+                        <div class="col-xs-6">
+                            <input class="form-control form-control-sm" readonly type="text" value="" name="tglHentiKerja" id="tgl-henti-wafat-update">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label for="example-text-input" class="col-sm-6">Usia Peserta Saat Berhenti</label>
+                        <div class="col-xs-6">
+                            <input class="form-control form-control-sm" readonly type="text" value="" name="usiaSaatHenti" id="usia-saat-henti-update">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label for="example-text-input" class="col-sm-6">Masa Kerja Total</label>
+                        <div class="col-xs-6">
+                            <input class="form-control form-control-sm" readonly type="text" value="" name="totalMasaKerja" id="total-masa-kerja-update">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label for="example-text-input" class="col-sm-6">PhDP</label>
+                        <div class="col-xs-6">
+                            <input class="form-control form-control-sm" type="text" value="" readonly name="phdpLama" id="phdp-lama-update">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label for="example-text-input" class="col-sm-6">Alasan Mps</label>
+                        <input id="nama-alasan-update" type="hidden" name="namaAlasanMps100">
+                        <div class="col-xs-6">
+                            <select name="idAlasanMps100" id="id-alasan-update" required class="form-control form-control-sm" disabled="disabled">
+                                <option></option>
+
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="row">
+                        <label for="example-text-input" class="col-sm-6">ID-Nama Penerima MP</label>
+                        <div class="col-xs-6">
+                            <input type="hidden" name="idPenerimaMp" id="id-penerima-mp-update" value="">
+                            <input type="hidden" name="namaPenerimaMp" id="nama-penerima-mp-update" value="">
+                            <input class="form-control form-control-sm" readonly type="text" value="" id="id-nama-penerima-update">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label for="example-text-input" class="col-sm-6">Jenis Penerima MP</label>
+                        <div class="col-xs-6">
+                            <input class="form-control form-control-sm" readonly type="text" value="" name="namaKategoriPenerimaMp" id="nama-kategori-penerima-mp-update">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label for="example-text-input" class="col-sm-6">Status Pernikahan</label>
+                        <div class="col-xs-6">
+                            <input class="form-control form-control-sm" readonly type="text" value="" name="namaStatusKawinPenerimaMp" id="id-status-kawin-penerima-update">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label for="example-text-input" class="col-sm-6">ID SusKel</label>
+                        <div class="col-xs-6">
+                            <input class="form-control form-control-sm" readonly type="text" value="" name="namaSuskel" id="nama-suskel-update">
+                            <input type="hidden" name="idSuskel" id="id-suskel-update" value="">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label for="example-text-input" class="col-sm-6">MP Bulanan</label>
+                        <div class="col-xs-6">
+                            <input class="form-control form-control-sm" readonly type="text" value="" name="mpydLama" id="mpyd-lama-update">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label for="example-text-input" class="col-sm-6">Tanggal Permohonan MPS 100%</label>
+                        <div class="col-xs-6">
+                            <input class="form-control form-control-sm" placeholder="dd/mm/yyyy" type="text" name="tglMohonMps100" required="" id="tgl-permohonan-mps-100-update" data-provide="datepicker" data-date-format="dd/mm/yyyy" disabled="disabled">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label for="example-text-input" class="col-sm-6">Tanggal Bayar MPS 100%</label>
+                        <div class="col-xs-6">
+                            <input class="form-control form-control-sm " placeholder="dd/mm/yyyy" type="text" name="tglBayarMps100" required="" id="tgl-bayar-mps-100-update" data-provide="datepicker" data-date-format="dd/mm/yyyy" disabled="disabled">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label for="example-text-input" class="col-sm-6">Usia Penerima Saat MPS 100% Dibayar</label>
+                        <div class="col-xs-6">
+                            <input class="form-control form-control-sm " readonly="" type="TEXT" name="usiaPenerimaBayar" id="usia-penerima-saat-mps-100-dibayar-update">
+                            <input type="hidden" name="usiaPenerimaBayarBlt" id="usia-penerima-bayar-blt-update">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label for="example-text-input" class="col-sm-6">Tanggal Henti Bayar</label>
+                        <div class="col-xs-6">
+                            <input class="form-control form-control-sm" type="text" placeholder="dd/mm/yyyy" name="tglHentiBayar" id="tgl-henti-bayar-update" required="" data-provide="datepicker" data-date-format="dd/mm/yyyy" disabled="disabled">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label for="example-text-input" class="col-sm-6">MPS 100%</label>
+                        <div class="col-xs-6">
+                            <input class="form-control form-control-sm" readonly="" type="text" name="mps100Bulat" id="mps-100-bulat-update">
+                            <input type="hidden" name="mps100" id="mps-100-update" value="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br><br>
+            <div class="row">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card card-block">
+                            <div class="col-lg-12">
+                                <label class="radio-inline">
+                                    <input type="radio" name="idValidasi" id="id-validasi-1" value="1" />
+                                    Belum Validasi
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="idValidasi" id="id-validasi-2" value="2" />
+                                    Sudah Validasi
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="idValidasi" id="id-validasi-3" value="3" />
+                                    Batal Koreksi
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="idValidasi" id="id-validasi-4" value="4" />
+                                    Batal Data
+                                </label>
+                                <input type="hidden" name="namaValidasi" id="nama-validasi"/>
+                            </div>
+                            <div class="col-lg-6">
+                                Kategori Catatan
+                                    <select class="form-control form-control-sm" id="id-kategori-catatan-edit" name="idKategoriCatatan" required>
+                                        <option></option>
+                                    </select>
+                                <input type="hidden" name="namaCatatan" id="nama-kategori-catatan-update">
+                            </div>
+                            <div class="col-lg-6">
+                                Catatan
+                                <textarea class="form-control  form-control-sm" rows="3" id="keterangan-update" name="keterangan"></textarea>
+                            </div>
+                            <div class="col-lg-12"><br>
+                            </div>
+                            <div class="col-lg-12">
+                                <label for="user-stamp-update" class="col-xs-5">User Stamp</label>
+                                <div class="col-xs-7">
+                                    <input class="form-control form-control-sm" type="text" value="" name="userStamp"  id="user-stamp-update" disabled>
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <label for="user-name-update" class="col-xs-5">User Validasi</label>
+                                <div class="col-xs-7">
+                                    <input class="form-control form-control-sm" type="text" value="" id="user-name-update" name="userName" readonly="readonly">
+                                    <input type="hidden" name="compName" id="comp-name-update" value="">
+                                    <input type="hidden" name="idFaktorFs" id="id-faktor-fs-update">
+                                    <input type="hidden" name="namaFaktorFs" id="nama-faktor-fs-update">
+                                    <input type="hidden" name="faktorFs" id="faktor-fs-update">
+                                    <input type="hidden" name="nilaiFaktorFs" id="nilai-fs-update">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary btn-sm" id="btn-update">Save</button>
+        </div>
+        </form>
+        </div>
+    </div>
+{{#modal}}
+<div class="modal fade report-modal" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title small bold" id="myModalLabel">Form Cetak Laporan Mutasi Manfaat Pensiun Sekaligus (MPS 100%)</h4>
+            </div>
+            <div class="modal-body">
+                <form id="pesertaForm">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <div class="radio" id="radio_formulir">
+                                    <label>
+                                        <input checked="" name="optradio" type="radio" value="formulir_entry_mutasi"> Formulir Entry Mutasi
+                                    </label>
+                                </div>
+                                <div class="radio" id="catatan_perhitungan">
+                                    <label>
+                                        <input checked="" name="optradio" type="radio" value="catatan"> Cetak Catatan
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="cetakReport()">Cetak</button>
+            </div>
+        </div>
+    </div>
+</div>
+{{/modal}}
+{{#scripts}}
+<script src="{{contextPath}}/assets/vendor/datatables/media/js/jquery.dataTables.js"></script>
+<script src="{{contextPath}}/assets/vendor/datatables/media/js/dataTables.bootstrap4.js"></script>
+<script src="{{contextPath}}/assets/vendor/select2/js/select2.js"></script>
+<script src="{{contextPath}}/assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+<script src="{{contextPath}}/assets/vendor/jquery-validation/dist/jquery.validate.js"></script>
+<script src="{{contextPath}}/assets/vendor/numeral/numeral.min.js"></script>
+<script src="{{contextPath}}/assets/vendor/datatables/media/js/plug-in/fnMultiFilter.js"></script>
+<script src="{{contextPath}}/assets/vendor/sweetalert/sweetalert.min.js"></script>
+<script type="text/javascript">
+    window.DkppReportParam = {};
+    toDb = function (strDate) {
+       var myArray = strDate.split("/");
+       myDateString = myArray[2]+"-"+myArray[1]+"-"+myArray[0];
+       console.log(myDateString);
+       return myDateString;
+   };
+
+    toCl = function (strDate) {
+       var myDate = strDate.split("-");
+       myDateString = myDate[0]+"/"+myDate[1]+"/"+myDate[2];
+       console.log(strDate);
+       return myDateString;
+   };
+    toCledit = function (strDate) {
+        var myDate = strDate.split("-");
+        myDateString = myDate[2]+"/"+myDate[1]+"/"+myDate[0];
+        console.log(strDate);
+        return myDateString;
+    };
+    $(document).ready(function() {
+        $.ajax({
+            url: '{{contextPath}}/api/setupparameter/get_periode',
+            dataType:'json',
+            method:'GET',
+            success:function (data) {
+                console.log(data);
+                $('#periode-mutasi-depan').val(data.periodeMutasi);
+
+            }
+        });
+    });
+
+    var mutasiMpSekaligusTable = dkppDataTable($('#mutasi-mp-sekaligus'),
+        '{{contextPath}}{{mutasi_mp_100_api}}', {
+            'columns': [
+                { "data": "tglMutasi"},
+                { "data": "periodeMutasi"},
+                { "data": "nip"},
+                { "data": "namaPeserta"},
+                { "data": "namaPenerimaMp"},
+                { "data": "namaKategoriPenerimaMp"},
+                { "data": "tglPermohonanMps100"},
+                { "data": "mpydLama"},
+                { "data": "mps100persenLama"},
+                { "data": "tglHentiBayar"},
+                { "data" : "nomorHer"},
+                { "data": "idValidasi"},
+                { "data": "idMutasiPensiun"}
+            ],
+            'columnDefs': [
+                {
+                    "targets": -1,
+                    "className": "action-box",
+                    "render": function(data, type, row, meta){
+                        let param = JSON.stringify(row).replace(/'/g, "&#39;");
+                        let htmlTag = `<a class='btn btn-info btn-sm btn-icon btn-edit' onclick='showEditForm(` + param + `)' ><i class='material-icons'>edit</i> Edit</a>`;
+                        if(row.namaValidasi === "Sudah Validasi"){
+                            htmlTag = `<a class='btn btn-info btn-sm btn-icon btn-edit' onclick='showEditForm(` + param + `)' ><i class='material-icons'>zoom_in</i> View</a>` + `<br><a class=\'btn btn-info btn-sm btn-icon btn-printer\' onclick=\'displayCetak(` + param + `);\'><i class=\'material-icons\'>printer</i> Cetak</a>`;
+                        }else if (row.namaValidasi === "Batal Data"){
+                            htmlTag = `<a class='btn btn-info btn-sm btn-icon btn-edit' onclick='showEditForm(` + param + `)' ><i class='material-icons'>edit</i> Edit</a>`;
+                        }
+                        return htmlTag;
+                    }
+                },
+                {
+                    "targets": [7,8],
+                    "render": function (data, type, row, meta) {
+                        return data && numeral(data).format("0,0.00");
+                    }
+                },
+                {
+                    targets: 0,
+                    render: function(data, type, row, meta){
+                        return fillDateField(row.tglMutasi);
+                    }
+                },
+                {
+                    targets: 6,
+                    render: function(data, type, row, meta){
+                        return fillDateField(row.tglPermohonanMps100);
+                    }
+                },
+                {
+                    targets: 9,
+                    render: function(data, type, row, meta){
+                        return fillDateField(row.tglHentiBayar);
+                    }
+                },
+                {
+                    "targets": -2,
+                    "data": "idValidasi",
+                    "render": function(data, type, row, meta){
+                        console.log(data);
+                        switch(data){
+                            case 1:
+                                return` <span class="tag tag-pill tag-info">Belum Validasi</span>`;
+                                break;
+                            case 2:
+                                return `<span class="tag tag-pill tag-success">Sudah Validasi</span>`;
+                                break;
+                            case 3:
+                                return `<span class="tag tag-pill tag-warning">Batal Koreksi</span>`;
+                                break;
+                            case 4:
+                                return `<span class="tag tag-pill tag-danger">Batal Data</span>`;
+                                break;
+                            case 5:
+                                return `<span class="tag tag-pill tag-danger">Belum Diproses</span>`;
+                                break;
+                            case 6:
+                                return `<span class="tag tag-pill tag-danger">Otomatis Validasi</span>`;
+                                break;
+                            default :
+                                return `<span class="tag tag-pill tag-default"> - </span>`;
+                                break;
+                        }
+                    }
+                }
+            ],
+            "order": [[ 1, 'asc' ]]
+        });
+
+    $(document).ready(function() {
+        $('#btn-add').unbind().on('click', function(){
+            $('#form-create').trigger("reset");
+            $('#id-peserta-mp').val('').trigger('change');
+            $('#id-kagtegori-catatan').val('').trigger('change');
+            $('#id-alasan').val('').trigger('change');
+            $('#keterangan').val('');
+            $('#tgl-permohonan-mps-100').val('');
+            $('#tgl-bayar-mps-100').datepicker().on('changeDate', function(){
+                $('#tgl-henti-bayar').val($('#tgl-bayar-mps-100').val());
+            });
+
+
+            var modal = $('#modal-create');
+            modal.modal('show');
+            window.RESTFulMode = 'POST';
+
+            $.ajax({
+                url: '{{contextPath}}/api/setupparameter/get_periode',
+                dataType:'json',
+                method:'GET',
+                success:function (data) {
+                    console.log(data);
+                    $('#user-stamp').val(data.postModeUserStamp);
+                    $('#periode-mutasi').val(data.periodeMutasi);
+                    $('#tgl-mutasi').val(toCl(data.tglMutasi));
+                    $('#comp-name').val(data.compName);
+                    $('#user-name').val(data.userName);
+                    $('#periode-mutasi-depan').val(data.periodeMutasi);
+
+                }
+            });
+        });
+        var mutasiMPInsert = $('#id-peserta-mp').select2({
+            ajax: {
+                url: '{{contextPath}}/api/mpensiun/data/status-bayar-1',
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    return {
+                        searchParam: params.term, // search term
+                        valueColumn: "nip",
+                        textColumn: "${nip}-${namaPeserta}",
+                        searchColumn: [
+                            'nip',
+                            'namaPeserta'
+                        ],
+                        includeObject:true
+                    };
+                },
+                processResults: function(data){
+                    return {
+                        results: data
+                    };
+                }
+            },
+            width: "100%",
+            placeholder: 'Pilih Nip Peserta'
+        });
+
+        mutasiMPInsert.on('change', (e) => {
+            console.log("1");
+            if ($(e.target).select2('data')){
+                checkExistMutasi("{{contextPath}}", mutasiMPInsert.val(), function(isExist){
+                    if(isExist == 1){
+                        $('#btn-save').hide();
+
+                    } else {
+                        $('#btn-save').show();
+                    }
+                });
+                const data = $(e.target).select2('data')[0];
+                console.log(data.dataProperties);
+                if (mutasiMPInsert.val() !='' && mutasiMPInsert.val()!= null){
+                    $('#nip').val(data.dataProperties.nip);
+                    $('#nama-peserta').val(data.dataProperties.namaPeserta);
+                    $('#jenis-kelamin-peserta').val(data.dataProperties.jenisKelaminPeserta == "P"? "Pria":"Wanita");
+                    $('#tgl-lahir-peserta').val(fillDateField(data.dataProperties.tglLahirPeserta));
+                    $('#tgl-kerja-peserta').val(fillDateField(data.dataProperties.tglKerjaPeserta));
+                    $('#tgl-henti-kerja').val(fillDateField(data.dataProperties.tglHentiKerjaPeserta));
+                    $('#tgl-henti-wafat').val(fillDateField(data.dataProperties.tglMeninggalPeserta));
+                    $('#usia-saat-henti').val(data.dataProperties.usiaSaatHenti);
+                    $('#total-masa-kerja').val(data.dataProperties.totalMasaKerja);
+                    $('#phdp-lama').val(data.dataProperties.phdp);
+                    $('#id-nama-penerima-').val( data.dataProperties.idPenerimaMP+"-"+data.dataProperties.namaPenerimaMp);
+                    $('#id-penerima-mp').val(data.dataProperties.idPenerimaMP);
+                    $('#nama-penerima-mp').val(data.dataProperties.namaPenerimaMp);
+                    $('#mpyd-lama').val(data.dataProperties.mpyd);
+                    $('#nama-kategori-penerima-mp').val(data.dataProperties.namaKategoriPenerimaMp);
+                    $('#id-kategori-penerima').val(data.dataProperties.kategoriPenerima.id);
+                    $('#status-kawin-penerima').val(data.dataProperties.namaStatusKawinPenerimaMp);
+                    $('#id-statuskawin-penerima-mp').val(data.dataProperties.statusKawin.id);
+                    $('#nama-suskel').val(data.dataProperties.namaSuskel);
+                    $('#id-suskel').val(data.dataProperties.suskel == null? null:data.dataProperties.suskel.id);
+                    $('#usia-penerima-bayar-blt').val(data.dataProperties.usiaPenerimaBayarBulat);
+                    $('#id-faktor-fs').val(data.dataProperties.faktorFs);
+                    $('#nama-faktor-fs').val(data.dataProperties.namaFaktorFs);
+                    $('#faktor-fs').val(data.dataProperties.faktorFsRef);
+                    $('#nilai-fs').val(data.dataProperties.nilaiFs);
+                    const tglBayarMps = $("#tgl-bayar-mps-100");
+                    const tglHentiMps = $("#tglHentiBayar");
+
+                    $('#tgl-bayar-mps-100').datepicker().on('changeData', function(e){
+                            $('#tglHentiBayar').value(e);
+                    });
+
+                    $.ajax({
+                        url:'{{contextPath}}{{mutasi_mp_100_api}}/cufn-hitung-mps',
+                        data:{
+                            nip:$('#nip').val(),
+                            periodeMutasi:$('#periode-mutasi').val()
+                        },
+                        success:function (data) {
+                            console.log("ini data mps");
+                            console.log(data);
+                            $('#mps-100-bulat').val(data.MPS100_BULAT);
+                            $('#mps-100').val(data.MPS100);
+                            $('#usia-penerima-saat-mps-100-dibayar').val(data.USIA_BAYAR_PENERIMA_BULAT);
+
+                            const mps100bulatElmnt = $('#mps-100-bulat');
+                            mps100bulatElmnt.number(true,2);
+
+                            const mpydLamaElmnt = $('#mpyd-lama');
+                            mpydLamaElmnt.number(true,2);
+
+                            const phdpElmnt = $('#phdp-lama');
+                            phdpElmnt.number(true,2);
+
+                        }
+                    })
+                }
+            }
+        });
+
+        var kategoriCatatan = $('#id-kagtegori-catatan').select2({
+            ajax: {
+                url: '{{contextPath}}{{listKategoriCatatan}}',
+                dataType: 'json',
+                method: 'GET',
+                data: function(params){
+                    return {
+                        searchParam: params.term,
+                        valueColumn: 'id',
+                        textColumn: "${id}-${namaKategoriCatatan}",
+                        searchColumn: [
+                            'namaKategoriCatatan'
+                        ],
+                        referenceValue:[
+                            {
+                                column: "id",
+                                table: "kategoriMutasi",
+                                value: 12
+                            }
+                        ],
+                        includeObject :true
+                    }
+                },
+                // dropdownParent: $(".mutasi-nama-penerima"),
+                delay: 250,
+                processResults: function(data){
+                    return {
+                        results: data
+                    };
+                }
+            },
+            width: "100%",
+            placeholder: 'Pilih Kategori Catatan'
+        });
+        kategoriCatatan.on('change',(e) =>{
+            console.log("2");
+            if ($(e.target).select2('data')){
+                const data = $(e.target).select2('data')[0];
+                console.log(data.dataProperties);
+                if (kategoriCatatan.val() !='' && kategoriCatatan.val()!= null){
+                    $('#nama-kategoricatatan').val(data.dataProperties.namaKategoriCatatan);
+                }
+            }
+        });
+
+        var alasanMps100 = $('#id-alasan').select2({
+            ajax: {
+                url: '{{contextPath}}/api/alasan-mp100/dropdownManual',
+                dataType: 'json',
+                method: 'GET',
+                delay: 250,
+                data: function (params) {
+                    return {
+                        searchParam: params.term, // search term
+                        valueColumn: "idAlasanMps100",
+                        textColumn: "${namaAlasanMps100}",
+                        searchColumn: [
+                            'namaAlasanMps100'
+                        ],
+                        includeObject:true
+                    };
+                },
+                processResults: function(data){
+                    return {
+                        results: data
+                    };
+                }
+            },
+            width: "100%",
+            placeholder: 'Pilih Alasan'
+        });
+        alasanMps100.on('change',(e) =>{
+            console.log("3");
+            if ($(e.target).select2('data')){
+                const data = $(e.target).select2('data')[0];
+                console.log(data.dataProperties);
+                if (alasanMps100.val() !='' && alasanMps100.val()!= null){
+                    $('#nama-alasan').val(data.dataProperties.namaAlasanMps100);
+                }
+            }
+        });
+
+        $('#btn-save').unbind().on('click',function () {
+            saveForm();
+        });
+
+        $('#btn-update').on('click', ()=>{
+            console.log("update");
+            $.ajax({
+                url: "{{contextPath}}/api/mutasi-penerima-sekaligus",
+                method: 'PUT',
+                data: formToJSON($("form#update-form")[0].elements)
+            }).success(function(data) {
+                if(data.status == "success") {
+                    $('.modal-update').modal('hide');
+                    swal({title: "Berhasil", text: data.message, icon: "success", button: "OK"});
+                }
+                mutasiMpSekaligusTable.ajax.reload();
+
+
+            }).error(function(data){
+                if(data.message != undefined )
+                    swal({title: "Gagal", text: data.message, icon: "error", button: "OK"});
+                else
+                    swal({title: "Gagal", text: "Terjadi kegagalan.", icon: "error", button: "OK"});
+            });
+        });
+    });
+
+    function saveForm() {
+        $('#form-create').validate();
+
+        $('#id-peserta-mp').rules("add", {
+            required: true,
+            messages: {
+                required: 'Peserta tidak boleh kosong'
+            }
+        });
+
+        $('#id-alasan').rules("add", {
+            required: true,
+            messages: {
+                required: 'Alasan Mps tidak boleh kosong'
+            }
+        });
+
+        $('#tgl-permohonan-mps-100').rules("add", {
+            required: true,
+            messages: {
+                required: 'Tanggal Permohonan Mps tidak boleh kosong'
+            }
+        });
+        $('#tgl-bayar-mps-100').rules("add", {
+            required: true,
+            messages: {
+                required: 'Tanggal Bayar Mps tidak boleh kosong'
+            }
+        });
+        $('#tgl-henti-bayar').rules("add", {
+            required: true,
+            messages: {
+                required: 'Tanggal Henti Bayar Mps tidak boleh kosong'
+            }
+        });
+
+        $('#id-kagtegori-catatan').rules("add", {
+            required: true,
+            messages: {
+                required: 'Kategori Catatan tidak boleh kosong'
+            }
+        });
+
+        let validForm = $('#form-create').valid();
+        if (validForm){
+            console.log("lolos validasi");
+            $.ajax({
+                url: "{{contextPath}}/api/mutasi-penerima-sekaligus/addprocess",
+                method: "POST",
+                data: formToJSON($("form#form-create")[0].elements)
+            }).success(function(data) {
+                console.log("berhasil");
+                $('.modal-create').modal('hide');
+                if (data.status = "success"){
+                    swal({title:"Berhasil",text:data.message, icon:"success", button:"OK"});
+                }
+                mutasiMpSekaligusTable.ajax.reload();
+            }).error(function (data) {
+                console.log("gagal",data);
+
+                if (data.message = undefined)
+                    swal({title: "Gagal", text: data.responseJSON.message, icon: "error", button: "OK"});
+                else
+                    swal({title: "Gagal", text: data.responseJSON.message, icon: "error", button: "OK"});
+
+            });
+        }
+    }
+
+    function showEditForm(param) {
+        window.DkppGlobal2 = {};
+        window.DkppGlobal2.isPejabat = {{isPejabat}};
+        window.DkppGlobal2.isAdmin = {{isAdmin}};
+        window.DkppGlobal2.isStaff = {{isStaff}};
+
+        if (param.idValidasi == 2 || param.idValidasi == 4){
+            $('#btn-update').hide();
+            $('#id-kategori-catatan-edit').prop('disabled', 'true');
+            $('#keterangan-update').prop('disabled', 'true');
+           // $(':input').prop('disabled', 'disabled');
+        }else{
+            $('#btn-update').show();
+            $(':input').removeProp('disabled');
+        }
+        const rowhead = param;
+        const detailModal = $('.modal-update');
+        detailModal.modal('show');
+        console.log('data edit',rowhead);
+        $('#id-mutasi').val(rowhead.idMutasiPensiun);
+        $('#tgl-mutasi-update').val(fillDateField(rowhead.tglMutasi));
+        $('#periode-mutasi-update').val(rowhead.periodeMutasi);
+        $('#nip-update').val(rowhead.nip);
+        $('#show-id-nama-peserta').val(rowhead.nip+"-"+rowhead.namaPeserta);
+        $('#nama-peserta-update').val(rowhead.namaPeserta);
+        $('#jenis-kelamin-peserta-update').val(rowhead.jenisKelaminPeserta =="P"?"Pria":"Wanita");
+        $('#tgl-lahir-peserta-update').val(fillDateField(rowhead.tglLahirPeserta));
+        $('#tgl-kerja-peserta-update').val(fillDateField(rowhead.tglKerjaPeserta));
+        $('#tgl-henti-kerja-update').val(fillDateField(rowhead.tglHentiKerjaPeserta));
+        $('#tgl-henti-wafat-update').val(fillDateField(rowhead.tglMeninggalPeserta));
+        $('#usia-saat-henti-update').val(rowhead.usiaSaatHenti);
+        $('#total-masa-kerja-update').val(rowhead.totalMasaKerja);
+        $('#phdp-lama-update').val(rowhead.phdpLama);
+        $('#id-nama-penerima-update').val( rowhead.idPenerimaMp==undefined? "-"+rowhead.namaPenerimaMp :rowhead.idPenerimaMp+"-"+rowhead.namaPenerimaMp);
+        $('#id-penerima-mp-update').val(rowhead.idPenerimaMp);
+        $('#nama-penerima-mp-update').val(rowhead.namaPenerimaMp);
+        $('#mpyd-lama-update').val(rowhead.mpydLama);
+        $('#nama-kategori-penerima-mp-update').val(rowhead.namaKategoriPenerimaMp);
+        $('#id-kategori-penerima-mp-update').val(rowhead.kategoriPenerima);
+        $('#status-kawin-penerima-update').val(rowhead.namaStatusKawinPenerimaMp);
+        $('#id-status-kawin-penerima-update').val(rowhead.namaStatusKawinPenerimaMp);
+        $('#nama-suskel-update').val(rowhead.namaSuskel);
+        $('#id-suskel-update').val(rowhead.idSuskel);
+        $('#usia-penerima-saat-mps-100-dibayar-update').val(rowhead.usiaPenerimaBayar);
+        $('#usia-penerima-bayar-blt-update').val(rowhead.usiaPenerimaBayarBulat);
+        $('#id-faktor-fs-update').val(rowhead.idFaktorFs);
+        $('#nama-faktor-fs-update').val(rowhead.namaFaktorFs);
+        $('#faktor-fs-update').val(rowhead.faktorFs);
+        $('#nilai-fs-update').val(rowhead.nilaiFs);
+        $('#mps-100-bulat-update').val(rowhead.mps100persenBulatLama);
+        $('#mps-100-update').val(rowhead.mps100persenLama);
+        $('#tgl-permohonan-mps-100-update').val(fillDateField(rowhead.tglPermohonanMps100));
+        $('#tgl-bayar-mps-100-update').val(fillDateField(rowhead.tglAwalBayar));
+        $('#tgl-henti-bayar-update').val( fillDateField(rowhead.tglHentiBayar));
+        $('#user-stamp-update').val(rowhead.userStamp);
+        $('#user-name-update').val(rowhead.userValidasi);
+        $('#keterangan-update').val(rowhead.keteranganOtomatis);
+        $('#nama-validasi').val(rowhead.namaValidasi);
+        $('#comp-name-update').val(rowhead.namaValidasi);
+        $('#nama-alasan-update').val(rowhead.namaAlasanMps100);
+        $('#id-alasan-update').val(rowhead.idAlasanMps100);
+        $('#id-alasan-update').trigger('change');
+
+        const mps100updateElmnt = $('#mps-100-update');
+        const phdpLamaUpdateElmnt = $('#phdp-lama-update');
+        const mpydLamaUpdateElmnt = $('#mpyd-lama-update');
+        const mps100BulatUpdateElmnt = $('#mps-100-bulat-update');
+
+        mps100BulatUpdateElmnt.number(true,2);
+        mpydLamaUpdateElmnt.number(true,2);
+        phdpLamaUpdateElmnt.number(true,2);
+        mps100updateElmnt.number(true,2);
+
+
+
+        switch(rowhead.idValidasi){
+            case 1:
+                $('#id-validasi-1').prop('checked', true);
+                $('#label-status-validasi').html(`<span class="tag tag-pill tag-info pull-right">Belum Validasi</span>`);
+                break;
+            case 2:
+                $('#id-validasi-2').prop('checked', true);
+                $('#label-status-validasi').html(`<span class="tag tag-pill tag-info pull-right">Sudah Validasi</span>`);
+                break;
+            case 3:
+                $('#id-validasi-3').prop('checked', true);
+                $('#label-status-validasi').html(`<span class="tag tag-pill tag-info pull-right">Batal Koreksi</span>`);
+                break;
+            case 7:
+                $('#id-validasi-4').prop('checked', true);
+                $('#label-status-validasi').html(`<span class="tag tag-pill tag-info pull-right">Batal Data</span>`);
+                break;
+        }
+        $('#id-validasi-1').unbind().on('change', function(){
+            $('#nama-validasi').val('Belum Validasi');
+        });
+
+        $('#id-validasi-2').unbind().on('change', function(){
+            $('#nama-validasi').val('Sudah Validasi');
+        });
+
+        $('#id-validasi-3').unbind().on('change', function(){
+            $('#nama-validasi').val('Batal Koreksi');
+        });
+
+        $('#id-validasi-4').unbind().on('change', function(){
+            $('#nama-validasi').val('Batal Data');
+        });
+
+        $('[name="idValidasi"]').attr('checked', 'disabled');
+
+
+        if(window.DkppGlobal2.isPejabat == true && rowhead.idValidasi !=2) {
+            $('#id-validasi-1').removeAttr('disabled');
+            $('#id-validasi-2').removeAttr('disabled');
+            $('#id-validasi-3').removeAttr('disabled');
+            $('#id-validasi-4').removeAttr('disabled');
+
+        } else if (window.DkppGlobal2.isStaff == true && rowhead.idValidasi !=2) {
+            $('#id-validasi-1').removeAttr('disabled');
+            $('#id-validasi-4').removeAttr('disabled');
+            $('#id-validasi-3').removeAttr('disabled');
+
+        }
+
+        $.ajax({
+            url: '{{contextPath}}/api/setupparameter/get_periode',
+            dataType:'json',
+            method:'GET',
+            success:function (data) {
+                console.log(data)
+                $('#comp-name-update').val(data.compName);
+                $('#user-name-update').val(data.userName);
+
+            }
+        });
+
+        $.ajax({
+            url:  '{{contextPath}}{{listKategoriCatatan}}',
+            method: 'GET',
+            data: {
+                valueColumn: 'id',
+                textColumn: "${id} - ${namaKategoriCatatan}",
+                searchColumn: [
+                    'namaKategoriCatatan'
+                ],
+                referenceValue: [
+                    {
+                        column: "id",
+                        table: "kategoriMutasi",
+                        value: 12
+                    }
+                ],
+                includeObject: true
+            },
+            success: function(data){
+                console.log("data catatan");
+                console.log(data);
+                $('#id-kategori-catatan-edit').select2(
+                    {
+                        data: data,
+                        width: "100%",
+                        placeholder: 'Pilih Kategori Catatan'
+                    }
+                ).val(rowhead.idKategoriCatatan).trigger('change');
+
+            }
+        });
+
+
+
+    }
+
+    alasanMps100Update = $('#id-alasan-update').select2();
+    $.ajax({
+        url: '{{contextPath}}/api/alasan-mp100/dropdownManual',
+        method: 'GET',
+        data: {
+            valueColumn: 'idAlasanMps100',
+            textColumn: "${idAlasanMps100}-${namaAlasanMps100}",
+            searchColumn: [
+                'namaAlasanMps100'
+            ],
+            includeObject: true
+        },
+        success: function(data){
+            console.log('data alasan mps100',data);
+            alasanMps100Update.select2(
+                {
+                    data: data,
+                    width: "100%",
+                   // placeholder: 'Pilih Alasan'
+                }
+            );
+            alasanMps100Update.on('change', function(e){
+                if ($(e.target).select2('data')){
+                    const data = $(e.target).select2('data')[0];
+                    d = data.dataProperties;
+                    console.log('www',d);
+                    if (alasanMps100Update.val() != '' && alasanMps100Update.val() != null) {
+                        $('#nama-alasan-update').val(data.dataProperties.namaAlasanMps100);
+                    }
+                }
+            });
+        }
+    });
+
+
+
+
+    function displayCetak(param) {
+        window.DkppReportParam = param;
+        $('.report-modal').modal('show');
+        console.log(param);
+    }
+
+    function cetakReport() {
+        let radioReport = $("input[name='optradio']:checked").val();
+        data = {
+            tipeReport: radioReport,
+            nip: window.DkppReportParam.nip,
+            idKategoriMutasi: window.DkppReportParam.idKategoriMutasi,
+            periodeMutasi: window.DkppReportParam.periodeMutasi
+        };
+        const param = $.param(data);
+        const reportFrame = $("#report");
+        const res = encodeURI(('src', `{{contextPath}}{{report_path_api}}?${param}`));
+        window.open(res, '_blank');
+    }
+</script>
+
+{{/scripts}}
+
+{{/layout}}

@@ -1,0 +1,907 @@
+{{#layout}}
+
+{{#styles}}
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/datatables/media/css/dataTables.bootstrap4.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/googleapis/css/component.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/googleapis/css/googleapis.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/select2/css/select2.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css">
+{{/styles}}
+
+{{#title}}
+Tata Usaha Piutang - DKPP
+{{/title}}
+<div class="main-content">
+    <div class="content-view">
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#one" role="tab">Master Tata Usaha Piutang</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#two" role="tab">Proses Piutang Bulanan</a>
+            </li>
+        </ul>
+
+        <div class="tab-content">
+            <div class="tab-pane active" id="one" role="tabpanel">
+                <div class="card">
+                    <div class="card-block">
+                        <table class="table table-bordered datatable responsive" id="piutang-tabel">
+                            <thead>
+                            <tr>
+                                <th>
+                                    NIP
+                                </th>
+                                <th>
+                                    Nama Peserta
+                                </th>
+                                <th>
+                                    Nama Penerima MP
+                                </th>
+                                <th>
+                                    Cabang KPW-BI
+                                </th>
+                                <th>
+                                    Jumlah Piutang
+                                </th>
+                                <th>
+                                    Telah Dibayar
+                                </th>
+                                <th>
+                                    Sisa Piutang
+                                </th>
+                                <th>
+                                    Action
+                                </th>
+                            </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane" id="two" role="tabpanel">
+                <div class="card">
+                    <div class="card-block">
+                        {{#isStaff}}
+                        <div class="row">
+                            <form id="prosesTab2">
+                            <label for="example-tel-input" class="col-xs-1">Periode Mutasi</label>
+                            <div class="col-xs-1">
+                                <input class="form-control form-control-sm" type="text" name="parPeriodeMutasi" id="periode-proses">
+                                <input type="hidden" name="parCompName" id="comp-name-proses">
+                                <input type="hidden" name="parUserName" id="user-name-proses">
+                                <input type="hidden" name="parTglProses" id="tgl-proses">
+                                <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
+                            </div>
+                            <div class="col-xs-1">
+                                <a class="btn btn-info btn-sm" id="btn-process-periode-mutasi" ><i class="fa fa-edit"></i> <span>Proses</span></a>
+                            </div>
+                            </form>
+                        </div>
+                        {{/isStaff}}
+                    </div>
+                    <div>
+                        <div class="card">
+                            <div class="card-block">
+                                <table class="table table-bordered datatable2 " id="tabel-pmby-piutang">
+                                    <thead>
+                                    <tr>
+                                        <th>
+                                            NIP
+                                        </th>
+                                        <th>
+                                            Nama Peserta
+                                        </th>
+                                        <th>
+                                            Nama Penerima MP
+                                        </th>
+                                        <th>
+                                            Cabang KPW-BI
+                                        </th>
+                                        <th>
+                                            Periode Mutasi
+                                        </th>
+                                        <th>
+                                            Total Piutang
+                                        </th>
+                                        <th>
+                                            Dibayar
+                                        </th>
+                                        <th>
+                                            Status
+                                        </th>
+                                        <th>
+                                            Status Validasi
+                                        </th>
+                                        <th>
+                                            Action
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- bottom footer -->
+        <!-- /bottom footer -->
+    </DIV>
+    <!-- /main area -->
+</div>
+<!-- /content panel -->
+{{#modal}}
+<!-- Modal demos -->
+<div class="modal fade bd-example-modal" tabindex="-1" id="modalLihat" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title small bold" id="myModalLabel">Tata Usaha Piutang</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <span class="tag tag-pill pull-right" id="label-status-validasi">....</span>
+                    </div><br>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <label for="example-text-input" class="col-sm-6">NIP-Nama Peserta</label>
+                        <div class="col-sm-6">
+                            <input class="form-control form-control-sm"  disabled name="" type="text" id="show-nip-namapeserta">
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <label for="example-text-input" class="col-sm-6">Jumlah Piutang</label>
+                        <div class="col-sm-6">
+                            <input class="form-control form-control-sm" disabled type="text" name="jumlahPiutang" id="jumlahPiutangModal">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <label for="example-text-input" class="col-sm-6"  >ID-Nama Penerima MP</label>
+                        <div class="col-sm-6">
+                            <input class="form-control form-control-sm" disabled type="text" id="show-id-namapenerima">
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <label for="example-text-input" class="col-sm-6" >Telah Dibayar</label>
+                        <div class="col-sm-6">
+                            <input class="form-control form-control-sm" disabled type="text" id="telahDibayarModal">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <label for="example-text-input" class="col-sm-6"  >ID-Kantor Bayar</label>
+                        <div class="col-sm-6">
+                            <input class="form-control form-control-sm" disabled type="text" id="show-id-namakantorBayar">
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <label for="example-text-input" class="col-sm-6"  >Sisa Piutang</label>
+                        <div class="col-sm-6">
+                            <input class="form-control form-control-sm" disabled type="text" id="sisaPiutangModal">
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-lg-6 small bold">Rincian Piutang</div>
+                    <div class="col-lg-6">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="table-responsive">
+                            <table class="table table-sm" id="lihatRincianPiutang">
+                                <thead>
+                                <tr>
+                                    <th>
+                                        Nip
+                                    </th>
+                                    <th>
+                                        Tgl. Mutasi
+                                    </th>
+                                    <th>
+                                        Periode Mutasi
+                                    </th>
+                                    <th>
+                                        Piutang (Rp.)
+                                    </th>
+                                    <th>
+                                        Deskripsi Mutasi
+                                    </th>
+                                </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                    </div>
+                    <div class="col-lg-6">
+                    </div>
+
+                    <div class="row"></div>
+                    <div class="col-lg-12">
+                        <div class="row">
+                            <label for="example-date-input" class="col-xs-3">User Stamp</label>
+                            <div class="col-xs-3">
+                                <input class="form-control form-control-sm" type="text" id="userStamp" disabled>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="row">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                <!--<button type="button" class="btn btn-primary btn-sm">Save</button>-->
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bd-example-modal2" tabindex="-1" id="modalHistoryPembayaran" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title small bold" id="myModalLabel">History Pembayaran</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <label for="example-text-input" class="col-sm-6">NIP-Nama Peserta</label>
+
+                        <div class="col-sm-6">
+                            <input class="form-control form-control-sm" disabled  type="text" id="nip-namaPenerimaHistory">
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <label for="example-text-input" class="col-sm-6">Jumlah Piutang</label>
+
+                        <div class="col-sm-6">
+                            <input class="form-control form-control-sm" disabled type="text" value="10 2018" id="jumlahPiutangHistory">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <label for="example-text-input" class="col-sm-6"  >ID-Nama Penerima MP</label>
+
+                        <div class="col-sm-6">
+                            <input class="form-control form-control-sm" disabled type="text" id="id-namaPenerimaHistory">
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <label for="example-text-input" class="col-sm-6" >Telah Dibayar</label>
+
+                        <div class="col-sm-6">
+                            <input class="form-control form-control-sm" disabled type="text" value="10/09/2018" id="telahDibayarHistory">
+                        </div>
+                    </div>
+                </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <label for="example-text-input" class="col-sm-6"  >ID-Kantor Bayar</label>
+                            <div class="col-sm-6">
+                                <input class="form-control form-control-sm" disabled type="text" id="id-namakantorBayaHistory">
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <label for="example-text-input" class="col-sm-6"  >Sisa Piutang</label>
+                            <div class="col-sm-6">
+                                <input class="form-control form-control-sm" disabled type="text" id="sisaPiutangHistory">
+                            </div>
+                        </div>
+                    </div>
+
+
+                <br>
+                <div class="row">
+                    <div class="col-lg-6 small bold">Rincian Pembayaran</div>
+                    <div class="col-lg-6">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="table-responsive">
+                            <table class="table table-sm" id="tabelLihatHistory">
+                                <thead>
+                                <tr>
+                                    <th>
+                                        Nip
+                                    </th>
+                                    <th>
+                                        Periode Mutasi
+                                    </th>
+                                    <th>
+                                        Tgl Bayar
+                                    </th>
+                                    <th>
+                                        Saldo Awal
+                                    </th>
+                                    <th>
+                                        Dibayar
+                                    </th>
+                                    <th>
+                                        Saldo Akhir
+                                    </th>
+                                    <th>
+                                        User Stamp
+                                    </th>
+                                </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                    </div>
+                    <div class="col-lg-6">
+
+                    </div>
+
+                    <div class="row"></div>
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<div class="modal fade bd-example-modal-lg" tabindex="-1" id="modalEdit" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title small bold" id="myModalLabel">Edit Piutang Bulanan</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="row">
+                            <label for="example-text-input" class="col-sm-6">NIP-Nama Peserta</label>
+
+                            <div class="col-sm-6">
+                                <input class="form-control form-control-sm" disabled  type="text" id="nip-namaPesertaEdit">
+                                <input type="hidden" name="nip" id="nip-edit">
+                                <input type="hidden" name="namaPeserta" id="nama-peserta-edit">
+                            </div>
+                        </div>
+                        <div class="row m-y-1">
+                            <label for="example-text-input" class="col-sm-6">ID-Nama Penerima MP</label>
+
+                            <div class="col-sm-6">
+                                <input class="form-control form-control-sm" disabled  type="text" id="id-namaPenerimaEdit">
+                                <input type="hidden" name="idPenerima" id="id-penerima-edit">
+                                <input type="hidden" name="namaPenerima" id="nama-penerima-edit">
+                            </div>
+                        </div>
+                        <div class="row m-y-1">
+                            <label for="example-text-input" class="col-sm-6">ID-Nama Kantor Bayar</label>
+
+                            <div class="col-sm-6">
+                                <input class="form-control form-control-sm" disabled  type="text" id="id-namaKantorEdit">
+                                <input type="hidden" name="idKantorBayar" id="id-kantor-edit">
+                                <input type="hidden" name="namaPenerima" id="nama-kantor-edit">
+                            </div>
+                        </div>
+                        <div class="row m-y-1">
+                            <label for="example-text-input" class="col-sm-6">Catatan</label>
+
+                            <div class="col-sm-6">
+                                <textarea class="form-control  form-control-sm" id="keterangan-edit" name="keterangan" rows="3"></textarea>
+                            </div>
+                        </div>
+                        <div class="row m-y-1">
+                            <label for="example-text-input" class="col-sm-6">User Stamp</label>
+
+                            <div class="col-sm-6">
+                                <input class="form-control form-control-sm" readonly  type="text" name="userStamp" id="user-stamp-edit">
+
+                            </div>
+                        </div>
+                        <div class="row m-y-1">
+                            <label for="example-text-input" class="col-sm-6">User Validasi</label>
+
+                            <div class="col-sm-6">
+                                <input class="form-control form-control-sm" readonly name="userValidasi" type="text" id="user-validasi-edit">
+                            </div>
+                        </div>
+                        <div class="row m-y-1">
+                            <label class="radio-inline">
+                                <input type="radio" name="idValidasi" id="id-validasi-1" value="1" />
+                                Belum Validasi
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="idValidasi" id="id-validasi-2" value="2"/>
+                                Sudah Validasi
+                            </label>
+                            <input type="hidden" name="namaValidasi" id="nama-validasi"/>
+                            <input type="hidden" name="idValidasi" id="id-validasi-send"/>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="row">
+                            <label for="example-text-input" class="col-sm-6">Periode Mutasi</label>
+
+                            <div class="col-sm-6">
+                                <input class="form-control form-control-sm" disabled type="text" name="periodeMutasi" id="periode-mutasi-edit">
+                            </div>
+                        </div>
+                        <div class="row m-y-1">
+                            <label for="example-text-input" class="col-sm-6">Tanggal Proses</label>
+
+                            <div class="col-sm-6">
+                                <input class="form-control form-control-sm" readonly name="tglProses" type="text" id="tgl-proses-edit">
+                            </div>
+                        </div>
+                        <div class="row m-y-1">
+                            <label for="example-text-input" class="col-sm-6">Tanggal Bayar</label>
+
+                            <div class="col-sm-6">
+                                <input class="form-control form-control-sm" readonly name="tglBayar" type="text" id="tgl-bayar-edit">
+                            </div>
+                        </div>
+                        <div class="row m-y-1">
+                            <label for="example-text-input" class="col-sm-6">Saldo Piutang Awal</label>
+
+                            <div class="col-sm-6">
+                                <input class="form-control form-control-sm" readonly name="saldoPiutangAwal" type="text" id="saldo-piutang-awal-edit">
+                            </div>
+                        </div>
+                        <div class="row m-y-1">
+                            <label for="example-text-input" class="col-sm-6">Dibayarkan Periode Ini</label>
+
+                            <div class="col-sm-6">
+                                <input class="form-control form-control-sm" readonly name="dibayarkanPeriodeIni" type="text" id="dibayarkan-periodeini-edit">
+                            </div>
+                        </div>
+                        <div class="row m-y-1">
+                            <label for="example-text-input" class="col-sm-6">Saldo Piutang Akhir</label>
+
+                            <div class="col-sm-6">
+                                <input class="form-control form-control-sm" readonly name="saldoPiutangAkhir" type="text" id="saldo-piutang-akhir-edit">
+                            </div>
+                        </div>
+                        <div class="row m-y-1">
+                            <label for="example-text-input" class="col-sm-6">Status</label>
+
+                            <div class="col-sm-6">
+                                <input class="form-control form-control-sm" readonly name="status" type="text" id="status-edit">
+                            </div>
+                            <input type="hidden" name="id" id="id-edit">
+                            <input type="hidden" name="compName" id="compname-edit">
+                            <input type="hidden" name="userName" id="username-edit">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary btn-sm" id="btn-save-update">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Modal demos -->
+{{/modal}}
+
+{{#scripts}}
+<script src="{{contextPath}}/assets/vendor/datatables/media/js/jquery.dataTables.js"></script>
+<script src="{{contextPath}}/assets/vendor/datatables/media/js/dataTables.bootstrap4.js"></script>
+<script src="{{contextPath}}/assets/vendor/select2/js/select2.js"></script>
+<script src="{{contextPath}}/assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+<script src="{{contextPath}}/assets/vendor/jquery-validation/dist/jquery.validate.js"></script>
+<script src="{{contextPath}}/assets/vendor/numeral/numeral.min.js"></script>
+    <script src="{{contextPath}}/assets/vendor/sweetalert/sweetalert.min.js"></script>
+<script type="text/javascript">
+
+    $(document).ready(function() {
+        var PiutangMpTabel = dkppDataTable($('#piutang-tabel'),'{{contextPath}}/api/tata-usaha-piutang',{
+            'columns':[
+                {"data":"nip"},
+                {"data":"namaPeserta"},
+                {"data":"namaPenerimaMp"},
+                {"data":"namaKantorBayar"},
+                {"data":"totalPiutang"},
+                {"data":"sudahDibayar"},
+                {"data":"sisaPiutang"},
+                {"data":"id"},
+
+            ],
+            'columnDefs':[
+                {
+                    "searchable": false,
+                    "orderable": false,
+                    "targets": 0
+                },
+                {
+                    "targets": [4,5,6],
+                    "render": function(data, type, row, meta) {
+                        return data && numeral(data).format("0,0.00");
+                    }
+                },
+                {
+                    "targets": -1,
+                    "data":'id',
+                    "render": function(data, type, row, meta){
+                        let param = JSON.stringify(row);
+                        let parming = JSON.stringify(row);
+                        return `<a onclick='displayLihatModal(`+ param +`)' ><button class="btn btn-primary btn-sm">` +
+                            `<i class="fa fa-eye"></i> <span>Lihat</span></button></a> &nbsp;&nbsp;` +
+                            `<a onclick='displayHistoryModal(`+ parming +`)'><button class="btn btn-primary btn-sm">` +
+                            `<i class="fa fa-eye"></i> <span>Lihat History Pembayaran</span></button></a>`
+                    }
+                },
+
+            ],
+            "order": [[ 1, 'asc' ]],
+
+        });
+
+
+        var PmbyPiutangMpTabel = dkppDataTable($('#tabel-pmby-piutang'),'{{contextPath}}/api/pmby-piutang',{
+            'columns':[
+                {"data":"nip"},
+                {"data":"namaPeserta"},
+                {"data":"namaPenerimaMp"},
+                {"data":"namaKantorBayar"},
+                {"data":"periodeMutasi"},
+                {"data":"saldoAwalPiutang"},
+                {"data":"dibayarkanPeriodeIni"},
+                {"data":"status"},
+                {"data":"idValidasi.id"},
+                {"data":"id"},
+
+            ],
+            'columnDefs':[
+                {
+                    "searchable": false,
+                    "orderable": false,
+                    "targets": 0
+                },
+                {
+                    "targets": [5,6],
+                    "render": function(data, type, row, meta) {
+                        return data && numeral(data).format("0,0.00");
+                    }
+                },
+                {
+                    "targets": 7,
+                    "data": 'status',
+                    "render": function(data, type, row, meta) {
+                        console.log('data status',data);
+                        if (data == true){
+                            return `<span class="">Sudah Dibayar</span>`;
+                        } else{
+                            return `<span class="">Belum Dibayar</span>`;
+                        }
+                    }
+                },
+                {
+                    "targets": 8,
+                    "data": 'idValidasi.id',
+                    "render": function(data, type, row, meta) {
+                        console.log(data);
+                        switch (data) {
+                            case 1:
+                                return `<span class="tag tag-pill tag-info">Belum Validasi</span>`;
+                                break;
+                            case 2:
+                                return `<span class="tag tag-pill tag-success">Sudah Validasi</span>`;
+                                break;
+                            case 3:
+                                return `<span class="tag tag-pill tag-danger">Batal Koreksi</span>`;
+                                break;
+                            case 4:
+                                return `<span class="tag tag-pill tag-danger">Batal Validasi</span>`;
+                                break;
+                            case 5:
+                                return `<span class="tag tag-pill tag-danger">Belum Diproses</span>`;
+                                break;
+                            case 6:
+                                return `<span class="tag tag-pill tag-danger">Otomatis Validasi</span>`;
+                                break;
+                            default :
+                                return `<span class="tag tag-pill tag-default"> - </span>`;
+                                break;
+                        }
+                    }
+                },
+                {
+                    "targets": -1,
+                    "data": 'id',
+                    "render": function(data, type, row, meta){
+                        let paramEdit = JSON.stringify(row);
+                        return `<a onclick='displayEditModal(`+ paramEdit +`)' ><button class="btn btn-primary btn-sm">` +
+                            `<i class="fa fa-edit"></i> <span>edit</span></button></a>`
+                    }
+                },
+
+            ],
+            "order": [[ 1, 'asc' ]],
+        });
+
+
+    });
+
+
+    function displayLihatModal(param) {
+        $('#modalLihat').modal('show');
+        const rowhead = param;
+        console.log("data ",rowhead);
+        $('#show-nip-namapeserta').val(rowhead.nip+" - "+rowhead.namaPeserta);
+        $('#show-id-namapenerima').val(rowhead.idPenerimaMp+" - "+rowhead.namaPenerimaMp);
+        $('#show-id-namakantorBayar').val(rowhead.idKantorBayar.id+" - "+rowhead.namaKantorBayar);
+        $('#jumlahPiutangModal').val(rowhead.totalPiutang && numeral(rowhead.totalPiutang).format("0,0.00"));
+        $('#telahDibayarModal').val(rowhead.sudahDibayar && numeral(rowhead.sudahDibayar).format("0,0.00"));
+        $('#sisaPiutangModal').val(rowhead.sisaPiutang && numeral(rowhead.sisaPiutang).format("0,0.00"));
+        $('#userStamp').val(rowhead.userStamp);
+        $('#userValidasi').val(rowhead.userValidasi);
+
+        var lihatTabel = dkppDataTable($('#lihatRincianPiutang'),'{{contextPath}}/api/tata-usaha-piutang/piutang-detail/'+rowhead.nip,{
+            destroy:true,
+            searching: false,
+            'columns':[
+                {"data":"nip.nip"},
+                {"data":"tglMutasi"},
+                {"data":"periodeMutasi"},
+                {"data":"jumlahPiutang"},
+                {"data":"keterangan"},
+
+            ],
+        'columnDefs':[
+            {
+                "searchable": false,
+                "orderable": false,
+                "targets": 0
+            },
+            {
+                "targets": [1],
+                "render": function(data, type, row, meta) {
+                    return data && moment(data).format("DD/MM/YYYY");
+                }
+            },
+            {
+                "targets": [3],
+                "render": function(data, type, row, meta) {
+                    return data && numeral(data).format("0,0.00");
+                }
+            },
+
+        ],
+            "order": [[ 1, 'asc' ]],
+
+        });
+    }
+
+    function displayHistoryModal(parming) {
+        $('#modalHistoryPembayaran').modal('show');
+        const rowhead2 = parming;
+        console.log("data parming ",rowhead2);
+        $('#nip-namaPenerimaHistory').val(rowhead2.nip+" - "+rowhead2.namaPeserta);
+        $('#id-namaPenerimaHistory').val(rowhead2.idPenerimaMp+" - "+rowhead2.namaPenerimaMp);
+        $('#id-namakantorBayaHistory').val(rowhead2.idKantorBayar.id+" - "+rowhead2.namaKantorBayar);
+        $('#jumlahPiutangHistory').val(rowhead2.totalPiutang && numeral(rowhead2.totalPiutang).format("0,0.00"));
+        $('#telahDibayarHistory').val(rowhead2.sudahDibayar && numeral(rowhead2.sudahDibayar).format("0,0.00"));
+        $('#sisaPiutangHistory').val(rowhead2.sisaPiutang && numeral(rowhead2.sisaPiutang).format("0,0.00"));
+        var lihatTabel = dkppDataTable($('#tabelLihatHistory'),'{{contextPath}}/api/tata-usaha-piutang/pmby-piutang-history/'+rowhead2.nip,{
+            destroy:true,
+            searching:false,
+            'columns':[
+                {"data":"nip"},
+                {"data":"periodeBayar"},
+                {"data":"tglBayar"},
+                {"data":"saldoPiutangAwal"},
+                {"data":"dibayar"},
+                {"data":"saldoPiutangAkhir"},
+                {"data":"userStamp"},
+
+            ],
+            'columnDefs':[
+                {
+                    "targets": [2],
+                    "render": function(data, type, row, meta) {
+                        return data && moment(data).format("DD/MM/YYYY");
+                    }
+                },
+                {
+                    "targets": [3,4,5],
+                    "render": function(data, type, row, meta) {
+                        return data && numeral(data).format("0,0.00");
+                    }
+                },
+
+            ],
+            "order": [[ 1, 'asc' ]],
+
+        });
+    }
+
+    var dataPeriode = {};
+    $.ajax({
+        url: '{{contextPath}}/api/setupparameter/get_periode',
+        dataType:'json',
+        method:'GET',
+        success:function (data) {
+            console.log(data);
+            dataPeriode = data;
+            $('#tgl-proses').val(data.tglMutasi);
+            $('#user-name-proses').val(data.userName);
+            $('#comp-name-proses').val(data.compName);
+
+        }
+    });
+
+    $('#btn-process-periode-mutasi').on('click', ()=>{
+        $('#prosesTab2').validate();
+        $('#periode-proses').rules("add", {
+            required: true,
+            messages: {
+                required: 'masukan periode mutasi.'
+            }
+        });
+        let validForm = $('#prosesTab2').valid();
+        if(validForm){
+
+            $.ajax({
+                url: "{{contextPath}}/api/tata-usaha-piutang/tab2/proses",
+                method: 'POST',
+                data: formToJSON($("form#prosesTab2")[0].elements)
+            }).success(function(data) {
+                console.log("berhasil");
+                if(data.status == "success") {
+                    swal({title: "Berhasil", text: data.message, icon: "success", button: "OK"});
+                    $('#edit-modal').modal('hide');
+                }
+
+                $('#tabel-pmby-piutang').DataTable().ajax.reload();
+
+            }).error(function(data){
+                console.log("gagal");
+                if(data.message != undefined )
+                    swal({title: "Gagal", text: data.message, icon: "error", button: "OK"});
+                else
+                    swal({title: "Gagal", text: "Terjadi kegagalan.", icon: "error", button: "OK"});
+            });
+        }
+
+    });
+
+    function displayEditModal(paramEdit) {
+        window.DkppGlobal2 = {};
+        window.DkppGlobal2.isPejabat = {{isPejabat}};
+        window.DkppGlobal2.isAdmin = {{isAdmin}};
+        window.DkppGlobal2.isStaff = {{isStaff}};
+        $('input[name=idValidasi]').removeAttr('checked');
+        $('#modalEdit').modal('show');
+        const rowhead3 = paramEdit;
+        console.log("data param edit ",rowhead3);
+        $('#nip-namaPesertaEdit').val(rowhead3.nip +" - "+rowhead3.namaPeserta);
+        $('#nip-edit').val(rowhead3.nip);
+        $('#nama-peserta-edit').val(rowhead3.namaPeserta);
+        $('#id-namaPenerimaEdit').val(rowhead3.idPenerimaMp+" - "+rowhead3.namaPenerimaMp);
+        $('#id-penerima-edit').val(rowhead3.idPenerimaMp);
+        $('#nama-penerima-edit').val(rowhead3.namaPenerimaMp);
+        $('#id-namaKantorEdit').val(rowhead3.idKantorBayar.id+" - "+rowhead3.idKantorBayar.namaKantorBayar);
+        $('#id-kantor-edit').val(rowhead3.idKantorBayar.id);
+        $('#nama-kantor-edit').val(rowhead3.idKantorBayar.namaKantorBayar);
+        $('#keterangan-edit').val(rowhead3.keterangan);
+        $('#user-stamp-edit').val(rowhead3.userStamp);
+        $('#user-validasi-edit').val(rowhead3.userValidasi);
+        $('#periode-mutasi-edit').val(rowhead3.periodeMutasi);
+        $('#tgl-proses-edit').val(rowhead3.tglProses);
+        $('#tgl-bayar-edit').val(rowhead3.tglBayar);
+        $('#saldo-piutang-awal-edit').val(rowhead3.saldoAwalPiutang);
+        $('#dibayarkan-periodeini-edit').val(rowhead3.dibayarkanPeriodeIni);
+        $('#saldo-piutang-akhir-edit').val(rowhead3.saldoAkhirPiutang);
+        $('#status-edit').val(rowhead3.status);
+        $('#id-edit').val(rowhead3.id);
+        $('#compname-edit').val(dataPeriode.compName);
+        $('#username-edit').val(dataPeriode.userName);
+        $('#nama-validasi').val(rowhead3.idValidasi.namaValidasi);
+        $('#id-validasi-send').val(rowhead3.idValidasi.id);
+        switch(rowhead3.idValidasi.id){
+            case 1:
+                $('#id-validasi-1').prop('checked', true);
+                break;
+            case 2:
+                $('#id-validasi-2').prop('checked', true);
+                break;
+            case 7:
+                $('#id-validasi-1').prop('disabled', 'disabled');
+                $('#id-validasi-2').prop('disabled', 'disabled');
+                break;
+        }
+        $('[name="idValidasi"]').attr('disabled', 'disabled');
+
+        if(window.DkppGlobal2.isPejabat == true) {
+            $('#id-validasi-1').removeAttr('disabled');
+            $('#id-validasi-2').removeAttr('disabled');
+
+        } else if (window.DkppGlobal2.isStaff == true) {
+            $('#id-validasi-1').removeAttr('disabled');
+
+
+        }
+
+        $('#id-validasi-1').unbind().on('change', function(){
+            $('#nama-validasi').val('Belum Validasi');
+            $('#id-validasi-send').val('1');
+        });
+
+        $('#id-validasi-2').unbind().on('change', function(){
+            $('#nama-validasi').val('Sudah Validasi');
+            $('#id-validasi-send').val('2');
+        });
+
+        if (rowhead3.idValidasi.namaValidasi == "Otomatis Validasi" || rowhead3.idValidasi.namaValidasi == "Sudah Validasi"){
+            $('#btn-save-update').hide();
+        }else {
+            $('#btn-save-update').show();
+        }
+
+    }
+
+    $('#btn-save-update').on('click', ()=>{
+
+        let paramsend = {
+            _csrf: "{{_csrf.token}}",
+            parCompName:$('#compname-edit').val(),
+            parUserName:$('#username-edit').val(),
+            parIdBayarPiutang:$('#id-edit').val(),
+            parKeterangan:$('#keterangan-edit').val(),
+            parIdValidasi:$('#id-validasi-send').val(),
+            parNamaValidasi:$('#nama-validasi').val(),
+        };
+        console.log('wkwkwkw',paramsend);
+
+        $.ajax({
+            url: '{{contextPath}}/api/tata-usaha-piutang/tab2/update',
+            method: 'POST',
+            data: paramsend,
+            success:function(data) {
+                console.log("berhasil");
+                if (data.status == "success") {
+                    swal({title: "Berhasil", text: data.message, icon: "success", button: "OK"});
+                    $('#modalEdit').modal('hide');
+                    $('#tabel-pmby-piutang').DataTable().ajax.reload();
+                }
+            },error:function (data) {
+                console.log("gagal");
+                if(data.message != undefined )
+                    swal({title: "Gagal", text: data.message, icon: "error", button: "OK"});
+                else
+                    swal({title: "Gagal", text: "Terjadi kegagalan.", icon: "error", button: "OK"});
+            }
+        });
+    });
+
+
+
+
+</script>
+{{/scripts}}
+
+{{/layout}}

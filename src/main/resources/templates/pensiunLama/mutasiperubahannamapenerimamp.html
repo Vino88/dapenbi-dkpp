@@ -1,0 +1,980 @@
+{{#layout}}
+
+{{#styles}}
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/datatables/media/css/dataTables.bootstrap4.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/googleapis/css/component.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/googleapis/css/googleapis.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/select2/css/select2.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css">
+{{/styles}}
+
+{{#title}}
+Mutasi Perubahan Nama Penerima MP - DKPP
+{{/title}}
+
+
+<div class="card">
+    <!--<div class="card-header">-->
+        <!--<div class="col-md-12">-->
+            <!--<div class="row pull-right">-->
+                <!--<a class="btn btn-primary btn-icon btn-sm" id="btn-add"><i class="material-icons">add</i> Add</a>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+    <div class="card-block">
+        {{#isStaff}}
+        <button class="btn btn-primary btn-sm" data-toggle="modal" id="btn-add" data-target=".bd-example-modal"><i class="fa fa-plus"></i> <span>Tambah Data Mutasi</span></button>
+        {{/isStaff}}
+        <hr/>
+        <div class="col-lg-12">
+            <div class="row">
+                <label for="example-text-input" class="col-sm-1">Periode Mutasi</label>
+                <div class="col-xs-2">
+                    <input class="form-control form-control-sm" disabled type="text" value="{{periodeMutasi}}" id="example-text-input">
+                </div></div>
+        </div>
+        <div class="col-lg-12"><hr/></div>
+        <div class="table-responsive">
+            <table class="table table-bordered datatable dataTable no-footer" id="mutasi-nama-penerima-table"
+                   role="grid">
+                <thead>
+                <tr>
+                    <th>
+                        Tanggal  Mutasi
+                    </th>
+                    <th>
+                        Periode Mutasi
+                    </th>
+                    <th>
+                        NIP Peserta
+                    </th>
+                    <th>
+                        Nama Peserta
+                    </th>
+                    <th>
+                        Nama Penerima MP Lama
+                    </th>
+                    <th>
+                        Jenis Penerima MP
+                    </th>
+                    <th>
+                        Nama Penerima MP Baru
+                    </th>
+                    <th>
+                        Keterangan
+                    </th>
+                    <th>
+                        Status Validasi
+                    </th>
+                    <th>
+                        Action
+                    </th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+    <iframe style="display: none" id="report" name="report" src=""></iframe>
+</div>
+
+{{#modal}}
+
+<!--create modal-->
+
+<div class="modal fade mutasi-nama-penerima" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg-custome-budin">
+        <div class="modal-content">
+            <form id="createForm">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title small bold" id="modal-create">Mutasi Perubahan Nama Penerima MP</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="row">
+                                <label for="tgl-mutasi-insert" class="col-sm-6 bold">Tanggal Mutasi</label>
+                                <div class="col-xs-6">
+                                    <input class="form-control form-control-sm" disabled type="text" value="" name="tglMutasi" id="tgl-mutasi-insert" disabled>
+                                </div>
+                                <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="row">
+                                <label for="periode-mutasi-insert" class="col-sm-6 bold">Periode Mutasi</label>
+
+                                <div class="col-xs-6">
+                                    <input class="form-control form-control-sm" disabled type="text" value="" name="periodeMutasi" id="periode-mutasi-insert" >
+
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-lg-12"><hr/></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <small class="bold">Data Peserta</small>
+                        </div>
+                        <div class="col-lg-4">
+                            <small class="bold">Data Penerima MP</small>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="row">
+                                <label for="example-text-input" class="col-sm-6">NIP</label>
+                                <input id="nip" type="hidden" name="nip">
+                                <div class="col-xs-6">
+                                    <select name="nip" id="id-peserta-mp" class="form-control form-control-sm">
+                                        <option></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label for="nama-peserta-insert" class="col-sm-6">Nama Peserta</label>
+
+                                <div class="col-xs-6">
+                                    <input class="form-control form-control-sm" disabled type="text"  value="" name="namaPeserta" id="nama-peserta-insert">
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="row">
+                                <label for="id-nama-penerima-mp-insert" class="col-sm-4">ID-Nama Penerima MP Lama</label>
+                                <input type="hidden" id="id-penerima" name="idPenerimaMp" value="">
+                                <div class="col-xs-8">
+                                    <input class="form-control form-control-sm" disabled type="text"  value="" id="id-nama-penerima-mp-insert">
+                                    <input type="hidden" name="namaPenerimaMp" id="nama-penerimamp">
+                                    <input type="hidden" name="tglLahirPenerimaMp" id="tgl-lahir-penerima">
+                                    <input type="hidden" name="jenis_kelaminPenerimaMp" id="jk-penerima">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label for="nama-kategori-penerima-mp-insert" class="col-sm-4">Jenis Penerima MP</label>
+
+                                <div class="col-xs-8">
+                                    <input type="hidden" name="idKategoriPenerimaMp" id="id-kategori-penerima">
+                                    <input class="form-control form-control-sm" disabled type="text"  value="" name="namaKategoriPenerimaMp" id="nama-kategori-penerima-mp-insert">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="row">
+                                <label for="nama-penerima-mp-insert" class="col-sm-4">Nama Penerima MP Baru</label>
+
+                                <div class="col-xs-8">
+                                    <input class="form-control form-control-sm" style="text-transform: uppercase"  type="text"  value="" name="namaPenerimaMpBaru" id="nama-penerima-mp-insert" required>
+                                    <input type="hidden" id="id-penerima-baru" name="idPenerimaMpBaru" value="">
+                                    <input type="hidden" name="idKtgoriPenerimaMpBaru" id="id-kategori-penerima-mp-baru">
+                                    <input type="hidden" name="nmKtgoripenerimaMpBaru" id="nama-kategori-penerima-mp-baru">
+                                    <input type="hidden" name="tglLahirPenerimaMpBaru" id="tgl-lahir-penerima-baru">
+                                    <input type="hidden" name="jkPenerimaMpBaru" id="jk-penerima-baru">
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <br>
+
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card card-block">
+                                <div class="col-lg-6">
+                                    Kategori Catatan
+                                    <select class="form-control form-control-sm" name="idKategoriCatatan" id="id-kagtegori-catatan" required>
+                                        <option></option>
+                                    </select>
+                                </div>
+                                <div class="col-lg-6">
+                                    Catatan
+                                    <textarea class="form-control  form-control-sm" id="keterangan" name="keterangan" rows="3"></textarea>
+                                </div>
+                                <div class="col-lg-12"><br></div>
+                                <div class="col-lg-12">
+                                    <label for="user-stamp-insert" class="col-xs-5">User Stamp</label>
+
+                                    <div class="col-xs-7">
+                                        <input class="form-control form-control-sm" type="text" value="" name="userStamp" id="user-stamp-insert" disabled>
+                                        <input type="hidden" name="compName" id="comp-name-insert">
+                                        <input type="hidden" name="userName" id="user-name-insert">
+                                    </div>
+                                </div>
+
+
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary btn-sm" id="btn-save">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!--editmodal-->
+
+<div class="modal fade edit-modal" tabindex="-1" id="id-edit-modal" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg-custome-budin">
+        <div class="modal-content">
+            <form id="updateForm">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title small bold" id="myModalLabel">Mutasi Perubahan Nama Penerima MP</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-6">
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                </div>
+                                <div class="col-xs-6" id="label-status-validasi">
+                                    ...
+                                </div>
+
+                            </div>
+                        </div>
+                        <br>
+                        <div class="col-lg-4">
+                            <div class="row">
+                                <label for="tgl-mutasi-update" class="col-sm-6 bold">Tanggal Mutasi</label>
+                                <input type="hidden" name="id" id="id">
+                                <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
+                                <div class="col-xs-6">
+                                    <input class="form-control form-control-sm" disabled type="text" name="tglMutasi" value="" id="tgl-mutasi-update" disabled>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="row">
+                                <label for="periode-mutasi-update" class="col-sm-6 bold">Periode Mutasi</label>
+
+                                <div class="col-xs-6">
+                                    <input class="form-control form-control-sm" disabled type="text" name="periodeMutasi" value="" id="periode-mutasi-update" >
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-lg-12"><hr/></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <small class="bold">Data Peserta</small>
+                        </div>
+                        <div class="col-lg-4">
+                            <small class="bold">Data Penerima MP</small>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="row">
+                                <label for="example-text-input" class="col-sm-6">NIP</label>
+
+                                <div class="col-xs-6">
+                                    <input class="form-control form-control-sm" disabled type="text"   value="" id="nip-update">
+                                    <input class="form-control form-control-sm" disabled type="hidden" name="nip"  value="" id="nip-update-value">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label for="nama-peserta-update" class="col-sm-6">Nama Peserta</label>
+
+                                <div class="col-xs-6">
+                                    <input class="form-control form-control-sm" disabled type="text"  value="" name="namaPeserta" id="nama-peserta-update">
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="row">
+                                <label for="example-text-input" class="col-sm-4">ID-Nama Penerima MP Lama</label>
+                                <div class="col-xs-8">
+                                    <input class="form-control form-control-sm" disabled type="text"  value=""  id="show-penerimamp-update">
+                                    <input type="hidden" id="id-penerima-update" name="idPenerimaMp" >
+                                    <input type="hidden" id="nama-penerima-mp-update" name="namaPenerimaMp" >
+                                    <input type="hidden" name="tglLahirPenerimaMp" id="tgl-lahir-penerima-update">
+                                    <input type="hidden" name="jenis_kelaminPenerimaMp" id="jk-penerima-update">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label for="example-text-input" class="col-sm-4">Jenis Penerima MP</label>
+
+                                <div class="col-xs-8">
+                                    <input type="hidden" name="idKategoriPenerimaMp" id="id-kategori-penerima-update">
+                                    <input class="form-control form-control-sm" disabled type="text"  value="" name="namaKategoriPenerimaMp" id="nama-kategori-penerima-mp-update">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="row">
+                                <label for="nama-penerima-mp-update" class="col-sm-4">Nama Penerima MP Baru</label>
+
+                                <div class="col-xs-8">
+                                    <input class="form-control form-control-sm" style="text-transform: uppercase"  type="text"  value="" name="namaPenerimaMpBaru" id="nama-penerima-mp-baru-update">
+                                    <input type="hidden" id="id-penerima-baru-update" name="idPenerimaMpBaru" value="">
+                                    <input type="hidden" name="idKtgoriPenerimaMpBaru" id="id-kategori-penerima-mp-update">
+                                    <input type="hidden" name="nmKtgoripenerimaMpBaru" id="nama-kategori-penerima-mp-baru-update">
+                                    <input type="hidden" name="tglLahirPenerimaMpBaru" id="tgl-lahir-penerima-baru-update">
+                                    <input type="hidden" name="jkPenerimaMpBaru" id="jk-penerima-baru-update">
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <br>
+
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card card-block">
+
+                                <div class="col-lg-12">
+                                    <label class="radio-inline">
+                                        <input type="radio" name="idValidasi" id="id-validasi-1" value="1" />
+                                        Belum Validasi
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="idValidasi" id="id-validasi-2" value="2" />
+                                        Sudah Validasi
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="idValidasi" id="id-validasi-3" value="3" }/>
+                                        Batal Koreksi
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="idValidasi" id="id-validasi-7" value="4" />
+                                        Batal Data
+                                    </label>
+                                    <input type="hidden" name="namaValidasi" id="nama-validasi"/>
+                                </div>
+
+                                <div class="col-lg-6">
+                                    Kategori Catatan
+                                    <select class="form-control form-control-sm" id="id-kategori-catatan-edit" name="idKategoriCatatan" required>
+                                        <option></option>
+                                    </select>
+                                    <input type="hidden" id="nama-kategori-catatan-edit" name="namaKategoriCatatan" />
+                                </div>
+                                <div class="col-lg-6">
+                                    Catatan
+                                    <textarea class="form-control  form-control-sm" rows="3" id="keterangan-update" name="keterangan"></textarea>
+                                </div>
+                                <div class="col-lg-12"><br></div>
+                                <div class="col-lg-12">
+                                    <label for="user-stamp-update" class="col-xs-5">User Stamp</label>
+
+                                    <div class="col-xs-7">
+                                        <input class="form-control form-control-sm" type="text" value="" name="userStamp"  id="user-stamp-update" disabled>
+                                        <input type="hidden" name="compName" id="comp-name-update">
+
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <label for="user-name-update" class="col-xs-5">User Validasi</label>
+
+                                    <div class="col-xs-7">
+                                        <input class="form-control form-control-sm" type="text" value="" id="user-name-update" name="userName" readonly="readonly">
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary btn-sm" id="btn-save-update">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+
+<div class="modal fade report-modal" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title small bold" id="myModalLabel">Form Cetak Laporan Mutasi Perubahan Nama Penerima MP</h4>
+            </div>
+            <div class="modal-body">
+                <form id="pesertaForm">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <div class="radio" id="radio_formulir">
+                                    <label>
+                                        <input checked="" name="optradio" type="radio" value="formulir_entry_mutasi"> Formulir Entry Mutasi
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="cetakReport()">Cetak</button>
+            </div>
+        </div>
+    </div>
+</div>
+{{/modal}}
+
+{{#scripts}}
+<script src="{{contextPath}}/assets/vendor/datatables/media/js/jquery.dataTables.js"></script>
+<script src="{{contextPath}}/assets/vendor/datatables/media/js/dataTables.bootstrap4.js"></script>
+<script src="{{contextPath}}/assets/vendor/select2/js/select2.js"></script>
+<script src="{{contextPath}}/assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+<script src="{{contextPath}}/assets/vendor/jquery-validation/dist/jquery.validate.js"></script>
+<script src="{{contextPath}}/assets/vendor/numeral/numeral.min.js"></script>
+<script src="{{contextPath}}/assets/vendor/sweetalert/sweetalert.min.js"></script>
+<script type="text/javascript">
+    window.DkppReportParam = {};
+    window.RESTFulMode = "";
+
+    var mutasiNamaTable = dkppDataTable($('.datatable'),'{{contextPath}}/api/mutasi-perubahan-nama',{
+        'columns': [
+            { "data": "tglMutasi" },
+            { "data": "periodeMutasi" },
+            { "data": "nip" },
+            { "data": "namaPeserta" },
+            { "data": "namaPenerimaMP" },
+            { "data": "namaKategoriPenerimaMP"},
+            { "data": "namaPenerimaMPBaru"},
+            { "data": "keterangan"},
+            { "data": "statusValidasi.id"},
+            { "data": "id"}
+        ],
+        'columnDefs': [
+            {
+                "targets": [0],
+                "render": function(data, type, row, meta) {
+                    return data && moment(data).format("DD/MM/YYYY");
+                }
+            },
+            {
+                "targets": -1,
+                "data": "id",
+                "render": function(data, type, row, meta){
+                   let htmlTag = "<a class='btn btn-info btn-sm btn-icon btn-edit' onclick='displayEditModal(" + row.id + ")'><i class='material-icons'>edit</i> Edit</a>";
+                    if(row.namaValidasi === "Sudah Validasi"){
+                        param = JSON.stringify(
+                            {
+                                nip: row.nip,
+                                periodeMutasi: row.periodeMutasi,
+                                idKategoriMutasi: row.idKategoriMutasi
+                            }
+                        );
+                        htmlTag = "<a class='btn btn-info btn-sm btn-icon btn-edit' onclick='displayEditModal(" + row.id + ")'><i class='material-icons'>search</i> Show</a>" + `<br><a class=\'btn btn-info btn-sm btn-icon btn-printer\' onclick=\'displayCetak(` + param + `);\'><i class=\'material-icons\'>printer</i> Cetak</a>`;
+                    }else if(row.namaValidasi === "Batal Data") {
+                        htmlTag = "<a class='btn btn-info btn-sm btn-icon btn-edit' onclick='displayEditModal(" + row.id + ")'><i class='material-icons'>search</i> Show</a>";
+                    }else{
+                        htmlTag = "<a class='btn btn-info btn-sm btn-icon btn-edit' onclick='displayEditModal(" + row.id + ")'><i class='material-icons'>edit</i> Edit</a>";
+                    }
+                    return htmlTag;
+                }
+            },
+            {
+                "targets": -2,
+                "data": "statusValidasi.id",
+                "render": function(data, type, row, meta){
+                    console.log(data);
+                    switch(data){
+                        case 1:
+                            return` <span class="tag tag-pill tag-info">Belum Validasi</span>`;
+                            break;
+                        case 2:
+                            return `<span class="tag tag-pill tag-success">Sudah Validasi</span>`;
+                            break;
+                        case 4:
+                            return `<span class="tag tag-pill tag-danger">Batal Data</span>`;
+                            break;
+                        default :
+                            return `<span class="tag tag-pill tag-warning"> Batal Koreksi </span>`;
+                            break;
+                    }
+                }
+            }
+        ]
+    });
+
+    $(document).ready(function(){
+        $.ajax({
+            url: '{{contextPath}}/api/setupparameter/get_periode',
+            dataType:'json',
+            method:'GET',
+            success:function (data) {
+                console.log(data)
+                $('#periode-mutasi').val(data.periodeMutasi);
+            }
+        });
+
+        $('#btn-save').unbind().on('click',function () {
+            saveForm();
+        });
+        $('#btn-add').unbind().on('click', function(){
+            $('#createForm').trigger("reset");
+            $('#id-peserta-mp').val('').trigger('change');
+            $('#id-kagtegori-catatan').val('').trigger('change');
+
+            $(function() {
+                $('#nama-penerima-mp-insert').keyup(function() {
+                    this.value = this.value.toLocaleUpperCase();
+                });
+            });
+
+            var modal = $('.mutasi-nama-penerima');
+            modal.modal('show');
+            window.RESTFulMode = 'POST';
+
+            $.ajax({
+                url: '{{contextPath}}/api/setupparameter/get_periode',
+                dataType:'json',
+                method:'GET',
+                success:function (data) {
+                    console.log(data)
+                    $('#user-stamp-insert').val(data.postModeUserStamp);
+                    $('#periode-mutasi-insert').val(data.periodeMutasi);
+                    $('#tgl-mutasi-insert').val(data.tglMutasi.replace(/-/g,'/'));
+                    $('#comp-name-insert').val(data.compName);
+                    $('#user-name-insert').val(data.userName);
+
+                }
+            });
+        });
+
+        var pesertaMPInsert = $('#id-peserta-mp').select2({
+            ajax: {
+                url: '{{contextPath}}/api/mpensiun/data/mpensiun',
+                dataType: 'json',
+                method: 'GET',
+                delay: 250,
+                data: function(params){
+                    return {
+                        searchParam: params.term,
+                        valueColumn: 'nip',
+                        textColumn: "${nip}-${namaPeserta}",
+                        searchColumn: [
+                            'nip',
+                            'namaPeserta'
+                        ],
+                        referenceValue:[
+                            {
+                                column: "idStatusBayar",
+                                value: 1
+                            }
+                        ],
+                        includeObject: true
+                    }
+                },
+                // dropdownParent: $(".mutasi-nama-penerima"),
+                delay: 250,
+                processResults: function(data){
+                    return {
+                        results: data
+                    };
+                }
+            },
+            width: "100%",
+            placeholder: 'Pilih Peserta MP'
+        });
+
+        pesertaMPInsert.on('change', (e) => {
+            if ($(e.target).select2('data')){
+                const data = $(e.target).select2('data')[0];
+                console.log(data.dataProperties);
+                if (pesertaMPInsert.val() != '' && pesertaMPInsert.val() != null){
+                    checkExistMutasi("{{contextPath}}", pesertaMPInsert.val(), function(isExist){
+                        if(isExist == 1){
+                            $('#btn-save').hide();
+                        } else {
+                            $('#btn-save').show();
+                        }
+                    });
+                    $('#nama-peserta-insert').val(data.dataProperties.namaPeserta);
+                    $('#id-nama-penerima-mp-insert').val(data.dataProperties.idPenerimaMP + " - " + data.dataProperties.namaPenerimaMp);
+                    $('#nama-kategori-penerima-mp-insert').val(data.dataProperties.namaKategoriPenerimaMp);
+                    $('#nama-penerimamp').val(data.dataProperties.namaPenerimaMp);
+                    $('#id-kategori-penerima').val(data.dataProperties.kategoriPenerima.id);
+                    $('#id-penerima-baru').val(data.dataProperties.idPenerimaMP);
+                    $('#nip').val(data.dataProperties.nip);
+                    $('#id-penerima').val(data.dataProperties.idPenerimaMP);
+                    $('#id-kategori-penerima-mp-baru').val(data.dataProperties.kategoriPenerima.id);
+                    $('#nama-kategori-penerima-mp-baru').val(data.dataProperties.namaKategoriPenerimaMp);
+                    $('#tgl-lahir-penerima').val(data.dataProperties.tglLahirPenerimaMp);
+                    $('#jk-penerima').val(data.dataProperties.jenisKelaminPenerimaMp);
+                    $('#tgl-lahir-penerima-baru').val(data.dataProperties.tglLahirPenerimaMp);
+                    $('#jk-penerima-baru').val(data.dataProperties.jenisKelaminPenerimaMp);
+                }
+
+
+            }
+        });
+
+        $('#btn-save-update').on('click', ()=>{
+            $('#updateForm').validate();
+            $('#keterangan-update').rules("add", {
+                required: true,
+                messages: {
+                    required: 'Keterangan diperlukan.'
+                }
+            });
+
+            $('#nama-penerima-mp-baru-update').rules("add", {
+                required: true,
+                messages: {
+                    required: 'Nama penerima baru tidak boleh kosong'
+                }
+            });
+            $('#id-kategori-catatan-edit').rules("add", {
+                required: true,
+                messages: {
+                    required: 'Kategori Catatan tidak boleh kosong'
+                }
+            });
+            let validForm = $('#updateForm').valid();
+            if(validForm)
+                $.ajax({
+                    url: "{{contextPath}}/api/mutasi-perubahan-nama",
+                    method: 'PUT',
+                    data: formToJSON($("form#updateForm")[0].elements)
+                }).success(function(data) {
+
+                    if(data.status == "success") {
+                        swal({title: "Berhasil", text: data.message, icon: "success", button: "OK"});
+                        $('#id-edit-modal').modal('hide');
+                    }
+                    mutasiNamaTable.ajax.reload();
+
+                }).error(function(data){
+                    if(data.message != undefined )
+                        swal({title: "Gagal", text: data.message, icon: "error", button: "OK"});
+                    else
+                        swal({title: "Gagal", text: "Terjadi kegagalan.", icon: "error", button: "OK"});
+                });
+        });
+
+
+        $('#btn-update').on('click', ()=>{
+            $.ajax({
+                url: "{{contextPath}}/api/mutasi-perubahan-nama",
+                method: 'PUT',
+                data: formToJSON($("form#edit-form")[0].elements)
+            }).success(function(data) {
+                if(data.status == "success") {
+                    $('.edit-modal').modal('hide');
+                    swal({title: "Berhasil", text: data.message, icon: "success", button: "OK"});
+                }
+                mutasiNamaTable.ajax.reload();
+
+
+            }).error(function(data){
+                if(data.message != undefined )
+                    swal({title: "Gagal", text: data.message, icon: "error", button: "OK"});
+                else
+                    swal({title: "Gagal", text: "Terjadi kegagalan.", icon: "error", button: "OK"});
+            });
+        });
+
+
+
+    });
+
+    $('#id-kagtegori-catatan').select2({
+        ajax: {
+            url: '{{contextPath}}{{listKategoriCatatan}}',
+            dataType: 'json',
+            method: 'GET',
+            data: function(params){
+                return {
+                    searchParam: params.term,
+                    valueColumn: 'id',
+                    textColumn: "${id}-${namaKategoriCatatan}",
+                    searchColumn: [
+                        'namaKategoriCatatan'
+                    ],
+                    referenceValue:[
+                        {
+                            column: "id",
+                            table: "kategoriMutasi",
+                            value: 24
+                        }
+                    ]
+                }
+            },
+            // dropdownParent: $(".mutasi-nama-penerima"),
+            delay: 250,
+            processResults: function(data){
+                return {
+                    results: data
+                };
+            }
+        },
+        width: "100%",
+        placeholder: 'Pilih Kategori Catatan'
+    });
+
+
+    function saveForm() {
+        $('#createForm').validate();
+
+        $('#id-peserta-mp').rules("add", {
+            required: true,
+            messages: {
+                required: 'Peserta tidak boleh kosong'
+            }
+        });
+
+        $('#nama-penerima-mp-insert').rules("add", {
+            required: true,
+            messages: {
+                required: 'Nama penerima baru tidak boleh kosong'
+            }
+        });
+        $('#id-kagtegori-catatan').rules("add", {
+            required: true,
+            messages: {
+                required: 'Kategori Catatan tidak boleh kosong'
+            }
+        });
+        let validForm = $('#createForm').valid();
+
+        if (validForm)
+            $.ajax({
+                url: "{{contextPath}}/api/mutasi-perubahan-nama",
+                method: "POST",
+                data: formToJSON($("form#createForm")[0].elements)
+            }).success(function(data) {
+                $('.mutasi-nama-penerima').modal('hide');
+                if (data.status = "success"){
+                    swal({title:"Berhasil",text:data.message, icon:"success", button:"OK"});
+                }
+                mutasiNamaTable.ajax.reload();
+            }).error(function (data) {
+                if (data.message = undefined)
+                    swal({title: "Gagal", text: data.message, icon: "error", button: "OK"});
+                else
+                    swal({title: "Gagal", text: "Terjadi kegagalan.", icon: "error", button: "OK"});
+
+            });
+    }
+
+    // function displayEditModal(id) {
+    //     $('.edit-modal').modal('show');
+    //     const mutasiNamaTable = mutasiNamaTable.rows().data().filter((data) => {return data.id == id})[0];
+    //     const updateForm = $("form#updateForm");
+    //
+    //     $("#nip-update").val(mutasiNamaTable.nip+'-'+mutasiNamaTable.namaPeserta);
+    //     $("#nama-peserta-update").val(mutasiNamaTable.namaPeserta);
+    //
+    //     RESTFulMode = "PUT";
+    // }
+
+    function displayEditModal(id) {
+        window.DkppGlobal2 = {};
+        window.DkppGlobal2.isPejabat = {{isPejabat}};
+        window.DkppGlobal2.isAdmin = {{isAdmin}};
+        window.DkppGlobal2.isStaff = {{isStaff}};
+        const mutasiNama = mutasiNamaTable.rows().data().filter((data) => {
+            return data.id == id
+        })[0];
+        console.log('get data : ', mutasiNama);
+        if (mutasiNama.statusValidasi.id === 2 || mutasiNama.statusValidasi.id === 4) {
+            $('#btn-save-update').hide();
+            $("#nama-penerima-mp-baru-update").val(mutasiNama.namaPenerimaMPBaru).prop('disabled', 'true');
+            $("#keterangan-update").val(mutasiNama.keterangan).prop('disabled', 'true');
+            $("#id-kategori-catatan-update").val(mutasiNama.kategoryCatatan.id).prop('disabled', 'true');
+            $('#id-kategori-catatan-edit').val(mutasiNama.namaKategoriCatatan).prop('disabled', 'true');
+        } else{
+                $('#btn-save-update').show();
+                $(':input').removeProp('disabled',true);
+
+            }
+
+        const editModal = $('.edit-modal');
+        $('#updateForm').trigger('reset');
+        editModal.modal('show');
+        console.log(mutasiNama);
+
+            $('#id').val(mutasiNama.id);
+            $("#nip-update").val(mutasiNama.nip + '-' + mutasiNama.namaPeserta);
+            $("#nip-update-value").val(mutasiNama.nip);
+            $("#nama-peserta-update").val(mutasiNama.namaPeserta);
+            $("#id-penerima-update").val(mutasiNama.penerimaMP);
+            $("#show-penerimamp-update").val(mutasiNama.penerimaMP + '-' + mutasiNama.namaPenerimaMP);
+            $("#nama-penerima-mp-update").val(mutasiNama.namaPenerimaMP);
+            $("#tgl-lahir-penerima-update").val(mutasiNama.tglLahirPenerimaMP);
+            $("#jk-penerima-update").val(mutasiNama.jenisKelaminPenerimaMP);
+            $("#id-kategori-penerima-update").val(mutasiNama.kategoriPenerima.id);
+            $("#nama-kategori-penerima-mp-update").val(mutasiNama.kategoriPenerima.namaKategoriPenerima);
+            $("#id-penerima-baru-update").val(mutasiNama.penerimaMPBaru);
+            $("#nama-penerima-mp-baru-update").val(mutasiNama.namaPenerimaMPBaru);
+            $("#id-kategori-penerima-mp-update").val(mutasiNama.kategoriPenerima.id);
+            $("#nama-kategori-penerima-mp-baru-update").val(mutasiNama.kategoriPenerima.namaKategoriPenerima);
+            $("#tgl-lahir-penerima-baru-update").val(mutasiNama.tglLahirPenerimaMpBaru);
+            $("#jk-penerima-baru-update").val(mutasiNama.jenisKelaminPenerimaMPBaru);
+            $("#keterangan-update").val(mutasiNama.keterangan);
+            $("#id-kategori-catatan-update").val(mutasiNama.kategoryCatatan.id);
+            $('#nama-validasi').val(mutasiNama.statusValidasi.namaValidasi);
+            $('#tgl-mutasi-update').val(fillDateField(mutasiNama.tglMutasi));
+
+
+        $(function() {
+            $('#nama-penerima-mp-baru-update').keyup(function(){
+                this.value = this.value.toLocaleUpperCase();
+            });
+        });
+        switch(mutasiNama.statusValidasi.id){
+            case 1:
+                $('#id-validasi-1').prop('checked', true);
+                $('#label-status-validasi').html(`<span class="tag tag-pill tag-info pull-right">Belum Validasi</span>`);
+                break;
+            case 2:
+                $('#id-validasi-2').prop('checked', true);
+                $('#label-status-validasi').html(`<span class="tag tag-pill tag-success pull-right">Sudah Validasi</span>`);
+                break;
+            case 3:
+                $('#id-validasi-2').prop('checked', true);
+                $('#label-status-validasi').html(`<span class="tag tag-pill tag-info pull-right">Batal Koreksi</span>`);
+                break;
+            case 4:
+                $('#id-validasi-7').prop('checked', true);
+                $('#label-status-validasi').html(`<span class="tag tag-pill tag-warning pull-right">Batal Data</span>`);
+                break;
+        }
+
+        $('#id-validasi-1').unbind().on('change', function(){
+            $('#nama-validasi').val('Belum Validasi');
+        });
+
+        $('#id-validasi-2').unbind().on('change', function(){
+            $('#nama-validasi').val('Sudah Validasi');
+        });
+
+        $('#id-validasi-3').unbind().on('change', function(){
+            $('#nama-validasi').val('Batal Koreksi');
+        });
+
+        $('#id-validasi-7').unbind().on('change', function(){
+            $('#nama-validasi').val('Batal Data');
+        });
+
+        $('[name="idValidasi"]').attr('disabled', 'disabled');
+
+
+        if(window.DkppGlobal2.isPejabat == true && mutasiNama.statusValidasi.id !=2) {
+            $('#id-validasi-1').removeAttr('disabled');
+            $('#id-validasi-2').removeAttr('disabled');
+            $('#id-validasi-3').removeAttr('disabled');
+            $('#id-validasi-7').removeAttr('disabled');
+
+        } else if (window.DkppGlobal2.isStaff == true && mutasiNama.statusValidasi.id !=2) {
+            $('#id-validasi-1').removeAttr('disabled');
+
+            $('#id-validasi-3').removeAttr('disabled');
+
+        }
+
+        $.ajax({
+            url:  '{{contextPath}}{{listKategoriCatatan}}',
+            method: 'GET',
+            data: {
+                valueColumn: 'id',
+                textColumn: "${id} - ${namaKategoriCatatan}",
+                searchColumn: [
+                    'namaKategoriCatatan'
+                ],
+                referenceValue: [
+                    {
+                        column: "id",
+                        table: "kategoriMutasi",
+                        value: 24
+                    }
+                ],
+                includeObject: true
+            },
+            success: function(data){
+                $('#id-kategori-catatan-edit').select2(
+                    {
+                        data: data,
+                        width: "100%",
+                        placeholder: 'Pilih Kategori Catatan'
+                    }
+                ).val(mutasiNama.kategoryCatatan.id).trigger('change');
+
+            }
+        });
+
+        $('#id-kategori-catatan-edit').on('change', (e) => {
+            if ($(e.target).select2('data')){
+                const data = $(e.target).select2('data')[0];
+                $("#nama-kategori-catatan-edit").val(data.dataProperties.namaKategoriCatatan);
+            }
+        });
+
+
+        $.ajax({
+            url: '{{contextPath}}/api/setupparameter/get_periode',
+            dataType: 'json',
+            method: 'GET',
+            success: (data)=>{
+                $('#user-stamp-update').val(data.putModeUserStamp);
+                $('#periode-mutasi-update').val(data.periodeMutasi);
+
+                $('#comp-name-update').val(data.compName);
+                $('#user-name-update').val(data.userName);
+            }
+        });
+
+    }
+
+    function displayCetak(param) {
+        window.DkppReportParam = param;
+        $('.report-modal').modal('show');
+        console.log(param);
+    }
+
+    function cetakReport() {
+        let radioReport = $("input[name='optradio']:checked").val();
+        data = {
+            tipeReport: radioReport,
+            nip: window.DkppReportParam.nip,
+            idKategoriMutasi: '24',
+            periodeMutasi: window.DkppReportParam.periodeMutasi
+        };
+        const param = $.param(data);
+        const reportFrame = $("#report");
+        const res = encodeURI(('src', `{{contextPath}}{{report_path_api}}?${param}`));
+        window.open(res, '_blank');
+    }
+
+</script>
+{{/scripts}}
+
+{{/layout}}

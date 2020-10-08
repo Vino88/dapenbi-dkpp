@@ -1,0 +1,233 @@
+{{#layout}}
+
+{{#styles}}
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/googleapis/css/component.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/googleapis/css/googleapis.css">
+{{/styles}}
+
+{{#title}}
+Master Role - DKPP
+{{/title}}
+
+<div class="card">
+    <div class="card-header" id="filter_form">
+        <div class="pull-right">
+            <a class="btn btn-primary btn-icon btn-sm" onclick="displayCreateModal()" id="btn-add"><i class="material-icons">add</i> Add</a>
+
+        </div>
+    </div>
+
+    <div class="card-block">
+
+        <div class="table-responsive">
+
+            <table class="table table-bordered datatable dataTable no-footer" id="role_table"
+                   role="grid">
+                <thead>
+                <tr role="row">
+                    <th>
+                        Code
+                    </th>
+                    <th>
+                        Nama Role
+                    </th>
+                    <th>
+                        Is Active
+                    </th>
+                    <th>
+                        Action
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{{#modal}}
+<div class="modal fade agama-modal" tabindex="-1" role="dialog" id="create-modal" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title small bold" id="myModalLabel">Form Master Role</h4>
+            </div>
+            <div class="modal-body">
+                <form id="agamaForm">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="form-group row">
+                                <label for="agama-namaAgama" class="col-sm-3 bold">Code</label>
+                                <div class="col-xs-9">
+                                    <input type="hidden" name="idRole" id="role-id">
+                                    <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
+                                    <input class="form-control form-control-sm" type="text" name="code" id="code">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="agama-namaAgama" class="col-sm-3 bold">Nama Role</label>
+                                <div class="col-xs-9">
+                                    <input class="form-control form-control-sm" type="text" name="name" id="name">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="role-active" class="col-sm-3 bold">Active</label>
+                                <div class="col-xs-9">
+                                    <label class="custom-control custom-checkbox m-b-1">
+                                        <input type="checkbox" class="custom-control-input" name="isActive" id="role-active">
+                                        <span class="custom-control-indicator"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="updatesaveForm()">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade create-modal" tabindex="-1" role="dialog" id="edit-modal" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title small bold" id="myModalLabel">Form Master Role</h4>
+            </div>
+            <div class="modal-body">
+                <form id="agamacreateForm">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="form-group row">
+                                <label for="code-create" class="col-sm-3 bold">Code</label>
+                                <div class="col-xs-9">
+                                    <input class="form-control form-control-sm" type="text" name="code" id="code-create" required>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="nama-role" class="col-sm-3 bold">Nama Role</label>
+                                <div class="col-xs-9">
+                                    <input type="hidden" name="idRole" id="role-id-create">
+                                    <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
+                                    <input class="form-control form-control-sm" type="text" name="name" id="nama-role" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="createsaveForm()">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+{{/modal}}
+
+{{#scripts}}
+<script src="{{contextPath}}/assets/vendor/datatables/media/js/jquery.dataTables.js"></script>
+<script src="{{contextPath}}/assets/vendor/datatables/media/js/dataTables.bootstrap4.js"></script>
+<script src="{{contextPath}}/assets/vendor/sweetalert/sweetalert.min.js"></script>
+
+<script type="text/javascript">
+    function showPrintOptions(){
+        $('#printOptionsModal').modal('show');
+    }
+    var agamaTable = dkppDataTable($('.datatable'), '{{contextPath}}/api/role', {
+        'columns': [
+            { "data": "code" },
+            { "data": "name" },
+            { "data": "active", "ordering": false }
+        ],
+        "columnDefs": [
+            {
+                "targets": 2,
+                "data": "active",
+                "render": function(data, type, row, meta){
+                    console.log(data);
+                    if(data == true)
+                        return '<span class="tag tag-pill tag-success">active</span>';
+                    else
+                        return '<span class="tag tag-pill tag-danger">not active</span>';
+                }
+            },
+
+            {
+                "render": function ( data, type, row ) {
+                    return `<button type="button" class='btn btn-primary btn-sm' onclick='displayEditModal(${row.id})'><i class=\"fa fa-edit\"></i> <span>Edit</span></button>`;
+                },
+                "targets": 3
+            }
+        ]
+    })
+    function displayEditModal(id) {
+        const agama = agamaTable.rows().data().filter((data) => {return data.id === id})[0];
+        const agamaForm = $("form#agamaForm");
+        $("#role-id", agamaForm).val(agama.id);
+        $("#code", agamaForm).val(agama.code);
+        $("#name", agamaForm).val(agama.name);
+        $("#role-active", agamaForm)[0].checked = agama.active;
+
+
+        $('.agama-modal').modal('show');
+    }
+
+    function updatesaveForm() {
+        $.ajax({
+            url: "{{contextPath}}/api/role",
+            method: "PUT",
+            data: formToJSON($("form#agamaForm")[0].elements)
+        }).success(function (data){
+            $('.agama-modal').modal('hide');
+            if (data.status = "success"){
+                swal({title:"Berhasil",text:data.message, icon:"success", button:"OK"});
+            }
+            agamaTable.ajax.reload();
+        }).error(function (data) {
+            if (data.message = undefined){
+                swal({title: "Gagal", text: data.message, icon: "error", button: "OK"});
+            } else {
+                swal({title: "Gagal", text: "Terjadi kegagalan.", icon: "error", button: "OK"});
+            }
+        });
+    }
+
+    function displayCreateModal(){
+
+        $('.create-modal').modal('show');
+    }
+
+    function createsaveForm() {
+        $.ajax({
+            url: "{{contextPath}}/api/role",
+            method: "POST",
+            data: formToJSON($("form#agamacreateForm")[0].elements)
+        }).success( function(data) {
+            $('.create-modal').modal('hide');
+            if (data.status = "success"){
+                swal({title:"Berhasil",text:data.message, icon:"success", button:"OK"});
+            }
+            agamaTable.ajax.reload();
+        }).error(function (data) {
+            if (data.message = undefined)
+                swal({title: "Gagal", text: data.message, icon: "error", button: "OK"});
+            else
+                swal({title: "Gagal", text: "Terjadi kegagalan.", icon: "error", button: "OK"});
+        });
+    }
+</script>
+{{/scripts}}
+
+{{/layout}}

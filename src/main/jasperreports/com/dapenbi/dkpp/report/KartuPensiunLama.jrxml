@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Blank_A4" printOrder="Horizontal" pageWidth="240" pageHeight="170" columnWidth="240" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="7d3d6e93-c977-4ed0-ac65-a5ec422db1ef">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DKPPUAT"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.unit." value="cm"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="cm"/>
+	<parameter name="nip" class="java.lang.String"/>
+	<parameter name="id_kategori_mutasi" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT 
+a.nip
+,a.nama_peserta
+,a.nama_penerima_mp_baru as nama_penerima
+,a.nama_penerima_mp as nama_penerima_lama
+,to_char(tgl_henti_kerja_peserta,'dd-mm-yyyy') as tgl_pensiun
+,a.nama_kantor_bayar as kantor_bayar
+,to_char(SYSDATE,'dd Month yyyy','nls_date_language = INDONESIAN') as sign_date
+FROM tbl_t_mutasi_pensiun a WHERE nip = $P{nip} AND id_kategori_mutasi = $P{id_kategori_mutasi}]]>
+	</queryString>
+	<field name="NIP" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NIP"/>
+	</field>
+	<field name="NAMA_PESERTA" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NAMA_PESERTA"/>
+	</field>
+	<field name="NAMA_PENERIMA" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NAMA_PENERIMA"/>
+	</field>
+	<field name="NAMA_PENERIMA_LAMA" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NAMA_PENERIMA_LAMA"/>
+	</field>
+	<field name="TGL_PENSIUN" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="TGL_PENSIUN"/>
+	</field>
+	<field name="KANTOR_BAYAR" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="KANTOR_BAYAR"/>
+	</field>
+	<field name="SIGN_DATE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="SIGN_DATE"/>
+	</field>
+	<pageHeader>
+		<band height="156">
+			<staticText>
+				<reportElement x="8" y="28" width="78" height="13" uuid="8158b15f-5c1e-41f8-a265-f6a485bec8a9"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[NIP]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="8" y="41" width="78" height="19" uuid="8e28c0b9-1ea7-444a-85b1-326352f5d49f"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nama Pensiunan]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="8" y="58" width="78" height="18" uuid="32788ed3-e8b2-4b6e-b73c-447d655957fe"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nama Penerima]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="8" y="72" width="78" height="16" uuid="b3c28ec7-9b58-49c1-bef8-c53537562234"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tgl. Pensiun]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="8" y="89" width="78" height="12" uuid="88717afc-8160-407d-b419-ff481c589034"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Kantor Bayar]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="79" y="28" width="10" height="13" uuid="1f3c9828-0659-4c5e-a87b-def81ab3761a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="79" y="41" width="10" height="17" uuid="394a5812-4d2c-44e6-b266-9a6adf9dcd3f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="79" y="58" width="10" height="14" uuid="74f11fc7-5df7-4e84-9f97-cbbd6c35c364"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="79" y="72" width="10" height="16" uuid="c4c0217e-14eb-4fff-8a66-b69bf4935e94"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="79" y="88" width="10" height="13" uuid="b4fbe4a8-8f84-48b4-ac10-6383a5c3e07b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="61" y="108" width="118" height="14" uuid="9f16fccc-e1fe-440e-afc0-39974497850d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Pengurus]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="34" y="130" width="104" height="12" uuid="7ae478d5-7036-4f90-b3d7-70ec64a47adf"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="9" isBold="true" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Rasmo Samiun"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="44" y="140" width="84" height="16" uuid="25a635d2-ef62-4cbb-b3cd-cfb67cdcad15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Direktur Utama"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="61" y="100" width="128" height="14" uuid="c7baa9f6-b5bf-4dfb-b524-203fcfeb3f95"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Jakarta, "+$F{SIGN_DATE}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="116" y="131" width="66" height="12" uuid="e99f735b-f8f3-41f7-8093-6bd45b0055f5"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="9" isBold="true" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Sutikno"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="123" y="140" width="56" height="16" uuid="87a4bd9c-0644-40cd-b810-9fb795c66795"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Direktur"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="89" y="28" width="100" height="13" uuid="c20b988d-f20d-457b-bb5c-dc8da7e7d332"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NIP}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="89" y="41" width="100" height="17" uuid="025509aa-c198-4cec-a7f4-132a8d262314"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NAMA_PESERTA}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="89" y="58" width="100" height="14" uuid="f347763a-7876-4f75-966b-e0ec893e2d82"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NAMA_PENERIMA} == null ? $F{NAMA_PENERIMA_LAMA} : $F{NAMA_PENERIMA}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="89" y="72" width="100" height="16" uuid="22f78222-e0f8-41d5-8eed-ddb27caf9df4"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{TGL_PENSIUN} == null ? "-" : $F{TGL_PENSIUN}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="89" y="88" width="100" height="13" uuid="e6bd62ad-9b1c-4fb2-91cc-39a32e69222c"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{KANTOR_BAYAR}]]></textFieldExpression>
+			</textField>
+			<image onErrorType="Icon">
+				<reportElement x="66" y="113" width="43" height="32" backcolor="#FFFFFF" uuid="8e825e55-36e5-4977-a7d5-72723bdd8624"/>
+				<imageExpression><![CDATA["/static/images/TTD Rasmo Samiun I copy.gif"]]></imageExpression>
+			</image>
+			<image onErrorType="Icon">
+				<reportElement x="140" y="116" width="29" height="23" uuid="e78955fc-d878-4fc5-8386-6b88cec25eb5"/>
+				<imageExpression><![CDATA["/static/images/TTD Sutikno copy.gif"]]></imageExpression>
+			</image>
+		</band>
+	</pageHeader>
+</jasperReport>

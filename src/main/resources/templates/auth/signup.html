@@ -1,0 +1,64 @@
+{{#authLayout}}
+<div class="entityManager-content">
+    <div class="card card-block form-layout">
+        <form role="form" action="{{contextPath}}/auth/porsessignup" method="post" id="validate">
+            <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
+            <div class="text-xs-center m-b-3">
+                <img src="/images/logo-2.jpg" height="80" alt="" class="m-b-1"/>
+                <h3>
+                    Create New Account
+                </h3>
+                </p>
+            </div>
+            <fieldset class="form-group">
+                <label for="email">
+                    Email address
+                </label>
+                <input type="email" class="form-control form-control-lg" id="email" name="email" placeholder="email address" required/>
+            </fieldset>
+            <fieldset class="form-group">
+                <label for="email">
+                    Username
+                </label>
+                <input type="text" class="form-control form-control-lg" id="username" name="username" placeholder="username" required/>
+            </fieldset>
+            <fieldset class="form-group">
+                <label for="name">
+                    Fullname
+                </label>
+                <input type="text" class="form-control form-control-lg" id="name" name="name" placeholder="full name" required/>
+            </fieldset>
+            <fieldset class="form-group">
+                <label for="password">
+                    Password
+                </label>
+                <input type="password" class="form-control form-control-lg" id="password" name="password" placeholder="password" required minlength="6"/>
+            </fieldset>
+            <fieldset class="form-group">
+                <label for="cpassword">
+                    Confirm password
+                </label>
+                <input type="password" class="form-control form-control-lg" id="cpassword" name="passwordConfirmation" placeholder="confirm password" required minlength="6"/>
+            </fieldset>
+            <button class="btn btn-success btn-block btn-lg" type="submit">
+                Create your account
+            </button>
+            <div class="divider">
+                  <span>
+                    OR
+                  </span>
+            </div>
+            <div class="text-xs-center">
+                <p>
+                    <a href="{{contextPath}}/auth/forgot">
+                        Forgot password?
+                    </a>
+                    &nbsp;&nbsp;·&nbsp;&nbsp;
+                    <a href="{{contextPath}}/auth/login">
+                        Log in instead
+                    </a>
+            </div>
+        </form>
+    </div>
+</div>
+{{/authLayout}}

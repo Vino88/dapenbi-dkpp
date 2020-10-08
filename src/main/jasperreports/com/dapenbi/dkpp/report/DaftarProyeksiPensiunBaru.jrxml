@@ -1,0 +1,746 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Daftar_Mutasi_Master_PensiunBI" pageWidth="1150" pageHeight="618" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="1110" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="90685e0e-3dd0-4330-b165-4419f10b7c60">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DKPPUAT"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="647"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="353"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="293"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="696"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<queryString>
+		<![CDATA[SELECT
+to_char(a.tgl_henti,'MONTH','nls_date_language = INDONESIAN') as periode
+,a.nip
+,a.nama_penerima_mp
+,a.pangkat_jabatan
+,to_char(a.tgl_lahir,'dd-mm-yyyy') as tgl_lahir
+,to_char(a.tgl_kepesertaan,'dd-mm-yyyy') as tgl_kepesertaan
+,to_char(a.tgl_henti,'dd-mm-yyyy') as tgl_henti
+,a.masa_kerja
+,a.phdp_awal as phdp
+,a.mps20pesen_awal as mps20pesen
+,a.mps10juta_awal as mps10juta
+,a.mps100persen_awal as mps100persen
+,a.mp_bulanan
+,a.mp_bulanan_20persen
+,a.mp_bulanan_10juta
+,a.mp_bulanan_20persen20juta
+,a.kenaikan_mp1 as kenaikan_mp
+,a.kenaikan_phdp1 as kenaikan_phdp
+,a.mp_bulanan_baru1 as mp_bulanan_baru
+,a.nama_status_kawin
+,a.nilai_fs
+FROM tbl_t_proyeksi_pensiun_baru a
+ORDER BY a.tgl_henti]]>
+	</queryString>
+	<field name="PERIODE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="PERIODE"/>
+	</field>
+	<field name="NIP" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NIP"/>
+	</field>
+	<field name="NAMA_PENERIMA_MP" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NAMA_PENERIMA_MP"/>
+	</field>
+	<field name="PANGKAT_JABATAN" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="PANGKAT_JABATAN"/>
+	</field>
+	<field name="TGL_LAHIR" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="TGL_LAHIR"/>
+	</field>
+	<field name="TGL_KEPESERTAAN" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="TGL_KEPESERTAAN"/>
+	</field>
+	<field name="TGL_HENTI" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="TGL_HENTI"/>
+	</field>
+	<field name="MASA_KERJA" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="MASA_KERJA"/>
+	</field>
+	<field name="PHDP" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="PHDP"/>
+	</field>
+	<field name="MPS20PESEN" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="MPS20PESEN"/>
+	</field>
+	<field name="MPS10JUTA" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="MPS10JUTA"/>
+	</field>
+	<field name="MPS100PERSEN" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="MPS100PERSEN"/>
+	</field>
+	<field name="MP_BULANAN" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="MP_BULANAN"/>
+	</field>
+	<field name="MP_BULANAN_20PERSEN" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="MP_BULANAN_20PERSEN"/>
+	</field>
+	<field name="MP_BULANAN_10JUTA" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="MP_BULANAN_10JUTA"/>
+	</field>
+	<field name="MP_BULANAN_20PERSEN20JUTA" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="MP_BULANAN_20PERSEN20JUTA"/>
+	</field>
+	<field name="KENAIKAN_MP" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="KENAIKAN_MP"/>
+	</field>
+	<field name="KENAIKAN_PHDP" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="KENAIKAN_PHDP"/>
+	</field>
+	<field name="MP_BULANAN_BARU" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="MP_BULANAN_BARU"/>
+	</field>
+	<field name="NAMA_STATUS_KAWIN" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NAMA_STATUS_KAWIN"/>
+	</field>
+	<field name="NILAI_FS" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="NILAI_FS"/>
+	</field>
+	<sortField name="NIP"/>
+	<variable name="jml_phdp" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{PHDP}]]></variableExpression>
+	</variable>
+	<variable name="jml_phdp_naik" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{KENAIKAN_PHDP}]]></variableExpression>
+	</variable>
+	<variable name="jml_mp_bulanan" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{MP_BULANAN}]]></variableExpression>
+	</variable>
+	<variable name="jml_mps20" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{MPS20PESEN}]]></variableExpression>
+	</variable>
+	<variable name="jml_mp_stlh_mps20" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{MP_BULANAN_20PERSEN}]]></variableExpression>
+	</variable>
+	<variable name="mps10jt" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{MPS10JUTA}]]></variableExpression>
+	</variable>
+	<variable name="jml_mps_stlh10" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{MP_BULANAN_10JUTA}]]></variableExpression>
+	</variable>
+	<variable name="mp_bulanan_baru" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{MP_BULANAN_BARU}]]></variableExpression>
+	</variable>
+	<group name="PERIODE">
+		<groupExpression><![CDATA[$F{PERIODE}]]></groupExpression>
+		<groupHeader>
+			<band height="19">
+				<textField isBlankWhenNull="true">
+					<reportElement x="-11" y="0" width="300" height="19" uuid="5326d4b0-4cfc-4ff3-9d12-c51eb4546217"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{PERIODE} == null ? "PENSIUN DI BULAN" : "PENSIUN DI BULAN "+$F{PERIODE}]]></textFieldExpression>
+					<patternExpression><![CDATA[$F{PERIODE} == null ? "-" : $F{PERIODE}]]></patternExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="50">
+				<textField evaluationTime="Group" evaluationGroup="PERIODE" pattern="#,000.00##;(#,000.00##-)" isBlankWhenNull="true">
+					<reportElement x="370" y="0" width="80" height="49" uuid="61aa0635-e379-4d9c-a08a-70d530496198"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="9" isBold="true"/>
+						<paragraph rightIndent="5"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{jml_phdp}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Group" evaluationGroup="PERIODE" pattern="#,000.00##;(#,000.00##-)" isBlankWhenNull="true">
+					<reportElement x="680" y="0" width="89" height="49" uuid="b8d2fa9e-d15a-4cf6-8b2e-91125fcacead"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="9" isBold="true"/>
+						<paragraph rightIndent="5"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{jml_mps20}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Group" evaluationGroup="PERIODE" pattern="#,000.00##;(#,000.00##-)" isBlankWhenNull="true">
+					<reportElement x="600" y="0" width="80" height="49" uuid="c859af91-d84d-4859-9003-244d1c26fd10"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="9" isBold="true"/>
+						<paragraph rightIndent="5"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{jml_mp_bulanan}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Group" evaluationGroup="PERIODE" pattern="#,000.00##;(#,000.00##-)" isBlankWhenNull="true">
+					<reportElement x="530" y="0" width="70" height="49" uuid="7d739b40-4d78-43f0-96cd-cf1adb1561ec"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="9" isBold="true"/>
+						<paragraph rightIndent="5"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{jml_phdp_naik}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Group" evaluationGroup="PERIODE" pattern="#,000.00##;(#,000.00##-)" isBlankWhenNull="true">
+					<reportElement x="950" y="0" width="80" height="49" uuid="23a34960-9789-40c7-b00d-117984149198"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="9" isBold="true"/>
+						<paragraph rightIndent="5"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{jml_mps_stlh10}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Group" evaluationGroup="PERIODE" pattern="#,000.00##;(#,000.00##-)" isBlankWhenNull="true">
+					<reportElement x="860" y="0" width="90" height="49" uuid="933d1a08-fe6d-42b3-81fe-969458c2e8ce"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="9" isBold="true"/>
+						<paragraph rightIndent="5"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{mps10jt}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Group" evaluationGroup="PERIODE" pattern="#,000.00##;(#,000.00##-)" isBlankWhenNull="true">
+					<reportElement x="1030" y="0" width="90" height="49" uuid="7119dec1-628b-4826-9fe3-4628fdf605ff"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="9" isBold="true"/>
+						<paragraph rightIndent="5"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{mp_bulanan_baru}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Group" evaluationGroup="PERIODE" pattern="#,000.00##;(#,000.00##-)" isBlankWhenNull="true">
+					<reportElement x="770" y="0" width="89" height="49" uuid="d601221b-9f29-4741-99ab-c09b9df714f3"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="9" isBold="true"/>
+						<paragraph rightIndent="5"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{jml_mp_stlh_mps20}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="72">
+			<textField>
+				<reportElement x="1044" y="41" width="80" height="30" uuid="dd691cb1-a378-432f-9023-0d4817c511cc"/>
+				<textFieldExpression><![CDATA["Hal : "+$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="-20" y="12" width="1150" height="30" uuid="2bc65c14-8c55-4866-871e-d8ad7cad9c26"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="html">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["DAFTAR PROYEKSI PENERIMA MANFAAT PENSIUN BARU"]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="83">
+			<staticText>
+				<reportElement mode="Opaque" x="-11" y="13" width="30" height="70" backcolor="#FFFFFF" uuid="30f0e07a-a913-4501-9966-7a034a668f7c"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[No.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="19" y="13" width="40" height="70" backcolor="#FFFFFF" uuid="1b3784b3-9908-45da-b3e1-a7a3498ade77"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Nip]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="339" y="13" width="40" height="70" backcolor="#FFFFFF" uuid="76abd8bc-60b3-4e00-bd51-81d7ca8b1010"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Gol]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="379" y="13" width="60" height="70" backcolor="#FFFFFF" uuid="0f44ce56-7970-4e69-bf47-3ef9aba60524"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<text><![CDATA[PhDP]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="439" y="13" width="50" height="70" backcolor="#FFFFFF" uuid="c4fe862d-45f3-40f8-806a-43275fce5c50"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Status Kawin]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="489" y="13" width="50" height="70" backcolor="#FFFFFF" uuid="50b4fcf9-e725-4a4c-947f-d10977e7242f"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[NS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="540" y="13" width="60" height="70" backcolor="#FFFFFF" uuid="01cd290b-1fb2-4137-b6ee-f328749d6538"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<text><![CDATA[PhDP Naik]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="59" y="13" width="70" height="70" backcolor="#FFFFFF" uuid="0ee560bc-c698-44e2-8936-89b721eda6b6"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<text><![CDATA[Nama]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="129" y="13" width="50" height="70" backcolor="#FFFFFF" uuid="1967001b-5f43-45d0-95ae-c3e9cd840584"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Tgl. Lahir]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="179" y="13" width="60" height="70" backcolor="#FFFFFF" uuid="f02d417f-45d4-49a7-8502-2234a3951ec6"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Tgl. Peserta]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="239" y="13" width="50" height="70" backcolor="#FFFFFF" uuid="6ddff056-8e0a-4c19-bbc7-d0f11c03ed59"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Tgl. Henti]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="289" y="13" width="50" height="70" backcolor="#FFFFFF" uuid="fee7e770-7fa3-41a3-b5bb-29fb66b6138a"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[MK]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="600" y="13" width="80" height="70" backcolor="#FFFFFF" uuid="5dfbda14-40fe-4e88-b0bb-b71de4a22282"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<text><![CDATA[MP Bulanan]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="680" y="13" width="89" height="70" backcolor="#FFFFFF" uuid="5e647201-5ee5-43a2-a666-d65fafd058bf"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<text><![CDATA[MPS 20%]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="769" y="13" width="90" height="70" backcolor="#FFFFFF" uuid="0c0a35e4-7fe6-48a6-9d59-100707cf15f5"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<text><![CDATA[MP Setelah MPS 20%]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="859" y="13" width="90" height="70" backcolor="#FFFFFF" uuid="44eca0b6-105d-4bbe-9013-eeb83cfd10f8"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<text><![CDATA[MP Unt Hitung MPS > 10 Juta]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="949" y="13" width="80" height="70" backcolor="#FFFFFF" uuid="f42458cc-bd27-4ad3-907a-5cbc12fd0343"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<text><![CDATA[MPS > 10 Juta]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="1029" y="13" width="90" height="70" backcolor="#FFFFFF" uuid="376cdba2-3b7d-41c2-bf63-c4921738214c"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<text><![CDATA[MP Perbulan]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="50" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement x="-11" y="0" width="30" height="49" uuid="4f90b006-0cf8-4a94-a572-0eb5f034b64e"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Group" evaluationGroup="PERIODE" isBlankWhenNull="true">
+				<reportElement x="20" y="0" width="40" height="49" uuid="7a545c5b-6d81-4462-921f-4b2d67a9d4b5"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NIP}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Group" evaluationGroup="PERIODE" isBlankWhenNull="true">
+				<reportElement x="340" y="0" width="40" height="49" uuid="139f4b69-a3d1-4c59-9d16-30e1cb753462"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PANGKAT_JABATAN}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Group" evaluationGroup="PERIODE" isBlankWhenNull="true">
+				<reportElement x="60" y="0" width="70" height="49" uuid="76da6700-dd5f-4e30-a34c-6bd8b5e2d6b4"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NAMA_PENERIMA_MP}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Group" evaluationGroup="PERIODE" isBlankWhenNull="true">
+				<reportElement x="130" y="0" width="50" height="49" uuid="34f548f8-794b-4234-8093-49dcdbeeea86"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{TGL_LAHIR}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Group" evaluationGroup="PERIODE" isBlankWhenNull="true">
+				<reportElement x="180" y="0" width="60" height="49" uuid="a09987cd-e025-4049-bd81-eecf71323979"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{TGL_KEPESERTAAN}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Group" evaluationGroup="PERIODE" isBlankWhenNull="true">
+				<reportElement x="240" y="0" width="50" height="49" uuid="c369227a-1cd9-470c-95c1-58f424d0ac96"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{TGL_HENTI}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Group" evaluationGroup="PERIODE" isBlankWhenNull="true">
+				<reportElement x="290" y="0" width="50" height="49" uuid="c0cca5ce-c62f-4cf2-a686-7ddd83c19abe"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{MASA_KERJA}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Group" evaluationGroup="PERIODE" pattern="#,000.00##;(#,000.00##-)" isBlankWhenNull="true">
+				<reportElement x="600" y="0" width="80" height="49" uuid="bc4fc62f-7675-41f0-b44b-2096638d7060"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{MP_BULANAN}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Group" evaluationGroup="PERIODE" pattern="#,000.00##;(#,000.00##-)" isBlankWhenNull="true">
+				<reportElement x="680" y="0" width="89" height="49" uuid="fd51ae32-235c-496b-bc61-fb21de980194"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{MPS20PESEN}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Group" evaluationGroup="PERIODE" pattern="#,000.00##;(#,000.00##-)" isBlankWhenNull="true">
+				<reportElement x="770" y="0" width="89" height="49" uuid="d1280bd3-6028-4894-9207-123aba57fba1"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{MP_BULANAN_20PERSEN}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Group" evaluationGroup="PERIODE" pattern="#,000.00##;(#,000.00##-)" isBlankWhenNull="true">
+				<reportElement x="860" y="0" width="90" height="49" uuid="253b7064-b888-4983-b98e-5690bfee6320"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{MPS10JUTA}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Group" evaluationGroup="PERIODE" pattern="#,000.00##;(#,000.00##-)" isBlankWhenNull="true">
+				<reportElement x="950" y="0" width="80" height="49" uuid="388f595c-7a7f-4a13-9bdb-773d79444804"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{MP_BULANAN_10JUTA}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Group" evaluationGroup="PERIODE" pattern="#,000.00##;(#,000.00##-)" isBlankWhenNull="true">
+				<reportElement x="1030" y="0" width="90" height="49" uuid="174bfab5-5f02-474c-8c4d-71e16ba9f284"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{MP_BULANAN_BARU}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Group" evaluationGroup="PERIODE" pattern="#,000.00##;(#,000.00##-)" isBlankWhenNull="true">
+				<reportElement x="380" y="0" width="60" height="49" uuid="19d85665-af57-4446-9e91-b950e53d7391"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PHDP}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Group" evaluationGroup="PERIODE" isBlankWhenNull="true">
+				<reportElement x="440" y="0" width="50" height="49" uuid="fcbd73e5-2d96-4cde-9b64-52f6091c8188"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NAMA_STATUS_KAWIN}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Group" evaluationGroup="PERIODE" isBlankWhenNull="true">
+				<reportElement x="490" y="0" width="50" height="49" uuid="26e74bb7-1f13-4cf0-805c-6b6a3b7362e8"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NILAI_FS}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Group" evaluationGroup="PERIODE" pattern="#,000.00##;(#,000.00##-)" isBlankWhenNull="true">
+				<reportElement x="540" y="0" width="60" height="49" uuid="1b6ce6cf-2fa6-4fe1-9802-880daf75aec0"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{KENAIKAN_PHDP}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

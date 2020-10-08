@@ -1,0 +1,257 @@
+{{#layout}} 
+{{#styles}}
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/datatables/media/css/dataTables.bootstrap4.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/googleapis/css/component.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/googleapis/css/googleapis.css">
+{{/styles}} {{#title}} Mutasi Perubahan PhDP/Merit Increase - DKPP {{/title}}
+<div class="card">
+	<div class="card-header" id="filter_form" style="display: none;"></div>
+	<div class="card-block">
+		{{#role}}
+			<a class="btn btn-primary btn-sm" href="{{contextPath}}{{mutasiPhdpPath}}/entry" ><i class="fa fa-plus"></i> Tambah Data Mutasi</a>
+		<hr/>
+		{{/role}}
+		<div class="col-lg-12">
+			<div class="row">
+				<label for="example-text-input" class="col-sm-2">Periode Mutasi</label>
+				<div class="col-xs-2">
+					<input class="form-control " disabled="" value="{{periodeMutasi}}" id="example-text-input" type="text">
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-12"><hr></div>
+			<table class="table table-bordered table-striped m-b-0 datatable dataTable responsive" id="user_table" role="grid">
+
+				<thead>
+					<tr role="row">
+						<th class="text-center">Tgl Mutasi</th>
+						<th class="text-center">Periode Mutasi</th>
+						<th class="text-center">NIP</th>
+						<th class="text-center">Nama Peserta</th>
+						<th class="text-center">Jenis Kelamin</th>
+						<th class="text-center">Golongan/Jabatan</th>
+						<th class="text-center">Nama Penerima MP</th>
+						<th class="text-center">Jenis Penerima MP</th>
+						<th class="text-center">PhDP Lama</th>
+						<th class="text-center">PhDP Baru</th>
+						<th class="text-center">Tgl. Mulai Berlaku PhDP</th>
+						<th class="text-center">Status Validasi</th>
+						<th class="text-center">Action</th>
+					</tr>
+				</thead>
+				<tbody>
+
+				</tbody>
+			</table>
+
+	</div>
+</div>
+{{#modal}}
+<div class="modal fade report-modal" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title small bold" id="myModalLabel">Form Cetak Laporan Mutasi Pensiun Baru</h4>
+			</div>
+			<div class="modal-body">
+				<form id="pesertaForm">
+					<div class="row">
+						<div class="col-lg-12">
+							<div class="form-group">
+								<div class="radio" id="radio_formulir">
+									<label>
+										<input checked="" name="optradio" type="radio" value="formulir_entry_mutasi"> Formulir Entry Mutasi
+									</label>
+								</div>
+								<div class="radio" id="radio_catatan">
+									<label>
+										<input name="optradio" type="radio"  value="catatan_perhitungan_manfaat_pensiun"> Catatan Perhitungan Mutasi Perubahan PhDP / Merit Increase pertama, kedua, dan seterusnya
+										</input>
+									</label>
+								</div>
+								<div class="radio" id="radio_phdp_sk">
+									<label>
+										<input name="optradio" type="radio" value="perubahan_sk_phdp"> Perubahan SK Pensiun Perubahan PhDP / Merit Increase pertama, kedua, dan seterusnya
+										</input>
+									</label>
+								</div>
+								<div class="radio" id="sp">
+									<label>
+										<input name="optradio" type="radio" value="sp_phdp"> Surat Pengantar Perubahan SK karena Perubahan PhDP / Merit Increase
+										</input>
+									</label>
+								</div>
+								<div class="radio" id="surat_gaji">
+									<label>
+										<input name="optradio" type="radio" value="surat_penyesuaian_gapok"> Surat Penyesuaian Gaji Pokok Untuk Perhitungan Hak Atas Pensiun Ditunda (untuk perubahan PhDP/ Merit Increase pertama, kedua, dan seterusnya)
+										</input>
+									</label>
+								</div>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary btn-sm" onclick="cetakReport()">Cetak</button>
+			</div>
+		</div>
+	</div>
+		<iframe id="report" name="report"></iframe>
+</div>
+{{/modal}}
+{{#scripts}}
+<script src="{{contextPath}}/assets/vendor/datatables/media/js/jquery.dataTables.js"></script>
+<script src="{{contextPath}}/assets/vendor/datatables/media/js/dataTables.bootstrap4.js"></script>
+<script src="{{contextPath}}/assets/vendor/select2/js/select2.js"></script>
+<script src="{{contextPath}}/assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+<script src="{{contextPath}}/assets/vendor/jquery-validation/dist/jquery.validate.js"></script>
+<script src="{{contextPath}}/assets/scripts/helpers/tsf/js/tsf-wizard-plugin.js"></script>
+<script src="{{contextPath}}/assets/vendor/parsley/parsley.min.js"></script>
+<script src="{{contextPath}}/assets/vendor/sweetalert/sweetalert.min.js"></script>
+<script src="{{contextPath}}/assets/vendor/numeral/numeral.min.js"></script>
+<script type="text/javascript">
+    window.DkppReportParam = {};
+    var userTable = dkppDataTable($('.datatable'), '{{contextPath}}/api/mutasi-perubahan-phdp', {
+        'columns': [
+            {"data": "tglMutasi"},
+            {"data": "periodeMutasi"},
+            {"data": "nip"},
+            {"data": "namaPeserta"},
+            {"data": "jenisKelaminPeserta"},
+            {"data": "golonganPangkat"},
+            {"data": "namaPenerimaMP"},
+            {"data": "namaKategoriPenerimaMP"},
+            {"data": "phdpLama"},
+            {"data": "phdpBaru"},
+            {"data": "tglMulaiBerlakuPHDPBaru"},
+            {"data": "namaValidasi"},
+            {"data": "id"}
+        ],
+        "columnDefs": [
+			  {
+                "render": function ( data, type, row ) {
+                    return data&&genderText(data);
+                },
+                "targets": 4
+              },
+			  {
+					"targets": 8,
+					"render": function(data, type, row, meta) {
+						const phpdLama = data ? data : row.phdpLama;
+						return phpdLama && numeral(phpdLama).format("0,0.00");
+					}
+			  },
+              {
+                  "render": function ( data, type, row ) {
+                      const phdpBaru = data ? data : row.phdpBaru;
+                      return phdpBaru && numeral(phdpBaru).format("0,0.00");
+                  },
+                  "targets": 9
+               },
+              {
+                  "render": function ( data, type, row ) {
+                	  if("Belum Diproses" == data){
+                		  return `<span class="tag tag-pill tag-warning">Belum Diproses</span>`;
+                	  }else if("Belum Validasi" == data){
+                		  return `<span class="tag tag-pill tag-info">Belum Validasi</span>`;
+                	  }else if("Batal Validasi" == data){
+                		  return `<span class="tag tag-pill tag-danger">Batal Validasi</span>`;
+                	  }else if("Sudah Validasi" == data){
+                		  return `<span class="tag tag-pill tag-success">Sudah Validasi</span>`;
+                	  } else {
+                		  return `<span class="tag tag-pill tag-info">`+data+`</span>`;
+                	  } 
+                  },
+                  "targets": 11
+               },
+             {
+                "render": function ( data, type, row ) {
+                	var idMutasiPensiun = data;
+                    let htmlTag = '<a type="button" class="btn btn-info btn-sm btn-icon btn-edit" href="{{contextPath}}{{mutasiPhdpPath}}/entry?id='+idMutasiPensiun+'"><i class="fa fa-edit"></i> <span>Proses</span></a>';
+                    if (row.namaValidasi === "Sudah Validasi") {
+                        param = JSON.stringify(
+                            {
+                                idKategoriPensiun: row.kategoriPensiun.id,
+                                nip: row.nip,
+                                idKategoriMutasi: row.kategoriMutasi.id,
+                                idJenisMps: row.jenisMps.id,
+                                periodeMutasi: row.periodeMutasi,
+								idKantorBayar: row.kantorBayar.id
+
+                            }
+                        );
+                        htmlTag  = '<a type="button" class="btn btn-info btn-sm btn-icon btn-edit" href="{{contextPath}}{{mutasiPhdpPath}}/entry?id='+idMutasiPensiun+'"><i class="fa fa-eye"></i> <span>View</span></a>'+`<br><a class=\'btn btn-info btn-sm btn-icon btn-printer\' onclick=\'displayCetak(` + param + `);\'><i class=\'material-icons\'>printer</i> Cetak</a>`;
+                    } else {
+                        htmlTag = '<a type="button" class="btn btn-info btn-sm btn-icon btn-edit" href="{{contextPath}}{{mutasiPhdpPath}}/entry?id='+idMutasiPensiun+'"><i class="fa fa-edit"></i> <span>Proses</span></a>';
+                    }
+                    return htmlTag;
+                },
+                "targets": 12
+             }
+        ]
+    });
+    
+    function toRp(bilangan){
+    	var	number_string = bilangan.toString(),
+    		sisa 	= number_string.length % 3,
+    		rupiah 	= number_string.substr(0, sisa),
+    		ribuan 	= number_string.substr(sisa).match(/\d{3}/g);
+    			
+    	if (ribuan) {
+    		separator = sisa ? '.' : '';
+    		rupiah += separator + ribuan.join('.');
+    	}
+    	
+    	return "Rp. " + rupiah;
+    }
+
+    function displayCetak(param) {
+        window.DkppReportParam = param;
+        $('.report-modal').modal('show');
+        const kategoriPensiun = param.idKategoriPensiun;
+        console.log(param);
+
+        let allRadioId = ['radio_formulir', 'radio_catatan', 'radio_phdp_sk', 'sp', 'surat_gaji'];
+
+        let radioGroup = {
+            PC: ['radio_formulir', 'radio_catatan', 'sp', 'surat_gaji'],
+            PD: ['radio_formulir', 'radio_catatan', 'sp', 'surat_gaji'],
+            PN: ['radio_formulir', 'radio_catatan', 'sp', 'surat_gaji'],
+            PT: ['radio_formulir', 'radio_catatan', 'sp', 'surat_gaji'],
+            PM: ['radio_formulir', 'radio_catatan', 'sp', 'surat_gaji'],
+        };
+
+        for(let i = 0; i<allRadioId.length; i++){
+            $('#' + allRadioId[i]).hide();
+        }
+
+        for(let j = 0; j < radioGroup[kategoriPensiun].length; j++){
+            $('#' + radioGroup[kategoriPensiun][j]).show();
+        }
+        $('.dkpp-hide').hide();
+
+    }
+    function cetakReport(){
+        let radioReport = $("input[name='optradio']:checked").val();
+        data = {
+            tipeReport: radioReport,
+            nip: window.DkppReportParam.nip,
+            idKategoriPensiun: window.DkppReportParam.idKategoriPensiun,
+            idKategoriMutasi: '13',
+            idJenisMps: window.DkppReportParam.idJenisMps,
+            periodeMutasi: window.DkppReportParam.periodeMutasi,
+			idKantorBayar: window.DkppReportParam.idKantorBayar
+        };
+        const param = $.param(data);
+        const reportFrame = $("#report");
+        const res = encodeURI(('src', `{{contextPath}}/api/mutasi-perubahan-phdp/report-phdp?${param}`));
+        window.open(res,'_blank');
+	}
+    $("#report").hide();
+</script>
+{{/scripts}} {{/layout}}

@@ -1,0 +1,234 @@
+{{#layout}}
+
+{{#styles}}
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/googleapis/css/component.css">
+<link rel="stylesheet" href="{{contextPath}}/assets/vendor/googleapis/css/googleapis.css">
+{{/styles}}
+
+{{#title}}
+Master Kantor Bayar - DKPP
+{{/title}}
+
+
+<div class="card">
+    <div class="card-header">
+        <div class="col-md-12">
+            <div class="row pull-right">
+                <a class="btn btn-primary btn-icon btn-sm" id="btn-add"><i class="material-icons">add</i> Add</a>
+            </div>
+        </div>
+    </div>
+    <div class="card-block">
+        <div class="table-responsive">
+            <table class="table table-bordered datatable dataTable no-footer" id="kantor_table"
+                   role="grid">
+                <thead>
+                <tr role="row">
+                    <th>
+                        ID Kantor Bayar
+                    </th>
+                    <th>
+                        Nama
+                    </th>
+                    <th>
+                        Alamat Surat 1
+                    </th>
+                    <th>
+                        Alamat Surat 2
+                    </th>
+                    <th>
+                        Alamat Surat 3
+                    </th>
+                    <th>
+                        Alamat Surat 4
+                    </th>
+                    <th>
+                        Active
+                    </th>
+                    <th>
+                        Action
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{{#modal}}
+<div class="modal fade kantor-bayar-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title small bold" id="myModalLabel">Form Kantor Bayar</h4>
+            </div>
+            <div class="modal-body">
+                <form id="kantorBayarForm">
+                    <div class="row">
+                        <div class="col-lg-12">
+
+                            <div class="form-group row">
+                                <label for="alamat-surat-1" class="col-sm-3 bold">ID</label>
+                                <div class="col-xs-9">
+                                    <input class="form-control form-control-sm" type="text" name="id" id="id">
+                                </div>
+                            </div>
+
+
+                            <div class="form-group row">
+                                <label for="nama-kantor-bayar" class="col-sm-3 bold">Nama Kantor Bayar</label>
+                                <div class="col-xs-9">
+                                    <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
+                                    <input class="form-control form-control-sm" type="text" name="namaKantorBayar" id="nama-kantor-bayar">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="alamat-surat-1" class="col-sm-3 bold">Alamat Surat 1</label>
+                                <div class="col-xs-9">
+                                    <input class="form-control form-control-sm" type="text" name="alamatSurat1" id="alamat-surat-1">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="alamat-surat-2" class="col-sm-3 bold">Alamat Surat 2</label>
+                                <div class="col-xs-9">
+                                    <input class="form-control form-control-sm" type="text" name="alamatSurat2" id="alamat-surat-2">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="alamat-surat-3" class="col-sm-3 bold">Alamat Surat 3</label>
+                                <div class="col-xs-9">
+                                    <input class="form-control form-control-sm" type="text" name="alamatSurat3" id="alamat-surat-3">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="alamat-surat-4" class="col-sm-3 bold">Alamat Surat 4</label>
+                                <div class="col-xs-9">
+                                    <input class="form-control form-control-sm" type="text" name="alamatSurat4" id="alamat-surat-4">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="checkbox-active" class="col-sm-3 bold">Active</label>
+                                <div class="col-xs-9">
+                                    <label class="custom-control custom-checkbox m-b-1">
+                                        <input type="checkbox" class="custom-control-input" name="active" id="checkbox-active">
+                                        <span class="custom-control-indicator"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="saveForm()">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+{{/modal}}
+
+{{#scripts}}
+<script src="{{contextPath}}/assets/vendor/datatables/media/js/jquery.dataTables.js"></script>
+<script src="{{contextPath}}/assets/vendor/datatables/media/js/dataTables.bootstrap4.js"></script>
+
+<script type="text/javascript">
+    window.RESTFulMode = "";
+    function showPrintOptions(){
+        $('#printOptionsModal').modal('show');
+    }
+
+    $('#btn_ok_print').unbind().on('click', function(){
+        $('#printOptionsModal').modal('hide');
+        $('#pdfReportModal').modal('show');
+    });
+
+    $('#filter_form').hide();
+    var kantorBayarTable = dkppDataTable($('.datatable'), '{{contextPath}}/api/kantor-bayar', {
+        'columns': [
+            { "data": "id"},
+            { "data": "namaKantorBayar" },
+            { "data": "alamatSurat1" },
+            { "data": "alamatSurat2" },
+            { "data": "alamatSurat3" },
+            { "data": "alamatSurat4" },
+            { "data": "active", "ordering": false },
+            { "data": "id"}
+        ],
+        'columnDefs': [
+            {
+                "targets": -1,
+                "data": "id",
+                "render": function(data, type, row, meta){
+                    return `<a class='btn btn-info btn-sm btn-icon btn-edit' onclick='displayEditModal("` + row.id + `")'><i class='material-icons'>edit</i> Edit</a>`;
+                }
+            },
+            {
+                "targets": 6,
+                "data": "active",
+                "render": function(data, type, row, meta){
+                    console.log(data);
+                    if(data == true)
+                        return '<span class="tag tag-pill tag-success">active</span>';
+                    else
+                        return '<span class="tag tag-pill tag-danger">not active</span>';
+                }
+            }
+        ]
+    });
+
+    function displayEditModal(id) {
+        const kantorBayar = kantorBayarTable.rows().data().filter((data) => {return data.id == id})[0];
+        const kantorBayarForm = $("form#kantorBayarForm");
+
+        $("#id").val(id);
+        $("#nama-kantor-bayar").val(kantorBayar.namaKantorBayar);
+        $("#alamat-surat-1").val(kantorBayar.alamatSurat1);
+        $("#alamat-surat-2").val(kantorBayar.alamatSurat2);
+        $("#alamat-surat-3").val(kantorBayar.alamatSurat3);
+        $("#alamat-surat-4").val(kantorBayar.alamatSurat4);
+        $("#checkbox-active")[0].checked = kantorBayar.active;
+        $('.kantor-bayar-modal').modal('show');
+        window.RESTFulMode = "PUT";
+    }
+
+    function saveForm() {
+        $.ajax({
+            url: "{{contextPath}}/api/kantor-bayar",
+            method: window.RESTFulMode,
+            data: formToJSON($("form#kantorBayarForm")[0].elements)
+        }).success(function(data) {
+            $('.kantor-bayar-modal').modal('hide');
+        kantorBayarTable.ajax.reload();
+    });
+    }
+
+    $(document).ready(function(){
+        $('#btn-add').unbind().on('click', function(){
+            $("#id").val("");
+            $("#nama-kantor-bayar").val("");
+            $("#alamat-surat-1").val("");
+            $("#alamat-surat-2").val("");
+            $("#alamat-surat-3").val("");
+            $("#alamat-surat-4").val("");
+            $("#checkbox-active")[0].checked = false;
+            var modal = $('.kantor-bayar-modal');
+            modal.modal('show');
+            window.RESTFulMode = 'POST';
+        });
+    });
+</script>
+{{/scripts}}
+
+{{/layout}}
